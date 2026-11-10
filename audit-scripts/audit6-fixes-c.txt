@@ -1,0 +1,46 @@
+# Audit #6 — Fixer C patch file
+# Defect D1 only. D2 (feature-expansion) and D3 (hackathon-scope) are STAGED
+# skills, so their fixes were applied directly to the staged sources
+# (new-skills/feature-expansion/SKILL.md and
+# rewritten-skills/hackathon-scope/SKILL.md) and need NO build.sh patch.
+# D1 (ui-ux-pro-max) is GitHub-fetched (no staged copy), so this patch must
+# be encoded into build.sh by the sync agent.
+#
+# File patched: skills/ui-ux-pro-max/SKILL.md
+#   (path in build.sh: f"{base}/skills/ui-ux-pro-max/SKILL.md")
+#
+# ORDERING — READ FIRST: apply this patch AFTER the existing
+# audit_patch(f"{base}/skills/ui-ux-pro-max/SKILL.md", [...]) at
+# build.sh:7216. That existing patch's Step-2 old text contains the string
+# "product/style/color/landing/typography"; if this D1 patch ran first,
+# that old text would no longer match and build.sh would fail its
+# `assert text.count(old) == 1` check. Applied after it, both patches
+# apply cleanly (the existing patch does not touch the Step-3 table row).
+#
+# OLD text below is verbatim from the pre-fix BUILT file
+# (hackathon-ecc/skills/ui-ux-pro-max/SKILL.md, lines :83 and :151).
+# Each OLD string occurs exactly once in that file (verified by grep
+# before editing). The built file has already been fixed by hand with
+# exactly these substitutions; this patch reproduces those fixes on rebuild.
+#
+# --- Patch 1 of 2: Step 2 aggregation list (:83) — drop `landing` ---
+# OLD:
+#   This aggregates product/style/color/landing/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.
+# NEW:
+#   This aggregates product/style/color/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.
+#
+# --- Patch 2 of 2: Step 3 domain table (:151) — delete the `landing` row ---
+# OLD (whole line, including its trailing newline):
+#   | Landing page structure | `landing` | `"hero social-proof" --domain landing` |
+# NEW:
+#   (empty — the line is deleted; the following row,
+#   `| Icon recommendations | ...`, moves up to take its place)
+#
+# --- Ready-to-paste build.sh snippet (uses the existing audit_patch helper) ---
+# audit_patch(f"{base}/skills/ui-ux-pro-max/SKILL.md", [
+#   ("""This aggregates product/style/color/landing/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.""",
+#    """This aggregates product/style/color/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid."""),
+#   ("""| Landing page structure | `landing` | `"hero social-proof" --domain landing` |
+# """,
+#    """),
+# ])

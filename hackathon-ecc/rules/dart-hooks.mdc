@@ -1,0 +1,57 @@
+---
+globs:
+  - "**/*.dart"
+  - "**/pubspec.yaml"
+  - "**/analysis_options.yaml"
+---
+# Dart/Flutter Hooks
+
+> This file extends [common-hooks.mdc](common-hooks.mdc) with Dart and Flutter-specific content.
+
+## After-Edit Hooks
+
+Configure as an `afterFileEdit` hook in the plugin's `hooks/hooks.json`:
+
+- **dart format**: Auto-format `.dart` files after edit
+- **dart analyze**: Run static analysis after editing Dart files and surface warnings
+- **flutter test**: Optionally run affected tests after significant changes
+
+## Recommended Hook Configuration
+
+The bullets below describe the intended Dart hook behaviour (originally a Claude Code `settings.json` block). In Cursor, wire the same behaviour as an `afterFileEdit` entry in `hooks/hooks.json`, following the existing dispatcher pattern in `hooks/after-file-edit.js` (add a dispatch branch the way it already dispatches the post-edit accumulator, the console warning, and the design-quality check):
+
+- **dart format**: after any `.dart` file is edited, run `dart format` on the edited paths.
+- **dart analyze**: after editing Dart files, run `dart analyze` and surface warnings.
+- **flutter test**: optionally run affected tests after significant changes.
+
+## Pre-commit Checks
+
+Run before committing Dart/Flutter changes:
+
+```bash
+dart format --set-exit-if-changed .
+dart analyze --fatal-infos
+flutter test
+```
+
+## Useful One-liners
+
+```bash
+# Format all Dart files
+dart format .
+
+# Analyze and report issues
+dart analyze
+
+# Run all tests with coverage
+flutter test --coverage
+
+# Regenerate code-gen files
+dart run build_runner build --delete-conflicting-outputs
+
+# Check for outdated packages
+flutter pub outdated
+
+# Upgrade packages within constraints
+flutter pub upgrade
+```

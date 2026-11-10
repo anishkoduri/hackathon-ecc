@@ -1,0 +1,388 @@
+# Audit #6 — Fixer B patch record (Conflicts: deferred-list enforcement + motion routing)
+# Date: 2026-11-09
+# Plugin: ~/workspace/hackathon-plugin/hackathon-ecc/
+# Build script: ~/workspace/hackathon-plugin/build.sh (NOT edited by Fixer B)
+#
+# PROVENANCE:
+# - Every file below EXCEPT rules/hackathon-mode.mdc is ECC stock (no staged copy
+#   under new-skills/, round2-skills/, rewritten-skills/, or new-rules/).
+#   Each patch below was ALREADY APPLIED to the built plugin file listed.
+#   The sync agent must encode each patch into build.sh so it survives a rebuild.
+# - rules/hackathon-mode.mdc is STAGED (new-rules/hackathon-mode.mdc). Fixer B edited
+#   BOTH the staged source and the built copy; NO build.sh patch is needed for it.
+#   (D14 hackathon-mode part only; the motion-* skill patches below ARE needed.)
+#
+# PATCH FORMAT: each entry gives FILE (path inside the built plugin), then the
+# exact OLD text block and the exact NEW text block. Old text occurs exactly
+# once in the file (verified at apply time). Apply as literal string replacement.
+# Label pattern copied from skills/django-verification/SKILL.md and
+# skills/quarkus-verification/SKILL.md / commands/react-review.md:94.
+# The deferred list itself was NOT changed (6 skills stay deferred).
+
+================================================================================
+D1 (High) — springboot-verification
+FILE: skills/springboot-verification/SKILL.md
+================================================================================
+--- Patch D1-a (frontmatter description, line 3) ---
+OLD:
+OWASP dependency and secret scans, and diff review
+NEW:
+OWASP dependency and secret scans (END-ONLY: only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3), and diff review
+
+--- Patch D1-b (trigger line, line 10; exception wording copied from django-verification) ---
+OLD:
+Run before PRs, after major changes, and pre-deploy.
+NEW:
+Run before PRs, after major changes, and pre-deploy. (Exception: the Phase 4 security scans run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3.)
+
+--- Patch D1-c (Phase 4 heading) ---
+OLD:
+## Phase 4: Security Scan
+NEW:
+## Phase 4: Security Scan (END-ONLY — run only at the very end of the project or when the user explicitly asks; deferred security audit, see hackathon-mode §3)
+
+--- Patch D1-d (Phase 4 dependency comment) ---
+OLD:
+# Dependency CVEs
+NEW:
+# Dependency CVEs (END-ONLY)
+
+--- Patch D1-e (Phase 4 secrets comment) ---
+OLD:
+# Secrets in source
+NEW:
+# Secrets in source (END-ONLY)
+
+--- Patch D1-f (Phase 4 git-history secrets comment) ---
+OLD:
+# Secrets (git history)
+NEW:
+# Secrets (git history) (END-ONLY)
+
+================================================================================
+D2 (High) — laravel-verification
+FILE: skills/laravel-verification/SKILL.md
+================================================================================
+--- Patch D2-a (frontmatter description, line 3) ---
+OLD:
+tests with coverage, security scans, and deployment readiness.
+NEW:
+tests with coverage, security scans (END-ONLY: only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3), and deployment readiness.
+
+--- Patch D2-b (trigger line, line 10; exception wording copied from django-verification) ---
+OLD:
+Run before PRs, after major changes, and pre-deploy.
+NEW:
+Run before PRs, after major changes, and pre-deploy. (Exception: the Phase 4 security scans run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3.)
+
+--- Patch D2-c (Phase 4 heading, line 86) ---
+OLD:
+## Phase 4: Security and Dependency Checks
+NEW:
+## Phase 4: Security and Dependency Checks (END-ONLY — run only at the very end of the project or when the user explicitly asks; deferred security audit, see hackathon-mode §3)
+
+--- Patch D2-d (Phase 4 composer audit, line 89) ---
+OLD:
+```bash
+composer audit
+```
+
+## Phase 5: Database and Migrations
+NEW:
+```bash
+composer audit  # END-ONLY: run only at the very end of the project or when the user explicitly asks (deferred security audit, see hackathon-mode §3)
+```
+
+## Phase 5: Database and Migrations
+
+--- Patch D2-e (Minimal-flow example, line 159) ---
+OLD:
+php artisan test
+composer audit
+php artisan migrate --pretend
+php artisan config:cache
+php artisan queue:failed
+NEW:
+php artisan test
+composer audit  # END-ONLY (see Phase 4)
+php artisan migrate --pretend
+php artisan config:cache
+php artisan queue:failed
+
+--- Patch D2-f (CI-style pipeline example, line 173) ---
+OLD:
+XDEBUG_MODE=coverage php artisan test --coverage
+composer audit
+php artisan migrate --pretend
+php artisan optimize:clear
+NEW:
+XDEBUG_MODE=coverage php artisan test --coverage
+composer audit  # END-ONLY (see Phase 4)
+php artisan migrate --pretend
+php artisan optimize:clear
+
+================================================================================
+D3 (High) — vue-review
+FILE: commands/vue-review.md
+================================================================================
+--- Patch D3-a (line 94; exact END-ONLY label copied from commands/react-review.md:94) ---
+OLD:
+# Supply-chain
+npm audit
+NEW:
+# Supply-chain — END-ONLY: run only at the very end of the project or when the user explicitly asks (deferred security audit, see hackathon-mode §3)
+npm audit
+
+================================================================================
+D4 (Medium) — python-security rule
+FILE: rules/python-security.mdc
+================================================================================
+--- Patch D4-a (Security Scanning section, lines 21-25) ---
+OLD:
+## Security Scanning
+
+- Use **bandit** for static security analysis:
+NEW:
+## Security Scanning (END-ONLY — run only at the very end of the project or when the user explicitly asks; deferred security audit, see hackathon-mode §3)
+
+- Use **bandit** for static security analysis (END-ONLY):
+
+================================================================================
+D5 (Medium) — rust-security rule
+FILE: rules/rust-security.mdc
+================================================================================
+--- Patch D5-a (Dependency Security bullets, lines 98-99) ---
+OLD:
+- Run `cargo audit` to scan for known CVEs in dependencies
+- Run `cargo deny check` for license and advisory compliance
+NEW:
+- Run `cargo audit` to scan for known CVEs in dependencies (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3)
+- Run `cargo deny check` for license and advisory compliance (END-ONLY — see above)
+
+--- Patch D5-b (code block comment, line 106) ---
+OLD:
+# Security audit
+cargo audit
+NEW:
+# Security audit (END-ONLY)
+cargo audit
+
+================================================================================
+D6 (Medium) — golang-security rule
+FILE: rules/golang-security.mdc
+================================================================================
+--- Patch D6-a (Security Scanning section, lines 19-23) ---
+OLD:
+## Security Scanning
+
+- Use **gosec** for static security analysis:
+NEW:
+## Security Scanning (END-ONLY — run only at the very end of the project or when the user explicitly asks; deferred security audit, see hackathon-mode §3)
+
+- Use **gosec** for static security analysis (END-ONLY):
+
+================================================================================
+D7 (Medium) — java-security rule
+FILE: rules/java-security.mdc
+================================================================================
+--- Patch D7-a (Dependency Security bullet, line 75) ---
+OLD:
+- Use OWASP Dependency-Check or Snyk to scan for known CVEs
+NEW:
+- Use OWASP Dependency-Check or Snyk to scan for known CVEs (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3)
+
+================================================================================
+D8 (Medium) — react-security rule
+FILE: rules/react-security.mdc
+================================================================================
+--- Patch D8-a (Third-Party Components bullet, line 168) ---
+OLD:
+- Audit `npm audit` before adding any UI library
+NEW:
+- Audit `npm audit` before adding any UI library (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3)
+
+================================================================================
+D9 (Medium) — react-native-security rule
+FILE: rules/react-native-security.mdc
+================================================================================
+--- Patch D9-a (Dependencies bullet, line 42; wording matches line 43's existing
+--- "/security-scan (AgentShield, END-ONLY — end of project or on explicit ask)" label) ---
+OLD:
+- Run `expo-doctor` and `npm audit` regularly; keep the Expo SDK and native deps current.
+NEW:
+- Run `expo-doctor` and `npm audit` regularly; keep the Expo SDK and native deps current. (`npm audit` is END-ONLY — end of project or on explicit ask, see hackathon-mode §3)
+
+================================================================================
+D10 (Medium) — php-security rule
+FILE: rules/php-security.mdc
+================================================================================
+--- Patch D10-a (Secrets and Dependencies bullet, line 18) ---
+OLD:
+- Run `composer audit` in CI and review package trust before adding dependencies.
+NEW:
+- Run `composer audit` in CI and review package trust before adding dependencies. (`composer audit` is END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3)
+
+================================================================================
+D11 (Medium) — ruby-security + ruby-hooks rules
+FILE: rules/ruby-security.mdc
+================================================================================
+--- Patch D11-a (Dependencies bullet, line 35) ---
+OLD:
+- Run dependency checks when the lockfile changes:
+NEW:
+- Run dependency checks when the lockfile changes (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3):
+
+--- Patch D11-b (dependency-check code block, lines 37-38) ---
+OLD:
+```bash
+bundle exec bundle-audit check --update
+bundle exec brakeman --no-progress
+```
+NEW:
+```bash
+# END-ONLY: run only at the very end of the project or when the user explicitly asks (deferred security audit, see hackathon-mode §3)
+bundle exec bundle-audit check --update
+bundle exec brakeman --no-progress
+```
+
+FILE: rules/ruby-hooks.mdc
+================================================================================
+--- Patch D11-c (Brakeman after-edit hook, line 18) ---
+OLD:
+- **Brakeman**: run `bundle exec brakeman --no-progress` after security-sensitive Rails changes.
+NEW:
+- **Brakeman**: run `bundle exec brakeman --no-progress` after security-sensitive Rails changes (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3).
+
+--- Patch D11-d (Bundler audit after-edit hook, line 20) ---
+OLD:
+- **Bundler audit**: run `bundle exec bundle-audit check --update` when `Gemfile` or `Gemfile.lock` changes and the project has bundler-audit installed.
+NEW:
+- **Bundler audit**: run `bundle exec bundle-audit check --update` when `Gemfile` or `Gemfile.lock` changes and the project has bundler-audit installed (END-ONLY: run only at the very end of the project or when the user explicitly asks — deferred security audit, see hackathon-mode §3).
+
+--- Patch D11-e (CI Gate Suggestions block, line 32) ---
+OLD:
+bundle exec brakeman --no-progress
+bin/rails test
+NEW:
+bundle exec brakeman --no-progress  # END-ONLY: run only at the very end of the project or when the user explicitly asks (deferred security audit, see hackathon-mode §3)
+bin/rails test
+
+================================================================================
+D12 (Medium) — security-review (sanctioned MID-BUILD skill)
+FILE: skills/security-review/SKILL.md
+================================================================================
+--- Patch D12-a (Dependency Security commands, lines 412-415) ---
+OLD:
+# Check for vulnerabilities
+npm audit
+
+# Fix automatically fixable issues
+npm audit fix
+NEW:
+# Check for vulnerabilities — END-ONLY: run only at the very end of the project or when the user explicitly asks (deferred security audit, see hackathon-mode §3)
+npm audit  # END-ONLY (see above)
+
+# Fix automatically fixable issues — END-ONLY (see above)
+npm audit fix  # END-ONLY (see above)
+
+--- Patch D12-b (Verification Steps checklist, line 435) ---
+OLD:
+- [ ] No known vulnerabilities (npm audit clean)
+NEW:
+- [ ] No known vulnerabilities (dependency audit clean — END-ONLY: run the dependency audit only at the very end of the project or when the user explicitly asks)
+
+NOTE: only the dependency-audit tool invocations were qualified. The rest of the
+skill (checklist patterns, auth/input review) is untouched — legitimately
+mid-build per hackathon-mode.mdc:21. `npm update` / `npm outdated` in the same
+section were left as-is (maintenance commands, not vulnerability audits).
+
+================================================================================
+D13 (Low) — unlabeled inventory listings
+================================================================================
+FILE: skills/python-patterns/SKILL.md
+--- Patch D13-a (Essential Commands block, lines 639-642) ---
+OLD:
+# Security scanning
+bandit -r .
+
+# Dependency management
+pip-audit
+safety check
+NEW:
+# Security scanning (END-ONLY tools — run at the very end of the project)
+bandit -r .
+
+# Dependency management (END-ONLY tools — run at the very end of the project)
+pip-audit
+safety check
+
+FILE: skills/rust-patterns/SKILL.md
+--- Patch D13-b (Essential Commands, line 451) ---
+OLD:
+cargo audit              # Security audit
+NEW:
+cargo audit              # Security audit (END-ONLY — run at the very end of the project)
+
+FILE: skills/plankton-code-quality/SKILL.md
+--- Patch D13-c (language deps table, line 104) ---
+OLD:
+| Python | `ruff`, `uv` | `ty` (types), `vulture` (dead code), `bandit` (security) |
+NEW:
+| Python | `ruff`, `uv` | `ty` (types), `vulture` (dead code), `bandit` (security, END-ONLY) |
+
+--- Patch D13-d (Pairing with ECC table, line 120) ---
+OLD:
+| Security scanning | AgentShield, security-reviewer agent | Bandit (Python), Semgrep (TypeScript) |
+NEW:
+| Security scanning | AgentShield, security-reviewer agent | Bandit (Python), Semgrep (TypeScript) (END-ONLY tools — run at the very end of the project) |
+
+FILE: rules/react-native-hooks.mdc
+--- Patch D13-e (Pre-release / periodic list, line 22) ---
+OLD:
+- `npm audit` — dependency vulnerability scan.
+NEW:
+- `npm audit` — dependency vulnerability scan (END-ONLY — run at the very end of the project or when the user explicitly asks, see hackathon-mode §3).
+
+================================================================================
+D14 (Medium) — motion routing gap
+================================================================================
+FILE: rules/hackathon-mode.mdc — STAGED. NO build.sh PATCH NEEDED.
+Fixer B edited BOTH new-rules/hackathon-mode.mdc (staged source) AND
+hackathon-ecc/rules/hackathon-mode.mdc (built copy). Recorded here for the
+audit trail only:
+--- D14 hackathon-mode (new line appended after the polish-pass bullet in §5) ---
+OLD (end of the polish-pass bullet, unchanged except for the appended line):
+- `polish-pass` fixes existing UI without restyling: states, responsive issues, and consistency drift only. A new look belongs to `ui-ux-pro-max`, `less-flat-ui`, and `design-taste-frontend` — never to `polish-pass`. New motion/interaction-feel design belongs to `make-interfaces-feel-better`, not `polish-pass`; fixing broken feedback motion is in scope for `polish-pass`.
+NEW (same bullet, plus this line after it):
+- Motion routing: `make-interfaces-feel-better` owns motion/interaction FEEL and timing decisions — when and how an interface should move, and how it should feel. The motion-* skills (`motion-patterns`, `motion-foundations`, `motion-advanced`) own the HOW — implementing a specific animation in React/Next.js once the feel/timing decision is made. Decide feel with `make-interfaces-feel-better` first; implement with the motion-* skills.
+
+FILE: skills/motion-patterns/SKILL.md
+--- Patch D14-a (frontmatter description, line 3) ---
+OLD:
+Use when animating a specific UI element in React or Next.js — button, modal, toast, stagger, page transition, or scroll.
+NEW:
+Use when animating a specific UI element in React or Next.js — button, modal, toast, stagger, page transition, or scroll. For motion feel/timing decisions, use make-interfaces-feel-better first — this skill implements the animation.
+
+FILE: skills/motion-foundations/SKILL.md
+--- Patch D14-b (frontmatter description, line 3) ---
+OLD:
+Use when setting up motion tokens, spring presets, reduced-motion handling, or SSR-safe animation in React or Next.js.
+NEW:
+Use when setting up motion tokens, spring presets, reduced-motion handling, or SSR-safe animation in React or Next.js. For motion feel/timing decisions, use make-interfaces-feel-better first — this skill provides the tokens and implementation foundation.
+
+FILE: skills/motion-advanced/SKILL.md
+--- Patch D14-c (frontmatter description, line 3) ---
+OLD:
+Use when building drag and drop, gestures, text or SVG animation, or imperative animation sequences in React or Next.js.
+NEW:
+Use when building drag and drop, gestures, text or SVG animation, or imperative animation sequences in React or Next.js. For motion feel/timing decisions, use make-interfaces-feel-better first — this skill implements the advanced pattern.
+
+================================================================================
+END OF PATCH RECORD — 36 ECC-stock patches (D1–D13 + D14 motion skills) +
+1 STAGED edit (D14 hackathon-mode, no patch needed).
+Total replacements applied to the built plugin: 38 (incl. staged hackathon-mode).
+Deferred list unchanged: production-audit, delivery-gate, codehealth-mcp,
+verification-loop, santa-method, security-scan all remain deferred.
+build.sh NOT edited. Plugin NOT zipped, uploaded, sent, or published.
+Backup ~/workspace/hackathon-plugin/hackathon-plugin-fixed-backup-audit4/ untouched.
+================================================================================

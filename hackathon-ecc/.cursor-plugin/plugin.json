@@ -1,0 +1,8 @@
+{
+  "name": "hackathon-ecc",
+  "version": "1.0.0",
+  "description": "Hackathon-tuned ECC (Developer profile): ECC agents, skills, rules, and commands for building hackathon projects, with security tests and audits deferred to the end of the project. Includes grill-me-first, UI skills (ui-ux-pro-max, less-flat-ui, Taste), hackathon workflow skills, and /demo and /orchestrate commands.",
+  "author": { "name": "Anish Koduri" },
+  "keywords": ["hackathon", "ecc", "rapid-prototyping", "ui"],
+  "license": "MIT"
+}

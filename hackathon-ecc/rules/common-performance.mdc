@@ -1,0 +1,38 @@
+---
+description: "Performance: model selection, context management, build troubleshooting"
+alwaysApply: true
+---
+# Performance Optimization
+
+## Model Selection Strategy
+
+**composer-2.5** (cheapest; scout/recon and lightweight work)
+
+**composer-2.5[fast=false]** (standard agentic work; fast-worker)
+
+**claude-opus-5** (deepest reasoning; deep-reasoner)
+
+## Context Window Management
+
+Avoid last 20% of context window for:
+- Large-scale refactoring
+- Feature implementation spanning multiple files
+- Debugging complex interactions
+
+Lower context sensitivity tasks:
+- Single-file edits
+- Independent utility creation
+- Documentation updates
+- Simple bug fixes
+
+## Extended Thinking
+
+Reasoning depth is controlled by the agent model pins in agents/ (notably claude-opus-5 for deep-reasoner). Do not use Claude Code effort controls (/effort, CLAUDE_CODE_EFFORT_LEVEL, MAX_THINKING_TOKENS) — they do not exist in Cursor.
+
+## Build Troubleshooting
+
+If build fails:
+1. Use **build-error-resolver** agent
+2. Analyze error messages
+3. Fix incrementally
+4. Verify after each fix

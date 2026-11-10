@@ -1,0 +1,250 @@
+{
+  "coverage": {
+    "skills": 314,
+    "withTriggers": 27
+  },
+  "generatedAt": "2026-10-30T00:01:34.569Z",
+  "notes": "END-ONLY deferred skills — their trigger phrases below are end-of-project-only, so only an end-of-project request routes to them. SchemaVersion 1 has no per-key deferral flag and the router matches on trigger text only, so this note documents the deferral; it does not enforce it. Deferred: production-audit, delivery-gate, codehealth-mcp, santa-method, security-scan, verification-loop.",
+  "id": "skill-triggers@1",
+  "model": {
+    "effort": null,
+    "id": "hand-seeded",
+    "source": "manual-curation-pending-regeneration"
+  },
+  "registryDigest": "6f213dc845937b4093bc018d041b25b538d88d78451b9d799ad614989b360ee4",
+  "schemaVersion": 1,
+  "triggers": {
+    "skill:api-design": [
+      "rest endpoint design",
+      "pagination api",
+      "status codes",
+      "api versioning",
+      "rate limiting api",
+      "resource naming",
+      "filtering api",
+      "api error responses",
+      "offset pagination",
+      "limit query parameter",
+      "pagination defaults"
+    ],
+    "skill:backend-patterns": [
+      "express api",
+      "node backend architecture",
+      "nextjs api routes",
+      "server side patterns",
+      "data access layer",
+      "static file server",
+      "url path handling",
+      "file server"
+    ],
+    "skill:browser-qa": [
+      "deployed feature test",
+      "visual regression screenshots",
+      "core web vitals check",
+      "axe accessibility audit",
+      "ship do not ship",
+      "staging verification"
+    ],
+    "skill:code-tour": [
+      "onboarding walkthrough",
+      "explain subsystem",
+      "architecture tour",
+      "pr walkthrough",
+      "rca tour"
+    ],
+    "skill:codehealth-mcp": [
+      "end of project code health review",
+      "final code health check before launch",
+      "code health review at the end of the project",
+      "verify code health score at the end of the project"
+    ],
+    "skill:coding-standards": [
+      "code review standards",
+      "naming conventions",
+      "readability review",
+      "immutability conventions",
+      "fix naming typo",
+      "export naming",
+      "consistent exports"
+    ],
+    "skill:database-migrations": [
+      "zero downtime migration",
+      "schema change production",
+      "add column large table",
+      "backfill data",
+      "expand contract",
+      "concurrent index",
+      "migration rollback",
+      "prisma migration",
+      "django migration"
+    ],
+    "skill:delivery-gate": [
+      "end of project delivery gate",
+      "final delivery gate before finishing",
+      "delivery gate at the end of the project",
+      "block declaring work finished at the end of the project"
+    ],
+    "skill:design-system": [
+      "design tokens",
+      "visual consistency audit",
+      "css custom properties",
+      "ui audit",
+      "design system bootstrap"
+    ],
+    "skill:django-patterns": [
+      "django orm",
+      "drf api",
+      "django rest framework",
+      "django caching",
+      "django signals",
+      "django middleware"
+    ],
+    "skill:error-handling": [
+      "error types",
+      "retry logic",
+      "circuit breaker",
+      "user facing errors",
+      "exception handling patterns",
+      "typed errors",
+      "error boundaries",
+      "go error handling",
+      "custom error class",
+      "error codes",
+      "config validation"
+    ],
+    "skill:frontend-a11y": [
+      "aria attributes",
+      "screen reader support",
+      "focus management",
+      "semantic html",
+      "form labeling",
+      "keyboard navigation react",
+      "a11y lint errors"
+    ],
+    "skill:git-workflow": [
+      "merge vs rebase",
+      "commit conventions",
+      "resolve merge conflict",
+      "branching strategy",
+      "clean up commits",
+      "pull request cleanup",
+      "git history tidy"
+    ],
+    "skill:hexagonal-architecture": [
+      "ports and adapters",
+      "dependency injection boundaries",
+      "decouple domain from io"
+    ],
+    "skill:orch-fix-defect": [
+      "fix a bug",
+      "broken behavior",
+      "regression fix",
+      "reproduce bug",
+      "defect repair"
+    ],
+    "skill:postgres-patterns": [
+      "slow postgres query",
+      "query optimization",
+      "index design",
+      "rls policies",
+      "supabase schema",
+      "postgres indexing",
+      "database performance",
+      "schema design postgres",
+      "postgres driver",
+      "node postgres",
+      "query planner"
+    ],
+    "skill:production-audit": [
+      "end of project production readiness audit",
+      "final production readiness audit before launch",
+      "production readiness audit at the end of the project",
+      "what breaks in prod at the end of the project"
+    ],
+    "skill:python-patterns": [
+      "pythonic code",
+      "pep 8",
+      "type hints python",
+      "python code review",
+      "idiomatic python"
+    ],
+    "skill:python-testing": [
+      "pytest fixtures",
+      "mocking python",
+      "parametrized tests",
+      "coverage python",
+      "tdd python"
+    ],
+    "skill:redis-patterns": [
+      "cache aside pattern",
+      "distributed lock",
+      "redis rate limiting",
+      "cache invalidation"
+    ],
+    "skill:rust-patterns": [
+      "rust ownership",
+      "borrow checker",
+      "rust error handling",
+      "traits rust",
+      "rust concurrency",
+      "idiomatic rust"
+    ],
+    "skill:santa-method": [
+      "end of project adversarial verification",
+      "final adversarial review before shipping",
+      "santa method at the end of the project",
+      "multi-agent verification at the end of the project"
+    ],
+    "skill:security-review": [
+      "security audit",
+      "authentication review",
+      "sanitize user input",
+      "secrets handling",
+      "payment security checklist",
+      "prevent injection attacks",
+      "secure api endpoints",
+      "authn authz review",
+      "vulnerability checklist",
+      "input validation security",
+      "parameterized queries",
+      "sql injection"
+    ],
+    "skill:security-scan": [
+      "end of project security scan",
+      "final security audit before submission",
+      "security scan at the end of the project",
+      "final agentshield scan before launch",
+      "end of project mcp server audit",
+      "final hook configuration audit before launch"
+    ],
+    "skill:tdd-workflow": [
+      "write test first",
+      "failing test",
+      "red green refactor",
+      "test driven development",
+      "regression test first",
+      "write a regression test"
+    ],
+    "skill:typescript-patterns": [
+      "strict typescript compiler configuration",
+      "fix cascading type errors",
+      "remove any and tighten types",
+      "design discriminated unions",
+      "narrow unknown at api boundary",
+      "review typescript pull request",
+      "refactor to strict mode",
+      "generics for caller dependent types",
+      "async error handling patterns",
+      "validate config with type guards",
+      "bounded concurrency mapper",
+      "module boundary exports"
+    ],
+    "skill:verification-loop": [
+      "end of project verification",
+      "final verification before launch",
+      "verification at the end of the project",
+      "final quality gate before launch"
+    ]
+  },
+  "triggersDigest": "953728cb51ef7726f8a4969efecaec294d37772fcddf8544cd9ee45bff4945ee"
+}

@@ -1,0 +1,46 @@
+---
+description: Hackathon mode — full ECC process, grill-me first, UI pairing, audits deferred to the end
+alwaysApply: true
+---
+
+# Hackathon mode
+
+This project is a hackathon build. A working demo matters most — but this plugin is the full ECC (Developer profile), so the ECC process applies in full. The only change from stock ECC is that security tests and audits run at the very end of the project or when the user explicitly asks.
+
+## 1. Grill-me first
+
+After the user sends the first hackathon project prompt, run `grill-me` FIRST, before any scoping, building, or expansion. Ask one question at a time until every decision is recorded. The decision record feeds `hackathon-scope`, `feature-expansion`, and `orchestrate`, so expansion goes the user's direction. The user can skip it by saying "skip the grilling" or "just build it" — if they do, skip straight to scoping.
+
+## 2. UI pairing
+
+When building UI that is NOT a full landing or company page, use `ui-ux-pro-max` and `less-flat-ui` TOGETHER. `ui-ux-pro-max` sets the design direction; `less-flat-ui` adds the texture layer on any surface (backgrounds, cards, buttons, dividers, headings). Apply every `less-flat-ui` treatment that fits the surface — a treatment does not fit a dense dashboard, form, or data table, which stay flat. Contrast stays at 4.5:1 or better. Respect `prefers-reduced-motion`.
+
+## 3. Audit deferral
+
+Security tests and audits run ONLY at the very end of the project or when the user explicitly asks. The deferred skills are `production-audit`, `delivery-gate`, `codehealth-mcp`, `verification-loop`, `santa-method`, and `security-scan`. Do not run them during the build, do not gate a feature on them, and do not invoke them mid-build. When the project is done or the user asks, run them then.
+Follow the secure-coding rules in common-security.mdc while building; the deferral above covers security tests and audits only, not the secure-coding rules themselves.
+
+## 4. ECC process applies in full
+
+TDD, planning docs, and code review stay as ECC does them. Plan first, write tests with the code, and review while building. The ECC alwaysApply rules (testing, development workflow, coding style, git workflow, security, patterns, performance, common-agents, hooks) all apply, and code review applies per rules/common-code-review.mdc. If any other rule conflicts with this one, this rule wins for the project — including the audit deferral in §3, which also wins over any rule that would run a deferred audit mid-build.
+
+## 5. UI routing
+
+- A full company or landing-page build is led by `design-taste-frontend`. It replaces `ui-ux-pro-max` as design lead on full landing/company pages — `ui-ux-pro-max` and `less-flat-ui` do not also lead. `less-flat-ui`'s texture layer applies inside a `design-taste-frontend` build only where its page system leaves a surface flat.
+- `ui-ux-pro-max` is the general design intelligence, especially for dashboards and apps.
+- `less-flat-ui` owns the lightweight texture layer for any surface.
+- `polish-pass` fixes existing UI without restyling: states, responsive issues, and consistency drift only. A new look belongs to `ui-ux-pro-max`, `less-flat-ui`, and `design-taste-frontend` — never to `polish-pass`. New motion/interaction-feel design belongs to `make-interfaces-feel-better`, not `polish-pass`; fixing broken feedback motion is in scope for `polish-pass`.
+- Motion routing: `make-interfaces-feel-better` owns motion/interaction FEEL and timing decisions — when and how an interface should move, and how it should feel. The motion-* skills (`motion-patterns`, `motion-foundations`, `motion-advanced`) own the HOW — implementing a specific animation in React/Next.js once the feel/timing decision is made. Decide feel with `make-interfaces-feel-better` first; implement with the motion-* skills.
+- `frontend-design-direction` is not used for hackathon UI work — the four skills above own it.
+
+## 6. Skill routing — when two skills could apply
+
+- `grill-me` owns the first project prompt. `brainstorming` is for later ideation on a specific feature or problem. `hackathon-scope` owns MVP scoping; `product-lens` and `intent-driven-development` do not scope hackathons.
+- `track-picker` owns choosing which sponsor/track to pursue; `integration` owns wiring a named API/SDK once a choice is made; `api-integration` owns generic REST-client mechanics on an unnamed API.
+- `orchestrate` owns general delegation and fan-out. `dispatching-parallel-agents` is for concurrent failure investigation only. The `orch-*` commands (`/orch-build-mvp`, `/orch-add-feature`, `/orch-fix-defect`, `/orch-change-feature`, `/orch-refine-code`) are explicit user-invoked pipelines for those specific tasks. Default: do trivial one-step work (a typo fix, a one-line change) directly in the main context; single-feature, single-bug, single-change, and single-refactor work goes to the `/orch-*` pipelines — not to the main context and not to `orchestrate`; use `orchestrate` only when the user asks to orchestrate/delegate in general terms or the work spans several pieces at once. For a go/no-go or tradeoff decision needing structured disagreement, use `council`, not `orchestrate`.
+- UI routing lives in §5: a full landing/company page → `design-taste-frontend`; dashboards and apps → `ui-ux-pro-max`; texture on any surface → `less-flat-ui`; fixes to existing UI → `polish-pass`.
+- `verification-before-completion` is the lightweight mid-build check. `verification-loop` is the six-phase check that runs only at the very end.
+- `hackathon-pitch` owns pitch narrative, scripts, demo storyboard, and Q&A prep. `frontend-slides` builds the slide deck. `devpost-autofiller` writes the Devpost submission, after `readme-writer` has written the README.
+- `mobile-ship` owns shipping and packaging a testable build only. Writing screens or features belongs to `react-native-patterns` / `dart-flutter-patterns`.
+- `systematic-debugging` is for a bug whose root cause is unknown, after ruling out the more specific debugging skills (`agent-introspection-debugging`, `click-path-audit`, `browser-qa`).
+- `deploy-fast` is the only deploy runbook.

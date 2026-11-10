@@ -1,0 +1,155 @@
+# Audit #6 — Fixer A patches (Connectivity + Cleanliness)
+# ========================================================
+# File: ~/workspace/hackathon-plugin/audit-scripts/audit6-fixes-a.txt
+# Purpose: exact old->new pairs for the sync agent to encode into build.sh
+# as audit6_patch() calls, following the existing audit_patch() convention
+# (assert text.count(old) == 1, then replace). Do NOT edit build.sh by hand
+# from this file without checking each assert against a fresh build.
+#
+# PROVENANCE: every file below is ECC stock (no staged copy under
+# new-skills/, round2-skills/, rewritten-skills/ or new-rules/), so all fixes
+# live ONLY in the built plugin until encoded here. Exception: defect 6
+# items were already applied in the built plugin by the cleanliness auditor;
+# their pairs are recorded in the VERIFY-ONLY section at the end.
+#
+# ORDERING: the Defect 1 patch MUST run AFTER the existing audit5_patch() for
+# skills/django-verification/SKILL.md in build.sh — its old text is the
+# audit5-patched description (audit5 inserted the unquoted '(END-ONLY: ...)'
+# parenthetical that broke YAML parsing). The audit5 substring itself is
+# unchanged; only the surrounding description line gains double quotes.
+
+audit6_patch(f"{base}/skills/django-verification/SKILL.md", [
+  ("description: Run the full Django verification loop \u2014 environment check, mypy/ruff/black linting, migration safety, pytest with coverage targets, pip-audit and bandit security scans (END-ONLY: only at the very end of the project or when the user explicitly asks \u2014 deferred security audit, see hackathon-mode \u00a73), settings and logging review, and diff review \u2014 producing a phased pass/fail report before release or PR. Use when preparing a Django pull request, validating migrations or coverage, or running pre-deploy readiness checks.",
+   "description: \"Run the full Django verification loop \u2014 environment check, mypy/ruff/black linting, migration safety, pytest with coverage targets, pip-audit and bandit security scans (END-ONLY: only at the very end of the project or when the user explicitly asks \u2014 deferred security audit, see hackathon-mode \u00a73), settings and logging review, and diff review \u2014 producing a phased pass/fail report before release or PR. Use when preparing a Django pull request, validating migrations or coverage, or running pre-deploy readiness checks.\""),
+])
+
+audit6_patch(f"{base}/schemas/hooks-metadata.schema.json", [
+  ("so a reorder is detected. Regenerate with `node scripts/ci/validate-hooks.js --update-fingerprints`.",
+   "so a reorder is detected."),
+])
+
+audit6_patch(f"{base}/manifests/pi-core.json", [
+  ("regenerated into pi/core/ by scripts/build-pi-core.js.",
+   "curated for pi/core/ (no build script ships in this plugin)."),
+])
+
+audit6_patch(f"{base}/scripts/lib/github-coordination.js", [
+  ("path.join(__dirname, '..', '..', '..', 'schemas', 'state-store.schema.json')",
+   "path.join(__dirname, '..', '..', 'schemas', 'state-store.schema.json')"),
+  ("local state store schema is not shipped (schemas/state-store.schema.json missing)",
+   "local state store schema not found at <plugin-root>/schemas/state-store.schema.json"),
+])
+
+audit6_patch(f"{base}/skills/delivery-gate/SKILL.md", [
+  ("Complements self-audit by mechanically enforcing learning capture habits.",
+   "Complements agent-self-evaluation (the shipped equivalent of upstream self-audit, which is not shipped in this plugin) by mechanically enforcing learning capture habits."),
+  ("This is distinct from reasoning gates (like `self-audit`): delivery-gate checks machine-verifiable facts; self-audit checks output quality across four reasoning dimensions.",
+   "This is distinct from reasoning gates (like the shipped `agent-self-evaluation` skill \u2014 the upstream `self-audit` skill is not shipped in this plugin): delivery-gate checks machine-verifiable facts; agent-self-evaluation checks output quality across four reasoning dimensions."),
+  ("- **self-audit**: \"Is the file content correct, complete, and honest?\"",
+   "- **agent-self-evaluation** (shipped; upstream `self-audit` is not shipped in this plugin): \"Is the file content correct, complete, and honest?\""),
+  ("For content quality verification, pair with `self-audit`.",
+   "For content quality verification, pair with `agent-self-evaluation` (the shipped equivalent; upstream `self-audit` is not shipped in this plugin)."),
+  ("- `self-audit` \u2014 Reasoning quality gate (completeness/consistency/groundedness/honesty)",
+   "- `agent-self-evaluation` \u2014 Reasoning quality gate (completeness/consistency/groundedness/honesty; shipped equivalent of upstream `self-audit`, which is not shipped in this plugin)"),
+  ("- `gateguard` \u2014 PreToolUse safety gate",
+   "- `gateguard` \u2014 PreToolUse safety gate (not shipped in this plugin)"),
+])
+
+audit6_patch(f"{base}/skills/continuous-learning-v2/SKILL.md", [
+  ("- Existing global instincts can be migrated from `~/.claude/homunculus/instincts/` with `scripts/migrate-homunculus.sh`",
+   "- Existing global instincts can be migrated from `~/.claude/homunculus/instincts/` with `skills/continuous-learning-v2/scripts/migrate-homunculus.sh` (shipped with this skill; run it from the plugin root)"),
+])
+
+audit6_patch(f"{base}/skills/codehealth-mcp/SKILL.md", [
+  ("The `codescene` block in `mcp-configs/mcp-servers.json` is a template only.",
+   "The `codescene` block inlined in \u00a71 below (the upstream `mcp-configs/mcp-servers.json` file is not shipped in this plugin) is a template only."),
+  ("Copy the `codescene` entry from `mcp-configs/mcp-servers.json` into your harness MCP config.",
+   "Copy the `codescene` entry inlined below (the upstream `mcp-configs/mcp-servers.json` file is not shipped in this plugin) into your harness MCP config."),
+])
+
+audit6_patch(f"{base}/skills/unified-memory/SKILL.md", [
+  ("copy the `ecc-memory-vault` entry from\n`mcp-configs/mcp-servers.json` into each harness where tool access is useful.",
+   "copy the `ecc-memory-vault` entry from the plugin's `mcp.json` (the upstream `mcp-configs/mcp-servers.json` file is not shipped in this plugin \u2014 add the entry there) into each harness where tool access is useful."),
+])
+
+audit6_patch(f"{base}/skills/verification-loop/SKILL.md", [
+  ("Run: /verify",
+   "Run: /quality-gate"),
+])
+
+audit6_patch(f"{base}/skills/react-native-patterns/SKILL.md", [
+  ("Pairs with the `rules/react-native/` ruleset: rules say *what* to enforce, this skill shows *how*.",
+   "Pairs with the `rules/react-native/` ruleset (not yet present in this plugin \u2014 see `rules/react-patterns.mdc`, which notes it is a separate track): rules say *what* to enforce, this skill shows *how*."),
+])
+
+audit6_patch(f"{base}/skills/delivery-gate/hooks/quality-gate.py", [
+  ("\"\"\"\nStop hook: quality gate with delivery check.\nDetects incomplete work, stale learning logs, and low disk space.\nBlocks Claude from stopping when a complex task completed without learning capture.\n\nInstall: cp this file to ~/.claude/scripts/quality-gate.py\nConfigure: Add to settings.json hooks.Stop\n\"\"\"",
+   "\"\"\"\nEND-ONLY quality gate with delivery check (not a Stop hook).\nDetects incomplete work, stale learning logs, and low disk space.\nBlocks declaring work finished when a complex task completed without learning capture.\n\nDo NOT install it as an automatic Stop hook: delivery-gate is END-ONLY in\nthis plugin (it runs only at the very end of the project or when the user\nexplicitly asks), and an automatic Stop hook would fire on every stop.\nInstead, invoke the delivery-gate skill at the end of the project; it runs\nthe same checks (python3 skills/delivery-gate/hooks/quality-gate.py) before\nthe work is declared finished.\n\"\"\""),
+])
+
+
+# --- Defect 2: manifests/install-modules.json (PRUNE, programmatic) ---
+# Do NOT encode as string replacements (205 paths). Encode as a build step that
+# runs audit-scripts/prune_install_modules.py against the freshly built plugin
+# (it loads the JSON, drops every `paths` entry that does not exist relative to
+# the plugin root, drops modules left with zero paths, and prunes dependencies
+# naming a dropped module). Script: ~/workspace/hackathon-plugin/audit-scripts/prune_install_modules.py
+# Result on this build: 370 -> 165 path entries (205 removed); 47 -> 15 modules.
+# Modules removed (32, all left with zero shipped paths): hermes-hooks,
+# documentation-context, documentation-governance, optimization-workflows,
+# operator-workflows, prediction-market-skills, operator-desk-patterns,
+# ito-compute, nasiko-control-plane, social-distribution, media-generation,
+# swift-apple, devops-infra, machine-learning, supply-chain-domain,
+# document-processing, docs-ja-jp, docs-zh-cn, docs-ko-kr, docs-pt-br, docs-ru,
+# docs-tr, docs-vi-vn, docs-zh-tw, docs-bn, docs-de-de, docs-uk-ua, docs-pl,
+# docs-ar, documentation-change-impact, documentation-module-governance,
+# documentation-test-regression.
+# No dangling dependencies were left to prune (0 pruned). All 9 Developer-profile
+# modules survive: rules-core, agents-core, commands-core, hooks-runtime,
+# platform-configs, workflow-quality, framework-language, database, orchestration.
+# Full removed-paths list: audit-scripts/install-modules.prune-report.json
+# (generated by the prune script; kept next to it, NOT inside the plugin).
+# Verified after pruning: JSON parses; every remaining path exists; node require
+# OK; scripts/lib/install-manifests.js loadInstallManifests() OK and
+# resolveInstallPlan({profileId:'developer'}) OK (9 requested, 11 selected
+# with deps, 0 warnings, 0 skipped).
+
+
+# --- Defect 6: VERIFY-ONLY (already present in the built plugin) ---
+# The cleanliness auditor already applied these two fixes in the built plugin.
+# They are recorded here so the sync agent can encode them into build.sh; do
+# NOT re-apply them to the built files. Each old text below is the text as it
+# stands in build.sh TODAY (i.e. what a fresh rebuild would produce), and each
+# new text is what is already in the built plugin.
+#
+# 6a — scripts/lib/context-profile-interactive.js
+#   OLD is the new-text of the existing audit5_patch() for this file in build.sh
+#   (amend that audit5_patch entry; do not add a second patch that would fight it).
+# FILE: scripts/lib/context-profile-interactive.js
+audit6_patch(f"{base}/scripts/lib/context-profile-interactive.js", [
+  ("// No installed profile CLI ships in this plugin: the upstream profile entry\n// point, context-pack manifest and carrier schema are not shipped, so\n// installedIdentity() advertises no CLI path and the bootstrap text below\n// names no installed-CLI command. Only files shipped in this plugin are\n// listed in SOURCE_FILES.",
+   "// No installed profile CLI ships in this plugin: the upstream profile entry\n// point is not shipped, so installedIdentity() advertises no CLI path and\n// the bootstrap text below names no installed-CLI command. The context-pack\n// manifest and carrier schema ARE shipped (see manifests/context-packs/ and\n// schemas/context-carrier.schema.json). Only files shipped in this plugin are\n// listed in SOURCE_FILES."),
+])
+
+# FILE: scripts/lib/github-coordination.js
+audit6_patch(f"{base}/scripts/lib/github-coordination.js", [
+  ("// scripts/lib/state-store/schema.js), and that file is NOT shipped in\n  // this plugin build. Opening the store anyway would fail later, inside\n  // the apply* call \u2014 after the GitHub writes already landed \u2014 and turn a\n  // successful verb into exit 1. So when the schema is absent, warn once\n  // and continue without the local cache; the verbs still perform their\n  // GitHub action and print their result. Shipping schemas/ (a build.sh\n  // packaging fix) re-enables the cache automatically.",
+   "// scripts/lib/state-store/schema.js), and that file IS shipped in\n  // this plugin build. Opening the store anyway would fail later, inside\n  // the apply* call \u2014 after the GitHub writes already landed \u2014 and turn a\n  // successful verb into exit 1. So when the schema is absent, warn once\n  // and continue without the local cache; the verbs still perform their\n  // GitHub action and print their result."),
+])
+
+# 6b — scripts/lib/github-coordination.js (CLI block comment)
+#   OLD is the text in the Audit #5 CLI-dispatch heredoc appended to this file by
+#   build.sh (the comment does NOT exist in ECC stock — the whole CLI block was
+#   added by Audit #5 Fixer A). Amend that heredoc: 'NOT shipped' -> 'IS shipped'
+#   and delete the trailing 'Shipping schemas/ (a build.sh packaging fix)
+#   re-enables the cache automatically.' sentence. The Defect 5 fix (same file,
+#   '..' depth + warning string, recorded in the main section above) applies to
+#   the same heredoc block and must be encoded there too.
+
+# --- Defect 7 / D4 note ---
+# The brief said scripts/migrate-homunculus.sh 'does not ship'. Verified false for
+# the skill-local path: skills/continuous-learning-v2/scripts/migrate-homunculus.sh
+# DOES ship (ls confirmed; line 149 of the same SKILL.md already invokes that full
+# path). Only the bare repo-root-relative `scripts/migrate-homunculus.sh` in line 356
+# was dangling. Fix applied (see main section): line 356 now points at the shipped
+# skill-local path instead of claiming it is not shipped.

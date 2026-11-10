@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@iarna/toml": "2.2.5",
+    "ajv": "8.20.0",
+    "js-yaml": "4.3.2",
+    "sql.js": "1.14.2"
+  },
+  "description": "Runtime dependencies for the hackathon-ecc Cursor plugin's Node scripts (harness-audit, skill-host-compat, epic-*, validate-skills). Versions pinned to the ECC repo's package.json.",
+  "license": "MIT",
+  "name": "hackathon-ecc",
+  "private": true,
+  "version": "1.0.0"
+}

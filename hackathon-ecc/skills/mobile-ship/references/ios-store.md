@@ -1,0 +1,171 @@
+# App Store Connect — TestFlight, submission, review
+
+## Submission mechanics
+
+- Version page → select the processed build → App Review Information: **Sign-in required = Yes** with the demo account creds → paste review notes → Save → Add for Review → Submit.
+- `ITSAppUsesNonExemptEncryption: false` in the Expo `ios.infoPlist` skips the
+  export-compliance question at submit time.
+- After upload, builds "Process" invisibly for 10–60 min before appearing in
+  TestFlight/the build picker. The "5-10 minutes" message is optimistic.
+- Sandbox purchases are free for reviewers and TestFlight testers; a real
+  App Store account WILL be charged real money — for tester purchase-testing
+  guidance see the Android license-tester analog; on iOS, TestFlight builds
+  use the sandbox automatically.
+- If the app monetizes, subscriptions must be attached to the version before submitting — see `monetization.md`.
+
+## Demo account seeding (the 2.3 killer)
+
+If any advertised feature is gated by BOTH payment and progress/content, a
+fresh premium account still shows an empty state — and the reviewer reads
+empty states as "feature not implemented" (guideline 2.3). Before every
+submission:
+1. Register the demo account (a `yourgmail+appreview@gmail.com` alias keeps it
+   in a real inbox for email verification; pick an adult age band to skip
+   parental-consent flows).
+2. Pre-grant premium **server-side** (admin flag) — removes any purchase/
+   webhook dependency from the review path.
+3. Complete every content prerequisite so each gated feature shows REAL
+   content (e.g. finish the placement test so exams unlock; win one quiz so
+   the revision deck has an entry).
+4. **Verify via API** (login as the account; assert entitlement, progress
+   fields, and feature endpoints) — never assume the seeding worked.
+5. Keep the password OUT of git; it goes in ASC's sign-in fields only.
+
+## Rejection playbook (all personally survived)
+
+- **2.1 "app exhibited a bug / error on every tap"** → usually a web-only
+  API rendering on native (`expo-router/head` throws origin-config alerts on
+  native navigation). Platform-split web-only components (`Foo.web.tsx` real,
+  `Foo.tsx` no-op). Always test the release build on a device before submit.
+- **2.3 "feature marketed but coming soon"** → seeded demo account (above) +
+  review notes pointing at each feature's tab and the demo content by name.
+- **4 "Design" — reviewed on an iPad** → the single most common cause for a
+  phone-first app that ships `supportsTablet: true`: phone-sized type and a
+  narrow phone column stranded on a large canvas, plus a portrait lock on a
+  device people hold in landscape. Reproduce it before theorising — build to an
+  iPad simulator and look. The durable fix is a responsive layer consumed by the
+  SHARED UI PRIMITIVES (text/card/button), so type, padding and touch targets
+  scale app-wide and each screen only picks its column structure; plus a font
+  floor (Apple treats 11pt as the smallest comfortable size — 10–11pt labels
+  read as "hard to read type" on any device), a wider content column on tablet,
+  a taller tab bar with larger labels, and per-idiom orientation keys
+  (`UISupportedInterfaceOrientations~ipad` = all four; iPhone stays portrait).
+  The cheap alternative is `supportsTablet: false` (iPhone-only is an
+  Apple-supported configuration and removes the review surface entirely).
+  Second-round checklist (HIG, fetched as JSON from
+  `developer.apple.com/tutorials/data/design/human-interface-guidelines/<page>.json`
+  — the HTML pages are JS-rendered and scrape empty):
+  - **Contrast**: text ≤17pt needs ≥4.5:1 (aim 7:1 small text) against every
+    surface it sits on, in BOTH appearances. Compute it with a script — "dim"
+    greys on near-black are the usual 3:1 offenders. Neon accents that pass on
+    dark (gold ≈12:1) fail on white (≈1.6:1): a light palette needs deeper
+    accents plus an `onAccent` ink token for text on filled buttons.
+  - **Motion behind text**: animated/video backdrops must be scrimmed (or
+    omitted) behind content; faded "locked/disabled" rows via opacity drop text
+    contrast too — use a dashed/recessed card instead.
+  - **Regular-width tab bar**: icon and label side by side
+    (`tabBarLabelPosition: 'beside-icon'`), ~15pt label; avoid >5 tabs on phones.
+  - **Targets**: every tappable ≥44pt — hunt down `style={{ height: 36–42 }}`
+    overrides on shared buttons and chips.
+  - Scale content that isn't SysText too (WebView/KaTeX question text, SVG
+    diagrams) — they stay phone-sized otherwise.
+  - Dark mode HIG says avoid an app-only appearance setting; if the product
+    wants a toggle, default to **System** and offer Light/Dark as an override.
+- **4.3(a) "spam/design"** → delete framework starter/template assets that are
+  byte-identical across thousands of apps; rewrite listing copy to be
+  distinctive; bump the version; reference the appeal in notes if you filed
+  one. Never name trademarked franchises in metadata — evoke, don't cite.
+- Resubmission notes template:
+  ```
+  DEMO ACCOUNT (premium pre-enabled): <email> / <password>
+  WHAT CHANGED SINCE THE PREVIOUS SUBMISSION
+  • <guideline #>: <one-line cause> — <one-line fix>.
+  • <guideline #>: <feature> is live: <tab> → <exact taps to see it>.
+  SUBSCRIPTIONS (only if the app monetizes): <names + prices>. To test: register a fresh account in-app,
+  tap Upgrade — purchases are free in Sandbox. Restore Purchases is on the
+  same screen.
+  ```
+
+## Driving the ASC web UI through a browser agent
+
+- ASC is a React app: programmatic `value` setting (form_input / JS) doesn't register, and Save
+  stays disabled. **Click the field and type**, then check the DOM value and that Save enabled.
+- Long `type` actions can time out on the tool side yet still complete; read the field back
+  before retyping (retyping duplicates text).
+- App **name must be unique per localisation**. A name accepted for en-GB can be "already in use"
+  in en-US, so have an alternative ready.
+- Never enter passwords; if ASC asks for re-authentication, hand back to the owner.
+
+## Submitting through the App Store Connect API (learned on VocabAura, Oct 2026)
+
+- An Admin API key (stored outside the repo) can do almost everything with PyJWT (ES256, 15-minute tokens):
+  - version string, copyright, listing text per locale, support, marketing and privacy URLs, review notes;
+  - age-rating answers (PATCH only; read them through `/v1/appInfos/{id}/ageRatingDeclaration`);
+  - screenshots (reserve → PUT the upload operations → PATCH `uploaded` + MD5 → poll `assetDeliveryState`);
+  - attaching the build, and `reviewSubmissions` → `reviewSubmissionItems` → `submitted: true`.
+- **Not possible through the API:** App Privacy answers, the agreements, tax and banking status, and **attaching the first non-consumable purchase**. `inAppPurchaseSubmissions` returns 409 `FIRST_NON_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION` whatever the order. Create the draft with the version through the API, then in the web console go to the purchase's page → **Add for Review** → the existing draft → **Submit for Review**, and confirm "2 Items Submitted". If a version already went without the purchase, cancel the review submission (`canceled: true`; the state becomes DEVELOPER_REJECTED, which is harmless) and redo it.
+- 6.9" iPhone screenshots use the display type `APP_IPHONE_67` (1320×2868); 13" iPad uses `APP_IPAD_PRO_3GEN_129` (2064×2752). Take real simulator captures with `simctl io screenshot` while an integration test logs `SHOT <name>` and holds still. Set `simctl status_bar … override --time 9:41` first. In Flutter, pop routes with `NavigatorState.pop()`; `tester.pageBack()` looks for a Cupertino back button.
+- Audit catches from that release:
+  - no `PrivacyInfo.xcprivacy` in the app or the widget extension (UserDefaults in an App Group needs 1C8F.1);
+  - a hard-coded fallback price shown when the store product hasn't loaded (wrong currency for the reviewer);
+  - "Introductory offer" wording on a non-consumable (say "launch price", and only while a price change is actually scheduled);
+  - age rating "parental controls" left at No in an app with a parent PIN;
+  - permission text saying "this iPhone" in an app that also runs on iPad;
+  - review notes pointing to an old "enter 12" adult check.
+
+## Guideline 2.1 "Information Needed" on a first submission (VocabAura, October 2026)
+
+- **What happens:** for an account with "limited App Review history", Apple marks the version **Rejected** and asks for:
+  - a physical-device screen recording (latest OS, starting at launch, showing account flows, user-generated content controls and paid content where they exist);
+  - six written answers: purpose and audience, setup, external services, regions, regulated or third-party material, and in-app purchases;
+  - those answers added to the review notes as well.
+- **Side effect:** the submission's in-app purchase drops back to "Ready to Submit".
+- **Prevent it:** send all of it with the first submission — the screen recording, the six answers, and the review notes covering them.
+- **If it happens anyway:**
+  1. Fix anything that looks unfinished in a new build. This also gives the recording a matching build.
+  2. Save the answers to the notes through the API.
+  3. Have the owner record on their iPhone with a precise script.
+  4. Reply in the App Review thread with the text and the video attached.
+  5. Swap in the new build and re-add the purchase from its page ("Add for Review" → draft).
+  6. Resubmit.
+- The reply box and the notes each hold 4,000 characters, so keep a tested copy in the repo.
+- **Timing to plan for:** VocabAura was submitted on 2 October; the 2.1 request came the next day; the answer and resubmission went in the same day; it was live on 14 October. Plan about **two weeks from first submission to launch** for a new account, with one information round, and tell the owner up front.
+
+## End-to-end iOS release runbook (Flutter, API key, no Xcode UI)
+
+1. **Gate:** `flutter analyze`, `flutter test` (including a store-readiness test that checks the review notes mention every new model, dataset, and font, plus the store-copy tests), and the device journeys on the simulator and the emulator.
+2. **Bump** `version: X.Y.Z+N`, run `flutter pub get` (needed after `--no-pub` test runs), then `flutter build ipa --release --export-options-plist=ios/ExportOptionsLocal.plist`.
+3. **Inspect the IPA before upload:** `unzip -q` it into a scratch folder, then check:
+   - `PlistBuddy -c "Print :CFBundleShortVersionString" -c "Print :CFBundleVersion"`;
+   - every `NS*UsageDescription`;
+   - `PrivacyInfo.xcprivacy` in `Runner.app` **and** each `PlugIns/*.appex`;
+   - that the expected assets are present;
+   - that debug or spike flags are absent (`strings App.framework/App | grep FLAG`).
+4. **Upload** with the API key (`xcodebuild -exportArchive` with an upload destination, or `altool`).
+5. **Wait** with one background loop that polls `/v1/builds?filter[app]=…&filter[version]=N` every 60 seconds and exits on VALID, FAILED or INVALID. Builds can take a few minutes just to *appear*.
+6. **Set TestFlight "What to Test"** (`betaBuildLocalizations`) so the owner knows what to check.
+7. **Metadata by API** from the repo's copy JSON: listing text, URLs, review notes, age rating, screenshots (removing superseded sets).
+8. **Web-only checks:** App Privacy published, and — only if the app monetizes — Paid Apps Agreement, bank and tax Active (see `monetization.md`). Ask the owner to sign in to App Store Connect in the agent's Chrome and check read-only. Sessions expire after about a day, so ask again rather than retrying.
+9. **Submit:** create the review submission with the version through the API; if the app monetizes, add a first-time purchase from the purchase's page and confirm "2 Items Submitted", then verify through the API that both are WAITING_FOR_REVIEW.
+10. **Release (manual release):** after approval the version shows "Pending Developer Release". The owner presses Release. Then check by API that the version is `READY_FOR_SALE` and (if monetizing) the purchase is `APPROVED`. Check the public listing without signing in: `curl "https://itunes.apple.com/lookup?id=<appId>&country=gb"` returns the name, version, `releaseDate`, price and download size once the store has picked the release up, which can take a few hours.
+
+## After launch: first-week checklist
+
+- **Verify, don't assume:** the version is `READY_FOR_SALE`, each purchase is `APPROVED` (Family Sharing as intended), and the lookup API returns the listing in the main storefronts.
+- **Point people at it:** add the App Store link (`https://apps.apple.com/app/id<appId>`) to the support and privacy site and the README, and to any in-app "share the app" or rating fallback. Publishing the site is an owner-approved step.
+- **Release the queued work as the first update, without changing what's live:**
+  - Next version (for example 1.0.1) and the next build number.
+  - **What's New** is required for updates. Keep it in the repo's store-copy JSON.
+  - Re-check the review notes for anything new the update bundles (models, datasets, fonts). A test should fail if the notes don't mention them.
+  - Updates normally go through review faster than the first submission. The purchase is already approved and doesn't need attaching again.
+- **Watch** Ratings and Reviews, crash reports (App Store Connect → TestFlight/Analytics), and download size: the lookup API's `fileSizeBytes` shows what users actually download.
+- **Product page options:** App Store Connect offers a custom product-page header, search-result customisation, Custom Product Pages and screenshots for new device classes. Treat these as post-launch marketing work, not something that blocks launch.
+
+## Public privacy and support pages in five minutes (GitHub Pages)
+
+- Keep the source in the app repo (`docs/PRIVACY_POLICY.md`, `docs/SUPPORT.md`) and generate static HTML with a small script: light and dark CSS, `mailto:` links, a `.nojekyll` file.
+- Publish to a **separate public repo** (the app repo stays private):
+  `gh repo create <owner>/<app>-site --public --source . --push`, then
+  `gh api -X POST repos/<owner>/<app>-site/pages -f "source[branch]=main" -f "source[path]=/"`.
+  Poll with `curl -sf` until the pages are live (a minute or two).
+- The support page needs a real contact. **Which email to publish is the owner's decision**, so ask them; never publish a personal address on your own initiative.

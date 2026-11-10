@@ -1,0 +1,864 @@
+{
+  "total_path_entries_before": 370,
+  "total_path_entries_after": 165,
+  "removed_path_entries": 205,
+  "modules_before": 47,
+  "modules_after": 15,
+  "removed_modules": [
+    "hermes-hooks",
+    "documentation-context",
+    "documentation-governance",
+    "optimization-workflows",
+    "operator-workflows",
+    "prediction-market-skills",
+    "operator-desk-patterns",
+    "ito-compute",
+    "nasiko-control-plane",
+    "social-distribution",
+    "media-generation",
+    "swift-apple",
+    "devops-infra",
+    "machine-learning",
+    "supply-chain-domain",
+    "document-processing",
+    "docs-ja-jp",
+    "docs-zh-cn",
+    "docs-ko-kr",
+    "docs-pt-br",
+    "docs-ru",
+    "docs-tr",
+    "docs-vi-vn",
+    "docs-zh-tw",
+    "docs-bn",
+    "docs-de-de",
+    "docs-uk-ua",
+    "docs-pl",
+    "docs-ar",
+    "documentation-change-impact",
+    "documentation-module-governance",
+    "documentation-test-regression"
+  ],
+  "removed_paths": [
+    {
+      "module": "agents-core",
+      "path": ".agents"
+    },
+    {
+      "module": "agents-core",
+      "path": "AGENTS.md"
+    },
+    {
+      "module": "hermes-hooks",
+      "path": "hooks/hermes"
+    },
+    {
+      "module": "hermes-hooks",
+      "path": "docs/HERMES-HOOKS.md"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".claude-plugin"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".codex"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".cursor"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".gemini"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".opencode"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".pi"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".qwen"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".zed"
+    },
+    {
+      "module": "platform-configs",
+      "path": "mcp-configs"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".hermes"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".openclaw"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".kimi"
+    },
+    {
+      "module": "platform-configs",
+      "path": ".adal"
+    },
+    {
+      "module": "documentation-context",
+      "path": "skills/context-and-decisions"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/configure-ecc"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/deepseek-harness-setup"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/eval-harness"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/plan-canvas"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/skill-host-compat"
+    },
+    {
+      "module": "workflow-quality",
+      "path": "skills/ecc-guide"
+    },
+    {
+      "module": "documentation-governance",
+      "path": "skills/docs-governance"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/benchmark-optimization-loop"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/data-throughput-accelerator"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/latency-critical-systems"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/parallel-execution-optimizer"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/recursive-decision-ledger"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/agent-eval"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/benchmark"
+    },
+    {
+      "module": "optimization-workflows",
+      "path": "skills/benchmark-methodology"
+    },
+    {
+      "module": "security",
+      "path": "skills/agent-security-hardening"
+    },
+    {
+      "module": "security",
+      "path": "skills/defi-amm-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/django-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/healthcare-phi-compliance"
+    },
+    {
+      "module": "security",
+      "path": "skills/hipaa-compliance"
+    },
+    {
+      "module": "security",
+      "path": "skills/laravel-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/llm-trading-agent-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/nodejs-keccak256"
+    },
+    {
+      "module": "security",
+      "path": "skills/perl-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/quarkus-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/security-bounty-hunter"
+    },
+    {
+      "module": "security",
+      "path": "skills/springboot-security"
+    },
+    {
+      "module": "security",
+      "path": "skills/evm-token-decimals"
+    },
+    {
+      "module": "security",
+      "path": "the-security-guide.md"
+    },
+    {
+      "module": "security",
+      "path": "skills/gateguard"
+    },
+    {
+      "module": "security",
+      "path": "skills/healthcare-cdss-patterns"
+    },
+    {
+      "module": "security",
+      "path": "skills/healthcare-emr-patterns"
+    },
+    {
+      "module": "security",
+      "path": "skills/healthcare-eval-harness"
+    },
+    {
+      "module": "security",
+      "path": "skills/safety-guard"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/deep-research"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/exa-search"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/research-ops"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/osint-investigation"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/scientific-db-pubmed-database"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/scientific-db-uspto-database"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/scientific-pkg-gget"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/scientific-thinking-literature-review"
+    },
+    {
+      "module": "research-apis",
+      "path": "skills/scientific-thinking-scholar-evaluation"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/brand-voice"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/lead-intelligence"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/product-capability"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/social-graph-ranker"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/seo"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/brand-discovery"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/competitive-platform-analysis"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/competitive-report-structure"
+    },
+    {
+      "module": "business-content",
+      "path": "skills/marketing-campaign"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/automation-audit-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/api-connector-builder"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/connections-optimizer"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/cost-tracking"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/customer-billing-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/dashboard-builder"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/ecc-tools-cost-audit"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/email-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/finance-billing-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/github-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/issue-review"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/google-workspace-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/jira-integration"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/knowledge-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/messages-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/project-flow-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/terminal-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/token-card"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/unified-notifications-ops"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/workspace-surface-audit"
+    },
+    {
+      "module": "operator-workflows",
+      "path": "skills/mailtrap-email-integration"
+    },
+    {
+      "module": "prediction-market-skills",
+      "path": "skills/ito-baskets"
+    },
+    {
+      "module": "prediction-market-skills",
+      "path": "skills/prediction-market-oracle-research"
+    },
+    {
+      "module": "prediction-market-skills",
+      "path": "skills/prediction-market-risk-review"
+    },
+    {
+      "module": "operator-desk-patterns",
+      "path": "skills/operator-approval-loop"
+    },
+    {
+      "module": "operator-desk-patterns",
+      "path": "skills/counterparty-channel-discipline"
+    },
+    {
+      "module": "operator-desk-patterns",
+      "path": "skills/master-agreement-generator"
+    },
+    {
+      "module": "operator-desk-patterns",
+      "path": "skills/esign-field-placement"
+    },
+    {
+      "module": "ito-compute",
+      "path": "skills/ito-compute"
+    },
+    {
+      "module": "ito-compute",
+      "path": "skills/ito-inference"
+    },
+    {
+      "module": "ito-compute",
+      "path": "skills/ito-training"
+    },
+    {
+      "module": "nasiko-control-plane",
+      "path": "skills/nasiko-control-plane"
+    },
+    {
+      "module": "social-distribution",
+      "path": "skills/crosspost"
+    },
+    {
+      "module": "social-distribution",
+      "path": "skills/x-api"
+    },
+    {
+      "module": "social-distribution",
+      "path": "skills/social-publisher"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/blender-motion-state-inspection"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/fal-ai-media"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/manim-video"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/remotion-video-creation"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/ui-demo"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/video-editing"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/videodb"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/taste"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/tasteforge-video"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/taste-distillation"
+    },
+    {
+      "module": "media-generation",
+      "path": "skills/taste-application"
+    },
+    {
+      "module": "orchestration",
+      "path": "scripts/orchestrate-codex-worker.sh"
+    },
+    {
+      "module": "orchestration",
+      "path": "scripts/orchestrate-worktrees.js"
+    },
+    {
+      "module": "orchestration",
+      "path": "scripts/orchestration-status.js"
+    },
+    {
+      "module": "orchestration",
+      "path": "skills/dmux-workflows"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/foundation-models-on-device"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/liquid-glass-design"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/swift-actor-persistence"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/swift-concurrency-6-2"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/swift-protocol-di-testing"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/swiftui-patterns"
+    },
+    {
+      "module": "swift-apple",
+      "path": "skills/ios-icon-gen"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "scripts/claw.js"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agent-architecture-audit"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agent-harness-construction"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agentic-engineering"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agentic-os"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/ai-first-engineering"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/autonomous-loops"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/blueprint"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/claude-devfleet"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/content-hash-cache-pattern"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/continuous-agent-loop"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/cost-aware-llm-pipeline"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/data-scraper-agent"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/dynamic-workflow-mode"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/enterprise-agent-ops"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/nanoclaw-repl"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/prompt-caching-strategy"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/prompt-optimizer"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/ralphinho-rfc-pipeline"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/regex-vs-llm-structured-text"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/search-first"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/team-agent-orchestration"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/token-budget-advisor"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/team-builder"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agent-payment-x402"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/autonomous-agent-harness"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/hermes-imports"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/agent-runtime-gateway-smoke-test"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/openclaw-persona-forge"
+    },
+    {
+      "module": "agentic-patterns",
+      "path": "skills/plan-orchestrate"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/cisco-ios-patterns"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/deployment-patterns"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/docker-patterns"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/terminal-opener"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/homelab-network-readiness"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/homelab-network-setup"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/netmiko-ssh-automation"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/network-bgp-diagnostics"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/network-config-validation"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/network-interface-health"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/canary-watch"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/flox-environments"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/homelab-pihole-dns"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/homelab-vlan-segmentation"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/homelab-wireguard-vpn"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/kubernetes-patterns"
+    },
+    {
+      "module": "devops-infra",
+      "path": "skills/uncloud"
+    },
+    {
+      "module": "machine-learning",
+      "path": "skills/mle-workflow"
+    },
+    {
+      "module": "machine-learning",
+      "path": "skills/ml-adoption-playbook"
+    },
+    {
+      "module": "machine-learning",
+      "path": "skills/pytorch-patterns"
+    },
+    {
+      "module": "machine-learning",
+      "path": "skills/recsys-pipeline-architect"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/carrier-relationship-management"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/customs-trade-compliance"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/energy-procurement"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/inventory-demand-planning"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/logistics-exception-management"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/production-scheduling"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/quality-nonconformance"
+    },
+    {
+      "module": "supply-chain-domain",
+      "path": "skills/returns-reverse-logistics"
+    },
+    {
+      "module": "document-processing",
+      "path": "skills/nutrient-document-processing"
+    },
+    {
+      "module": "document-processing",
+      "path": "skills/visa-doc-translate"
+    },
+    {
+      "module": "docs-ja-jp",
+      "path": "docs/ja-JP"
+    },
+    {
+      "module": "docs-zh-cn",
+      "path": "docs/zh-CN"
+    },
+    {
+      "module": "docs-ko-kr",
+      "path": "docs/ko-KR"
+    },
+    {
+      "module": "docs-pt-br",
+      "path": "docs/pt-BR"
+    },
+    {
+      "module": "docs-ru",
+      "path": "docs/ru"
+    },
+    {
+      "module": "docs-tr",
+      "path": "docs/tr"
+    },
+    {
+      "module": "docs-vi-vn",
+      "path": "docs/vi-VN"
+    },
+    {
+      "module": "docs-zh-tw",
+      "path": "docs/zh-TW"
+    },
+    {
+      "module": "docs-bn",
+      "path": "docs/bn"
+    },
+    {
+      "module": "docs-de-de",
+      "path": "docs/de-DE"
+    },
+    {
+      "module": "docs-uk-ua",
+      "path": "docs/uk-UA"
+    },
+    {
+      "module": "docs-pl",
+      "path": "docs/pl"
+    },
+    {
+      "module": "docs-ar",
+      "path": "docs/ar"
+    },
+    {
+      "module": "documentation-change-impact",
+      "path": "skills/change-impact"
+    },
+    {
+      "module": "documentation-module-governance",
+      "path": "skills/module-governance"
+    },
+    {
+      "module": "documentation-test-regression",
+      "path": "skills/test-collaboration"
+    },
+    {
+      "module": "documentation-test-regression",
+      "path": "skills/module-regression"
+    }
+  ],
+  "pruned_dependencies": []
+}

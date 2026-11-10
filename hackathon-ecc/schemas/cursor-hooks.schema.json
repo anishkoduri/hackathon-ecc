@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "cursorHookItem": {
+      "additionalProperties": true,
+      "properties": {
+        "command": {
+          "description": "Shell command run when the hook fires",
+          "minLength": 1,
+          "type": "string"
+        },
+        "description": {
+          "description": "Human-readable description of what the hook does",
+          "type": "string"
+        },
+        "event": {
+          "description": "Cursor hook event name; must match the key this item is listed under. Enum covers the events shipped in hooks/hooks.json; extend it if Cursor adds events.",
+          "enum": [
+            "sessionStart",
+            "sessionEnd",
+            "beforeShellExecution",
+            "afterShellExecution",
+            "afterFileEdit",
+            "beforeMCPExecution",
+            "afterMCPExecution",
+            "beforeReadFile",
+            "beforeSubmitPrompt",
+            "subagentStart",
+            "subagentStop",
+            "beforeTabFileRead",
+            "afterTabFileEdit",
+            "preCompact",
+            "stop"
+          ],
+          "type": "string"
+        },
+        "timeout": {
+          "description": "Timeout in seconds for the hook command",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "command",
+        "event"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Configuration for Cursor hooks, as shipped in hooks/hooks.json. Cursor format: camelCase event names as keys, each mapping to an array of items with a command, the event name, and an optional description. This is distinct from schemas/hooks.schema.json, which describes the Claude Code hooks format (PascalCase events, matcher entries with {type, command} items) and does not accept this file.",
+  "properties": {
+    "hooks": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/cursorHookItem"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "version": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "hooks"
+  ],
+  "title": "Cursor Hooks Configuration",
+  "type": "object"
+}

@@ -1,0 +1,630 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "rules-core",
+      "kind": "rules",
+      "description": "Shared and language rules for supported harness targets.",
+      "paths": [
+        "rules"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [],
+      "defaultInstall": true,
+      "cost": "light",
+      "stability": "stable"
+    },
+    {
+      "id": "agents-core",
+      "kind": "agents",
+      "description": "Agent definitions and project-level agent guidance.",
+      "paths": [
+        "agents"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [],
+      "defaultInstall": true,
+      "cost": "light",
+      "stability": "stable"
+    },
+    {
+      "id": "commands-core",
+      "kind": "commands",
+      "description": "Core slash-command library and command docs.",
+      "paths": [
+        "commands",
+        "scripts/astra-review.js",
+        "scripts/harness-audit.js",
+        "scripts/skills-health.js",
+        "scripts/lib/skill-evolution",
+        "scripts/lib/astra-review",
+        "scripts/ci/validate-skill-host-compat.js",
+        "scripts/ci/validate-skills.js"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [
+        "shared-script-utils"
+      ],
+      "defaultInstall": true,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "hooks-runtime",
+      "kind": "hooks",
+      "description": "Runtime hook configs and hook script helpers.",
+      "paths": [
+        "hooks",
+        "scripts/hooks",
+        "scripts/lib"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "opencode",
+        "codebuddy"
+      ],
+      "dependencies": [],
+      "defaultInstall": true,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "platform-configs",
+      "kind": "platform",
+      "description": "Baseline platform configs, package-manager setup, and MCP catalog.",
+      "paths": [
+        "scripts/auto-update.js",
+        "scripts/setup-package-manager.js",
+        "scripts/lib/package-manager.js"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "codex",
+        "gemini",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [
+        "shared-script-utils"
+      ],
+      "defaultInstall": true,
+      "cost": "light",
+      "stability": "stable"
+    },
+    {
+      "id": "framework-language",
+      "kind": "skills",
+      "description": "Core framework, language, and application-engineering skills.",
+      "paths": [
+        "skills/android-clean-architecture",
+        "skills/angular-developer",
+        "skills/api-design",
+        "skills/backend-patterns",
+        "skills/bengali-nlp",
+        "skills/coding-standards",
+        "skills/compose-multiplatform-patterns",
+        "skills/contract-first",
+        "skills/csharp-testing",
+        "skills/fsharp-testing",
+        "skills/cpp-coding-standards",
+        "skills/cpp-testing",
+        "skills/dart-flutter-patterns",
+        "skills/django-patterns",
+        "skills/django-tdd",
+        "skills/django-verification",
+        "skills/dotnet-patterns",
+        "skills/fastapi-patterns",
+        "skills/frontend-design-direction",
+        "skills/frontend-patterns",
+        "skills/i18n-sync",
+        "skills/frontend-slides",
+        "skills/make-interfaces-feel-better",
+        "skills/golang-patterns",
+        "skills/golang-testing",
+        "skills/java-coding-standards",
+        "skills/kotlin-coroutines-flows",
+        "skills/kotlin-exposed-patterns",
+        "skills/kotlin-ktor-patterns",
+        "skills/kotlin-patterns",
+        "skills/kotlin-testing",
+        "skills/laravel-plugin-discovery",
+        "skills/laravel-patterns",
+        "skills/laravel-tdd",
+        "skills/laravel-verification",
+        "skills/mcp-server-patterns",
+        "skills/nestjs-patterns",
+        "skills/perl-patterns",
+        "skills/perl-testing",
+        "skills/python-patterns",
+        "skills/python-testing",
+        "skills/quarkus-patterns",
+        "skills/quarkus-tdd",
+        "skills/quarkus-verification",
+        "skills/rails-patterns",
+        "skills/react-patterns",
+        "skills/react-performance",
+        "skills/react-testing",
+        "skills/rust-patterns",
+        "skills/rust-testing",
+        "skills/springboot-patterns",
+        "skills/springboot-tdd",
+        "skills/springboot-verification",
+        "skills/typescript-patterns",
+        "skills/ui-to-vue",
+        "skills/vue-patterns",
+        "skills/accessibility",
+        "skills/bun-runtime",
+        "skills/design-system",
+        "skills/django-celery",
+        "skills/flutter-dart-code-review",
+        "skills/frontend-a11y",
+        "skills/generating-python-installer",
+        "skills/hexagonal-architecture",
+        "skills/motion-advanced",
+        "skills/motion-foundations",
+        "skills/motion-patterns",
+        "skills/nextjs-turbopack",
+        "skills/nuxt4-patterns",
+        "skills/react-native-patterns",
+        "skills/tinystruct-patterns",
+        "skills/vite-patterns"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "rules-core",
+        "agents-core",
+        "commands-core",
+        "platform-configs"
+      ],
+      "optionalDependencies": [
+        "rules-core",
+        "agents-core",
+        "commands-core"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "database",
+      "kind": "skills",
+      "description": "Database and persistence-focused skills.",
+      "paths": [
+        "skills/clickhouse-io",
+        "skills/database-migrations",
+        "skills/jpa-patterns",
+        "skills/mybatis-patterns",
+        "skills/mysql-patterns",
+        "skills/postgres-patterns",
+        "skills/prisma-patterns",
+        "skills/redis-patterns"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "skill-unified-memory",
+      "kind": "skills",
+      "description": "Single-skill unified-memory guidance; requires the separately installed ecc-universal CLI runtime.",
+      "paths": [
+        "skills/unified-memory"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "gemini",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "light",
+      "stability": "stable"
+    },
+    {
+      "id": "workflow-quality",
+      "kind": "skills",
+      "description": "Evaluation, TDD, verification, compaction, learning, and cross-harness memory skills, including the legacy continuous-learning v1 path. The unified-memory workflow requires the separately installed ecc-universal CLI runtime.",
+      "paths": [
+        "skills/agent-sort",
+        "skills/agent-introspection-debugging",
+        "skills/ai-regression-testing",
+        "skills/code-tour",
+        "skills/continuous-learning",
+        "skills/continuous-learning-v2",
+        "skills/council",
+        "skills/council-multi-model",
+        "skills/dev-team",
+        "skills/e2e-testing",
+        "skills/error-handling",
+        "skills/hookify-rules",
+        "skills/iterative-retrieval",
+        "skills/plankton-code-quality",
+        "skills/production-audit",
+        "skills/skill-comply",
+        "skills/skill-scout",
+        "skills/skill-stocktake",
+        "skills/story-lifecycle",
+        "skills/strategic-compact",
+        "skills/tdd-workflow",
+        "skills/verification-loop",
+        "skills/windows-desktop-e2e",
+        "skills/agent-self-evaluation",
+        "skills/architecture-decision-records",
+        "skills/brownfield-retrospective",
+        "skills/browser-qa",
+        "skills/ck",
+        "skills/click-path-audit",
+        "skills/codebase-onboarding",
+        "skills/codehealth-mcp",
+        "skills/config-gc",
+        "skills/context-budget",
+        "skills/delivery-gate",
+        "skills/ecc-recipes",
+        "skills/growth-log",
+        "skills/inherit-legacy-style",
+        "skills/intent-driven-development",
+        "skills/living-docs-governance",
+        "skills/loop-design-check",
+        "skills/product-lens",
+        "skills/repo-scan",
+        "skills/rules-distill",
+        "skills/santa-method",
+        "skills/git-workflow",
+        "skills/conventional-commit-review"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [
+        "skill-unified-memory"
+      ],
+      "defaultInstall": true,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "security",
+      "kind": "skills",
+      "description": "Security review and security-focused framework guidance.",
+      "paths": [
+        "skills/mcp-dependency-review",
+        "skills/security-review",
+        "skills/security-scan"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "workflow-quality"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "research-apis",
+      "kind": "skills",
+      "description": "Research and API integration skills for deep investigations and model integrations.",
+      "paths": [
+        "skills/documentation-lookup"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "business-content",
+      "kind": "skills",
+      "description": "Business, writing, market, and investor communication skills.",
+      "paths": [
+        "skills/article-writing",
+        "skills/content-engine",
+        "skills/investor-materials",
+        "skills/investor-outreach",
+        "skills/market-research"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "heavy",
+      "stability": "stable"
+    },
+    {
+      "id": "orchestration",
+      "kind": "orchestration",
+      "description": "Worktree/tmux orchestration runtime and workflow docs.",
+      "paths": [
+        "scripts/lib/orchestration-session.js",
+        "scripts/lib/tmux-worktree-orchestrator.js"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "codex",
+        "opencode"
+      ],
+      "dependencies": [
+        "commands-core",
+        "platform-configs"
+      ],
+      "optionalDependencies": [
+        "commands-core"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "beta"
+    },
+    {
+      "id": "agentic-patterns",
+      "kind": "skills",
+      "description": "Agentic engineering, autonomous loops, agent harness construction, and LLM pipeline optimization skills.",
+      "paths": [
+        "skills/gan-style-harness",
+        "skills/opensource-pipeline",
+        "skills/orch-add-feature",
+        "skills/orch-build-mvp",
+        "skills/orch-change-feature",
+        "skills/orch-fix-defect",
+        "skills/orch-pipeline",
+        "skills/orch-refine-code"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "hackathon",
+      "kind": "skills",
+      "description": "Hackathon workflow skills: scoping, brainstorming, orchestration, shipping, pitching, and demo-video production.",
+      "paths": [
+        "skills/agents-md-generator",
+        "skills/ai-feature-spec",
+        "skills/api-integration",
+        "skills/app-scaffold",
+        "skills/brainstorming",
+        "skills/deploy-fast",
+        "skills/design-taste-frontend",
+        "skills/devpost-autofiller",
+        "skills/dispatching-parallel-agents",
+        "skills/feature-expansion",
+        "skills/grill-me",
+        "skills/hackathon-pitch",
+        "skills/hackathon-scope",
+        "skills/integration",
+        "skills/less-flat-ui",
+        "skills/mobile-ship",
+        "skills/orchestrate",
+        "skills/pitch-deck-video",
+        "skills/polish-pass",
+        "skills/readme-writer",
+        "skills/systematic-debugging",
+        "skills/track-picker",
+        "skills/ui-ux-pro-max",
+        "skills/verification-before-completion"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "antigravity",
+        "codex",
+        "copilot",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal"
+      ],
+      "dependencies": [],
+      "defaultInstall": true,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "shared-script-utils",
+      "kind": "platform",
+      "description": "Shared utility files required by installed commands and platform tools.",
+      "paths": [
+        "scripts/lib/utils.js",
+        "scripts/lib/agent-data-home.js",
+        "scripts/lib/path-safety.js"
+      ],
+      "targets": [
+        "claude",
+        "claude-project",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "opencode",
+        "codebuddy",
+        "joycode",
+        "qwen",
+        "zed",
+        "hermes",
+        "openclaw",
+        "kimi",
+        "adal",
+        "codex",
+        "gemini"
+      ],
+      "dependencies": [],
+      "defaultInstall": false,
+      "cost": "light",
+      "stability": "stable"
+    }
+  ]
+}

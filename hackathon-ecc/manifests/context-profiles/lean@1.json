@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "lean@1",
+  "description": "Proposed ECC discovery kernel. Remaining skills are routed; this profile does not activate or modify a harness.",
+  "registryId": "skill-registry@1",
+  "selection": {
+    "eager": ["skill:context-budget"],
+    "required": ["skill:context-budget"],
+    "remainder": "routed"
+  },
+  "budget": { "tokens": 8000, "mode": "blocking" }
+}

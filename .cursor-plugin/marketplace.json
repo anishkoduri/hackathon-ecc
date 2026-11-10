@@ -1,0 +1,7 @@
+{
+  "name": "hackathon-ecc-marketplace",
+  "owner": { "name": "Anish Koduri" },
+  "plugins": [
+    { "name": "hackathon-ecc", "source": "hackathon-ecc" }
+  ]
+}

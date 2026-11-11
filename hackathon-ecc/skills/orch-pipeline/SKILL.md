@@ -11,6 +11,8 @@ The `orch-*` skills are thin wrappers. They do not re-implement any work — the
 classify the request, choose which phases of *this* pipeline run, and delegate
 each phase to an existing ECC agent or command. This file is that pipeline.
 
+**One build engine per run:** `orch-build-mvp` is the STANDALONE pipeline that delegates to this engine — it runs only when the user invokes `/orch-build-mvp` directly. Orchestrate IS the first-build engine and never invokes `orch-build-mvp` (and so never reaches this engine through it) in the same run. One engine per run, never both.
+
 > Invoke an operation skill (`orch-add-feature`, `orch-fix-defect`, …) rather
 > than this engine directly. This file is the reference they point at.
 
@@ -28,7 +30,7 @@ each phase to an existing ECC agent or command. This file is that pipeline.
 | `orch-change-feature` | tweak | works, but desired behavior differs | amend existing behavior *and its tests* |
 | `orch-fix-defect` | fix | broken; behavior is wrong | reproduce as a failing test, then fix |
 | `orch-refine-code` | refactor | behavior stays, structure improves | restructure while keeping tests green |
-| `orch-build-mvp` | mvp | bootstrap from a design/spec doc | ingest doc → vertical slices |
+| `orch-build-mvp` | mvp | bootstrap from a design/spec doc (standalone only — user-invoked) | ingest record/scope by default (spec doc only as standalone fallback) → vertical slices |
 
 > These wrappers **compose** existing ECC commands rather than replace them:
 > `/feature-dev`, `/plan`, `/code-review`, `/build-fix`, `/refactor-clean`, and
@@ -40,7 +42,7 @@ each phase to an existing ECC agent or command. This file is that pipeline.
 
 Ceremony scales to blast radius. Score the request on three signals, take the
 **highest** tier any signal reaches, and state the result in one line so the user
-can override:
+can override — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where no user is present and the classifier result stands:
 
 | Tier | Files touched | New dependency / contract | Design ambiguity | Phases that run |
 |------|---------------|---------------------------|------------------|-----------------|
@@ -57,29 +59,28 @@ contract is **at least** standard, regardless of file count.
 
 Each phase delegates — it does not do the work inline.
 
-- **0. Intake** — restate the request. For `orch-build-mvp`, read the spec/design
-  doc and extract scope, locked decisions, and a feature list.
+- **0. Intake** — restate the request. For `orch-build-mvp`, read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions, and a feature list; if neither file exists, fall back to the spec/design doc (or the raw prompt with a stated assumption) — never ask the user for a path during a first build. The pipeline ingests the record/scope at Phase 0; they are the handoff from grill-me and hackathon-scope. Numbering: Phases 0–6 here are orch-pipeline phases — not orch-build-mvp steps (which map 1:1 onto them: orch-build-mvp steps 1/3/4/6/7 are Phases 0–2/3/4/5/6) and not feature-expansion phases.
 - **1. Research & Reuse** — per `rules/common-development-workflow.mdc`: `gh search repos` /
   `gh search code`, then Context7 / vendor docs, then package registries, then
   Exa. Prefer adopting a proven implementation over net-new code.
 - **2. Plan** — delegate to the `architect` agent (or `code-architect` for structural decisions). Output a `task_list` ordered as
-  thin vertical slices. → **GATE 1.**
+  thin vertical slices. → **GATE 1** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).
 - **3. Scaffold** — `orch-build-mvp` only: stand up the first end-to-end slice.
 - **4. Implement (TDD)** — drive each task through the `tdd-guide` agent (or the `tdd-workflow` skill):
-  red → green → refactor. Honor the operation's first-move rule.
+  red → green → refactor. Honor the operation's first-move rule. **Belief in the brief:** implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall. In a standalone `orch-build-mvp` run, this phase builds the approved expansions per the feature-expansion Phase 4 brief format (Tool/API cell + UI rule + capped 2-round fix loop + per-feature `code-reviewer` pass).
 - **5. Review** — `code-reviewer` agent / `/code-review`. Add `security-reviewer`
   whenever the diff touches a security trigger (below).
 - **6. Commit** — conventional commits (`feat:` / `fix:` / `refactor:` / …), one
-  per logical chunk. → **GATE 2.**
+  per logical chunk. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature). (Orch-pipeline Phase 6 = Commit — not orch-build-mvp step 6, which is Verify, and not feature-expansion Phase 6, which feeds the final report; orch-build-mvp step 5 is Reconcile, which has no orch-pipeline phase of its own.)
 
 ## The two gates
 
-This family is **gated, not autonomous**:
+This family is **gated, not autonomous** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature (hackathon-mode §7), where both gates auto-approve and the run proceeds without waiting:
 
 1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
-   code until the user approves.
+   code until the user approves — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting. Record the approved `task_list` (one line per slice, with its files) in `docs/run-ledger-appendix.md` at Gate 1, with a one-line pointer (slice count + file) in `.hackathon/run-ledger.md`, so later phases read it from there instead of the transcript.
 2. **GATE 2 — before Commit.** Present the diff summary and proposed messages;
-   do not commit until the user confirms.
+   do not commit until the user confirms — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting.
 
 Everything between the gates flows without stopping.
 
@@ -109,12 +110,12 @@ The pipeline carries no hidden state — the planning docs *are* the handoff:
 - `task_list` (from Plan) drives the Implement loop.
 - Larger work may also emit PRD / architecture / system_design under the repo's
   `docs/` per `rules/common-development-workflow.mdc`.
-- Review findings (CRITICAL / HIGH) must be resolved before Gate 2.
+- Review findings (CRITICAL / HIGH) must be resolved before Gate 2 — capped at 2 fix rounds, like the feature-expansion Phase 4 fix loop: after 2 rounds an unresolvable finding is recorded as blocked in the final report and work moves on. During a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, an unresolvable CRITICAL finding at Gate 2 does not deadlock the commit — it is recorded as blocked in the final report and the commit proceeds under auto-approval.
 
 ## Verification
 
 - size tier was stated and matched the work
-- Gate 1 (plan) and Gate 2 (commit) were both honored
+- Gate 1 (plan) and Gate 2 (commit) were both honored (or auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature)
 - `security-reviewer` ran iff a security trigger was touched
 - commits are conventional and scoped to one logical change
 - new / changed behavior has tests; coverage ≥ 80% per `rules/common-testing.mdc`

@@ -3,7 +3,7 @@
 Typeset is about whether the words are comfortable to read and whether their size, weight, and spacing tell you what each piece of text is. A designer looks for decisions: a real scale, deliberate weights, a readable measure, and type that survives every viewport, theme, and font load.
 
 **Raises:** Typography.
-**Skip it when:** the type is sound and the problem is structure (use layout) or copy (use clarify). Do not swap typefaces when DESIGN.md confirms them; improve their use instead. Replacing the brand's typeface is a DESIGN.md decision to confirm with the user.
+**Skip it when:** the type is sound and the problem is structure (use layout) or copy (use clarify). Do not swap typefaces when DESIGN.md confirms them; improve their use instead. Replacing the brand's typeface is a DESIGN.md decision to confirm with the user — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT confirm with the user: leave the brand typeface in place, improve its use instead, and record the replacement as blocked in the final report; never stop for a human decision mid-build.
 
 ## What a designer looks at
 

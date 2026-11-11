@@ -39,7 +39,7 @@ for (const s of vo.shots) {
 console.log(`rendering ${picks.length} stills…`);
 for (const p of picks) {
   const file = path.join(OUT, `${String(p.frame).padStart(5, '0')}_${p.id}.png`);
-  execFileSync('npx', ['remotion', 'still', 'src/index.ts', 'Demo', file, `--frame=${p.frame}`, '--log=error'], {
+  execFileSync('npx', ['remotion@4.0.542', 'still', 'src/index.ts', 'Demo', file, `--frame=${p.frame}`, '--log=error'], {
     stdio: ['ignore', 'ignore', 'inherit'],
   });
   p.file = file;

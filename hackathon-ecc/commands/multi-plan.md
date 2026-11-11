@@ -6,8 +6,8 @@ description: Create a multi-model (Codex + Antigravity) implementation plan with
 
 Multi-model collaborative planning - Context retrieval + Dual-model analysis → Generate step-by-step implementation plan.
 
-> **Prerequisite:** Requires the external `ccg-workflow` runtime, which is **not** part of the base ECC install. Initialize it with `npx ccg-workflow` to provision `~/.claude/bin/codeagent-wrapper` and the `~/.claude/.ccg/prompts/*` role files this command depends on. Without that runtime, this command will not run correctly.
-> Requires the external ccg-workflow runtime (`npx ccg-workflow`); without it these commands cannot run.
+> **Prerequisite:** Requires the external `ccg-workflow` runtime, which is **not** part of the base ECC install. Initialize it with `npx ccg-workflow@3.7.4` to provision `~/.claude/bin/codeagent-wrapper` and the `~/.claude/.ccg/prompts/*` role files this command depends on. Without that runtime, this command will not run correctly.
+> Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`); without it these commands cannot run.
 > **Note on `/ccg:*` names below:** `/ccg:plan` and `/ccg:execute` are the external ccg-workflow runtime's commands (Claude Code only — not shipped in this plugin). In this plugin the same steps run as `/multi-plan` and `/multi-execute`, which is the wording used below.
 
 $ARGUMENTS

@@ -12,11 +12,27 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-const cfg = JSON.parse(fs.readFileSync('shots.json', 'utf8'));
-const vo = JSON.parse(fs.readFileSync('src/vo-durations.json', 'utf8'));
+let cfg;
+try {
+  cfg = JSON.parse(fs.readFileSync('shots.json', 'utf8'));
+} catch (e) {
+  console.error(`shots.json is not valid JSON: ${String(e).split('\n')[0]}`);
+  process.exit(1);
+}
+let vo;
+try {
+  vo = JSON.parse(fs.readFileSync('src/vo-durations.json', 'utf8'));
+} catch (e) {
+  console.error(`src/vo-durations.json is not valid JSON (run tts first): ${String(e).split('\n')[0]}`);
+  process.exit(1);
+}
 const durOf = (id) => (vo.shots.find((s) => s.id === id)?.dur ?? 3) * 1000;
 
-const { url, width, height } = cfg.app;
+const { url: cfgUrl, width, height } = cfg.app;
+// The video is made from the CODE, not a live link: the recorder always
+// films the local app at cfg.app.url (a localhost URL, started from the
+// project dir by build.mjs). There is no deployed-URL filming path.
+const url = cfgUrl;
 // The capture is pinned to exactly width x height CSS pixels and the video is
 // recorded at that same size. Both halves matter:
 //
@@ -31,6 +47,7 @@ if (cfg.app.captureScale && cfg.app.captureScale !== 1) {
   console.log('! app.captureScale is ignored — the capture is pinned to app.width x app.height');
 }
 const OUT = path.resolve('capture/out');
+const FAILDIR = path.resolve('capture/failures');
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -148,11 +165,33 @@ page.on('pageerror', noteError);
 page.on('console', (m) => m.type() === 'error' && noteError(m.text()));
 const firstGoto = cfg.shots.find((s) => s.kind === 'app')?.do?.find((d) => d.goto)?.goto;
 const first = (typeof firstGoto === 'string' ? firstGoto : firstGoto?.to) ?? '/';
+// Cheap HTTP-level check before the first navigation: a TCP-up but
+// HTTP-unusable local app must not abort the build. Playwright only throws
+// on network failure/timeout, not on HTTP 500/404 — an error page records
+// on camera, which is a quality issue, not an abort, so a bad status is
+// only logged and noted in the warnings.
+try {
+  const res = await fetch(url + first, { signal: AbortSignal.timeout(5000) });
+  if (!res.ok) {
+    warnings.push(`first route ${first} returned HTTP ${res.status} — recording anyway (an error page will be on camera)`);
+    console.log(`! first route returned HTTP ${res.status} — recording anyway`);
+  }
+} catch (e) {
+  warnings.push(`first route ${first} failed the HTTP check (${String(e).split('\n')[0]}) — recording anyway`);
+  console.log('! first route failed the HTTP check — recording anyway');
+}
 // Load the first real route before the clock starts, and wait until the app has
 // actually painted something. A cold dev server (Vite optimising deps, Next
 // compiling a route) can sit blank for seconds, and that blankness would
 // otherwise be the opening frames of the video.
-await page.goto(url + first, { waitUntil: 'networkidle' });
+// Soft, like the later navigations: a failed first goto warns and continues
+// with what can be recorded instead of aborting the build.
+try {
+  await page.goto(url + first, { waitUntil: 'networkidle' });
+} catch (e) {
+  warnings.push(`first goto failed (${String(e).split('\n')[0]}) — continuing with what can be recorded`);
+  console.log('! first goto failed — continuing with what can be recorded');
+}
 await page
   .waitForFunction(() => (document.body?.innerText ?? '').trim().length > 40, null, { timeout: 30_000 })
   .catch(() => console.log('! the app never painted text — recording anyway'));

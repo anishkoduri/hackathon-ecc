@@ -1,6 +1,6 @@
 ---
 name: less-flat-ui
-description: Make the UI more striking with 22 textured treatments (felt, fluted glass, thermal gradients, halftone, grainy gradients, blueprint grids, contour lines, pixel mosaics, iridescent shapes, ASCII/pixel art, and more). Apply every treatment that fits the project, layering compatible ones on backgrounds, cards, buttons, dividers, and headings. Use when flat surfaces look dull; keep text readable. Invoke by asking to make the UI less flat. Inside a design-taste-frontend build, apply the texture layer only where its page system leaves a surface flat — never over its hero, dealt moments, or shader scenes.
+description: Make the UI more striking with 22 textured treatments (felt, fluted glass, thermal gradients, halftone, grainy gradients, blueprint grids, contour lines, pixel mosaics, iridescent shapes, ASCII/pixel art, and more). Apply every treatment that fits the project, layering compatible ones on backgrounds, cards, buttons, dividers, and headings. Use when flat surfaces look dull; keep text readable. Invoke by asking to make the UI less flat. Inside a design-taste-frontend build, apply the texture layer only where its page system leaves a surface unstyled — never over its hero, dealt moments, or shader scenes.
 ---
 
 # Less Flat UI
@@ -9,7 +9,7 @@ Source of the 22 treatments: Instagram reel by @charles.unemployed, "22 Backgrou
 
 ## When to use
 
-Apply treatments when the UI looks flat or dull: heroes, landing pages, empty states, cards, buttons, dividers, headings, modals. Apply EVERY treatment that fits the project's mood, not just one. The picker table below is a menu, not a single choice. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface flat — never over the hero, dealt moments, or shader scenes.
+Apply treatments when the UI looks flat or dull: heroes, landing pages, empty states, cards, buttons, dividers, headings, modals. Apply EVERY treatment that fits the project's mood, not just one. The picker table below is a menu, not a single choice. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface unstyled — never over the hero, dealt moments, or shader scenes. A flat-colour section IS part of the page system — do not texture it.
 
 A treatment fits when:
 
@@ -19,13 +19,15 @@ A treatment fits when:
 
 Do NOT use when:
 
-- The page is a dense dashboard, form, or data table. Flat and calm wins there.
+- The page is a dense dashboard, form, or data table. Flat and calm wins there. A data-dense page is one whose primary content is tables/grids of numbers.
+- A flat-colour section of a design-taste-frontend page: it IS part of the page system, not an unstyled surface — do not texture it.
 - The project already has a strong brand background or a photo-led design.
 - The treatment would fight the content (e.g. contour lines behind a map, ASCII art behind code).
 
 Rules:
 
 - **Apply all that fit, then edit down.** Layer every fitting treatment, then look at the result: if it reads busy or muddy, remove the weakest treatment and check again. Stop as soon as it reads clean. Restraint is applied at the end, not the start.
+- **Texture in service of the wow moment, not decoration:** apply treatments where they amplify the page's captivating moment; never texture for its own sake — if a treatment does not make the memorable moment stronger, leave that surface flat.
 - **Layer compatible treatments, not competing ones.** Grain, gradients, and soft textures layer with almost anything. Two busy patterns (pixel mosaics + halftone, two grids, ASCII + stippling) fight each other; pick the stronger one.
 - **Treatments stay behind content.** Content sits above them (`position: relative; z-index: 2` on content, background layers at `z-index: 0/1`). A treatment on a card or button must never reduce that element's legibility or affordance.
 - **Prefer CSS gradients and SVG over images.** They are sharp at every size and cost almost nothing.
@@ -43,6 +45,8 @@ Rules:
 | Dark, moody, gaming | Speckled graphite, lens distortion, stippled gradients, fluted glass |
 | Data, science, research | Contour lines, blueprint grids, stippled gradients, thermal gradients |
 | Retro, zine, brutalist | Halftone, dithered images, ASCII and pixels, pixel mosaics |
+
+The "Data, science, research" row applies to non-dense data/science pages (marketing, explainer, editorial) — on a data-dense page (primary content is tables/grids of numbers) no treatment applies; the page stays flat.
 
 If none of the rows fits, do not force a treatment. Flat is fine.
 
@@ -65,7 +69,7 @@ A treatment on a small surface can be bolder than on a full page: a button can c
 
 ## Shared utilities
 
-Put these in a `backgrounds.css` file (or a `<style>` block) and reference them by class. Do not cram data-URI SVGs into Tailwind arbitrary values.
+Put these in a `backgrounds.css` file (or a `<style>` block) and reference them by class. Do not cram data-URI SVGs into Tailwind arbitrary values. Record every treatment applied, on which surface, in `docs/design-tokens.md` (or MASTER.md on a dashboard-only build) — later slices and polish-pass read the record from there, not from the CSS.
 
 Grain overlay (reused by felt, grainy gradients, paper, speckled graphite):
 
@@ -92,6 +96,8 @@ Scrim for text over busy backgrounds:
 ```
 
 ## The 22 treatments
+
+Re-tint every example below to the project's dealt palette and tokens before using it — the hex values are placeholders, not the palette. Never copy a purple/violet gradient onto a landing page (Hallmark gate 2a and Taste §6 Never ban it); the craft floor's purple-blue-gradient ban applies the same way on app surfaces.
 
 ### 1. Felt texture
 
@@ -133,7 +139,7 @@ Needs something behind it to frost (a photo or gradient). On a flat color it doe
 
 ### 3. Thermal gradients
 
-Best for: heatmaps, energy, AI/data products, bold heroes.
+Best for: heatmaps, energy, AI/data products, bold heroes — on non-dense surfaces (never a data-dense dashboard — see Do NOT use).
 
 ```css
 .thermal {
@@ -164,7 +170,7 @@ Animated variant: animate the `background-position` of the ripple layers very sl
 
 ### 5. Speckled graphite
 
-Best for: dark developer tools, gaming, moody dashboards.
+Best for: dark developer tools, gaming, moody non-dense dashboards (never a data-dense dashboard — see Do NOT use).
 
 ```css
 .speckled-graphite {
@@ -222,7 +228,7 @@ True variable-size halftone (dots growing toward an image) needs SVG or canvas. 
 
 ### 9. Grainy gradients
 
-Best for: almost anything. The safest treatment on this list.
+Best for: almost any non-dense surface. The safest treatment on this list.
 
 ```css
 .grainy-gradient {
@@ -283,7 +289,7 @@ Off-white, never pure white. Dark warm-gray text (`#2b2620`), never pure black, 
 
 ### 13. Contour lines
 
-Best for: maps, outdoors, data/science, technical products.
+Best for: maps, outdoors, data/science, technical products — on non-dense surfaces (never a data-dense dashboard — see Do NOT use).
 
 ```css
 .contours {
@@ -368,7 +374,7 @@ The mask fades the dot field along the gradient, so density follows tone like re
 
 ### 18. Square-dot grids
 
-Best for: technical, minimal, dev tools, dashboards that want texture without noise.
+Best for: technical, minimal, dev tools, non-dense dashboards that want texture without noise (never a data-dense dashboard).
 
 ```css
 .square-dots {

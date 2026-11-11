@@ -12,7 +12,7 @@ Auto-analyze project and generate PM2 service commands.
 
 ## Workflow
 
-1. Check PM2 (install via `npm install -g pm2` if missing)
+1. Check PM2 (install via `npm install -g pm2@7.1.2` if missing)
 2. Scan project to identify services (frontend/backend/database)
 3. Generate config files and individual command files
 

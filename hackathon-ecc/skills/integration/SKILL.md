@@ -7,6 +7,8 @@ description: Wire a named API, tool, or SDK into the project. Use ONLY once a sp
 
 One job: take a named integration from words to a working call in the demo path, as fast as possible, without blocking the build on a missing credential or a broken third-party API.
 
+At the start, read `docs/decision-record.md` for the integrations the record names — fallback if that file does not exist: the raw user prompt plus `docs/scope.md`. The project directory IS the project root — the folder opened in Cursor; no separate directory is created, and all `docs/…` paths are relative to it.
+
 An integration here means any outside system the product depends on: a REST API, an SDK, an MCP server, a sponsor tool, or a hackathon track requirement. The same steps apply whether it is one API or a sponsor prize.
 
 ## When to use
@@ -29,6 +31,8 @@ Before touching code, check the integration fits the hours left. Use `hackathon-
 ## Step 1: Identify the target
 
 Gather four things, in one message if anything is missing:
+
+**Unattended path (first build after grill-me, or a one-prompt removal):** do NOT ask for anything missing — take the target, job, and stack from the grill-me decision record / `docs/scope.md` (the API is named there), proceed with what is known, and stub what is missing per Step 4 (never block, never wait). Missing credentials degrade to the clearly-marked stub in Step 4; a missing target or job is a stated assumption recorded in the run ledger and the final report. The gather-in-one-message below is for a direct, attended invocation only.
 
 1. **The target**: exact name, and a link if the user has one (event page, sponsor page, docs URL).
 2. **The job**: what it does in the product, and where it appears in the demo. The integration must appear in the demo path, not in a code branch nobody opens.

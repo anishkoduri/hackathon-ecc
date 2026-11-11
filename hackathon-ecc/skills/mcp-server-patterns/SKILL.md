@@ -41,7 +41,7 @@ For Cursor, cloud, or other remote clients, use **Streamable HTTP** (single MCP 
 ### Install and server setup
 
 ```bash
-npm install @modelcontextprotocol/sdk zod
+npm install @modelcontextprotocol/sdk@1.32.2 zod@4.6.7
 ```
 
 ```typescript

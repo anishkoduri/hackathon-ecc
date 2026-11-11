@@ -122,6 +122,13 @@ Audit #2 found 6 skills with invalid YAML frontmatter (their `description:` cont
 - [ ] Confirm these 6 skills load and are routable: codehealth-mcp, delivery-gate, production-audit, security-review, security-scan, verification-loop.
 - [ ] Ask Cursor to describe one of them (e.g. "what does the verification-loop skill do?") and confirm it answers from the skill, not from a guess.
 
+## 13. Hallmark + Impeccable additions (fix program #11 — Windows)
+
+- [ ] **Impeccable detector first run:** in a test project, run `npx impeccable@4.8.0 detect <a UI source dir>` from Git Bash (and once from PowerShell). It should download the engine binary once (~20 MB, SHA-verified) and report findings. Note whether the download works, where the binary lands (`%USERPROFILE%\.impeccable\bin\0.1.18\`), and any error.
+- [ ] **Impeccable Cursor hook on Windows — EXPECTED UNKNOWN:** the shipped `.cursor/hooks.json` detector hook is POSIX-only (`[ ! -f … ]` shell syntax) and Cursor runs hook commands through PowerShell on Windows, so it likely does NOT fire. Confirm whether it fires or not; either way, record the answer here — the plugin does NOT rely on it (the detector runs as a named step in polish-pass instead).
+- [ ] **Hallmark render tier:** on a Taste landing build, confirm `sloplint --render` runs: it needs `puppeteer-core@25.17.0` (`npm i -g puppeteer-core@25.17.0` if missing) + Chrome. If Chrome is not found, set `CHROME_PATH` to the Chrome install. Note whether the render tier ran or fell back to static-only.
+- [ ] **Hallmark theme deal:** ask Cursor to build a landing page and confirm the deal picks a theme from the 50-theme catalog (theme name + material in the report) rather than inventing a direction.
+
 ## Results
 
 - Date run: _______________

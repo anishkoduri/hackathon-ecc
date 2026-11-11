@@ -76,6 +76,6 @@ Answer formula: direct answer in 10 seconds, evidence in 20, scope honesty in 10
 
 ## Backup
 
-- Video, 60 to 90 seconds, recorded after the final deploy: [path or link, not a local file only]
+- Video (demo video, 1:30–1:50), recorded after the final deploy: [path or link, not a local file only]
 - Screenshots, 5 or more, saved on the device: [folder]
 - QR code to the repo and demo: [where it is displayed]

@@ -18,8 +18,18 @@ description: CLI deployment runbook for hackathons covering Vercel (Next.js), Ra
 1. **Deploy in the first hour.** Push a hello world, get the URL, and confirm it works.
 2. **Set env vars before deploying.** A build with missing env vars can break silently.
 3. **Build locally first.** `npm run build` catches errors before the deploy does.
-4. **Demo from the production URL**, not localhost. Keep localhost running only as a fallback.
+4. **Live-demo from the production URL**, not localhost. Keep localhost running only as a fallback. (Live demo only: the demo VIDEO is filmed from local code only — never a deployed URL — see `pitch-deck-video`.)
 5. **One person owns deployment**: logins, env vars, rollback.
+
+## If a CLI is not authenticated — never stall on a login
+
+Check auth before deploying (`vercel whoami`, `railway whoami`, `supabase projects list` — a non-zero exit or "not logged in" means unauthenticated). If a CLI is not authenticated, **do not wait for an interactive login** — there is no user at the keyboard during an autonomous build, and an interactive prompt stalls the run. Instead:
+
+- Mark that deploy **blocked** in the final report, with evidence: which CLI, the exact command run, and the exact error/output.
+- Prefer a **static-only deploy** if possible (e.g. ship the frontend on Vercel/Netlify from the repo or a static export) so judges still get a working URL, and note in the final report what the static deploy does not cover (API, DB, auth).
+- If no static-only deploy is possible, ship the local demo path (screen recording / localhost fallback) and say so in the final report.
+
+**Timing rule:** security-review's pre-deployment checklist gates the **final** deploy, not the first-hour deploy. Deploy in the first hour (Golden rule 1) even though the checklist is not yet complete; run the checklist before the final, pitch-ready deploy.
 
 ---
 
@@ -33,12 +43,22 @@ Something else                    → whatever the sponsor provides or the team 
 
 **One repo, one deployment** where possible. A split frontend/backend deploy means CORS, two sets of env vars and two things that can break.
 
+## Split-backend redeploy (Vercel frontend + Railway backend)
+
+A push to `main` redeploys **only** the git-linked Vercel frontend — the Railway API/backend does **not** redeploy from that push. After any change that touches the backend (including a feature removal that drops API routes or database objects), redeploy **both** sides:
+
+1. **Frontend:** push to `main` — the git-linked Vercel deploy fires from the push.
+2. **Backend:** redeploy separately with `railway up` from the backend directory (add `--detach` to skip log streaming). A frontend-only redeploy leaves the old backend serving the old API.
+3. **Database:** if the change includes a migration, apply it separately with `supabase db push` — neither the Vercel push nor `railway up` applies it.
+
+If a CLI is unauthenticated, do not wait for an interactive login — mark that side blocked in the final report with the exact command and error, per "If a CLI is not authenticated" above, and move on.
+
 ---
 
 ## Frontend: Vercel (Next.js)
 
 ```bash
-npm i -g vercel
+npm i -g vercel@65.14.0
 vercel login
 vercel                 # first deploy: scope, project name, framework detection
 vercel --prod          # promote to the production URL
@@ -71,7 +91,7 @@ vercel env pull .env.local        # pull them down for local dev
 ✏️ Commands verified against the [Railway CLI reference](https://docs.railway.com/reference/cli-api):
 
 ```bash
-npm i -g @railway/cli
+npm i -g @railway/cli@5.71.0
 railway login
 railway init                       # new project, linked to the current folder
 railway link                       # or link to an existing project
@@ -99,7 +119,7 @@ railway logs                       # stream logs (--build for build logs, -n 100
 ## Database: Supabase
 
 ```bash
-npm i -g supabase            # or: npx supabase ...
+npm i -g supabase@3.1.0            # or: npx supabase@3.1.0 ...
 supabase login
 supabase link --project-ref <ref>
 supabase db push                                   # apply local migrations to remote
@@ -124,7 +144,7 @@ supabase gen types typescript --linked > types/database.ts
 | Host | Best for | Free tier | Sleep / cold start | Gotcha |
 | --- | --- | --- | --- | --- |
 | **Render** | Python/Node web API from Git | 750 instance-hours/mo | **Sleeps after 15 min idle; ~1 min to wake** | Free Postgres **deleted after 30 days** (+14-day grace); no disk; SMTP blocked |
-| **Railway** | Workers (see above) | ✏️ **$0/mo Free plan** ($1/mo usage credit; $5 one-time 30-day trial credit) (0.5 GB RAM) | Not stated | **Card required for paid plans; the $5 trial needs no card**; plan on Hobby ($5) for demo week |
+| **Railway** | Workers (see above) | ✏️ **$0/mo Free plan** ($1/mo usage credit; $5 one-time 30-day trial credit) (0.5 GB RAM) | Not stated | **Card required for paid plans; the $5 trial needs no card**; stay on the $0/mo Free plan for demo week (free tiers only — do not upgrade to Hobby ($5)) |
 | **Fly.io** | Docker apps in chosen regions | **No free tier**: $1 of free credit for 7 days | Not verified | The trial runs out fast (medium confidence) |
 | **Cloudflare Workers** | Edge APIs, proxies | 100K requests/day | — | **10 ms CPU per request**; Error 1027 at the daily cap |
 | **Netlify** | Static front ends | 300 credits/mo | — | **15 credits per production deploy**, so about 20 deploys uses up the month (the 300-credit model applies to accounts created since Sep 4, 2025; older accounts keep prior limits) |
@@ -143,7 +163,7 @@ Android: an EAS internal build gives an **APK link or QR code**, the fastest pat
 1. [Clerk docs](https://clerk.com/docs) → **Add application** → choose sign-in methods.
 2. Copy `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` into Vercel env vars.
 3. Add **both** `http://localhost:3000` and the production domain wherever redirect URLs are configured.
-4. ✏️ On **Next.js 16+**, route protection lives in **`proxy.ts`**, not `middleware.ts`.
+4. ✏️ On **Next.js 16+**, route protection lives in **`proxy.ts`**, not `middleware.ts`. (Route protection only — the Supabase session-refresh middleware in `app-scaffold` is a separate job, not route protection.)
 5. With Supabase, use **Third-Party Auth**; the JWT template is deprecated.
 
 **Python backend verifying Clerk tokens** (from help-me-papi; verified against `clerk-backend-api` 7.1.0 on PyPI — `verify_token` lives in `clerk_backend_api.security` and takes `(token, VerifyTokenOptions)`; the `Clerk` client has NO `verify_token` method, only `authenticate_request`):
@@ -162,6 +182,8 @@ def get_user_id(authorization_header: str) -> str:
 ---
 
 ## Pre-pitch deployment checklist
+
+> This checklist gates the **final** deploy, not the first-hour deploy — ship a hello-world URL in the first hour first, then work through this list before the pitch-ready deploy. During a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, an item that cannot be completed is recorded as blocked in the final report instead of stopping the deploy (hackathon-mode §7).
 
 - [ ] Production URL works on a **different network** (phone hotspot)
 - [ ] Demo account seeded and logged in (Clerk sessions are fixed at 7 days on Hobby)

@@ -11,7 +11,7 @@ need to inspect a wedged or sibling session, run the packaged CLI from another
 terminal:
 
 ```bash
-npx --package ecc-universal ecc loop-status --json
+npx --package ecc-universal@2.2.3 ecc loop-status --json
 ```
 
 The CLI scans local session transcript JSONL files and reports stale scheduled wake-up calls or `Bash`

@@ -61,7 +61,7 @@ Reduce the decision to one explicit prompt:
 - what constraints matter?
 - what counts as success?
 
-If the question is vague, ask one clarifying question before convening the council.
+If the question is vague, ask one clarifying question before convening the council — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT ask: resolve by stated assumption with the safe/reversible default and proceed.
 
 ### 2. Gather only the necessary context
 

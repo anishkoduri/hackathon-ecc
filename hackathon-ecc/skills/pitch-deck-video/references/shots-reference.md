@@ -130,6 +130,12 @@ in — a computed number, not a heading.
   "loadingSelectors": ["[aria-busy=\"true\"]", ".animate-spin"] }
 ```
 
+- **`url`** is the **local** dev-server URL. `/demo` films the local app
+  from the project directory — the video is made from the code, not from
+  a link. Never set `url` to a deployed URL and never film a deployed
+  product; deploying the app is a separate step and its URL goes in the
+  final report, not in `shots.json`.
+
 - **`width` / `height`** pin the capture exactly. The video is recorded at the
   same size, and the CSS viewport is never enlarged — a bigger viewport hands
   the app a different breakpoint, and a bigger video canvas does not scale the
@@ -185,6 +191,53 @@ Ukrainian-tagged voice reads English fine with `languageBoost: "English"`.
 Clips cache on a hash of the voice settings plus the text, so editing one
 sentence re-synthesises one clip.
 
+**Provider fallback.** If the configured provider is missing, `tts.mjs`
+resolves to the next available voice in the chain (ElevenLabs → Piper →
+`say`; MiniMax → Piper → `say`; Piper → `say`; `say` → Piper → ElevenLabs), and if
+the chain is exhausted it falls through to any other usable voice (ElevenLabs →
+Piper → `say` → MiniMax) before skipping narration. Narration is skipped only when no usable voice exists
+at all. If a provider passes preflight but fails at runtime and no fallback
+voice can render a line, that line renders silent with an estimated length
+and the run continues — the video never aborts on a voice failure.
+
+### ElevenLabs (`provider: "elevenlabs"`)
+
+```json
+{ "provider": "elevenlabs", "voice": "21m00Tcm4TlvDq8ikWAM", "model": "eleven_multilingual_v2",
+  "speed": 1.0, "stability": 0.5, "similarityBoost": 0.75, "style": 0.0,
+  "piperModel": "en_US-lessac-medium" }
+```
+
+- `voice` is an ElevenLabs voice ID, not a name (Rachel is
+  `21m00Tcm4TlvDq8ikWAM`). `model` defaults to `eleven_multilingual_v2`;
+  `eleven_flash_v2_5` is faster. SSML `<break>` tags work on the v2
+  family — `eleven_multilingual_v2`, `eleven_flash_v2`, and
+  `eleven_flash_v2_5` — so do NOT switch models just for pauses;
+  `eleven_turbo_v2_5` is deprecated, never select it, and v3/v4 models do
+  NOT support `<break>` tags. Write breaks inline as needed; max 3s per
+  break, one per line at most, never an ellipsis as a pause on v2-family
+  models (see the voice-direction section in `SKILL.md`).
+  `speed` runs 0.7–1.2.
+- The key comes ONLY from the `ELEVENLABS_API_KEY` environment variable.
+  Never put it in `shots.json` or an env file the project reads.
+- Free tier: 10,000 chars/month (about 10 minutes). `scripts/tts.mjs`
+  tracks use in `src/elevenlabs-usage.json` and switches a line to Piper
+  before it would exceed the month's allowance. A 90-second demo is about
+  1,300 chars, so about 7 demos a month on free.
+- Free-plan audio is non-commercial and must credit "elevenlabs.io" or
+  "11.ai" in the title of anything published from it. If the video will be
+  monetised or used commercially, use a paid plan instead.
+- Piper fallback: local `piper` binary, zero keys (`pip install piper-tts`,
+  then download a voice model; default `en_US-lessac-medium`, voices live
+  in `~/.piper/models`). If `piper` is missing it falls through to `say`
+  (macOS only). On Windows, Piper is the no-key fallback.
+- If a line fell back to Piper (quota or outage) and you later want the
+  ElevenLabs voice for it, delete `public/vo/<id>.wav` and re-run; cached
+  clips are not re-rendered.
+- Voice selection (Rachel default, why it sounds natural, how to pick an
+  alternative), delivery direction, and the one-line sample check are in
+  `SKILL.md` under "Voice direction — make it sound human".
+
 ## music
 
 ```json
@@ -196,6 +249,8 @@ Use `"file": "~/Music/bed.wav"` instead of `url` for a local track — simplest,
 and no licence ambiguity. `url` is fetched once with yt-dlp and cached.
 
 `open` under the cold open, `under` beneath the narration, `close` for the last
-cards. `scripts/music.mjs` cuts the bed to the current video length; it is not
-part of `npm run all` because the bed only changes when the track or the length
-does.
+cards. `scripts/music.mjs` cuts the bed to the current video length; it runs
+as part of `scripts/build.mjs` right after narration. If the fetch fails the
+build logs a warning and the video renders without a music bed rather than
+aborting — `src/Video.tsx` skips the music `<Audio>` element when no
+`public/music/bed.wav` exists (flagged in `src/vo-durations.json`).

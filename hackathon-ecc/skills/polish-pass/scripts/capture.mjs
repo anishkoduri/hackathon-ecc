@@ -62,7 +62,7 @@ if (!pw) {
   console.error(`[polish-pass] Playwright not found; installing into ${CACHE} (one time)...`);
   mkdirSync(CACHE, { recursive: true });
   if (!existsSync(join(CACHE, "package.json"))) writeFileSync(join(CACHE, "package.json"), '{"private":true}');
-  run("npm", ["install", "--silent", "--no-audit", "--no-fund", "playwright"], CACHE);
+  run("npm", ["install", "--silent", "--no-audit", "--no-fund", "playwright@1.65.0"], CACHE);
   pw = loadPlaywright();
   if (!pw) { console.error("[polish-pass] Could not load Playwright. Ask the user for screenshots."); process.exit(2); }
 }
@@ -76,7 +76,7 @@ async function launch() {
         const cli = createRequire(join(CACHE, "package.json")).resolve("playwright/cli");
         run(process.execPath, [cli, "install", "chromium"], CACHE);
       } catch {
-        run("npx", ["-y", "playwright", "install", "chromium"], process.cwd());
+        run("npx", ["-y", "playwright@1.65.0", "install", "chromium"], process.cwd());
       }
       return chromium.launch();
     }

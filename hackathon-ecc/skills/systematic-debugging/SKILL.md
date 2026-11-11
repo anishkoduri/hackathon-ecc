@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Use when a bug's root cause is unknown and no more specific debugging skill applies — after ruling out an agent failure (agent-introspection-debugging), broken-button state bugs (click-path-audit), and deployed-UI failures (browser-qa). Requires finding root cause before attempting any fixes. Do NOT use when the user asks to fix a bug through the fix pipeline — orch-fix-defect owns that; use this skill only to find an unknown root cause.
+description: Use when a bug's root cause is unknown and no more specific debugging skill applies — after symptom inspection rules out an agent failure (agent-introspection-debugging) and broken-button state bugs (click-path-audit). Debugging order — `browser-qa` detects deployed-UI failures and `systematic-debugging` diagnoses them. Requires finding root cause before attempting any fixes. Do NOT use when the user asks to fix a bug through the fix pipeline — orch-fix-defect owns that; use this skill only to find an unknown root cause.
 ---
 
 # Systematic Debugging
@@ -12,6 +12,12 @@ Random fixes waste time and create new bugs. Always find root cause before fixin
 **Core principle:** NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.
 
 **Violating the letter of this process is violating the spirit of debugging.**
+
+### Debugging order
+
+**Debugging order:** start with symptom inspection; a button that does nothing goes to `click-path-audit` next; everything else with an unknown root cause goes to `systematic-debugging` (which finds the other bug types). `browser-qa` detects deployed-UI failures; `systematic-debugging` diagnoses them.
+
+Handoff: `browser-qa` hands a detected deployed-UI failure to this skill with the URL, repro steps, console/network evidence, and screenshots; this skill diagnoses the root cause. A button that does nothing goes to `click-path-audit` first — broken-button state bugs are its job, not this skill's.
 
 ## The Four Phases
 
@@ -84,7 +90,7 @@ Random fixes waste time and create new bugs. Always find root cause before fixin
 
 4. **If 3+ Fixes Failed: Question Architecture**
    - Pattern indicates architectural problem
-   - STOP and discuss with human partner
+   - STOP and discuss with human partner — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you state the assumption, pick the safe/reversible option, and proceed without waiting; never stop for a human decision mid-build. Record the architectural concern in the final report instead.
 
 ## Red Flags - STOP and Follow Process
 
@@ -123,4 +129,4 @@ Question the architecture:
 - Are we "sticking with it through sheer inertia"?
 - Should we refactor architecture vs. continue fixing?
 
-**Discuss with human partner before more fixes.**
+**Discuss with human partner before more fixes — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you pick the safe/reversible option, record it in the final report, and move on; never stop for a human decision mid-build.**

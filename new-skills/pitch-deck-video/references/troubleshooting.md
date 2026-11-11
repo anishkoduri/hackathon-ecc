@@ -3,6 +3,27 @@
 Every failure this pipeline has actually hit, and the fix. Check here before
 debugging from scratch.
 
+## The video has no narration, or a line is silent
+
+Not a failure — the video is built to render anyway. `scripts/tts.mjs`
+preflights the voice providers and falls through the chain (ElevenLabs →
+Piper → `say`; MiniMax → Piper → `say`; Piper → `say`; `say` → Piper → ElevenLabs)
+before skipping narration, so a missing configured provider alone never
+silences the video. No voice at all means estimated beat lengths and a
+music-only/silent render; a provider that fails at runtime means that line
+is silent with an estimated length and the rest of the run continues.
+Check `src/vo-durations.json → narration` (`full`, `partial`, `none`) and
+per-shot `hasAudio` to see which lines are affected, note it in the final
+report, and re-run `npm run script` once a key or Piper is available.
+
+## The video has no music bed
+
+`scripts/build.mjs` runs `scripts/music.mjs` after narration; a failed fetch
+(no yt-dlp, no network, bad URL) logs a warning and the video renders
+without a bed rather than aborting. Fix the fetch (install yt-dlp, check the
+URL, or drop a local track at `public/music/source.webm`) and re-run
+`node scripts/music.mjs`, then re-render.
+
 ## The footage is subtly out of sync with the voice
 
 **Cause:** `<Screen />` ended up inside a `<Sequence>`. `useCurrentFrame()`
@@ -187,9 +208,18 @@ on screen. Fix the app error before chasing the shot.
 
 ## Environment
 
-- `scripts/tts.mjs`'s fallback provider is macOS `say`, so the fallback does not
-  exist on Linux or Windows. Those platforms need `tts.provider: "minimax"` (or
-  human-recorded `public/vo/<id>.wav` files).
+- `scripts/tts.mjs`'s voice chain is ElevenLabs (`ELEVENLABS_API_KEY` from
+  the environment only) → local Piper (`pip install piper-tts`, then
+  download a voice model; default `en_US-lessac-medium`) → macOS `say`.
+  The default provider is `elevenlabs` with Piper as the no-key fallback,
+  so on Windows the path is ElevenLabs or Piper — `say` does not exist
+  there. MiniMax (`MINIMAX_API_KEY` / `MINIMAX_GROUP_ID`, via
+  `tts.envFile` or the environment) is an alternative provider, not the
+  default. Human-recorded `public/vo/<id>.wav` files still beat any
+  synthesiser. If none of ElevenLabs, MiniMax, Piper, or `say` is
+  available, the script preflights, finds nothing, and builds the video
+  WITHOUT narration (music-only/silent, estimated beat lengths) instead
+  of erroring — note the missing narration in the final report.
 - Some shells block bare `node`, `rm`, `curl`. Use absolute paths
   (`/usr/local/bin/node`, `/bin/rm`).
 - `npm create video@latest` prompts interactively and hangs. The template exists

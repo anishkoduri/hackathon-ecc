@@ -24,6 +24,14 @@ stated up front).
 6. **Before-you-begin clause** — questions surface now, not mid-work.
 7. **Report contract** — status vocabulary + final-message cap (+ report file
    for implement-type work).
+8. **Environment** — env vars the executor needs, passed inline in the dispatch
+   (never written to a file): e.g. `ELEVENLABS_API_KEY=<value held in working
+   context>` on a /demo dispatch when a narration key was received mid-build
+   (orchestrate step 0 / step 5d) — the executor runs the `tts` step with that
+   variable set in its process environment. Omit this field when no env var is
+   needed; never put a key in a file, a log, or the ledger.
+
+**Belief in the brief:** every brief opens with the goal and the belief that it is achievable — the work is doable, the plan is sound, build it. Implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall.
 
 ## Status vocabulary — every executor, every dispatch
 
@@ -38,6 +46,15 @@ stated up front).
 
 Never silently deliver work you are unsure about: bad work is worse than no
 work, and escalating is not penalized.
+
+**First-build carve-out:** during a hackathon first build after grill-me, or
+a one-prompt removal of a first-build feature, executors do NOT return
+`NEEDS_CONTEXT` for a missing user-resolvable fact or an under-specified
+point — they state the assumption (the safe/reversible option) and proceed.
+`NEEDS_CONTEXT` is only for a genuinely blocking missing input with no safe
+assumption available; if no reversible option exists, return `BLOCKED` with
+evidence instead. The orchestrator records the assumption in
+`.hackathon/run-ledger.md` and in the final report.
 
 ## Template — recon (scout)
 
@@ -69,9 +86,15 @@ yourself afterward.
 ```
 [Fallback-path preamble only:
 You are acting as the fast-worker — a mechanical executor. Execute
-efficiently; do not redesign, second-guess the spec, or expand scope. Your
+efficiently; do not redesign, second-guess the spec, or expand scope. Trust
+the brief and build it — do not second-guess the plan, hedge, or wait for
+reassurance; commit to the approach and make it work; if a detail is
+ambiguous, pick the reasonable option and note it, don't stall. Your
 final message IS the return value. If a real design decision surfaces, stop
-and return NEEDS_CONTEXT naming it — do not invent an answer.]
+and return NEEDS_CONTEXT naming it — do not invent an answer. (First-build
+carve-out: during a hackathon first build after grill-me, or a one-prompt
+removal of a first-build feature, state the assumption — the safe/reversible
+option — and proceed instead of NEEDS_CONTEXT.)]
 
 Context: [one line — where this fits]
 
@@ -81,13 +104,16 @@ Inputs:           [≤20 lines inline, or: "Read this first — it is your
 Constraints:      [what must NOT change; files out of scope]
 Interface:        [signatures / invariants — frozen, not yours to redesign]
 Acceptance check: [command or objective test — REQUIRED; run it, paste output]
-Return format:    Status first; final message ≤15 lines — what changed,
+Return format:    Status first; final message ≤20 lines — what changed,
                   acceptance-check output, concerns. Write the full report
                   (files changed, test output, self-review) to
                   /path/to/report.md and return only status + summary + path.
 
 Before you begin: if the goal, acceptance check, or inputs are unclear,
 return NEEDS_CONTEXT now naming exactly what's missing — do not guess.
+(First-build carve-out: during a hackathon first build after grill-me, or a
+one-prompt removal of a first-build feature, state the assumption — the
+safe/reversible option — and proceed instead of NEEDS_CONTEXT.)
 ```
 
 ## Template — reasoning (deep-reasoner)
@@ -112,7 +138,11 @@ Return format:    Status first, then conclusion + the one or two load-bearing
                   reasons + "what would make this wrong", ≤20 lines.
 
 If under-specified: state the assumption you made and proceed; return
-NEEDS_CONTEXT only if genuinely blocked.
+NEEDS_CONTEXT only if genuinely blocked. (First-build carve-out: during a
+hackathon first build after grill-me, or a one-prompt removal of a
+first-build feature, stating the assumption and proceeding is mandatory —
+NEEDS_CONTEXT only if genuinely blocked with no safe/reversible option,
+in which case return BLOCKED with evidence.)
 ```
 
 ## Template — second deep-reasoner pass (blind parallel)
@@ -159,6 +189,9 @@ You are acting as the fast-worker — a mechanical executor. Execute
 efficiently; do not redesign, second-guess the spec, or expand scope. Your
 final message IS the return value. If a real design decision surfaces, stop
 and return NEEDS_CONTEXT naming it — do not invent an answer.
+(First-build carve-out: during a hackathon first build after grill-me, or a
+one-prompt removal of a first-build feature, state the assumption — the
+safe/reversible option — and proceed instead of NEEDS_CONTEXT.)
 
 Context: part of extracting session logic out of src/auth (design frozen by
 deep-reasoner; you are moving code, not designing).
@@ -173,11 +206,14 @@ Constraints:      Do not modify function bodies. Do not touch
 Interface:        Exported names stay identical; package name is `session`.
 Acceptance check: `go build ./... && go test ./src/auth/... ./src/session/...`
                   — run it, paste the tail of the output.
-Return format:    Status first; ≤15 lines — files changed, check output,
+Return format:    Status first; ≤20 lines — files changed, check output,
                   concerns. Full report to /tmp/session-extract-report.md.
 
 Before you begin: if the brief's symbol list conflicts with what you find in
 the code, return NEEDS_CONTEXT with the mismatch — do not resolve it yourself.
+(First-build carve-out: during a hackathon first build after grill-me, or a
+one-prompt removal of a first-build feature, state the assumption — the
+safe/reversible option — and proceed instead of NEEDS_CONTEXT.)
 ```
 
 ## Common mistakes

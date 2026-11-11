@@ -32,7 +32,7 @@ You are an expert end-to-end testing specialist. Your mission is to ensure criti
 
 ```bash
 # Setup
-npm install -g agent-browser && agent-browser install
+npm install -g agent-browser@0.42.0 && agent-browser install
 
 # Core workflow
 agent-browser open https://example.com

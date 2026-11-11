@@ -38,36 +38,41 @@ fi
 ok "Docker is running"
 
 # --- 3. Supabase CLI ---------------------------------------------------------
-if ! command -v supabase >/dev/null 2>&1; then
-  info "Installing Supabase CLI..."
-  brew install supabase/tap/supabase
+# Pinned to 3.1.0 via npx: Homebrew's tap has no version pin, and a global
+# npm install is unsupported. npx caches the pinned version after the first
+# run, so later calls are fast. Every CLI call in this script goes through
+# $SUPABASE, so the pinned version is what actually runs.
+if ! command -v npx >/dev/null 2>&1; then
+  warn "npx not found. Install Node.js (https://nodejs.org) then re-run."
+  exit 1
 fi
-ok "Supabase CLI: $(supabase --version)"
+SUPABASE=(npx supabase@3.1.0)
+ok "Supabase CLI: $("${SUPABASE[@]}" --version)"
 
 # --- 4. Initialize Supabase --------------------------------------------------
 if [ ! -f "supabase/config.toml" ]; then
   info "Initializing Supabase project..."
-  supabase init
+  "${SUPABASE[@]}" init
 else
   ok "Supabase already initialized"
 fi
 
 # --- 5. Start the local stack ------------------------------------------------
 info "Starting local Supabase stack (first run pulls images)..."
-supabase start
+"${SUPABASE[@]}" start
 
 # --- 6. Apply migrations + seed ----------------------------------------------
 info "Resetting database (runs migrations + seed.sql)..."
-supabase db reset
+"${SUPABASE[@]}" db reset
 
 # --- 7. Generate TypeScript types --------------------------------------------
 if [ -d "src/lib" ] || [ -d "src" ]; then
   mkdir -p src/lib
   info "Generating TypeScript types..."
-  supabase gen types typescript --local > src/lib/database.types.ts
+  "${SUPABASE[@]}" gen types typescript --local > src/lib/database.types.ts
   ok "Types written to src/lib/database.types.ts"
 fi
 
 echo
-ok "Done. Run 'supabase status' to see your local URLs and keys."
+ok "Done. Run 'npx supabase@3.1.0 status' to see your local URLs and keys."
 info "Studio: http://127.0.0.1:54323   API: http://127.0.0.1:54321"

@@ -28,7 +28,7 @@ engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
 1. Run the `orch-pipeline` engine with the settings above.
 2. Classify size first; small / trivial features collapse toward 4 → 5 → 6.
-3. Stop at **Gate 1** (plan approval) and **Gate 2** (pre-commit).
+3. Stop at **Gate 1** (plan approval) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
 4. Add `security-reviewer` if the feature touches a security trigger.
 
 > Related: `/feature-dev` is a standalone version of this flow. `orch-add-feature`
@@ -39,7 +39,7 @@ engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
 ```
 orch-add-feature: add OAuth2 login to nws-poller
-→ research existing auth libs → plan task_list  [GATE 1: approve]
+→ research existing auth libs → plan task_list  [GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
 → TDD each task → code-review (+ security-reviewer: auth path)
-→ commit  [GATE 2: confirm]
+→ commit  [GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
 ```

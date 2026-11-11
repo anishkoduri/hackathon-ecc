@@ -1,12 +1,12 @@
 ---
 name: hackathon-scope
 description: >
-  Hackathon MVP scoping strategy. Activates after grill-me — defining the absolute minimum viable demo, identifying scope traps (overly ambitious features), the demo-first development principle, time budgeting (build vs demo vs slack), choosing a winnable category, and shipping vertical slices rather than horizontal layers.
+  Hackathon MVP scoping strategy. Activates after grill-me — or after the user skips grilling — defining the absolute minimum viable demo, identifying scope traps (overly ambitious features), the demo-first development principle, time budgeting (build vs demo vs slack), choosing a winnable category, and shipping vertical slices rather than horizontal layers.
 ---
 
 # Hackathon MVP Scoping
 
-This skill runs after grill-me has recorded the project decisions.
+This skill runs after grill-me has recorded the project decisions — or after the user skips grilling. Read `docs/decision-record.md` first if it exists — it is the source of the must-have/cut lists, the demo storyboard, and the hours-left number below. If the record file does not exist (the user said "just build it" or skipped grilling), do not block: use the raw prompt plus any scope the user gave as the record instead, and write a stub `docs/decision-record.md` noting what is undecided — each undecided item as an accepted unknown with owner: the builder and resolution point: during the build. Never invent decisions, and never write blanks. Then WRITE the scoping output to `docs/scope.md` in the project (see "Write docs/scope.md" below) before handing off: the file is the durable record the build, expansion, and demo skills read. The project directory IS the project root — the folder opened in Cursor; no separate directory is created, and all `docs/…` paths are relative to it (create `docs/` under the project root before the first `docs/` write).
 
 ## The hackathon trap
 Most teams lose by being too ambitious. They start building the "real" version, run out of time, and present something broken. Winning teams scope a demo so small it's embarrassing — then polish.
@@ -14,7 +14,7 @@ Most teams lose by being too ambitious. They start building the "real" version, 
 ## The single rule of hackathon scoping
 **Build for the demo, not the product.**
 
-The judges will see 2-5 minutes of your work. Optimize every hour of build time toward what makes those minutes great.
+The judges will see 2–4 minutes of your work. Optimize every hour of build time toward what makes those minutes great. Which length governs what: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90 seconds.
 
 ## Day 1, hour 1: the demo storyboard
 Before writing a line of code, write the demo:
@@ -34,7 +34,22 @@ Required for this demo:
 - NOT needed: everything else
 ```
 
-If you cannot write this storyboard in 30 minutes, you don't understand your project yet. Don't start building until you can.
+If you cannot write this storyboard, you don't understand your project yet. Fallback — do not block on it: build a default storyboard from the decision record's demo description (the core demo and wow moment as recorded, timed into the 0:00–4:00 slots as best they fit), or, if the record has no demo description either, note the gap as an assumption in `docs/scope.md` and in the final report and proceed with the must-have list as the storyboard. Don't start building until you can write the storyboard or have recorded the fallback.
+
+## Write docs/scope.md
+
+WRITE the scoping output to `docs/scope.md` in the project before handing off. It must contain, filled in from `docs/decision-record.md` (or from the stub record written above when grill-me was skipped — never left as blanks or placeholders):
+
+- The must-have list (the CORE demo flows) and the cut list (everything explicitly out of scope for this demo) — plus the wow test: does this make a judge stop and stare? Name the one moment that makes the project unforgettable; if there is no such moment, the must-have list is not done
+- The project assessment — a concise assessment, one or two lines each: **strengths** (what this project has going for it), **weaknesses** (where it is thin or risky), **opportunities** (what could make it stand out), **constraints** (time, skills, APIs, rules that bound it), and **recommended direction** (the one-sentence call on where to aim the build). For a first build the record/scope IS the research — this assessment is written from the decision record and the scoping above, not a new research phase; if the record is thin, say so in one line and proceed
+- Unknowns / assumptions — the unknowns and assumptions carried from the decision record (each with owner and resolution point). Unknowns from the record flow into `docs/scope.md` here; they are not blockers, and they are resolved during the build by the safe/reversible default per hackathon-mode §7's assumption rule
+- The filled demo storyboard above, with the 0:00–4:00 timings (a 2–4 min live demo)
+- The hours-left number, copied from the decision record, plus the time budget split (build vs demo vs slack, rule of thirds below)
+- The chosen winnable category
+
+If the decision record has no hours-left number, do not block and do not leave the number blank to proceed: use the recorded assumption — the remaining time until the demo deadline if known, else 8 hours — write it into `docs/scope.md` marked as an assumption, and proceed.
+
+Then NAME the next step in the file and in your reply: `feature-expansion` runs next (automatically, during the first build, right after this scoping step), and after expansion the build runs via `orchestrate` (the first-build engine — one engine per run; `orch-build-mvp` is standalone-only and never runs in a first build orchestrate is driving). Do not end scoping without the file written and the next step named.
 
 ## Vertical slices, not horizontal layers
 **Wrong (horizontal):**
@@ -51,6 +66,7 @@ If you cannot write this storyboard in 30 minutes, you don't understand your pro
 The hacky version is uglier but de-risks the demo from hour 2.
 
 ## Scope traps to recognize
+These traps apply ONLY to unrequested infra — generic auth, database, or deploy work nobody asked for and the demo does not need. They do NOT apply to infra the user required: if the brief or `docs/decision-record.md` names auth, a database, or a deployment target, that infra is required, is preserved, and is built properly — off-the-shelf, per "Off-the-shelf maximalism" below (Auth0 / Clerk for auth, Vercel / Railway for deploy), never hardcoded away and never cut as a "trap". The rule is: unrequested infra gets the antidote in this table; user-required infra gets the real, off-the-shelf implementation.
 | Trap | Symptom | Antidote |
 |------|---------|----------|
 | **"Real" auth** | "We need login first" | Hardcode a demo user |
@@ -92,6 +108,8 @@ Hackathons reward outcomes, not from-scratch implementations:
 
 The judges don't care that you used GPT-4. They care that the demo works.
 
+This is also how user-required infra gets built: when the brief or the decision record names auth, a database, or deploy, use the off-the-shelf option above (Auth0 / Clerk, Vercel / Railway) and build it properly — that is the opposite of the scope-trap antidotes, which are only for infra nobody requested.
+
 ## Pre-empt demo-killing failures
 - **Wifi unreliable** → cache responses, have offline fallback
 - **API down** → have a recording or screenshot backup
@@ -102,7 +120,7 @@ The judges don't care that you used GPT-4. They care that the demo works.
 ## What "MVP" means at a hackathon
 A minimum viable PRESENTATION, not a minimum viable PRODUCT.
 - "Viable product" = something users could rely on (months of work)
-- "Viable presentation" = something judges find compelling for 2-5 min (24-48h)
+- "Viable presentation" = something judges find compelling for 2–4 min (24-48h)
 
 Optimize for the latter ruthlessly.
 

@@ -6,8 +6,8 @@ description: Run a full multi-model development workflow with research, planning
 
 Multi-model collaborative development workflow (Research → Ideation → Plan → Execute → Optimize → Review), with intelligent routing: Frontend → Antigravity, Backend → Codex.
 
-> **Prerequisite:** Requires the external `ccg-workflow` runtime, which is **not** part of the base ECC install. Initialize it with `npx ccg-workflow` to provision `~/.claude/bin/codeagent-wrapper` and the `~/.claude/.ccg/prompts/*` role files this command depends on. Without that runtime, this command will not run correctly.
-> Requires the external ccg-workflow runtime (`npx ccg-workflow`); without it these commands cannot run.
+> **Prerequisite:** Requires the external `ccg-workflow` runtime, which is **not** part of the base ECC install. Initialize it with `npx ccg-workflow@3.7.4` to provision `~/.claude/bin/codeagent-wrapper` and the `~/.claude/.ccg/prompts/*` role files this command depends on. Without that runtime, this command will not run correctly.
+> Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`); without it these commands cannot run.
 
 Structured development workflow with quality gates, MCP services, and multi-model collaboration.
 

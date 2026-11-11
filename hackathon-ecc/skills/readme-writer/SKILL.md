@@ -47,6 +47,8 @@ rubric. Before anything else, ask:
 > prompt.) Paste it in if so — I'll make sure each one is visibly addressed. If
 > not, I'll use a strong default."
 
+**Unattended path:** during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, do NOT ask the question above — proceed immediately on the default four criteria below (hackathon-mode §7 overrides the ask; the user is away and the build must not wait). The question is for a direct, attended invocation only.
+
 Why ask first: if the rubric weights "real-world impact," lead with a vivid
 problem and who it helps; if it weights "technical difficulty," put the
 architecture and the hard parts up front. You'll later add a **Judging
@@ -90,7 +92,7 @@ commands with expected output — you can only do that by reading the repo.
   the project tree and the How-it-works steps cite real files
   (`src/lib/check.js`, `app/main.py`), the way the examples do.
 - **What already exists**: a partial README, LICENSE, screenshots in
-  `assets/`/`docs/`/`public/`, a deployed URL in config, CI workflows. Reuse it.
+  `assets/`/`docs/`/`public/`, a deployed URL in config, CI workflows. Reuse it. **Deployed URL and demo video path:** in a first build, take them from `.hackathon/run-ledger.md` (the deployed-URL line; the video path is `<app-name>-video/out/demo.mp4`) — when the ledger names them, write the real links, never a `<!-- TODO: add demo link -->` placeholder.
 
 If you don't have repo access (the user only describes the project), skip the
 scan, lean on the interview, and say so — flag that setup commands and file

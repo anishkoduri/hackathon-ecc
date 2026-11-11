@@ -42,29 +42,43 @@ This skill is **project-agnostic** — nothing in it is tied to a specific app o
 
 ## Quick Start (zero → running backend in < 15 min)
 
-> Assumes macOS. The Supabase CLI runs a full local stack in Docker — Postgres, Auth (GoTrue), Storage, Realtime, the REST API (PostgREST), and Studio.
+> macOS or Windows — pick your platform below; the steps are the same, only the installer differs. The Supabase CLI runs a full local stack in Docker — Postgres, Auth (GoTrue), Storage, Realtime, the REST API (PostgREST), and Studio.
 
 ### 1. Install prerequisites (one-time)
+
+#### macOS (Homebrew)
 
 ```bash
 # Docker Desktop (the local stack runs in containers)
 brew install --cask docker
 open -a Docker            # launch it once and wait for the whale icon to settle
 
-# Supabase CLI (do NOT install globally with npm — use Homebrew or npx)
-brew install supabase/tap/supabase
+# Supabase CLI — use npx, pinned to 3.1.0 (do NOT install globally with npm;
+# Homebrew's tap has no version pin, so it would install latest)
 
 # Verify
 docker --version
-supabase --version
+npx supabase@3.1.0 --version
 ```
 
-If you don't use Homebrew, install Docker Desktop from https://www.docker.com/products/docker-desktop and the CLI via `npx supabase`.
+#### Windows (no Homebrew)
+
+```powershell
+# Docker Desktop — download and install from https://www.docker.com/products/docker-desktop, then LAUNCH it
+# and wait for the whale icon to settle (the engine must be running before anything below works).
+# Supabase CLI — use npx (do NOT install globally with npm)
+
+# Verify
+docker --version
+npx supabase@3.1.0 --version
+```
+
+Before `supabase start`, verify Docker is actually running: `docker info` must succeed — if it fails with a daemon/pipe error, Docker Desktop is not running: launch it from the Start menu, wait for the whale icon to settle, then re-run `docker info`. Never run `supabase start` with Docker stopped: it fails with a confusing daemon error. On macOS and Windows, use `npx supabase@3.1.0` in place of `supabase` in every command below.
 
 ### 2. Initialize Supabase in your project
 
 ```bash
-cd your-nextjs-app          # or: npx create-next-app@latest your-app --ts --tailwind --app
+cd your-nextjs-app          # or: npx create-next-app@16.4.6 your-app --ts --tailwind --app
 supabase init               # creates ./supabase/ (config.toml, migrations/, seed.sql)
 ```
 
@@ -120,14 +134,14 @@ supabase gen types typescript --local > src/lib/database.types.ts
 ### 7. Install the client libraries and connect from Next.js
 
 ```bash
-npm install @supabase/supabase-js @supabase/ssr
+npm install @supabase/supabase-js@2.119.0 @supabase/ssr@0.12.7
 ```
 
 Copy the Next.js helpers from `templates/nextjs/` into `src/lib/supabase/`:
 
 - `client.ts` — browser client (Client Components)
 - `server.ts` — server client (Server Components, Route Handlers, Server Actions)
-- `middleware.ts` — refreshes the auth session cookie on every request
+- `middleware.ts` — refreshes the auth session cookie on every request (session refresh only — route protection itself lives in `proxy.ts` on Next.js 16+ per `deploy-fast` Auth §4)
 
 ```ts
 // Example: a Server Component reading data

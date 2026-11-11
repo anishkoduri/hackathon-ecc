@@ -24,14 +24,49 @@ ECC_INSTALL="/tmp/ecc-dev-install"
 ECC_SRC="$ECC_INSTALL/.cursor"
 MS_SRC="/tmp/hack-skills/skills"
 
+# --- Supply-chain pins (pinned Nov 10, 2026, on the Audit #35 zero-error tree) ---
+# Every upstream clone is pinned to the exact commit the audited plugin was
+# built from. Each SHA below was verified as its repo's current HEAD
+# (git ls-remote). Release tags exist for ECC (v2.2.3), ui-ux-pro-max
+# (v2.15.0) and chwezi-dev-engine (v1.1.0), but those tags point at EARLIER
+# commits than the audited HEADs, so a tag pin would roll back audited
+# content -- the SHA pin freezes exactly what was audited. The other three
+# repos have no tags at all, so a SHA is the only pin available. Never
+# clone HEAD: a rebuild must produce the same tree.
+ECC_PIN="d2ef2680594f9a17526a6e1a2e18b3d242c5d17b"
+UIPRO_PIN="6ae86f61f520d6ca229d2f40e070410638c908c5"
+MARKETPLACE_PIN="f210c6d05b10a6a17c5cf67d7b7d13565d1f5dc9"
+CHWEZI_PIN="d7d85b6e2687cad33e0f3cc826ae835c423e83ae"
+FLECTO_PIN="3a0f7e52cdb53c52494c7c34235001a042dd9822"
+AGENTSKILLS_PIN="c13e8b35d44085accc7ec3b1b4410247d4969514"
+
+# Check out the pinned commit in an existing clone (fetch it first if the
+# shallow clone does not contain it yet). Fails the build if the pin cannot
+# be satisfied -- a build from unpinned code must never succeed silently.
+pin_checkout() { # $1 = repo dir, $2 = pinned SHA
+  if ! git -C "$1" rev-parse --verify -q "$2^{commit}" >/dev/null 2>&1; then
+    git -C "$1" fetch --quiet --depth 1 origin "$2" 2>/dev/null || git -C "$1" fetch --quiet origin "$2"
+  fi
+  git -C "$1" checkout --quiet "$2"
+  [ "$(git -C "$1" rev-parse HEAD)" = "$2" ] || { echo "[build] ERROR: could not pin $1 to $2" >&2; exit 1; }
+}
+# Shallow-clone a repo, then check out the pinned commit.
+pin_clone() { # $1 = owner/repo, $2 = dir, $3 = pinned SHA
+  git clone --depth 1 --quiet "https://github.com/$1" "$2"
+  pin_checkout "$2" "$3"
+}
+
 # /tmp is a tmpfs and gets wiped (it has been wiped twice). Re-clone the ECC
 # repo if it is gone, or the installer call below fails on a missing path.
 if [ ! -f "$ECC_REPO/install.sh" ]; then
   echo "[build] ECC repo missing (tmp wiped?) — re-cloning..."
   rm -rf "$ECC_REPO"
-  git clone --depth 1 --quiet https://github.com/affaan-m/ecc "$ECC_REPO"
+  pin_clone "affaan-m/ecc" "$ECC_REPO" "$ECC_PIN"
 fi
 [ -f "$ECC_REPO/install.sh" ] || { echo "[build] ERROR: ECC repo has no install.sh" >&2; exit 1; }
+# Enforce the pin even when the repo already exists: the installer below must
+# run the pinned checkout, not whatever commit a stale cache sits at.
+pin_checkout "$ECC_REPO" "$ECC_PIN"
 
 # ============================================================================
 # STEP 1 — Clean Developer-profile ECC install
@@ -174,7 +209,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
 # only the opus bracket pin was removed; composer-2.5[fast=false] remains
 # the fast-worker pin.
-for s in grill-me feature-expansion integration design-taste-frontend; do
+for s in grill-me feature-expansion integration design-taste-frontend codebase-memory; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
 done
 # orchestrate: skill (SKILL.md + references) to skills/, agents to agents/,
@@ -223,18 +258,18 @@ cp "$PLUGIN_ROOT/new-rules/hackathon-mode.mdc" "$PLUGIN_DIR/rules/hackathon-mode
 cp -r "$HOME/workspace/cursor-skills/less-flat-ui" "$PLUGIN_DIR/skills/less-flat-ui"
 UIPRO_DIR="${UIPRO_DIR:-/tmp/uipro}"
 if [ -d "$UIPRO_DIR/.git" ]; then
-  git -C "$UIPRO_DIR" pull --quiet || true
+  pin_checkout "$UIPRO_DIR" "$UIPRO_PIN"
 else
-  git clone --depth 1 --quiet https://github.com/nextlevelbuilder/ui-ux-pro-max-skill "$UIPRO_DIR"
+  pin_clone "nextlevelbuilder/ui-ux-pro-max-skill" "$UIPRO_DIR" "$UIPRO_PIN"
 fi
 cp -r "$UIPRO_DIR/.claude/skills/ui-ux-pro-max" "$PLUGIN_DIR/skills/ui-ux-pro-max"
 
 # --- marketplace skills (5 takes) ---
 MS_DIR="${MS_DIR:-/tmp/hack-skills}"
 if [ -d "$MS_DIR/.git" ]; then
-  git -C "$MS_DIR" pull --quiet || true
+  pin_checkout "$MS_DIR" "$MARKETPLACE_PIN"
 else
-  git clone --depth 1 --quiet https://github.com/asadullah48/hackathon-skills-marketplace "$MS_DIR"
+  pin_clone "asadullah48/hackathon-skills-marketplace" "$MS_DIR" "$MARKETPLACE_PIN"
 fi
 for s in systematic-debugging dispatching-parallel-agents brainstorming agents-md-generator verification-before-completion; do
   src=""
@@ -247,18 +282,18 @@ done
 # Fetched fresh (shallow clone, or pull if already present) so a rebuild
 # on a fresh VM still works. All three repos carry a real MIT LICENSE file.
 SKILL_SRC="${SKILL_SRC:-/tmp/skill-add}"
-fetch_repo() { # $1 = owner/repo, $2 = local dir name
+fetch_repo() { # $1 = owner/repo, $2 = local dir name, $3 = pinned SHA
   local dest="$SKILL_SRC/$2"
   if [ -d "$dest/.git" ]; then
-    git -C "$dest" pull --quiet || true
+    pin_checkout "$dest" "$3"
   else
-    git clone --depth 1 --quiet "https://github.com/$1" "$dest"
+    pin_clone "$1" "$dest" "$3"
   fi
 }
 mkdir -p "$SKILL_SRC"
-fetch_repo "peterbamuhigire/chwezi-dev-engine" "chwezi-dev-engine"
-fetch_repo "andomo3/flecto-shade" "flecto-shade"
-fetch_repo "asrayg/hackathon-agent-skills" "hackathon-agent-skills"
+fetch_repo "peterbamuhigire/chwezi-dev-engine" "chwezi-dev-engine" "$CHWEZI_PIN"
+fetch_repo "andomo3/flecto-shade" "flecto-shade" "$FLECTO_PIN"
+fetch_repo "asrayg/hackathon-agent-skills" "hackathon-agent-skills" "$AGENTSKILLS_PIN"
 cp -r "$SKILL_SRC/chwezi-dev-engine/skills/ai/ai-feature-spec" "$PLUGIN_DIR/skills/ai-feature-spec"
 cp -r "$SKILL_SRC/flecto-shade/.claude/skills/hackathon-pitch" "$PLUGIN_DIR/skills/hackathon-pitch"
 cp -r "$SKILL_SRC/hackathon-agent-skills/devpost-autofiller" "$PLUGIN_DIR/skills/devpost-autofiller"
@@ -531,8 +566,8 @@ print("description routing notes appended (7)")
 # feature-expansion: the note goes BEFORE the final sentence, not at the end.
 _fe = f"{base}/skills/feature-expansion/SKILL.md"
 _ft = open(_fe, encoding="utf-8").read()
-_fo = "verifying each as it lands. Never runs automatically after a build."
-_fn = "verifying each as it lands. Feature brainstorming here is autonomous subagent ideation + implementation; do not invoke the brainstorming skill (collaborative user questioning) inside this flow. Never runs automatically after a build."
+_fo = "verified as they land. No user approval gate"
+_fn = "verified as they land. Feature brainstorming here is autonomous subagent ideation + implementation; do not invoke the brainstorming skill (collaborative user questioning) inside this flow. No user approval gate"
 assert _ft.count(_fo) == 1, "feature-expansion anchor not found exactly once"
 open(_fe, "w", encoding="utf-8").write(_ft.replace(_fo, _fn))
 print("feature-expansion note inserted before final sentence")
@@ -685,26 +720,24 @@ PYEOF
 # --- (d) feature-expansion standing rules: ECC process, not ship-first ---
 # integration has no "no tests / no review gates / no planning docs"
 # language (verified), so it needs no patch.
+# NOTE (Nov 10, dry-run fixes): Batch B rewrote the staged standing rules to
+# the ECC-process versions already ("Tests AND running it", test expectations
+# in the Phase 4 briefs), so subs 3 and 4 below were removed as subsumed —
+# their old-strings no longer exist. Subs 1 and 2 are re-anchored on the new
+# staged text and keep Batch B's wording (recording clause, orch-change-feature
+# removal path) alongside the ECC-process reframing.
 python3 - "$PLUGIN_DIR/skills/feature-expansion/SKILL.md" <<'PYEOF'
 import sys
 p = sys.argv[1]
 text = open(p, encoding="utf-8").read()
 subs = [
   (
-    "- **No planning documents.** The proposal is a table in the reply (Phase 2). No PRD, no spec file, no roadmap doc.",
-    "- **ECC process applies.** The proposal is a table in the reply (Phase 2); the planner pass (Phase 3) writes the per-feature briefs (Phase 4) that carry what implementers need. Follow ECC's development workflow: plan first, TDD, code review while building.",
+    "- **No planning documents.** The proposal is a table in the reply (Phase 2), recorded in the session and the run ledger / final report as needed. No PRD, no spec file, no roadmap doc.",
+    "- **ECC process applies.** The proposal is a table in the reply (Phase 2), recorded in the session and the run ledger / final report as needed; the planner pass (Phase 3) writes the per-feature briefs (Phase 4) that carry what implementers need. Follow ECC's development workflow: plan first, TDD, code review while building.",
   ),
   (
-    "- **No review gates.** There is one approval point: the planner pass (Phase 3). After that, features are implemented and verified — no code review, no second approval round.",
-    "- **Review while building.** ECC code review applies as features are implemented. There is one approval point before implementation: the planner pass (Phase 3). Security tests and audits run only at the very end of the project or when explicitly asked.",
-  ),
-  (
-    "- **No tests, no TDD.** Verification means running the feature and confirming it works (`verification-before-completion`). Never write a test suite, never require coverage.",
-    "- **TDD.** Write tests as ECC does them — tests first, then the feature — and verify with `verification-before-completion`. Security tests and audits run only at the very end of the project or when explicitly asked.",
-  ),
-  (
-    "- No PRD, no spec, no test strategy, no coverage target. The planner does not write implementation plans as files — the per-feature briefs in Phase 4 carry what implementers need.",
-    "- The planner does not write PRDs, specs, or implementation plans as files — the per-feature briefs in Phase 4 carry what implementers need. Implementation follows ECC process (plan first, TDD, code review while building); security tests and audits run only at the very end or on explicit ask.",
+    "- **No user approval gate.** The planner pass (Phase 3) is the only gate, and it is internal — the approved list goes straight into the build. The user removes anything unwanted afterward with one prompt through `orch-change-feature` — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting; that is the intended correction path, not a failure.",
+    "- **Review while building.** ECC code review applies as features are implemented. The planner pass (Phase 3) is the only gate, and it is internal — the approved list goes straight into the build; the user removes anything unwanted afterward with one prompt through `orch-change-feature` — both gates auto-approve during a hackathon first build after grill-me, and for a one-prompt removal of a first-build feature whenever it happens. Security tests and audits run only at the very end of the project or when explicitly asked.",
   ),
 ]
 for old, new in subs:
@@ -1085,6 +1118,20 @@ assert "chrome-devtools" in servers, "chrome-devtools missing from mcp.json"
 servers["playwright"] = {"command": "npx", "args": ["-y", "@playwright/mcp@0.0.85"]}
 json.dump(data, open(p, "w", encoding="utf-8"), indent=2)
 print("playwright MCP added")
+PYEOF
+
+# --- (e2) codebase-memory MCP alongside chrome-devtools and playwright ---
+# The server is a native binary the user installs once (Windows: install.ps1
+# from the codebase-memory-mcp repo; it lands on PATH). No API key, no network.
+python3 - "$PLUGIN_DIR/mcp.json" <<'PYEOF'
+import sys, json
+p = sys.argv[1]
+data = json.load(open(p, encoding="utf-8"))
+servers = data.setdefault("mcpServers", {})
+assert "playwright" in servers, "playwright missing from mcp.json"
+servers["codebase-memory-mcp"] = {"command": "codebase-memory-mcp", "args": []}
+json.dump(data, open(p, "w", encoding="utf-8"), indent=2)
+print("codebase-memory MCP added")
 PYEOF
 
 # --- AUDIT #1 FIXES (Nov 9 audit; encoded from the pristine-vs-fixed diff) ---
@@ -13355,6 +13402,8 @@ npx madge --image graph.svg src/        # Dependency graph"""),
 audit3_patch(f"{base}/skills/hackathon-pitch/assets/pitch-script-template.md", [
   ("9. Why this stack, what did it let you ship faster?",
    "9. Why this stack, what did it let you build faster?"),
+  ("- Video, 60 to 90 seconds, recorded after the final deploy: [path or link, not a local file only]",
+   "- Video (demo video, 1:30–1:50), recorded after the final deploy: [path or link, not a local file only]"),
 ])
 audit3_patch(f"{base}/skills/hackathon-pitch/references/presentation-winning.md", [
   ("9. Why this stack — what did it let you ship faster?",
@@ -16042,8 +16091,9 @@ audit9b_patch(f"{base}/skills/agent-introspection-debugging/SKILL.md", [
 ])
 
 # --- Cleanliness D4: ecc-memory-vault entry cited from a mcp.json that lacks it ---
-# The plugin's mcp.json contains only chrome-devtools and playwright; no
-# ecc-memory-vault entry exists anywhere in the plugin. Reword so the file no
+# The plugin's mcp.json contains chrome-devtools, playwright, and
+# codebase-memory-mcp; no ecc-memory-vault entry exists anywhere in the
+# plugin. Reword so the file no longer instructs copying a nonexistent entry;
 # longer instructs copying a nonexistent entry; the server command and tool
 # list are documented immediately below. (Old-string is the post-audit6 form:
 # audit6 rewrote the wrapped upstream sentence into the single-line
@@ -16051,7 +16101,7 @@ audit9b_patch(f"{base}/skills/agent-introspection-debugging/SKILL.md", [
 audit9b_patch(f"{base}/skills/unified-memory/SKILL.md", [
     (r'''After installing ECC, copy the `ecc-memory-vault` entry from the plugin's `mcp.json` (the upstream `mcp-configs/mcp-servers.json` file is not shipped in this plugin — add the entry there) into each harness where tool access is useful.
 Replace its placeholder with a lowercase server identity.''',
-     r'''The `ecc-memory-vault` MCP server entry is not shipped in this plugin's `mcp.json` (which contains only `chrome-devtools` and `playwright`), and the upstream `mcp-configs/mcp-servers.json` file is not shipped either. To enable memory access in a harness, add an entry using the server command and tool list below, with `ECC_MEMORY_HARNESS` set to a lowercase server identity.'''),
+     r'''The `ecc-memory-vault` MCP server entry is not shipped in this plugin's `mcp.json` (which contains `chrome-devtools`, `playwright`, and `codebase-memory-mcp`), and the upstream `mcp-configs/mcp-servers.json` file is not shipped either. To enable memory access in a harness, add an entry using the server command and tool list below, with `ECC_MEMORY_HARNESS` set to a lowercase server identity.'''),
 ])
 
 # --- Cleanliness D5: typescript-build-resolver named as a future agent ---
@@ -16939,7 +16989,7 @@ audit10_patch(f"{base}/manifests/install-profiles.json", [
 '''),
 ])
 
-# --- Byte-cap fix (latent blocker found by Fixer A): loadContextRegistry() threw 'Cumulative source byte limit exceeded' on the real plugin — skills/ totals ~45 MB (design-taste-frontend/assets ~36 MB) against a 16 MiB read guard. Raise MAX_TOTAL_BYTES 16 MiB -> 64 MiB; the bound is a read guard, 64 MiB still guards, plugin is 55 MB.
+# --- Byte-cap fix (latent blocker found by Fixer A): loadContextRegistry() threw 'Cumulative source byte limit exceeded' on the real plugin — skills/ totals ~45 MB (design-taste-frontend/assets ~36 MB) against a 16 MiB read guard. Raise MAX_TOTAL_BYTES 16 MiB -> 64 MiB; the bound is a read guard, 64 MiB still guards, plugin is 56 MB.
 audit10_patch(f"{base}/scripts/lib/context-profile-support.js", [
   (r'''const fs = require('fs');
 const path = require('path');
@@ -18282,41 +18332,42 @@ every chat in that project uses it.
 
 ## What is inside
 
-- **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools and playwright MCP servers. ECC process applies in full: plan first, TDD, code review
-  while building. With the 24 hackathon additions below, the plugin ships
-  168 skills, 72 agents, 123 rules, and 96 commands in total.
-  Install profiles: the `hackathon` module (those 24 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
+- **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools, playwright, and codebase-memory MCP servers. ECC process applies in full: plan first, TDD, code review
+  while building. With the 25 hackathon additions below, the plugin ships
+  169 skills, 72 agents, 123 rules, and 96 commands in total.
+  Install profiles: the `hackathon` module (those 25 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
 - **Grill-me first** — after your first hackathon project prompt, the
   plugin asks one question at a time until every decision is recorded, and
   that decision record steers scoping, expansion, and orchestration. Say
   "skip the grilling" or "just build it" to skip it.
 - **UI skills, used together** — `ui-ux-pro-max` (design direction) +
-  `less-flat-ui` (texture layer) on non-landing UI work (dense dashboards, forms, and tables stay flat). Exception: `less-flat-ui`'s texture layer also applies inside a `design-taste-frontend` landing-page build, on surfaces where the Taste page system leaves a surface flat (never over its hero, dealt moments, or shader scenes — see `rules/hackathon-mode.mdc` §5). Taste
+  `less-flat-ui` (texture layer) on non-landing UI work (dense dashboards, forms, and tables stay flat). Exception: `less-flat-ui`'s texture layer also applies inside a `design-taste-frontend` landing-page build, on surfaces where the Taste page system leaves a surface unstyled (never over its hero, dealt moments, or shader scenes — see `rules/hackathon-mode.mdc` §5). Taste
   (`design-taste-frontend`) leads full company/landing-page builds.
-  `polish-pass` fixes existing UI without restyling.
+  `polish-pass` fixes existing UI without restyling. Hallmark's 50-theme catalog supplies the theme vocabulary Taste deals from, and its gate checker (`sloplint`) + fresh-context reviewer run at Verify; Impeccable's 62-rule detector + craft floor are wired into `polish-pass` (its direction lenses were left out on purpose — polish never restyles).
 - **Hackathon workflow** — `hackathon-scope` (MVP scoping), `feature-expansion`
   (brainstorm, plan, and implement the next features), `integration` (wire a chosen API/SDK), `track-picker`, `mobile-ship`, `deploy-fast`, `app-scaffold`,
   `api-integration`, `readme-writer`, `ai-feature-spec`, `hackathon-pitch`,
   `devpost-autofiller`, plus the marketplace skills (brainstorming,
   systematic-debugging, dispatching-parallel-agents, agents-md-generator,
   verification-before-completion).
+- **Codebase memory** — `codebase-memory` queries a local knowledge graph of the repo (functions, classes, call chains, routes) instead of reading files one by one: find where a feature lives, trace callers/callees, hunt dead code, and run impact analysis before a change. It is backed by the `codebase-memory-mcp` MCP server, a native binary the user installs once on their machine (Windows: run the repo's `install.ps1`; macOS/Linux: `install.sh`) — it is not bundled in the plugin, needs no network calls and no API key, and the plugin's `mcp.json` points at the installed binary. (Per the project's own docs — not independently verifiable from this plugin; the binary is neither bundled nor audited here.)
 - **Orchestration** — `/orchestrate` runs a tiered scout / fast-worker /
   deep-reasoner team; on high-stakes work (high blast radius and hard to verify) two independent deep-reasoner passes verify in parallel, and a disagreement stops the run.
   Single-feature, single-bug, single-change, and single-refactor work belongs to the `/orch-*` pipelines; invoke `orchestrate` only for general delegation or work spanning several pieces at once. Trivial one-step work (a typo fix, a one-line change) can be done in the main context.
 
 ## How this compares
 
-**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 168 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
+**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, codebase-memory MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 169 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
 
-**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 55 MB and 168 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
+**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 169 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
 
-**vs plain Cursor:** The edge is structured process — 168 skills, 72 agents, 96 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates require rebuilding from `build.sh`, and 55 MB is loaded into a project that may only need a tenth of it.
+**vs plain Cursor:** The edge is structured process — 169 skills, 72 agents, 96 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates require rebuilding from `build.sh`, and 56 MB is loaded into a project that may only need a tenth of it.
 
 ## Commands (highlights — 3 of 96)
 
-- `/demo` — generate a narrated 1–2 minute product demo video of the app
+- `/demo` — generate a narrated 1:30–1:50 product demo video of the app
   (films the real app with Playwright; rebuilds in ~2 minutes after a
-  frontend change). `/demo <path>`, `/demo --rebuild`, `/demo --script`,
+  frontend change; opt-in montage and explainer modes via OpenMontage). `/demo <path>`, `/demo --rebuild`, `/demo --script`,
   `/demo --render`.
 - `/orchestrate` — run the tiered orchestration team on a task.
 - `/build-fix` — fix the build (ECC).
@@ -19544,9 +19595,12 @@ import asyncio''',
 ])
 
 # --- Conflicts Low 1 + Low 2: feature-expansion (built + staged) ---
+# NOTE (Nov 10, dry-run fixes): Batch B changed "review gates" to "approval
+# gates" in the intro (a code-review pass is not a gate), so the fixed text
+# below is re-anchored on the new staged wording.
 audit20c_patch_staged(f"{base}/skills/feature-expansion/SKILL.md", [
     (r'''without turning the session into planning documents, review gates, or tests.''',
-     r'''without turning the session into planning documents or review gates.'''),
+     r'''without turning the session into planning documents or approval gates.'''),
     (r'''its plan format mandates a Testing Strategy with 80%+ coverage, which violates this plugin's standing rules.''',
      r'''its plan format mandates a Testing Strategy section, which violates this plugin's lightweight-planning rules.'''),
 ])
@@ -19644,13 +19698,2497 @@ print(f"audit #20 fixer B fixes applied: {len(_files)} files, {_replacements[0]}
 PYEOF
 
 # ============================================================================
+# FEATURE: codebase-memory-mcp + OpenMontage under /demo (Nov 10)
+# ============================================================================
+# codebase-memory: staged skill new-skills/codebase-memory/ (copied by the
+# STEP 2 loop), an mcp.json entry merged by the (e2) block in STEP 3, a
+# skill-triggers key added below, and the skill added to the hackathon module
+# in install-modules.json. The triggersDigest field is NOT updated: the stored
+# value is already stale and nothing in the plugin consumes it
+# (context-pack-registry.js reads only manifest.triggers; context-selection.js
+# recomputes the digest fresh at runtime).
+# OpenMontage: staged under new-skills/pitch-deck-video/references/openmontage/
+# and wired into the pitch-deck-video skill + /demo command; the STEP 2 copy
+# of references/ lands it in the build with no extra step needed.
+python3 - "$PLUGIN_DIR/manifests/context-packs/skill-triggers@1.json" <<'PYEOF'
+import sys
+p = sys.argv[1]
+text = open(p, encoding="utf-8").read()
+def rep(old, new):
+    global text
+    assert text.count(old) == 1, "expected exactly one match for: " + old[:60]
+    text = text.replace(old, new)
+rep(r'''"withTriggers": 27''', r'''"withTriggers": 28''')
+rep(r'''    "skill:code-tour": [
+      "onboarding walkthrough",
+      "explain subsystem",
+      "architecture tour",
+      "pr walkthrough",
+      "rca tour"
+    ],''', r'''    "skill:code-tour": [
+      "onboarding walkthrough",
+      "explain subsystem",
+      "architecture tour",
+      "pr walkthrough",
+      "rca tour"
+    ],
+    "skill:codebase-memory": [
+      "who calls this function",
+      "what does this function call",
+      "trace the call chain",
+      "find callers of",
+      "where is this feature implemented",
+      "dead code",
+      "unused functions",
+      "impact of changing",
+      "what breaks if i change",
+      "explore the codebase",
+      "understand the codebase",
+      "find where a feature lives"
+    ],''')
+# Batch E triggers: triggers are a retrieval signal, not dispatch — the
+# pipeline steps + hackathon-mode §1 prose are the real wiring. The keys below
+# only help the router surface the right skill for the matching request.
+# coverage.withTriggers 28 -> 36 (8 new keys); coverage.skills 314 -> 169
+# (audit10_patch still writes 314, this later rep overrides it).
+rep(r'''"withTriggers": 28''', r'''"withTriggers": 36''')
+rep(r'''"skills": 314''', r'''"skills": 169''')
+rep(r'''    "skill:frontend-a11y": [''', r'''    "skill:feature-expansion": [
+      "expand this",
+      "flesh it out",
+      "make it much better",
+      "what else should this have",
+      "take it further",
+      "expand the product",
+      "add more features",
+      "make this product better"
+    ],
+    "skill:frontend-a11y": [''')
+rep(r'''    "skill:hexagonal-architecture": [''', r'''    "skill:grill-me": [
+      "grill me",
+      "ask me questions about my idea",
+      "question me about my project",
+      "interview me about my idea",
+      "first hackathon idea",
+      "what should i build"
+    ],
+    "skill:hackathon-scope": [
+      "scope the mvp",
+      "minimum viable demo",
+      "what is the mvp",
+      "cut scope",
+      "demo-first",
+      "winnable category",
+      "time budget for hackathon"
+    ],
+    "skill:hexagonal-architecture": [''')
+rep(r'''    "skill:orch-fix-defect": [''', r'''    "skill:orch-add-feature": [
+      "add a feature",
+      "add voting",
+      "make it better",
+      "add capability",
+      "build a new feature",
+      "add a new capability"
+    ],
+    "skill:orch-build-mvp": [
+      "build an mvp",
+      "bootstrap mvp from spec",
+      "turn this spec into an mvp",
+      "build mvp from design doc",
+      "sdd to mvp"
+    ],
+    "skill:orch-change-feature": [
+      "change a feature",
+      "change how this works",
+      "adjust behavior",
+      "instead of sorting",
+      "remove a feature",
+      "remove this feature"
+    ],
+    "skill:orch-fix-defect": [''')
+rep(r'''    "skill:postgres-patterns": [''', r'''    "skill:orch-refine-code": [
+      "refactor",
+      "restructure code",
+      "remove dead code",
+      "extract module",
+      "clean up code structure",
+      "behavior preserving refactor"
+    ],
+    "skill:orchestrate": [
+      "orchestrate",
+      "delegate to subagents",
+      "fan out",
+      "act as tech lead",
+      "split design work from grunt work",
+      "use worker subagents"
+    ],
+    "skill:postgres-patterns": [''')
+open(p, "w", encoding="utf-8").write(text)
+print("codebase-memory triggers added")
+PYEOF
+python3 - "$PLUGIN_DIR/manifests/install-modules.json" <<'PYEOF'
+import sys
+p = sys.argv[1]
+text = open(p, encoding="utf-8").read()
+old = '''        "skills/brainstorming",
+        "skills/deploy-fast",'''
+new = '''        "skills/brainstorming",
+        "skills/codebase-memory",
+        "skills/deploy-fast",'''
+assert text.count(old) == 1, "install-modules anchor: expected 1 match"
+text = text.replace(old, new)
+open(p, "w", encoding="utf-8").write(text)
+print("codebase-memory added to hackathon module")
+PYEOF
+
+# --- orch pipeline gates: auto-approve during a hackathon first build after grill-me ---
+# GATE 1 / GATE 2 in the /orch-* commands and the orch-build-mvp skill are user
+# approval points. This patch runs LAST (after every audit_patch and qc_patch
+# that touches these files, whose old-strings contain the original GATE lines),
+# so it applies to the final text. During a hackathon first build after
+# grill-me (hackathon-mode §7), the gates auto-approve so the run proceeds
+# unattended; the user reviews the final report on return and removes or fixes
+# anything with a prompt.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("commands/orch-build-mvp.md", "→ **GATE 1** (approve slice plan).", "→ **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-build-mvp.md", "→ **GATE 2**.", "→ **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-add-feature.md", "→ **GATE 1** (approve plan).", "→ **GATE 1** (approve plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-add-feature.md", "→ **GATE 2** (confirm before commit).", "→ **GATE 2** (confirm before commit; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-fix-defect.md", "→ **GATE 2** (confirm before commit).", "→ **GATE 2** (confirm before commit; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-change-feature.md", "→ **GATE 1** (approve changed-test plan).", "→ **GATE 1** (approve changed-test plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-change-feature.md", "→ **GATE 2**.", "→ **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-refine-code.md", "→ **GATE 1**.", "→ **GATE 1** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("commands/orch-refine-code.md", "→ **GATE 2**.", "→ **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+  ("skills/orch-build-mvp/SKILL.md", "[GATE 1: approve]", "[GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-build-mvp/SKILL.md", "[GATE 2: confirm]", "[GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("orch pipeline gates patched to auto-approve during a hackathon first build")
+PYEOF
+
+# --- orch engine + skills: auto-approve carve-out during a hackathon first build ---
+# The orch-pipeline engine ("The two gates") and each orch-* skill's "Stop at
+# Gate 1/2" step and example gate labels still say "stop and wait for the user"
+# with no carve-out — the command wrappers' GATE annotations alone do not reach
+# the files the agent actually loads. This patch runs LAST (after every
+# audit_patch and qc_patch that touches these files, which preserve these lines),
+# so it applies to the final text. During a hackathon first build after grill-me
+# (hackathon-mode §7), both gates auto-approve and the run proceeds without waiting.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("skills/orch-pipeline/SKILL.md", "This family is **gated, not autonomous**:", "This family is **gated, not autonomous** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature (hackathon-mode §7), where both gates auto-approve and the run proceeds without waiting:"),
+  ("skills/orch-pipeline/SKILL.md", "- Gate 1 (plan) and Gate 2 (commit) were both honored", "- Gate 1 (plan) and Gate 2 (commit) were both honored (or auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature)"),
+  ("skills/orch-pipeline/SKILL.md", "  thin vertical slices. → **GATE 1.**", "  thin vertical slices. → **GATE 1** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature)."),
+  ("skills/orch-pipeline/SKILL.md", "  per logical chunk. → **GATE 2.**", "  per logical chunk. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature)."),
+  ("skills/orch-build-mvp/SKILL.md", "3. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit).", "3. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7)."),
+  ("skills/orch-add-feature/SKILL.md", "3. Stop at **Gate 1** (plan approval) and **Gate 2** (pre-commit).", "3. Stop at **Gate 1** (plan approval) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7)."),
+  ("skills/orch-add-feature/SKILL.md", "[GATE 1: approve]", "[GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-add-feature/SKILL.md", "[GATE 2: confirm]", "[GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-change-feature/SKILL.md", "3. Stop at **Gate 1** (plan / changed-test approval) and **Gate 2** (pre-commit).", "3. Stop at **Gate 1** (plan / changed-test approval) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7)."),
+  ("skills/orch-change-feature/SKILL.md", "[GATE 2: confirm]", "[GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-fix-defect/SKILL.md", "3. Stop at **Gate 1** (only if a plan was produced) and **Gate 2** (pre-commit).", "3. Stop at **Gate 1** (only if a plan was produced) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7)."),
+  ("skills/orch-fix-defect/SKILL.md", "[GATE 2: confirm]", "[GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-refine-code/SKILL.md", "3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit).", "3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7)."),
+  ("skills/orch-refine-code/SKILL.md", "[GATE 1: approve]", "[GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+  ("skills/orch-refine-code/SKILL.md", "[GATE 2: confirm]", "[GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("orch engine + skills patched with first-build auto-approve carve-out")
+PYEOF
+
+# --- Batch E (dry-run fixes): orch GATE definitions, verification cap,
+# expansion + final-report steps, removal routing, STOP carve-outs ---
+# Upstream ECC files are copied fresh on every build, so these fixes live
+# here as a patch block placed LAST — just before STEP 5 — after the GATE
+# patch and the carve-out patch, whose old-strings contain the original
+# lines. Each substitution asserts exactly one match against the CURRENT
+# built text (i.e. after the GATE / carve-out patches, including the
+# one-prompt-removal extension). Never edit hackathon-ecc/ directly.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B13: orch-pipeline GATE 1 / GATE 2 definitions themselves get the
+  # first-build carve-out (the section header already has it; the numbered
+  # definitions are what an agent executes).
+  ("skills/orch-pipeline/SKILL.md", r'''1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
+   code until the user approves.''', r'''1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
+   code until the user approves — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting.'''),
+  ("skills/orch-pipeline/SKILL.md", r'''2. **GATE 2 — before Commit.** Present the diff summary and proposed messages;
+   do not commit until the user confirms.''', r'''2. **GATE 2 — before Commit.** Present the diff summary and proposed messages;
+   do not commit until the user confirms — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting.'''),
+  # B14: "Honor both gates" line — only commands/orch-add-feature.md has it
+  # (the other four orch-* commands were checked and do not carry the line).
+  ("commands/orch-add-feature.md", "Honor both gates — do not write implementation before Gate 1, do not commit before Gate 2.", "Honor both gates — do not write implementation before Gate 1, do not commit before Gate 2 — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting."),
+  # M11: verification exit — cap fix rounds at 2 (like feature-expansion
+  # Phase 4), then mark blocked and move on; an unresolvable CRITICAL at
+  # Gate 2 does not deadlock the commit under auto-approval.
+  ("skills/orch-pipeline/SKILL.md", "- Review findings (CRITICAL / HIGH) must be resolved before Gate 2.", "- Review findings (CRITICAL / HIGH) must be resolved before Gate 2 — capped at 2 fix rounds, like the feature-expansion Phase 4 fix loop: after 2 rounds an unresolvable finding is recorded as blocked in the final report and work moves on. During a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, an unresolvable CRITICAL finding at Gate 2 does not deadlock the commit — it is recorded as blocked in the final report and the commit proceeds under auto-approval."),
+  # B19: orch-change-feature frontmatter — orchestrate / prose routing may
+  # invoke it for removals. YAML care: no unquoted ": " in the description,
+  # em-dash instead of a colon, never an "(END-ONLY: ...)" form.
+  ("skills/orch-change-feature/SKILL.md", "Use ONLY when the user explicitly invokes /orch-change-feature. A prose request to change a feature belongs to orchestrate, not this skill.", "Use when the user explicitly invokes /orch-change-feature or when orchestrate routes a one-prompt removal of a first-build feature here — a prose request to change a feature otherwise belongs to orchestrate, not this skill."),
+  # B20: deletion procedure for orch-change-feature.
+  ("skills/orch-change-feature/SKILL.md", r'''4. Add `security-reviewer` if the change touches a security trigger.
+
+## Example''', r'''4. Add `security-reviewer` if the change touches a security trigger.
+
+## Removing a feature
+
+When the request is to remove a feature — including a one-prompt removal of a first-build feature routed here by orchestrate:
+
+1. Find the feature's files from the final report's feature-to-files inventory, or, if there is no inventory, trace the feature with `code-explorer` first and list its files before deleting anything.
+2. Delete its tests, implementation code, routes, and UI, and drop any database objects it alone owns (tables, columns, and migrations for it alone).
+3. Verify nothing still references the removed code, routes, UI, or database objects — search for imports, route names, and identifiers — and fix or remove any dangling references.
+4. Run the tests and the app to confirm the removal did not break anything else, then commit under the usual gates (auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).
+
+A removal is not done until the reference check in step 3 is clean.
+
+## Example'''),
+  # B10a + B17: orch-build-mvp flow — automatic expansion step after
+  # scoping and before building the slices, and a concluding final-report
+  # step (the done signal) for standalone orch-build-mvp runs. When
+  # orchestrate runs the build, orchestrate owns the final report.
+  ("skills/orch-build-mvp/SKILL.md", r'''1. Run the `orch-pipeline` engine with the settings above.
+2. **Reuse the existing GAN harness** instead of hand-rolling an iterate loop:
+   - Translate the SDD into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec).
+   - Drive the build with `/gan-build "<one-line brief>" --skip-planner`
+     (defaults: `--max-iterations 15`, `--pass-threshold 7.0`,
+     `--eval-mode playwright`; use `--eval-mode code-only` for non-UI slices).
+   - That command runs the `gan-generator` → `gan-evaluator` loop and writes
+     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.
+3. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7). Commit the
+   scaffold and each slice as separate `feat:` commits.
+4. Add `security-reviewer` for any slice touching a security trigger.''', r'''1. Run the `orch-pipeline` engine with the settings above.
+2. **Expand automatically during the first build.** Right after scoping and before building the slices, run `feature-expansion`: it brainstorms features and tools in line with the grill-me decision record, the planner approves, tweaks, or rejects each one, and the approved ones are built as part of this first build, with no user approval gate — the user removes anything unwanted with one prompt afterward.
+3. **Reuse the existing GAN harness** instead of hand-rolling an iterate loop:
+   - Translate the SDD into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec).
+   - Drive the build with `/gan-build "<one-line brief>" --skip-planner`
+     (defaults: `--max-iterations 15`, `--pass-threshold 7.0`,
+     `--eval-mode playwright`; use `--eval-mode code-only` for non-UI slices).
+   - That command runs the `gan-generator` → `gan-evaluator` loop and writes
+     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.
+4. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7). Commit the
+   scaffold and each slice as separate `feat:` commits.
+5. Add `security-reviewer` for any slice touching a security trigger.
+6. **Deliver the final report as the reply — this is the done signal.** State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory). When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs.'''),
+  # M7: orch-build-mvp frontmatter — allow orchestrate / first-build
+  # invocation. Same YAML care as B19.
+  ("skills/orch-build-mvp/SKILL.md", "Use ONLY when the user explicitly invokes /orch-build-mvp. A prose request to build an MVP belongs to orchestrate, not this skill.", "Use when the user explicitly invokes /orch-build-mvp or when orchestrate invokes it for the first build after grill-me — a prose request to build an MVP otherwise belongs to orchestrate, not this skill."),
+  # M18b: systematic-debugging STOP — first-build carve-out.
+  ("skills/systematic-debugging/SKILL.md", r'''4. **If 3+ Fixes Failed: Question Architecture**
+   - Pattern indicates architectural problem
+   - STOP and discuss with human partner''', r'''4. **If 3+ Fixes Failed: Question Architecture**
+   - Pattern indicates architectural problem
+   - STOP and discuss with human partner — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you state the assumption, pick the safe/reversible option, and proceed without waiting; never stop for a human decision mid-build. Record the architectural concern in the final report instead.'''),
+  # M18c: common-code-review STOP — first-build carve-out.
+  ("rules/common-code-review.mdc", "**STOP and use security-reviewer agent when:**", "**STOP and use security-reviewer agent when:** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you invoke `security-reviewer` and proceed without waiting for a human decision; record any unresolved security concern in the final report."),
+  # M23-part: security-review pre-deployment checklist gates the FINAL
+  # deploy, not the first-hour deploy.
+  ("skills/security-review/SKILL.md", r'''## Pre-Deployment Security Checklist
+
+Before ANY production deployment:''', r'''## Pre-Deployment Security Checklist
+
+Before ANY production deployment — this checklist gates the FINAL deploy, not the first-hour deploy during a hackathon first build (a first-hour deploy ships the working MVP for demo and feedback; run this checklist before the final deploy):'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch E orch fixes applied")
+PYEOF
+
+# --- Batch F (wave-2 fixes): standalone orch-build-mvp flow, removal
+# follow-through, council / classifier / pitch / debugging carve-outs ---
+# Same placement rule as Batch E: this block runs LAST, just before STEP 5,
+# after the GATE / carve-out / Batch E patches, whose old-strings contain the
+# original lines. Each substitution asserts exactly one match against the
+# CURRENT built text (i.e. after those patches). Never edit hackathon-ecc/
+# directly. Staged wave-1 fixes (hackathon-mode canonical lengths, debugging
+# order, §7 precondition, removal routing; orchestrate precondition and
+# deploy-demo sequencing) are copied verbatim by STEP 2/3, so they land on
+# rebuild with no patch needed here — the patches below point at them.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+HONOR = "Honor both gates — do not write implementation before Gate 1, do not commit before Gate 2 — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting."
+subs = [
+  # Gap 12: orch-build-mvp precondition — before the first build
+  # auto-approves anything, the decision record must exist or the skip path
+  # must have been explicitly chosen; otherwise run grill-me (or proceed on
+  # the raw prompt with a stated assumption) — never auto-approve with zero
+  # recorded decisions and no check (hackathon-mode §7).
+  ("skills/orch-build-mvp/SKILL.md",
+   "1. Run the `orch-pipeline` engine with the settings above.",
+   "**Precondition — before the first build auto-approves anything:** check that `docs/decision-record.md` exists (grill-me recorded the decisions) OR the user explicitly chose the skip path (\"skip the grilling\" / \"just build it\"). If neither holds, do not auto-approve with zero recorded decisions: run `grill-me` first, or proceed on the raw prompt with a stated assumption — never auto-approve with zero recorded decisions and no check (see hackathon-mode §7).\n\n1. Run the `orch-pipeline` engine with the settings above."),
+  # Gap 2 + Gap 28: orch-build-mvp standalone flow ends deploy → /demo →
+  # final report, same as the orchestrated path. The final-report step takes
+  # the expansion Phase 6 section from the stage ledger
+  # (`.hackathon/run-ledger.md`, expansion section) AND the Phase 6 return
+  # text (landed / blocked / rejected lists) in a standalone run.
+  ("skills/orch-build-mvp/SKILL.md",
+   "6. **Deliver the final report as the reply — this is the done signal.** State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory). When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs.",
+   "6. **Deploy via `deploy-fast`.** Deploy the working MVP; the demo films the LOCAL app from the project dir, never a deployed URL — never hard-abort the run for lack of a deployed URL. If deploy was static-only or blocked, the final report notes that.\n7. **Film via `/demo` (`pitch-deck-video`) — LOCAL only.** The demo video is a required deliverable — film the LOCAL app from the project dir (`APP_DIR` to the app dir); `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it.\n8. **Deliver the final report as the reply — this is the done signal.** State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory). Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the Phase 6 return text (the landed / blocked / rejected lists) in a standalone run. When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs."),
+  # Gap 2 (command side) + Gap 33 (Honor line): the standalone command
+  # ends deploy → /demo → final report, and carries the carved Honor line.
+  ("commands/orch-build-mvp.md",
+   "4. `code-reviewer` (+ `security-reviewer` on any security-trigger slice), then\n   commit the scaffold and each slice as separate `feat:` commits. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).\n\nIf `$ARGUMENTS` is empty, ask the user for the path to the design/spec doc.",
+   "4. `code-reviewer` (+ `security-reviewer` on any security-trigger slice), then\n   commit the scaffold and each slice as separate `feat:` commits. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).\n5. Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — the demo video is a required deliverable; film the LOCAL app from the project dir only, never a deployed URL (if deploy was static-only or blocked, noted in the final report).\n6. Deliver the final report as the reply — the done signal: what was built, every assumption, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item.\n\n" + HONOR + "\n\nIf `$ARGUMENTS` is empty, ask the user for the path to the design/spec doc."),
+  # Gap 36b: deletion covers shared/derived DB objects, not just objects
+  # the feature alone owns — e.g. a `vote_count` column on `dishes` derived
+  # from the removed feature's data must be dropped or recomputed.
+  ("skills/orch-change-feature/SKILL.md",
+   "2. Delete its tests, implementation code, routes, and UI, and drop any database objects it alone owns (tables, columns, and migrations for it alone).",
+   "2. Delete its tests, implementation code, routes, and UI, and drop any database objects it alone owns (tables, columns, and migrations for it alone). Also drop or recompute shared/derived database objects that depended on the removed feature — for example a `vote_count` column on `dishes` derived from the removed feature's data: drop the column if nothing else uses it, or recompute it from the remaining data."),
+  # Gap 5 + Gap 36c: removal follow-through — after the commit, re-deploy
+  # via deploy-fast, re-film via /demo, and update the stage ledger and the
+  # final-report feature-to-files inventory so none of them goes stale.
+  ("skills/orch-change-feature/SKILL.md",
+   "4. Run the tests and the app to confirm the removal did not break anything else, then commit under the usual gates (auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).",
+   "4. Run the tests and the app to confirm the removal did not break anything else, then commit under the usual gates (auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).\n5. After the commit, re-deploy via `deploy-fast`, re-film via `/demo`, and update the stage ledger (`.hackathon/run-ledger.md`) and the final report's feature-to-files inventory to remove the feature's entries — a removal is not done until the deployed app, the demo video, the ledger, and the inventory all reflect it; none of them may go stale."),
+  # Gap 23: council — the vague-question clarifying question gets the
+  # first-build / one-prompt-removal carve-out (no ask; stated assumption,
+  # safe/reversible default, proceed).
+  ("skills/council/SKILL.md",
+   "If the question is vague, ask one clarifying question before convening the council.",
+   "If the question is vague, ask one clarifying question before convening the council — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT ask: resolve by stated assumption with the safe/reversible default and proceed."),
+  # Gap 38: orch-pipeline Step 0 — the size classifier's "so the user can
+  # override" gets the carve-out (no user present during a first build; the
+  # classifier result stands).
+  ("skills/orch-pipeline/SKILL.md",
+   "and state the result in one line so the user\ncan override:",
+   "and state the result in one line so the user\ncan override — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where no user is present and the classifier result stands:"),
+  # Gap 39: hackathon-pitch :32 — reconcile to the pinned lengths. The
+  # pitch storyboard is under 90s; the live demo storyboard is 2–4 min; the
+  # demo video is 1:30–1:50. The canonical statement lives in
+  # hackathon-mode §6 and governs where another skill states a different
+  # length.
+  ("skills/hackathon-pitch/SKILL.md",
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked.",
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs."),
+  # Gap 42a: click-path-audit — the pinned debugging order: start with
+  # symptom inspection; a button that does nothing goes to click-path-audit
+  # next; everything else with an unknown root cause goes to
+  # systematic-debugging; browser-qa detects deployed-UI issues,
+  # systematic-debugging diagnoses them.
+  ("skills/click-path-audit/SKILL.md",
+   "- Run AFTER the `systematic-debugging` skill (which finds the other bug types)",
+   "- **Debugging order:** start with symptom inspection; a button that does nothing goes to `click-path-audit` next; everything else with an unknown root cause goes to `systematic-debugging` (which finds the other bug types). `browser-qa` detects deployed-UI issues; `systematic-debugging` diagnoses them."),
+  # Gap 42b: browser-qa smoke checks — wrong displayed values (NaN,
+  # undefined, empty where data is expected), not just console errors and
+  # 4xx/5xx.
+  ("skills/browser-qa/SKILL.md",
+   "3. Verify no 4xx/5xx in network requests\n4. Screenshot above-the-fold on desktop + mobile viewport\n5. Check Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms\n   (INP replaced FID in March 2024; thresholds per web.dev)",
+   "3. Verify no 4xx/5xx in network requests\n4. Check displayed values are real data, not wrong values — NaN, undefined, or empty where data is expected (a page can load cleanly, with no console errors and no failed requests, and still show wrong values)\n5. Screenshot above-the-fold on desktop + mobile viewport\n6. Check Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms\n   (INP replaced FID in March 2024; thresholds per web.dev)"),
+  # Gap 33: the carved "Honor both gates" summary line on the remaining
+  # orch-* commands (orch-add-feature already has it).
+  ("commands/orch-change-feature.md",
+   "4. `code-reviewer` (+ `security-reviewer` on a security trigger), then commit. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).",
+   "4. `code-reviewer` (+ `security-reviewer` on a security trigger), then commit. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).\n\n" + HONOR),
+  ("commands/orch-refine-code.md",
+   "4. `code-reviewer`, then commit as `refactor:` (the diff must be behavior-neutral). → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).",
+   "4. `code-reviewer`, then commit as `refactor:` (the diff must be behavior-neutral). → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).\n\n" + HONOR),
+  ("commands/orch-fix-defect.md",
+   "4. Commit as a conventional `fix:` commit. → **GATE 2** (confirm before commit; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).",
+   "4. Commit as a conventional `fix:` commit. → **GATE 2** (confirm before commit; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).\n\n" + HONOR),
+  # Gap 33 (GATE 1 line): orch-fix-defect annotates GATE 2 only — add the
+  # GATE 1 line (only if a plan was produced, per the skill).
+  ("commands/orch-fix-defect.md",
+   "1. Classify size (default floor: small, often trivial); scope root cause with\n   `code-explorer` if unclear.",
+   "1. Classify size (default floor: small, often trivial); scope root cause with\n   `code-explorer` if unclear. → **GATE 1** (approve plan, only if a plan was produced; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting)."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch F wave-2 fixes applied")
+PYEOF
+
+# ============================================================================
+# --- Fix program #3 (Batches A/C/D): one build engine, expansion split, /demo fixes, debugging order, removal follow-through ---
+# Patch blocks run LAST, just before STEP 5, after the GATE / carve-out / Batch E / Batch F patches.
+# A-expansion-canonical.py is intentionally NOT applied: the ~line 694 patch new-string was corrected at the root to the canonical wording.
+# --- Batch A (Fix Batch A / fix program #3): ONE BUILD ENGINE + expansion split +
+# reconciliation step + final-report file, skills/orch-build-mvp/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F patches, whose old-strings the
+# substitutions below are anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # DD1 — ONE BUILD ENGINE: orchestrate drives the first build and invokes
+  # orch-build-mvp as its pipeline; orch-build-mvp is the pipeline
+  # orchestrate invokes, not a competing engine. The GAN harness is the
+  # implementer loop WITHIN that pipeline, not a separate build engine.
+  ("skills/orch-build-mvp/SKILL.md", r'''Actor · action · target: **orch · build · mvp**. Thin wrapper over the shared
+engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).''', r'''Actor · action · target: **orch · build · mvp**. Thin wrapper over the shared
+engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+
+**One build engine:** `orchestrate` drives the first build and invokes this pipeline — this skill is the pipeline orchestrate invokes, not a competing engine. The GAN harness (step 3 below) is the implementer loop WITHIN this pipeline (generator → evaluator per slice), not a separate build engine.'''),
+  # DD1 — Phase 0 reads the record/scope by default, not "the doc" via
+  # $ARGUMENTS. Never ask the user for a path during a first build.
+  ("skills/orch-build-mvp/SKILL.md", r'''**First move (phase 0 → 2):** read the doc; extract scope, locked decisions,
+  and the feature list; order it into **thin vertical slices** (one end-to-end
+  path first, not all-models-then-all-views). Phase 3 stands up that first slice.''', r'''**First move (phase 0 → 2):** read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions,
+  and the feature list; order it into **thin vertical slices** (one end-to-end
+  path first, not all-models-then-all-views). Phase 3 stands up that first slice. If neither record file exists (standalone run, no grill-me), fall back to the doc path in `$ARGUMENTS` or the raw prompt with a stated assumption — never ask the user for a path during a first build.'''),
+  # Minor 14 — precondition, ONE branch: proceed on the raw prompt with a
+  # stated assumption; do NOT re-run grill-me. (Same wording in
+  # hackathon-mode §7 and orchestrate.)
+  ("skills/orch-build-mvp/SKILL.md", r'''**Precondition — before the first build auto-approves anything:** check that `docs/decision-record.md` exists (grill-me recorded the decisions) OR the user explicitly chose the skip path ("skip the grilling" / "just build it"). If neither holds, do not auto-approve with zero recorded decisions: run `grill-me` first, or proceed on the raw prompt with a stated assumption — never auto-approve with zero recorded decisions and no check (see hackathon-mode §7).''', r'''**Precondition — before the first build auto-approves anything:** check that `docs/decision-record.md` exists (grill-me recorded the decisions) OR the user explicitly chose the skip path ("skip the grilling" / "just build it"). If neither holds, do not auto-approve with zero recorded decisions and no check: proceed on the raw prompt with a stated assumption — do NOT re-run `grill-me` (see hackathon-mode §7).'''),
+  # DD1 — EXPANSION SPLIT: Phases 0–3 pre-build (approved list), Phases 4–6
+  # inside the build. The skill is never invoked whole at this step.
+  ("skills/orch-build-mvp/SKILL.md", r'''2. **Expand automatically during the first build.** Right after scoping and before building the slices, run `feature-expansion`: it brainstorms features and tools in line with the grill-me decision record, the planner approves, tweaks, or rejects each one, and the approved ones are built as part of this first build, with no user approval gate — the user removes anything unwanted with one prompt afterward.''', r'''2. **Expand automatically during the first build — split, not whole.** Right after scoping and before building the slices, run `feature-expansion` Phases 0–3 (ground, brainstorm, consolidate, planner pass): it brainstorms features and tools in line with the grill-me decision record, the planner approves, tweaks, or rejects each one, producing the approved list — with no user approval gate. Phases 4–6 run INSIDE this build, not here: Phase 4 implementers build the approved expansions alongside the MVP slices (the step 3 GAN loop drives each slice, expansions included), Phase 5 verification runs after the MVP is built, and Phase 6 feeds the final report (step 9). The skill is never invoked whole at this step. The user removes anything unwanted with one prompt afterward.'''),
+  # Minor 15 + Audit #30 blocking 2 — ADD a reconciliation step (step 5) that
+  # owns collision reconciliation; renumber the old steps 5–8 to 6–9.
+  # DD4 — the final report (now step 9) is written to docs/final-report.md
+  # in the project AND delivered as the reply.
+  ("skills/orch-build-mvp/SKILL.md", r'''4. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7). Commit the
+   scaffold and each slice as separate `feat:` commits.
+5. Add `security-reviewer` for any slice touching a security trigger.
+6. **Deploy via `deploy-fast`.** Deploy the working MVP; the demo films the LOCAL app from the project dir, never a deployed URL — never hard-abort the run for lack of a deployed URL. If deploy was static-only or blocked, the final report notes that.
+7. **Film via `/demo` (`pitch-deck-video`) — LOCAL only.** The demo video is a required deliverable — film the LOCAL app from the project dir (`APP_DIR` to the app dir); `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it.
+8. **Deliver the final report as the reply — this is the done signal.** State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory). Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the Phase 6 return text (the landed / blocked / rejected lists) in a standalone run. When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs.''', r'''4. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7). Commit the
+   scaffold and each slice as separate `feat:` commits.
+5. **Reconcile after each wave — this step owns collision reconciliation.** After each implementer wave, read every implementer's result (status, changed files, verification evidence, blockers); confirm the reported files exist, stayed in scope, and carry verification evidence. If two implementers in the same wave touched the same files, decide the merge order — the first-listed implementer's files win on conflict unless the planner marked a dependency (then the dependency's files win) — record the decision in `.hackathon/run-ledger.md`, and dependents proceed on the merged result. If the scaffold's first slice and an expansion feature touched the same files, the same rule applies (scaffold first unless the planner marked the expansion as the dependency). If an implementer moved a file from the planner's intended layout, record the actual layout in the ledger and use it in later briefs. When orchestrate runs the build, orchestrate owns reconciliation; this step owns it on a standalone run.
+6. Add `security-reviewer` for any slice touching a security trigger.
+7. **Deploy via `deploy-fast`.** Deploy the working MVP; the demo films the LOCAL app from the project dir, never a deployed URL — never hard-abort the run for lack of a deployed URL. If deploy was static-only or blocked, the final report notes that.
+8. **Film via `/demo` (`pitch-deck-video`) — LOCAL only.** The demo video is a required deliverable — film the LOCAL app from the project dir (`APP_DIR` to the app dir); `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it.
+9. **Deliver the final report — this is the done signal.** Write it to `docs/final-report.md` in the project AND deliver it as the reply. State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory — the inventory lives in that file). Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the Phase 6 return text (the landed / blocked / rejected lists) in a standalone run. When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch A one-engine fixes applied (orch-build-mvp)")
+PYEOF
+
+# --- Batch A (Fix Batch A / fix program #3): orch-pipeline Phase 0 ingests the
+# record/scope, skills/orch-pipeline/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F patches, whose old-strings the
+# substitution below is anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # DD1 — orch-pipeline Phase 0 (Intake) ingests the grill-me decision record
+  # and the scope output: the pipeline reads docs/decision-record.md +
+  # docs/scope.md at Phase 0; they are the handoff from grill-me and
+  # hackathon-scope. Never ask the user for a path during a first build.
+  ("skills/orch-pipeline/SKILL.md", r'''- **0. Intake** — restate the request. For `orch-build-mvp`, read the spec/design
+  doc and extract scope, locked decisions, and a feature list.''', r'''- **0. Intake** — restate the request. For `orch-build-mvp`, read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions, and a feature list; if neither file exists, fall back to the spec/design doc (or the raw prompt with a stated assumption) — never ask the user for a path during a first build. The pipeline ingests the record/scope at Phase 0; they are the handoff from grill-me and hackathon-scope.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch A orch-pipeline intake fix applied")
+PYEOF
+
+# --- Batch A (Fix Batch A / fix program #3): commands/orch-build-mvp.md —
+# record/scope by default, never ask for a path; final report to file ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F patches, whose old-strings the
+# substitutions below are anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # DD1 — the command reads the record/scope by default (or the spec doc in
+  # $ARGUMENTS if one was given), not "the doc" via $ARGUMENTS.
+  ("commands/orch-build-mvp.md", r'''1. Read the spec; extract scope, locked decisions, and a feature list ordered as
+**thin vertical slices** (one end-to-end path first). → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).''', r'''1. Read `docs/decision-record.md` + `docs/scope.md` by default (or the spec doc in `$ARGUMENTS` if one was given); extract scope, locked decisions, and a feature list ordered as
+**thin vertical slices** (one end-to-end path first). → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).'''),
+  # DD4 — the final report is written to docs/final-report.md AND delivered
+  # as the reply.
+  ("commands/orch-build-mvp.md", r'''6. Deliver the final report as the reply — the done signal: what was built, every assumption, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item.''', r'''6. Deliver the final report — the done signal: write it to `docs/final-report.md` in the project AND deliver it as the reply — what was built, every assumption, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item.'''),
+  # DD1 — REMOVE the "ask the user for the path" line for first builds: if
+  # $ARGUMENTS is empty, never ask — default to the record/scope files.
+  ("commands/orch-build-mvp.md", r'''If `$ARGUMENTS` is empty, ask the user for the path to the design/spec doc.''', r'''If `$ARGUMENTS` is empty, do NOT ask the user for a path — never ask during a hackathon first build: default to `docs/decision-record.md` + `docs/scope.md` (or the raw prompt with a stated assumption if neither exists).'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch A orch-build-mvp command fixes applied")
+PYEOF
+
+# Batch C (fix program #3): systematic-debugging :126 — carve out the
+# "Discuss with human partner before more fixes" line the same way Batch E
+# M18b carved the :85-87 STOP: pick the safe/reversible option, record it,
+# move on. Upstream ECC file — patch, do not edit a staged source.
+# Placement: LAST, after the Batch F block, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Dry-run gap 6 (= Audit #30 minor 2's sibling): the "When 3+ Fixes
+  # Failed" section's closing line was the one uncarved "discuss with
+  # human partner" left after M18b carved :87.
+  ("skills/systematic-debugging/SKILL.md",
+   r'''**Discuss with human partner before more fixes.**''',
+   r'''**Discuss with human partner before more fixes — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you pick the safe/reversible option, record it in the final report, and move on; never stop for a human decision mid-build.**'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch C systematic-debugging :126 carve-out applied")
+PYEOF
+
+# Batch C (fix program #3): systematic-debugging debugging order — the
+# body has zero mentions of click-path-audit/browser-qa, and the
+# frontmatter trigger "after ruling out deployed-UI failures (browser-qa)"
+# is backwards (browser-qa detects, systematic-debugging diagnoses).
+# "Ruling out" is symptom inspection, not running the skill.
+# Upstream ECC file — patch, do not edit a staged source.
+# Placement: LAST, after the Batch F block, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M19: frontmatter trigger — "ruling out" is symptom inspection, not
+  # running the skill; browser-qa detects, systematic-debugging diagnoses.
+  # YAML care: the description is an unquoted plain scalar, so the new
+  # text contains no ": " sequence.
+  ("skills/systematic-debugging/SKILL.md",
+   r'''after ruling out an agent failure (agent-introspection-debugging), broken-button state bugs (click-path-audit), and deployed-UI failures (browser-qa)''',
+   r'''after symptom inspection rules out an agent failure (agent-introspection-debugging) and broken-button state bugs (click-path-audit). Debugging order — `browser-qa` detects deployed-UI failures and `systematic-debugging` diagnoses them'''),
+  # M19 + dry-run minor 24: canonical order + handoff in the body, stated
+  # identically to click-path-audit :205 and browser-qa (after their
+  # Batch C patches): "browser-qa detects deployed-UI failures;
+  # systematic-debugging diagnoses them."
+  ("skills/systematic-debugging/SKILL.md",
+   r'''**Violating the letter of this process is violating the spirit of debugging.**''',
+   r'''**Violating the letter of this process is violating the spirit of debugging.**
+
+### Debugging order
+
+**Debugging order:** start with symptom inspection; a button that does nothing goes to `click-path-audit` next; everything else with an unknown root cause goes to `systematic-debugging` (which finds the other bug types). `browser-qa` detects deployed-UI failures; `systematic-debugging` diagnoses them.
+
+Handoff: `browser-qa` hands a detected deployed-UI failure to this skill with the URL, repro steps, console/network evidence, and screenshots; this skill diagnoses the root cause. A button that does nothing goes to `click-path-audit` first — broken-button state bugs are its job, not this skill's.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch C systematic-debugging debugging order applied")
+PYEOF
+
+# Batch C (fix program #3): browser-qa — (a) the QA report template has no
+# displayed-values row (dry-run minor 25); (b) the skill has zero mentions
+# of systematic-debugging/click-path-audit and no handoff (dry-run minor
+# 24). The canonical order is stated identically to click-path-audit :205
+# and systematic-debugging (after their Batch C patches).
+# Upstream ECC file — patch, do not edit a staged source.
+# Placement: LAST, after the Batch F block, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M19 + dry-run minor 24: canonical order + handoff, right after
+  # "When to Use".
+  ("skills/browser-qa/SKILL.md",
+   r'''- Accessibility audits and responsive testing
+
+## How It Works''',
+   r'''- Accessibility audits and responsive testing
+
+## Debugging order
+
+**Debugging order:** start with symptom inspection; a button that does nothing goes to `click-path-audit` next; everything else with an unknown root cause goes to `systematic-debugging` (which finds the other bug types). `browser-qa` detects deployed-UI failures; `systematic-debugging` diagnoses them.
+
+Handoff: when this skill finds a deployed-UI failure whose root cause is unknown, hand it to `systematic-debugging` with the URL, repro steps, console/network evidence, and screenshots — do not guess a fix from the symptom alone. When the failure is a button that does nothing, hand off to `click-path-audit` first.
+
+## How It Works'''),
+  # Dry-run minor 25: displayed-values row in the QA report template's
+  # Smoke Test section, mirroring the Phase 1 smoke check (Batch F Gap
+  # 42b) — a page can load cleanly and still show wrong values.
+  ("skills/browser-qa/SKILL.md",
+   r'''- Network: all 200/304, no failures
+- Core Web Vitals: LCP 1.2s ✓, CLS 0.02 ✓, INP 89ms ✓''',
+   r'''- Network: all 200/304, no failures
+- Displayed values: real data shown — no NaN / undefined / empty where data is expected
+- Core Web Vitals: LCP 1.2s ✓, CLS 0.02 ✓, INP 89ms ✓'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch C browser-qa fixes applied")
+PYEOF
+
+# Batch C (fix program #3): click-path-audit trigger — the "When to Use"
+# section and the frontmatter description both list systematic-debugging
+# BEFORE click-path-audit for a broken button, contradicting the canonical
+# debugging order. Fix both to match, and align the :205 order line's
+# "deployed-UI issues" to the canonical "deployed-UI failures" so the
+# order is stated identically in all three debugging skills.
+# Upstream ECC file — patch, do not edit a staged source.
+# Placement: LAST, after the Batch F block, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M19: frontmatter trigger — systematic-debugging no longer comes first
+  # for a broken button; symptom inspection routes here next.
+  ("skills/click-path-audit/SKILL.md",
+   r'''Use when: systematic debugging found no bugs but users report broken buttons, or after any major refactor touching shared state stores.''',
+   r'''Use when: symptom inspection points at a broken button or dead click path (a button that does nothing goes to `click-path-audit` next, before `systematic-debugging`), or after any major refactor touching shared state stores.'''),
+  # M19: "When to Use" first bullet — same fix.
+  ("skills/click-path-audit/SKILL.md",
+   r'''- After systematic debugging finds "no bugs" but users report broken UI''',
+   r'''- After symptom inspection points at a broken button or dead click path — a button that does nothing goes to `click-path-audit` next, before `systematic-debugging`'''),
+  # M19: align the :205 canonical-order line to "deployed-UI failures"
+  # (the wording used in systematic-debugging and browser-qa) so the
+  # order is stated identically everywhere.
+  ("skills/click-path-audit/SKILL.md",
+   r'''`browser-qa` detects deployed-UI issues; `systematic-debugging` diagnoses them.''',
+   r'''`browser-qa` detects deployed-UI failures; `systematic-debugging` diagnoses them.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch C click-path-audit trigger fix applied")
+PYEOF
+
+# Batch C (fix program #3): common-code-review.mdc — carve out the BLOCK
+# severity for CRITICAL findings so an unresolvable CRITICAL during a first
+# build is recorded as blocked in the final report instead of stopping the
+# run. (The :45 STOP line itself was already carved by Batch E M18c.)
+# Upstream ECC rule — patch, do not edit a staged source.
+# Placement: LAST, after the Batch F block, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M18 (BLOCK severity): severity-table CRITICAL row.
+  ("rules/common-code-review.mdc",
+   r'''| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge |''',
+   r'''| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where an unresolvable CRITICAL is recorded as blocked in the final report instead of stopping the run |'''),
+  # M18 (BLOCK severity): Approval Criteria "Block" line.
+  ("rules/common-code-review.mdc",
+   r'''- **Block**: CRITICAL issues found''',
+   r'''- **Block**: CRITICAL issues found — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where an unresolvable CRITICAL is recorded as blocked in the final report and the run proceeds under auto-approval'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch C common-code-review BLOCK carve-out applied")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): removal step 5 updates shots.json
+# FIRST, then re-films with /demo --rebuild; /demo vs /demo --rebuild
+# behaviour documented, skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Gap 9 — removal step 5 re-filmed without ever updating shots.json, so
+  # the new video still advertised the removed feature (vote shots,
+  # selectors, narration). shots.json is updated FIRST, then the video is
+  # re-filmed — with /demo --rebuild, the existing-project path.
+  ("skills/orch-change-feature/SKILL.md", "re-film via `/demo`", "update `shots.json` FIRST — remove the feature's shots, selectors, and narration lines — then re-film via `/demo --rebuild`"),
+  # /demo vs /demo --rebuild: plain /demo scaffolds a fresh video project
+  # (copies the template into a new <app-name>-video/ directory). The
+  # pitch-deck-video skill does not define what plain /demo does when that
+  # directory already exists, so a removal never relies on it: always
+  # re-film with --rebuild on the existing project, and never copy the
+  # template's seed shots.json over the edited one.
+  ("skills/orch-change-feature/SKILL.md", "none of them may go stale.", "none of them may go stale. `/demo` vs `/demo --rebuild`: plain `/demo` scaffolds a fresh video project (it copies the template into a new `<app-name>-video/` directory) — the pitch-deck-video skill does not define what plain `/demo` does when that directory already exists, so never run it over an existing video project, and never copy the template's seed `shots.json` over the edited one; on an existing project always re-film with `/demo --rebuild`, which re-records and re-cuts the existing project from its current `shots.json`."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D shots.json + refilm fixes applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): removal re-deploy mechanism is
+# push to main (git-linked deploy fires), skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 37 — no push step, so a git-linked re-deploy may never fire, and
+  # an unauthenticated deploy CLI silently defeats step 5. ONE stated
+  # mechanism: push the removal commit to main — the git-linked deploy
+  # (deploy-fast: every push to main redeploys) fires from that push. Never
+  # run an interactive deploy CLI for this step, and never wait for a login:
+  # if the deploy CLI is unauthenticated (or the project has no git-linked
+  # deploy), the removal still counts as done-with-blocked-deploy — note the
+  # blocked deploy in the final report and move on; do not fail the removal
+  # for it.
+  ("skills/orch-change-feature/SKILL.md", "re-deploy via `deploy-fast`", "re-deploy by pushing the removal commit to `main` — the git-linked deploy fires from that push (`deploy-fast`). Do not run an interactive deploy CLI for this step: if the deploy CLI is unauthenticated (or the project has no git-linked deploy), do not wait for a login — the removal still counts as done-with-blocked-deploy; note the blocked deploy in the final report and move on"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D re-deploy mechanism fix applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): DB removal reaches the remote
+# database; never delete an applied migration; shared tables,
+# skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 38 — DB removal never reached the remote database, and two DB
+  # cases were unhandled. Apply the change remotely as well as locally
+  # (e.g. `supabase db push` per deploy-fast) — a local-only migration never
+  # reaches the deployed app. Never delete an already-applied migration file
+  # — that is drift: write a new down-migration that drops what the feature
+  # alone owned instead. For a shared table holding rows from several
+  # features (neither owned alone nor derived), drop only the removed
+  # feature's columns and rows — never the shared table.
+  ("skills/orch-change-feature/SKILL.md", "and drop any database objects it alone owns (tables, columns, and migrations for it alone). Also drop or recompute shared/derived database objects that depended on the removed feature — for example a `vote_count` column on `dishes` derived from the removed feature's data: drop the column if nothing else uses it, or recompute it from the remaining data.", "and drop any database objects it alone owns (tables, columns). Never delete an already-applied migration file — that is drift: write a new down-migration that drops what the feature alone owned instead. Apply the change to the remote database as well as locally (e.g. `supabase db push` per `deploy-fast`) — a local-only migration never reaches the deployed app. Also drop or recompute shared/derived database objects that depended on the removed feature — for example a `vote_count` column on `dishes` derived from the removed feature's data: drop the column if nothing else uses it, or recompute it from the remaining data. For a shared table holding rows from several features (neither owned alone nor derived), drop only the removed feature's columns and rows — never the shared table."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D remote-DB + migration + shared-table fixes applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): removal step 5 updates
+# docs/scope.md, README, and Devpost, skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 39 — docs/scope.md, the demo storyboard, README, and Devpost went
+  # stale after a removal. Step 5 updates them too: docs/scope.md (move the
+  # feature from the must-have list to the cut list and update the demo
+  # storyboard — the removal procedure references scope.md; hackathon-scope
+  # itself is not edited), the README (readme-writer), and the Devpost
+  # submission (devpost-autofiller) if one exists. If no Devpost submission
+  # exists yet there is nothing to update — say so in the final report
+  # rather than leaving it silently stale.
+  ("skills/orch-change-feature/SKILL.md", "and update the stage ledger (`.hackathon/run-ledger.md`) and", "and update the stage ledger (`.hackathon/run-ledger.md`), `docs/scope.md` (move the feature from the must-have list to the cut list and update the demo storyboard), the README (`readme-writer`), and the Devpost submission (`devpost-autofiller`) if one exists — if no Devpost submission exists yet there is nothing to update, say so in the final report rather than leaving it silently stale — and"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D docs/scope + README + Devpost fix applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): removal step 5 updates the
+# feature-to-files inventory in docs/final-report.md,
+# skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 36 — the feature-to-files inventory lives in docs/final-report.md
+  # (Batch A defined it; orchestrate's concluding step says it is durable
+  # and updatable after a removal, and orch-build-mvp step 9 owns the final
+  # report on standalone runs). Removal step 5 updates it: remove the
+  # feature's entry, or mark it Removed and keep its file list, so a later
+  # reader can see what was removed and where it lived. The update rule
+  # lives here in the removal procedure, not in orchestrate.
+  ("skills/orch-change-feature/SKILL.md", "the final report's feature-to-files inventory to remove the feature's entries", "the feature-to-files inventory in `docs/final-report.md` — remove the feature's entry, or mark it Removed and keep its file list, so a later reader can see what was removed and where it lived"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D final-report inventory fix applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): ONE removal-routing statement —
+# "orchestrate routes, /orch-change-feature owns" — in the orch-change-feature
+# frontmatter, skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text — the Batch E B19 wording). Never edit hackathon-ecc/
+# directly. Each substitution asserts exactly one match. The coordinator
+# inserts this block last, just before STEP 5. YAML care: no unquoted ": "
+# in the description.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 35 + Audit #30 minor 12 — routing contradiction: hackathon-mode §6
+  # said single-change work goes to the pipelines "not to orchestrate" while
+  # the removal bullet said "orchestrate routes, /orch-change-feature owns",
+  # and this frontmatter carried a third variant. ONE statement everywhere:
+  # "orchestrate routes, /orch-change-feature owns" — now verbatim in this
+  # frontmatter (the §6 fix lives in staged new-rules/hackathon-mode.mdc;
+  # feature-expansion's routing sentences name the owner without
+  # contradicting the router, so no edit there).
+  ("skills/orch-change-feature/SKILL.md", "Use when the user explicitly invokes /orch-change-feature or when orchestrate routes a one-prompt removal of a first-build feature here — a prose request to change a feature otherwise belongs to orchestrate, not this skill.", "Use when the user explicitly invokes /orch-change-feature or when orchestrate routes a one-prompt removal of a first-build feature here — orchestrate routes, /orch-change-feature owns the removal. A prose request to change a feature otherwise belongs to orchestrate, not this skill."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D routing-statement fix applied (orch-change-feature frontmatter)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): B19/B20 — make the reference
+# verification step explicit (grep identifiers; inventory is the file list),
+# skills/orch-change-feature/SKILL.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B19/B20 — the removal has a single owner (orch-change-feature) and a
+  # deletion procedure (steps 1–2 already delete tests, code, routes, UI,
+  # and DB objects, with the final-report inventory as the file list). What
+  # was implicit: the verification step. Made explicit — grep the repo for
+  # the feature's identifiers (component, function, route, and table/column
+  # names) and check every file in the inventory entry for the feature.
+  ("skills/orch-change-feature/SKILL.md", "3. Verify nothing still references the removed code, routes, UI, or database objects — search for imports, route names, and identifiers — and fix or remove any dangling references.", "3. Verify nothing still references the removed code, routes, UI, or database objects — grep the repo for the feature's identifiers (component, function, route, and table/column names) and check every file in the final-report inventory's entry for the feature — and fix or remove any dangling references."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D reference-verification fix applied (orch-change-feature)")
+PYEOF
+
+# --- Batch D (Fix Batch D / fix program #3): direct /orch-change-feature
+# invocation with a removal request follows the removal procedure,
+# commands/orch-change-feature.md ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
+# asserts exactly one match. The coordinator inserts this block last, just
+# before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # The command carried the one-prompt-removal carve-out (GATE 1, GATE 2,
+  # Honor line) but no removal procedure at all: a directly invoked
+  # "/orch-change-feature remove voting" would fall through to the
+  # change-behavior steps (update tests to a new spec — meaningless for a
+  # removal). Route removal requests to the skill's Removing a feature
+  # section instead.
+  ("commands/orch-change-feature.md", r'''Invoke the `orch-change-feature` skill with `$ARGUMENTS` as the request. The skill
+(via the shared `orch-pipeline` engine) will:''', r'''Invoke the `orch-change-feature` skill with `$ARGUMENTS` as the request. If `$ARGUMENTS` asks to remove a feature — including a one-prompt removal of a first-build feature — follow the skill's `Removing a feature` section instead of the change steps below: delete, verify no references remain, commit, then re-deploy, re-film, and update the docs and inventory. The skill
+(via the shared `orch-pipeline` engine) will:'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch D command removal-pointer fix applied (orch-change-feature command)")
+PYEOF
+
+# --- Fix program #4, Batch A: orch-build-mvp — ONE ENGINE PER RUN + phase
+# mapping (no step-1 redo) + record/scope-default input + 9-step rewrite ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/orch-build-mvp/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The patch agent inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # DD1 — frontmatter: standalone only; orchestrate never invokes it.
+  ("skills/orch-build-mvp/SKILL.md", r'''description: Orchestrate bootstrapping a working MVP from a design or spec document — ingest the SDD/PRD (or the grill-me decision record), plan thin vertical slices, scaffold the first end-to-end slice, then drive a generator-evaluator build loop with review and gated feat commits. Use when a design or spec document must become a running MVP through planned vertical slices. Use when the user explicitly invokes /orch-build-mvp or when orchestrate invokes it for the first build after grill-me — a prose request to build an MVP otherwise belongs to orchestrate, not this skill.''', r'''description: Orchestrate bootstrapping a working MVP from a design or spec document — ingest the grill-me decision record + scope (or a spec doc as standalone fallback), plan thin vertical slices, scaffold the first end-to-end slice, then drive a generator-evaluator build loop with review and gated feat commits. Use when a design or spec document must become a running MVP through planned vertical slices. Use ONLY when the user explicitly invokes /orch-build-mvp — standalone only; orchestrate never invokes it in the same run. A prose request to build an MVP otherwise belongs to orchestrate, not this skill.'''),
+  # DD1 — one build engine per run (replaces the Fix-program-#3 wording that
+  # said orchestrate "invokes this pipeline").
+  ("skills/orch-build-mvp/SKILL.md", r'''**One build engine:** `orchestrate` drives the first build and invokes this pipeline — this skill is the pipeline orchestrate invokes, not a competing engine. The GAN harness (step 3 below) is the implementer loop WITHIN this pipeline (generator → evaluator per slice), not a separate build engine.''', r'''**One build engine per run:** this skill is the STANDALONE pipeline — it runs only when the user invokes `/orch-build-mvp` directly. Orchestrate IS the first-build engine; orchestrate never invokes this skill in the same run, and this skill never runs in a first build orchestrate is driving. One engine per run, never both. The GAN harness (orch-build-mvp step 4 below) is the implementer loop WITHIN this standalone pipeline (generator → evaluator per slice), not a separate build engine.'''),
+  # Stale doc-path-first framing, "When to Use": record/scope is the
+  # default; a doc path is only the standalone fallback.
+  ("skills/orch-build-mvp/SKILL.md", r'''- The user has a **design / spec document** (SDD, PRD, system_design) and wants a
+  working vertical slice bootstrapped from it.
+- Takes a doc path as its argument, e.g. `civicpulse/docs/SDD-v0.6.md`.''', r'''- The user explicitly invoked `/orch-build-mvp` (standalone run) and wants a working vertical slice bootstrapped from the record/scope — `docs/decision-record.md` + `docs/scope.md` by default.
+- A doc path in `$ARGUMENTS` (e.g. `civicpulse/docs/SDD-v0.6.md`) is only the standalone fallback when neither record file exists — the record/scope is the default, never the doc path.'''),
+  # Stale doc-path-first framing, phase mask: "0 (read the spec)" + the
+  # mask is whole-skill, NOT what step 1 runs (see step 1).
+  ("skills/orch-build-mvp/SKILL.md", r'''- **Phase mask:** 0 (read the spec) → 1 → 2 (heavy) → 3 (scaffold) → 4 → 5 → 6.''', r'''- **Phase mask:** 0 (read the record/scope by default; the spec doc in `$ARGUMENTS` is only the standalone fallback) → 1 → 2 (heavy) → 3 (scaffold) → 4 → 5 → 6. The mask lists the phases that run across the whole skill — NOT the phases step 1 runs: orch-build-mvp step 1 runs orch-pipeline Phases 0–2 only (see the phase mapping in step 1).'''),
+  # First move: qualify Phase 3 as orch-pipeline Phase 3 / step 3.
+  ("skills/orch-build-mvp/SKILL.md", r'''**First move (phase 0 → 2):** read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions,
+  and the feature list; order it into **thin vertical slices** (one end-to-end
+  path first, not all-models-then-all-views). Phase 3 stands up that first slice. If neither record file exists (standalone run, no grill-me), fall back to the doc path in `$ARGUMENTS` or the raw prompt with a stated assumption — never ask the user for a path during a first build.''', r'''**First move (phase 0 → 2):** read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions,
+  and the feature list; order it into **thin vertical slices** (one end-to-end
+  path first, not all-models-then-all-views). Orch-pipeline Phase 3 (orch-build-mvp step 3) stands up that first slice. If neither record file exists (standalone run, no grill-me), fall back to the doc path in `$ARGUMENTS` or the raw prompt with a stated assumption — never ask the user for a path during a first build.'''),
+  # Audit #31 blocking 3 — step 1 must NOT run the full orch-pipeline
+  # engine (phase mask 0→6) and then have later steps redo Implement /
+  # Review / Commit. Explicit phase mapping: the numbered steps ARE the
+  # pipeline — step 1 is Phases 0–2 only; steps 3/4/6/7 are Phases 3–6,
+  # each running once. Nothing is run twice and nothing is redone.
+  ("skills/orch-build-mvp/SKILL.md", r'''1. Run the `orch-pipeline` engine with the settings above.''', r'''1. Run orch-pipeline Phases 0–2 ONLY (Intake/Research/Plan) with the settings above — read the record/scope, extract scope, locked decisions, and the feature list, order it into thin vertical slices, ending at Gate 1 (slice plan). This step does NOT run the full orch-pipeline engine (phase mask 0→6): the later numbered steps ARE orch-pipeline Phases 3–6, each running once — orch-build-mvp step 3 is Phase 3 (Scaffold), step 4 is Phase 4 (Implement, GAN loop), step 6 is Phase 5 (Review), step 7 is Phase 6 (Commit). Nothing is run twice and nothing is redone.'''),
+  # Expansion wiring, standalone flow: Phases 0–3 run ONCE per run, here;
+  # Phase 4 = step 4 GAN loop; Phase 5 = step 6; Phase 6 = step 9.
+  # Numbering qualified throughout (expansion Phase N vs step N).
+  ("skills/orch-build-mvp/SKILL.md", r'''2. **Expand automatically during the first build — split, not whole.** Right after scoping and before building the slices, run `feature-expansion` Phases 0–3 (ground, brainstorm, consolidate, planner pass): it brainstorms features and tools in line with the grill-me decision record, the planner approves, tweaks, or rejects each one, producing the approved list — with no user approval gate. Phases 4–6 run INSIDE this build, not here: Phase 4 implementers build the approved expansions alongside the MVP slices (the step 3 GAN loop drives each slice, expansions included), Phase 5 verification runs after the MVP is built, and Phase 6 feeds the final report (step 9). The skill is never invoked whole at this step. The user removes anything unwanted with one prompt afterward.''', r'''2. **Expand automatically — split, not whole (standalone run).** Right after scoping and before building the slices, run `feature-expansion` Phases 0–3 (ground, brainstorm, consolidate, planner pass): it brainstorms features and tools in line with the grill-me decision record, the planner approves, tweaks, or rejects each one, producing the approved list — with no user approval gate. **No double-run:** expansion Phases 0–3 run ONCE per run — here, in a standalone `orch-build-mvp` run; in an orchestrate-driven first build, orchestrate runs them instead. Expansion Phases 4–6 run INSIDE this build, not here: expansion Phase 4 implementers build the approved expansions alongside the MVP slices (the orch-build-mvp step 4 GAN loop drives each slice, expansions included), expansion Phase 5 verification runs in orch-build-mvp step 6 after the MVP is built, and expansion Phase 6 feeds the final report (orch-build-mvp step 9). The skill is never invoked whole at this step. The user removes anything unwanted with one prompt afterward.'''),
+  # New step 3 (Scaffold = orch-pipeline Phase 3) + renumbered step 4
+  # (GAN = orch-pipeline Phase 4, expansion Phase 4 inside it) + DD8
+  # belief in the brief for the GAN implementers.
+  ("skills/orch-build-mvp/SKILL.md", r'''3. **Reuse the existing GAN harness** instead of hand-rolling an iterate loop:
+   - Translate the SDD into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec).
+   - Drive the build with `/gan-build "<one-line brief>" --skip-planner`
+     (defaults: `--max-iterations 15`, `--pass-threshold 7.0`,
+     `--eval-mode playwright`; use `--eval-mode code-only` for non-UI slices).
+   - That command runs the `gan-generator` → `gan-evaluator` loop and writes
+     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.''', r'''3. **Scaffold — orch-pipeline Phase 3.** Stand up the first end-to-end slice (the first thin vertical slice from orch-build-mvp step 1). The scaffold owns the final file layout: if a later implementer must move a file from the intended layout, the implementer records the move in its result and the orchestrator reconciles it in orch-build-mvp step 5 (Reconcile).
+4. **Implement — orch-pipeline Phase 4: reuse the existing GAN harness** instead of hand-rolling an iterate loop (this step IS orch-pipeline Phase 4, not a rerun of it):
+   - Translate the record/scope (or the fallback spec doc, if that was the input) into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec).
+   - Drive the build with `/gan-build "<one-line brief>" --skip-planner`
+     (defaults: `--max-iterations 15`, `--pass-threshold 7.0`,
+     `--eval-mode playwright`; use `--eval-mode code-only` for non-UI slices).
+   - That command runs the `gan-generator` → `gan-evaluator` loop and writes
+     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.
+   - Expansion Phase 4 runs here: the GAN loop drives each slice, expansions included, per the feature-expansion Phase 4 brief format (Tool/API cell + UI rule + capped 2-round fix loop + per-feature `code-reviewer` pass). **Belief in the brief:** implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall.'''),
+  # Old steps 4–6 (both gates + commit, reconcile, bare security-reviewer
+  # line) become new steps 5–6–7 IN ORDER — a single substitution, so the
+  # file reads 1..9 in order: 5 Reconcile, 6 Verify (orch-pipeline Phase 5
+  # Review + expansion Phase 5), 7 Commit (orch-pipeline Phase 6, Gate 2
+  # only — Gate 1 already passed in step 1).
+  ("skills/orch-build-mvp/SKILL.md", r'''4. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7). Commit the
+   scaffold and each slice as separate `feat:` commits.
+5. **Reconcile after each wave — this step owns collision reconciliation.** After each implementer wave, read every implementer's result (status, changed files, verification evidence, blockers); confirm the reported files exist, stayed in scope, and carry verification evidence. If two implementers in the same wave touched the same files, decide the merge order — the first-listed implementer's files win on conflict unless the planner marked a dependency (then the dependency's files win) — record the decision in `.hackathon/run-ledger.md`, and dependents proceed on the merged result. If the scaffold's first slice and an expansion feature touched the same files, the same rule applies (scaffold first unless the planner marked the expansion as the dependency). If an implementer moved a file from the planner's intended layout, record the actual layout in the ledger and use it in later briefs. When orchestrate runs the build, orchestrate owns reconciliation; this step owns it on a standalone run.
+6. Add `security-reviewer` for any slice touching a security trigger.''', r'''5. **Reconcile after each wave — this step owns collision reconciliation.** After each implementer wave, read every implementer's result (status, changed files, verification evidence, blockers); confirm the reported files exist, stayed in scope, and carry verification evidence. If two implementers in the same wave touched the same files, decide the merge order — the first-listed implementer's files win on conflict unless the planner marked a dependency (then the dependency's files win) — record the decision in `.hackathon/run-ledger.md`, and dependents proceed on the merged result. If the scaffold's first slice and an expansion feature touched the same files, the same rule applies (scaffold first unless the planner marked the expansion as the dependency). If an implementer moved a file from the planner's intended layout, record the actual layout in the ledger and use it in later briefs. This step owns reconciliation — this skill runs standalone only, so there is no orchestrate-driven case in which orchestrate would own it instead.
+6. **Verify — orch-pipeline Phase 5 (Review) + expansion Phase 5.** `code-reviewer` (+ `security-reviewer` on any security-trigger slice) reviews each slice; then run the whole-build verification: expansion Phase 5 checks BY NAME — `browser-qa` / `click-path-audit` / `verification-before-completion` per feature, after the MVP is built. Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.
+7. **Commit — orch-pipeline Phase 6.** Commit the scaffold and each slice as separate `feat:` commits → **Gate 2** (pre-commit; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting; see hackathon-mode §7). Gate 1 (slice plan) was already passed in orch-build-mvp step 1 — it is not re-stopped here.'''),
+  # Old steps 7+8 (deploy, then film local-only) become step 8 (deploy,
+  # then /demo films the LOCAL app only — video from code, never a
+  # deployed URL).
+  ("skills/orch-build-mvp/SKILL.md", r'''7. **Deploy via `deploy-fast`.** Deploy the working MVP; the demo films the LOCAL app from the project dir, never a deployed URL — never hard-abort the run for lack of a deployed URL. If deploy was static-only or blocked, the final report notes that.
+8. **Film via `/demo` (`pitch-deck-video`) — LOCAL only.** The demo video is a required deliverable — film the LOCAL app from the project dir (`APP_DIR` to the app dir); `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it.''', r'''8. **Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — LOCAL only.** Deploy the working MVP; then film the LOCAL app from the project dir (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it. The demo video is a required deliverable. If deploy was static-only or blocked, the final report notes that — never hard-abort the run for lack of a deployed URL.'''),
+  # Step 9 (final report): qualify "Phase 6 return text" as expansion
+  # Phase 6; standalone only (no orchestrate-owned case).
+  ("skills/orch-build-mvp/SKILL.md", r'''9. **Deliver the final report — this is the done signal.** Write it to `docs/final-report.md` in the project AND deliver it as the reply. State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory — the inventory lives in that file). Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the Phase 6 return text (the landed / blocked / rejected lists) in a standalone run. When orchestrate runs the build, orchestrate owns the final report; this step covers standalone orch-build-mvp runs.''', r'''9. **Deliver the final report — this is the done signal.** Write it to `docs/final-report.md` in the project AND deliver it as the reply. State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory — the inventory lives in that file). Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the expansion Phase 6 return text (the landed / blocked / rejected lists). This step covers standalone orch-build-mvp runs only — orchestrate never invokes this skill, so orchestrate never owns this report.'''),
+  # Example: record/scope first (doc path is the standalone fallback) +
+  # qualified step numbers (orch-build-mvp steps 3/6/7).
+  ("skills/orch-build-mvp/SKILL.md", r'''orch-build-mvp: civicpulse/docs/SDD-v0.6.md
+→ read SDD → slice list (vertical) → scaffold slice 1  [GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
+→ /gan-build --skip-planner (generator → evaluator loop) scores vs spec → review
+→ commit feat:  [GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature] → next slice''', r'''orch-build-mvp: (no argument — reads docs/decision-record.md + docs/scope.md; civicpulse/docs/SDD-v0.6.md is the standalone fallback)
+→ read record/scope → slice list (vertical) → scaffold slice 1 (orch-build-mvp step 3)  [GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
+→ /gan-build --skip-planner (generator → evaluator loop) scores vs spec → review (orch-build-mvp step 6)
+→ commit feat: (orch-build-mvp step 7)  [GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature] → next slice'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix4 batch A: orch-build-mvp one-engine + phase mapping + 9-step rewrite applied")
+PYEOF
+
+# --- Fix program #4, Batch A: commands/orch-build-mvp.md — rewrite to match
+# the skill's 9 steps + record/scope-default input ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/commands/orch-build-mvp.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The patch agent inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Intro: standalone only; record/scope first, spec doc is the fallback.
+  ("commands/orch-build-mvp.md", r'''Manually launch the **orch-build-mvp** orchestrator: turn an SDD/PRD/system-design
+document into a running vertical slice.''', r'''Manually launch the **orch-build-mvp** orchestrator (standalone only — user-invoked): turn the record/scope (or an SDD/PRD/system-design document as the standalone fallback) into a running vertical slice.'''),
+  # Usage: the doc path is optional — the standalone fallback, not the input.
+  ("commands/orch-build-mvp.md", r'''```
+/orch-build-mvp <path to design/spec doc>
+```
+
+Examples:
+
+```
+/orch-build-mvp civicpulse/docs/SDD-v0.6.md
+```''', r'''```
+/orch-build-mvp [path to design/spec doc — optional, standalone fallback only]
+```
+
+Examples:
+
+```
+/orch-build-mvp
+/orch-build-mvp civicpulse/docs/SDD-v0.6.md
+```'''),
+  # Invoke line: record/scope default; $ARGUMENTS only the fallback; the
+  # numbered steps ARE orch-pipeline Phases 0–6, each once.
+  ("commands/orch-build-mvp.md", r'''Invoke the `orch-build-mvp` skill with `$ARGUMENTS` as the doc path. The skill
+(via the shared `orch-pipeline` engine, full pipeline incl. Scaffold) will:''', r'''Invoke the `orch-build-mvp` skill — standalone only; orchestrate never invokes it in the same run. Input is the record/scope by default (`docs/decision-record.md` + `docs/scope.md`); a doc path in `$ARGUMENTS` is only the standalone fallback when neither record file exists. The skill (via the shared `orch-pipeline` engine — its numbered steps ARE orch-pipeline Phases 0–6, each once; orch-build-mvp step 1 runs Phases 0–2 only, never the full engine) will:'''),
+  # Rewrite the 6-item list as the skill's 9 steps (expansion Phases 0–3,
+  # Reconcile step 5, Phase 5 verification in step 6, Phase 6 intake in
+  # step 9, final report step 9) — the command must not describe a
+  # different pipeline from the skill. Step 8 films the LOCAL app only.
+  ("commands/orch-build-mvp.md", r'''1. Read `docs/decision-record.md` + `docs/scope.md` by default (or the spec doc in `$ARGUMENTS` if one was given); extract scope, locked decisions, and a feature list ordered as
+**thin vertical slices** (one end-to-end path first). → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
+2. Scaffold the first end-to-end slice.
+3. Reuse the GAN harness: translate the SDD into `gan-harness/spec.md` +
+   `eval-rubric.md`, then drive `/gan-build "<brief>" --skip-planner`
+   (generator → evaluator loop) until the score passes or plateaus.
+4. `code-reviewer` (+ `security-reviewer` on any security-trigger slice), then
+   commit the scaffold and each slice as separate `feat:` commits. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
+5. Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — the demo video is a required deliverable; film the LOCAL app from the project dir only, never a deployed URL (if deploy was static-only or blocked, noted in the final report).
+6. Deliver the final report — the done signal: write it to `docs/final-report.md` in the project AND deliver it as the reply — what was built, every assumption, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item.''', r'''1. Read `docs/decision-record.md` + `docs/scope.md` by default (the spec doc in `$ARGUMENTS` only as the standalone fallback when neither record file exists); extract scope, locked decisions, and a feature list ordered as
+**thin vertical slices** (one end-to-end path first). This is orch-build-mvp step 1 = orch-pipeline Phases 0–2 only — it never runs the full engine. → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
+2. Expansion Phases 0–3 (ground, brainstorm, consolidate, planner pass) produce the planner-approved list — no user approval gate. Expansion Phases 0–3 run ONCE per run, here in a standalone run; expansion Phases 4–6 run inside the build below, never whole here.
+3. Scaffold the first end-to-end slice (orch-pipeline Phase 3).
+4. Reuse the GAN harness (orch-pipeline Phase 4): translate the record/scope (or the fallback spec doc) into `gan-harness/spec.md` +
+   `eval-rubric.md`, then drive `/gan-build "<brief>" --skip-planner`
+   (generator → evaluator loop) until the score passes or plateaus. Expansion Phase 4 implementers build alongside the MVP slices here.
+5. Reconcile after each wave (orch-build-mvp step 5 owns collision reconciliation).
+6. Verify (orch-pipeline Phase 5 Review + expansion Phase 5): `code-reviewer` (+ `security-reviewer` on any security-trigger slice), then the whole-build checks BY NAME — `browser-qa` / `click-path-audit` / `verification-before-completion` per feature.
+7. Commit the scaffold and each slice as separate `feat:` commits (orch-pipeline Phase 6). → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
+8. Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — the demo video is a required deliverable; film the LOCAL app from the project dir only, never a deployed URL (if deploy was static-only or blocked, noted in the final report).
+9. Deliver the final report — the done signal (expansion Phase 6 feeds it): write it to `docs/final-report.md` in the project AND deliver it as the reply — what was built, every assumption, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item.'''),
+  # $ARGUMENTS is only the standalone fallback, never the default.
+  ("commands/orch-build-mvp.md", r'''If `$ARGUMENTS` is empty, do NOT ask the user for a path — never ask during a hackathon first build: default to `docs/decision-record.md` + `docs/scope.md` (or the raw prompt with a stated assumption if neither exists).''', r'''If `$ARGUMENTS` is empty, do NOT ask the user for a path — never ask during a hackathon first build: default to `docs/decision-record.md` + `docs/scope.md` (or the raw prompt with a stated assumption if neither exists). A doc path in `$ARGUMENTS` is only the standalone fallback, never the default.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix4 batch A: orch-build-mvp command rewritten to the skill's 9 steps")
+PYEOF
+
+# --- Fix program #4, Batch A: orch-pipeline — one-engine rule + Phase 4
+# implementer belief + numbering disambiguation ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/orch-pipeline/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The patch agent inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # DD1 — one build engine per run: orch-build-mvp is the STANDALONE
+  # pipeline delegating to this engine; orchestrate is the first-build
+  # engine and never invokes orch-build-mvp (so never reaches this engine
+  # through it) in the same run.
+  ("skills/orch-pipeline/SKILL.md", r'''The `orch-*` skills are thin wrappers. They do not re-implement any work — they
+classify the request, choose which phases of *this* pipeline run, and delegate
+each phase to an existing ECC agent or command. This file is that pipeline.''', r'''The `orch-*` skills are thin wrappers. They do not re-implement any work — they
+classify the request, choose which phases of *this* pipeline run, and delegate
+each phase to an existing ECC agent or command. This file is that pipeline.
+
+**One build engine per run:** `orch-build-mvp` is the STANDALONE pipeline that delegates to this engine — it runs only when the user invokes `/orch-build-mvp` directly. Orchestrate IS the first-build engine and never invokes `orch-build-mvp` (and so never reaches this engine through it) in the same run. One engine per run, never both.'''),
+  # Operation family: orch-build-mvp is standalone; record/scope is the
+  # default input, the spec doc only the fallback.
+  ("skills/orch-pipeline/SKILL.md", r'''| `orch-build-mvp` | mvp | bootstrap from a design/spec doc | ingest doc → vertical slices |''', r'''| `orch-build-mvp` | mvp | bootstrap from a design/spec doc (standalone only — user-invoked) | ingest record/scope by default (spec doc only as standalone fallback) → vertical slices |'''),
+  # Phase 0 (Intake): numbering disambiguation — orch-pipeline Phases 0–6
+  # are not orch-build-mvp steps and not feature-expansion phases.
+  ("skills/orch-pipeline/SKILL.md", r'''The pipeline ingests the record/scope at Phase 0; they are the handoff from grill-me and hackathon-scope.''', r'''The pipeline ingests the record/scope at Phase 0; they are the handoff from grill-me and hackathon-scope. Numbering: Phases 0–6 here are orch-pipeline phases — not orch-build-mvp steps (which map 1:1 onto them: orch-build-mvp steps 1/3/4/6/7 are Phases 0–2/3/4/5/6) and not feature-expansion phases.'''),
+  # Phase 4 (Implement): DD8 belief in the brief + expansion Phase 4
+  # brief format in a standalone orch-build-mvp run.
+  ("skills/orch-pipeline/SKILL.md", r'''- **4. Implement (TDD)** — drive each task through the `tdd-guide` agent (or the `tdd-workflow` skill):
+  red → green → refactor. Honor the operation's first-move rule.''', r'''- **4. Implement (TDD)** — drive each task through the `tdd-guide` agent (or the `tdd-workflow` skill):
+  red → green → refactor. Honor the operation's first-move rule. **Belief in the brief:** implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall. In a standalone `orch-build-mvp` run, this phase builds the approved expansions per the feature-expansion Phase 4 brief format (Tool/API cell + UI rule + capped 2-round fix loop + per-feature `code-reviewer` pass).'''),
+  # Phase 6 (Commit): numbering disambiguation — orch-pipeline Phase 6 is
+  # not orch-build-mvp step 6 (Verify) and not expansion Phase 6.
+  ("skills/orch-pipeline/SKILL.md", r'''- **6. Commit** — conventional commits (`feat:` / `fix:` / `refactor:` / …), one
+  per logical chunk. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).''', r'''- **6. Commit** — conventional commits (`feat:` / `fix:` / `refactor:` / …), one
+  per logical chunk. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature). (Orch-pipeline Phase 6 = Commit — not orch-build-mvp step 6, which is Verify, and not feature-expansion Phase 6, which feeds the final report; orch-build-mvp step 5 is Reconcile, which has no orch-pipeline phase of its own.)'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix4 batch A: orch-pipeline one-engine + Phase 4 belief + numbering applied")
+PYEOF
+
+# --- Batch B (fix program #4): inline first-build carve-out on the empty-$ARGUMENTS ask in the four orch-* commands ---
+# Dry-run minor 30: commands/orch-add-feature.md, orch-change-feature.md,
+# orch-fix-defect.md and orch-refine-code.md all say "If `$ARGUMENTS` is empty,
+# ask the user ..." with no inline carve-out (commands/orch-build-mvp.md has
+# one — "do NOT ask ... default to docs/decision-record.md + docs/scope.md").
+# This block adds the same one-line carve-out to each of the four, in the
+# orch-build-mvp wording: during a hackathon first build after grill-me, or a
+# one-prompt removal of a first-build feature, do NOT ask — proceed on the
+# decision record + scope (or the raw prompt with a stated assumption if
+# neither exists). Same placement rule as the GATE / Batch F blocks: this block
+# runs LAST, just before STEP 5, after all earlier patches. Each substitution
+# asserts exactly one match against the CURRENT built text.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+CARVE = " — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT ask: proceed on `docs/decision-record.md` + `docs/scope.md` (or the raw prompt with a stated assumption if neither exists)."
+subs = [
+  ("commands/orch-add-feature.md",
+   "If `$ARGUMENTS` is empty, ask the user what capability to add.",
+   "If `$ARGUMENTS` is empty, ask the user what capability to add." + CARVE),
+  ("commands/orch-change-feature.md",
+   "If `$ARGUMENTS` is empty, ask the user what behavior should change.",
+   "If `$ARGUMENTS` is empty, ask the user what behavior should change." + CARVE),
+  ("commands/orch-fix-defect.md",
+   "If `$ARGUMENTS` is empty, ask the user to describe the defect.",
+   "If `$ARGUMENTS` is empty, ask the user to describe the defect." + CARVE),
+  ("commands/orch-refine-code.md",
+   "If `$ARGUMENTS` is empty, ask the user what to refine.",
+   "If `$ARGUMENTS` is empty, ask the user what to refine." + CARVE),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("orch-* commands patched with first-build carve-out on empty $ARGUMENTS")
+PYEOF
+
+# Batch E (fix program #4): ui-ux-pro-max — captivating bar for dashboard/app surfaces.
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST — just before STEP 5 — after the GATE / carve-out /
+# Batch E / Batch F / fix-program-#3 patches, whose old-strings the
+# substitution below is anchored on (i.e. against the CURRENT built text:
+# the post-audit9a "When to Apply" paragraph, including its "Do NOT use it
+# for a full company or landing-page build" sentence).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Design Decision 7 (design part) — dashboard/app surfaces aim for
+  # striking, memorable surfaces: one concrete check. The primary view must
+  # have one unmistakable visual anchor a user remembers after leaving the
+  # page; the test is describing it from memory without reopening the page.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r'''Use this Skill when the task involves **UI structure, visual design decisions, interaction patterns, or user experience quality control**: designing new pages, creating/refactoring UI components, choosing color/typography/spacing/layout systems, reviewing UI for UX/accessibility/consistency, implementing navigation/animation/responsive behavior, or improving perceived quality and usability. Do NOT use it for a full company or landing-page build — that belongs to `design-taste-frontend` (see the frontmatter, the Query Contract, and Step 2).''',
+   r'''Use this Skill when the task involves **UI structure, visual design decisions, interaction patterns, or user experience quality control**: designing new pages, creating/refactoring UI components, choosing color/typography/spacing/layout systems, reviewing UI for UX/accessibility/consistency, implementing navigation/animation/responsive behavior, or improving perceived quality and usability. Do NOT use it for a full company or landing-page build — that belongs to `design-taste-frontend` (see the frontmatter, the Query Contract, and Step 2).
+
+**Captivating bar for dashboard/app surfaces:** the primary view must have one unmistakable visual anchor a user remembers after leaving the page. Test: after closing the page, the user can describe that one anchor — its form and what it showed — without reopening it; if nothing is memorable, the surface fails even if every other check passes.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch E ui-ux-pro-max captivating bar applied")
+PYEOF
+
+# Batch E (fix program #4): less-flat-ui — texture in service of the wow moment.
+# Source is NOT staged in hackathon-plugin: build.sh line 223 copies it fresh
+# from ~/workspace/cursor-skills/less-flat-ui/ (the global Cursor skill) on
+# every build, so this fix lives here as a patch block placed LAST — just
+# before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
+# fix-program-#3 patches. The substitution below is anchored on the CURRENT
+# built text (identical to ~/workspace/cursor-skills/less-flat-ui/SKILL.md;
+# no build.sh patch touches skills/less-flat-ui/SKILL.md).
+# Never edit hackathon-ecc/ directly, and do not edit the global
+# ~/workspace/cursor-skills/less-flat-ui/ copy (it is shared outside this
+# plugin). The substitution asserts exactly one match. The coordinator
+# inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Design Decision 7 (design part) — texture in service of the wow moment,
+  # not decoration: apply treatments where they amplify the captivating
+  # moment; never texture for its own sake. Placed in the Rules list, next
+  # to "Apply all that fit, then edit down."
+  ("skills/less-flat-ui/SKILL.md",
+   r'''- **Apply all that fit, then edit down.** Layer every fitting treatment, then look at the result: if it reads busy or muddy, remove the weakest treatment and check again. Stop as soon as it reads clean. Restraint is applied at the end, not the start.''',
+   r'''- **Apply all that fit, then edit down.** Layer every fitting treatment, then look at the result: if it reads busy or muddy, remove the weakest treatment and check again. Stop as soon as it reads clean. Restraint is applied at the end, not the start.
+- **Texture in service of the wow moment, not decoration:** apply treatments where they amplify the page's captivating moment; never texture for its own sake — if a treatment does not make the memorable moment stronger, leave that surface flat.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch E less-flat-ui captivating bar applied")
+PYEOF
+
+# --- Fix program #4, Batch F: removal delivery + failure branches (orch-change-feature) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/orch-change-feature/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. Covers dry-run #3 gaps 10-13 and minors 26-28 (removal side).
+# Redirect note: the demo video is made from the CODE (local app), never a
+# deployed URL — every re-film line below films local (APP_DIR/project dir).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Minor 26: step 4 failure branch + fix-loop cap. A failing TEST suite
+  # follows a DIFFERENT rule from the orch-pipeline review-findings rule
+  # (unresolvable CRITICAL finding -> recorded as blocked, commit proceeds
+  # under auto-approval): a review finding is about the diff's quality,
+  # but a failing test suite means the app itself is broken, so the commit
+  # does NOT proceed — the removal is blocked instead.
+  ("skills/orch-change-feature/SKILL.md",
+   "4. Run the tests and the app to confirm the removal did not break anything else, then commit under the usual gates (auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).",
+   "4. Run the tests and the app to confirm the removal did not break anything else, then commit under the usual gates (auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature). If the tests fail or the app breaks after the deletion, fix with a CAP of 2 fix rounds: after 2 rounds, if it is still broken, do NOT commit it broken and do NOT loop unboundedly — mark the removal blocked in the final report (with the failing test or the broken behaviour as evidence), stop, and leave the deletion uncommitted. A failing TEST suite follows a DIFFERENT rule from the orch-pipeline review-findings rule (an unresolvable CRITICAL review finding is recorded as blocked and the commit proceeds under auto-approval): a review finding is about the diff's quality, but a failing test suite means the app itself is broken, so the commit does NOT proceed — the removal is blocked instead."),
+  # Gap 12: split backends — the push to main redeploys ONLY the Vercel
+  # frontend; the Railway API/backend needs its own redeploy (`railway up`)
+  # and migrations need `supabase db push` (both per deploy-fast).
+  ("skills/orch-change-feature/SKILL.md",
+   "5. After the commit, re-deploy by pushing the removal commit to `main` — the git-linked deploy fires from that push (`deploy-fast`).",
+   "5. After the commit, re-deploy by pushing the removal commit to `main` — the git-linked deploy fires from that push (`deploy-fast`). That push redeploys ONLY the Vercel frontend: a split backend does NOT redeploy from it — redeploy the Railway API/backend separately with `railway up` from the backend directory, and apply any migration with `supabase db push` (both per `deploy-fast`, split-backend redeploy)."),
+  # Minor 27 (Supabase CLI auth named explicitly in blocked-deploy
+  # handling) + Gap 11 (bounded deploy-ready wait/poll before re-filming,
+  # local-film fallback, never film a stale deployed URL) + Minor 28a
+  # ("shots.json FIRST" = first relative to the re-film, not first in
+  # step 5) + Gap 13 (re-upload the re-filmed video + update the video LINK).
+  ("skills/orch-change-feature/SKILL.md",
+   "Do not run an interactive deploy CLI for this step: if the deploy CLI is unauthenticated (or the project has no git-linked deploy), do not wait for a login — the removal still counts as done-with-blocked-deploy; note the blocked deploy in the final report and move on, update `shots.json` FIRST — remove the feature's shots, selectors, and narration lines — then re-film via `/demo --rebuild`,",
+   "Do not run an interactive deploy CLI for this step: if a deploy CLI is unauthenticated (or the project has no git-linked deploy), do not wait for a login — the removal still counts as done-with-blocked-deploy; note the blocked deploy in the final report and move on. That covers the Vercel/Railway deploy CLIs AND `supabase db push`: an unauthenticated Supabase CLI is blocked-deploy handling too — record it as blocked in the final report with the exact command and error, never stall on an interactive `supabase login`. After the push, wait for the deploy to be ready before re-filming: poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes. If it never becomes ready in that bound, film local and note it in the final report — never film a stale deployed URL, and never wait unboundedly. Then, before re-filming, update `shots.json` FIRST relative to the re-film — remove the feature's shots, selectors, and narration lines (FIRST means first before the re-film, not first in this step overall: the push/re-deploy above precedes it) — then re-film via `/demo --rebuild`, which films the LOCAL app from the project dir (`APP_DIR`/project root), never a deployed URL; if the deploy was blocked, film local anyway and note in the final report that the video shows the local app, not the deployed one. After re-filming, re-upload the new video to the same YouTube/Vimeo host (upload HOURS before the deadline — processing can take several hours, per `devpost-autofiller`) and update the video LINK wherever it appears (the Devpost submission and the README if it embeds it) — text updates alone leave the judge-visible artefact stale, so the link must point at the re-uploaded video, not the pre-removal one,"),
+  # Minor 28b: hackathon-pitch joins the step-5 update list — the pitch
+  # narrative, scripts, and demo storyboard must stop promising the
+  # removed feature.
+  ("skills/orch-change-feature/SKILL.md",
+   "the README (`readme-writer`), and the Devpost submission (`devpost-autofiller`) if one exists",
+   "the README (`readme-writer`), the pitch narrative, scripts, and demo storyboard (`hackathon-pitch` — refresh them so the pitch no longer promises the removed feature), and the Devpost submission (`devpost-autofiller`) if one exists"),
+  # Gap 10: the updated final report IS DELIVERED as the reply after a
+  # removal — a new step 6. The first-build-only delivery rule in
+  # hackathon-mode §7 / orchestrate does NOT cover removals; this step
+  # is what covers them.
+  ("skills/orch-change-feature/SKILL.md",
+   "a removal is not done until the deployed app, the demo video, the ledger, and the inventory all reflect it; none of them may go stale.",
+   "a removal is not done until the deployed app, the demo video, the ledger, and the inventory all reflect it; none of them may go stale.\n6. Deliver the updated final report as the reply — this is the done signal for the removal. Update `docs/final-report.md` first (feature-to-files inventory plus what was removed, anything blocked, and the re-uploaded video link), then deliver the updated report as the reply. The first-build-only delivery rule in hackathon-mode §7 / orchestrate covers the first build's final report, NOT removals — this step is what covers removals, so a removal is not done until this delivery has happened.\n\n"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch F fix4: orch-change-feature removal delivery + failure branches applied")
+PYEOF
+
+# --- Fix program #4, Batch F: removal procedure pointer (commands/orch-change-feature.md) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
+# old-strings the substitution below is anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/commands/orch-change-feature.md).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. Mirrors the skill-side removal steps (F-orch-change-feature-removal.py)
+# so the command's one-line summary no longer omits the failure branch,
+# the split-backend redeploy, the bounded deploy-ready wait, the local
+# re-film, the video re-upload + link update, or the final-report delivery.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("commands/orch-change-feature.md",
+   "follow the skill's `Removing a feature` section instead of the change steps below: delete, verify no references remain, commit, then re-deploy, re-film, and update the docs and inventory.",
+   "follow the skill's `Removing a feature` section instead of the change steps below: delete, verify no references remain, commit (or mark blocked and stop if the tests fail after deletion — never commit broken, see the skill), then re-deploy (push to `main` for the Vercel frontend + `railway up` for a split Railway backend), wait for the deploy to be ready (bounded wait, local-film fallback — never film a stale deployed URL), update `shots.json` before re-filming, re-film locally via `/demo --rebuild`, re-upload the video and update its link, update the docs, inventory, and pitch, and deliver the updated final report as the reply (the done signal for the removal)."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch F fix4: orch-change-feature command removal pointer applied")
+PYEOF
+
+# --- Fix program #4, Batch F: re-uploaded video link (skills/devpost-autofiller/SKILL.md) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/devpost-autofiller/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. Gap 13 (removal side): the demo video is a LINK (:10), so after a
+# removal the re-filmed video must be re-uploaded AND the link on the
+# submission updated — a text-only update leaves judges watching the stale
+# pre-removal video. The hours-early processing note (:89-93) applies to
+# the re-upload exactly as it does to the first upload.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("skills/devpost-autofiller/SKILL.md",
+   "the demo video is a **link** to a publicly-hosted YouTube/Vimeo video, not an upload.",
+   "the demo video is a **link** to a publicly-hosted YouTube/Vimeo video, not an upload. If a feature is removed (or anything else changes) after the video was uploaded, re-upload the re-filmed video and update the link on the submission — a text-only update leaves judges watching the stale pre-removal video. Re-upload HOURS before the deadline: processing can take several hours, so a last-minute re-upload may still be processing when judging starts."),
+  ("skills/devpost-autofiller/SKILL.md",
+   r'''[ ] Video uploaded HOURS early — YouTube processing can take "a few minutes to
+    several hours" (Devpost's words), and the deadline doesn't care''',
+   r'''[ ] Video uploaded HOURS early — YouTube processing can take "a few minutes to
+    several hours" (Devpost's words), and the deadline doesn't care
+[ ] After any removal or re-film, the video LINK on the submission points at the re-uploaded video (not the pre-removal one) — re-upload hours early, the same processing delay applies'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch F fix4: devpost-autofiller re-uploaded video link applied")
+PYEOF
+
+# --- Fix program #4, Batch F: pitch refresh on removal (skills/hackathon-pitch/SKILL.md) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
+# old-strings the substitution below is anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/hackathon-pitch/SKILL.md —
+# including the Batch F wave-2 canonical-lengths sentence on the storyboard
+# item). Never edit hackathon-ecc/ directly. The substitution asserts
+# exactly one match. Minor 28b (skill side): hackathon-pitch owns the pitch
+# narrative, scripts, and demo storyboard (hackathon-mode §6), so its own
+# text must say the pitch is refreshed when orch-change-feature step 5
+# removes a feature — otherwise the pitch keeps promising a feature that
+# no longer exists.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("skills/hackathon-pitch/SKILL.md",
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs.",
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs. After a feature removal (`orch-change-feature` step 5), refresh the pitch narrative, scripts, and this storyboard so nothing promises the removed feature: cut its beats, re-cut the scripts to their word targets, and re-mark the wow moment on what remains."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("batch F fix4: hackathon-pitch refresh on removal applied")
+PYEOF
+
+# Master prompt (fix program #4): ui-ux-pro-max — design-system definition
+# before implementing UI, + anti-generic principles, for dashboard/app
+# surfaces.
+# Upstream ECC file (cloned fresh from github.com/nextlevelbuilder/
+# ui-ux-pro-max-skill on every build) — this fix lives here as a patch
+# block placed LAST — just before STEP 5 — after the GATE / carve-out /
+# Batch E / Batch F / fix-program-#3 patches, whose old-strings the
+# substitution below is anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+#
+# What it adds, and what it deliberately does NOT duplicate:
+# - Step 2 already generates a design system via --design-system (SKILL.md
+#   :77-85) and the priority table + references/quick-reference.md already
+#   define the individual values (type scale, semantic tokens, spacing
+#   scale, hierarchy, nav, responsive, motion, accessibility, and the
+#   loading/empty/success/error state rules scattered in quick-reference
+#   §2/§3/§6/§8). What was missing was the pre-UI DEFINITION step itself:
+#   the checklist of what must be recorded in MASTER.md before any UI code
+#   is written. This snippet adds only that checklist, reusing the existing
+#   tool output and reference rules for the values.
+# - The anti-generic principles (generic AI-dashboard aesthetics, excessive
+#   gradients, repetitive cards, decorative clutter) appear nowhere in
+#   SKILL.md or references/ — the Batch E captivating bar (:14) covers
+#   memorability, not this. Added here, pointing at the bar above it.
+# - This is a pre-UI step, not a gate: define it, then build. No approval
+#   gate, no wait point, no new agent/skill/file.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Master prompt — define the design system BEFORE implementing UI
+  # (dashboard/app surfaces only; landing/company builds belong to
+  # design-taste-frontend). The --design-system output sketches the
+  # system; this step fixes the decisions in MASTER.md first.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r'''This aggregates product/style/color/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.''',
+   r'''This aggregates product/style/color/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.
+
+**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — visual identity; typography + type scale; color palette + semantic tokens (no raw hex in components); spacing/layout system; component hierarchy; navigation/IA; responsive behavior; motion/microinteractions; accessibility; and loading / empty / success / error states for every data surface. Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. This is a pre-UI step, not an approval gate: define it, then build.
+
+**Anti-generic bar:** avoid generic AI-dashboard aesthetics — excessive gradients, repetitive same-size cards, decorative clutter. Earn distinction through deliberate typography, spacing, alignment, and contrast, plus the one memorable anchor from the captivating bar above; if a surface looks like a default template, it fails even if every checklist item passes.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("master-prompt ui-ux-pro-max design-system definition applied")
+PYEOF
+
+# Master prompt (fix program #4): browser-qa — visual iteration loop
+# procedure (run the app, inspect the ACTUAL rendered interface, top-5
+# problems, fix, re-inspect).
+# Upstream ECC file, copied fresh from the ECC Developer install on every
+# build — this fix lives here as a patch block placed LAST — just before
+# STEP 5 — after the GATE / carve-out / Batch E / Batch F / fix-program-#3
+# patches, whose old-strings the substitution below is anchored on (i.e.
+# against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+#
+# What it adds, and what it deliberately does NOT duplicate:
+# - Phase 3 (:58-65) already screenshots key pages at 3 breakpoints and
+#   compares against a baseline, and Phase 1 already screenshots desktop +
+#   mobile. What was missing was the ITERATION LOOP itself: judging the
+#   rendered UI on design grounds (typography, hierarchy, spacing,
+#   alignment, color, contrast, responsiveness), naming the FIVE most
+#   noticeable visual/usability problems, fixing them, and re-inspecting —
+#   plus the rule never to claim visual verification without actually
+#   inspecting the rendered interface. Added here as a new section between
+#   Phase 3 and Phase 4.
+# - The loop CAP (max 3 rounds, then note diminishing returns and move on)
+#   is enforced by the caller (orchestrate) — this procedure states the
+#   per-round procedure and that the caller caps rounds; it does not invent
+#   a second cap. Interface agreement: the procedure returns the top-5
+#   problem list each round.
+# - No approval gate, no wait point, no new agent/skill/file.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Master prompt — visual iteration loop: run the app, look at the real
+  # rendered UI, fix the five most noticeable problems, re-inspect.
+  ("skills/browser-qa/SKILL.md",
+   r'''3. Flag layout shifts > 5px, missing elements, overflow
+4. Check dark mode if applicable
+```
+
+### Phase 4: Accessibility''',
+   r'''3. Flag layout shifts > 5px, missing elements, overflow
+4. Check dark mode if applicable
+```
+
+### Visual iteration loop (run the app, look at the real UI)
+
+Run the app (local dev server, or staging/preview URL) and inspect the ACTUAL rendered interface with Playwright — desktop + mobile viewports — never from source code or a description alone. Each round: capture screenshots, then judge the rendered UI on typography, hierarchy, spacing, alignment, color, contrast, and responsiveness; list the FIVE most noticeable visual/usability problems; fix them; re-inspect. Return the top-5 problem list each round so the caller can decide whether to run another round — the caller caps rounds (max 3, then note diminishing returns and move on). Never claim visual verification without actually inspecting the rendered interface.
+
+### Phase 4: Accessibility'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("master-prompt browser-qa visual iteration loop applied")
+PYEOF
+
+# Master prompt (fix program #4): ecc-code-reviewer — adversarial audit
+# stance + CONFIRMED-vs-SUSPECTED distinction.
+# Upstream ECC file (agents copied fresh from the ECC Developer install on
+# every build) — this fix lives here as a patch block placed LAST — just
+# before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
+# fix-program-#3 patches, whose old-strings the substitution below is
+# anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+#
+# Target note: the task named skills/code-reviewer/SKILL.md, but no such
+# skill exists in the plugin — code review lives in the AGENT
+# agents/ecc-code-reviewer.md (upstream ECC, copied from the install at
+# build.sh :106-111). This snippet targets that agent file instead.
+# The adversarial stance does NOT belong in agents/ecc-security-reviewer.md:
+# that agent is security-only (OWASP Top 10, secrets, injection) and
+# already ends "Be thorough, be paranoid, be proactive." (:116); the master
+# prompt's hunt list is broader than security (functional bugs, race
+# conditions, state management, performance, accessibility, duplicated
+# code), so it belongs here. No snippet for security-reviewer.
+#
+# What it adds, and what it deliberately does NOT duplicate:
+# - Severity classification already exists (CRITICAL / HIGH / MEDIUM / LOW
+#   throughout, summary table, Approval Criteria) — NOT re-added.
+# - The >80% confidence filter (:26, :32), the Pre-Report Gate, and
+#   "HIGH / CRITICAL Require Proof" already exist — NOT re-added. The new
+#   CONFIRMED-vs-SUSPECTED labels sit on top of them: a SUSPECTED finding
+#   is reported with the repro/test that would settle it and never blocks
+#   on its own, and the Pre-Report Gate still decides whether it is
+#   reported at all.
+# - The checklist already covers most hunt areas (security, error handling,
+#   unvalidated input, state updates in render / stale closures, N+1,
+#   performance, dead code, missing tests). What was missing was the
+#   STANCE itself — no "skeptical"/"adversarial" framing anywhere in the
+#   file — plus explicit naming of race conditions and accessibility
+#   failures, which the checklist never mentions. Added here as stance
+#   prose, not new checklist sections.
+# - No approval gate, no wait point, no new agent/skill/file.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Master prompt — adversarial audit stance + CONFIRMED vs SUSPECTED.
+  ("agents/ecc-code-reviewer.md",
+   r'''You are a senior code reviewer ensuring high standards of code quality and security.''',
+   r'''You are a senior code reviewer ensuring high standards of code quality and security.
+
+**Adversarial stance:** review as a skeptical staff engineer reading someone else's implementation — assume every claim in the code is unproven until the code, its callers, or a test proves it. Hunt across every checklist category below for incorrect assumptions, functional bugs, security vulnerabilities, broken user journeys, race conditions, state-management problems, unhandled edge cases, performance bottlenecks, accessibility failures, duplicated or unnecessary code, fragile integrations, missing validation, and inadequate tests. Fix root causes, not symptoms, and re-run tests after fixes.
+
+**CONFIRMED vs SUSPECTED:** label every finding CONFIRMED (you traced it to a concrete failing input, state, or outcome) or SUSPECTED (a plausible risk you cannot yet prove — name the repro or test that would confirm it). Never present a SUSPECTED risk as CONFIRMED. A SUSPECTED finding is reported with the repro/test that would settle it and never blocks on its own; the Pre-Report Gate below still decides whether it is reported at all.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("master-prompt ecc-code-reviewer adversarial stance applied")
+PYEOF
+
+# Master prompt (fix program #4): orch-build-mvp — adversarial audit as a
+# distinct named step inside step 6, + final-report format additions in
+# step 9 (design/engineering decisions, tests and visual checks actually
+# performed, highest-value next improvements).
+# orch-build-mvp has NO staged source: its content is created and patched
+# inside build.sh only — this fix lives here as a patch block placed LAST —
+# just before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
+# fix-program-#3 patches and the fix4 Batch A block, whose old-strings the
+# substitution below is anchored on (i.e. against the CURRENT built text).
+# Never edit hackathon-ecc/ directly. The substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+#
+# What it adds, and what it deliberately does NOT duplicate:
+# - Step 6 already has `code-reviewer` (+ `security-reviewer` on any
+#   security-trigger slice) reviewing each slice, and the capped 2-round
+#   fix loop. What was missing was the adversarial step itself: the
+#   skeptical staff-engineer stance, severity (blocker/major/minor), and
+#   the confirmed-vs-suspected distinction. The code-reviewer STANCE lives
+#   in agents/ecc-code-reviewer.md (MP-code-reviewer.py patch); this step
+#   only NAMES the audit as a distinct step inside step 6.
+# - Step 9 already lists what was built, assumptions, blocked/skipped, and
+#   removals. Added: design + engineering decisions, tests and visual
+#   checks actually performed, highest-value next improvements — mirroring
+#   the orchestrate final-report format.
+# - No approval gate, no wait point, no new agent/skill/file. The
+#   one-engine rule is untouched: this step covers standalone
+#   orch-build-mvp runs only.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Master prompt — adversarial audit as a distinct named step, inside
+  # orch-build-mvp step 6 (after the code-reviewer pass).
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.''',
+   r'''Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.
+
+**Adversarial audit (a distinct named step, inside step 6, after the `code-reviewer` pass):** `code-reviewer` (+ `security-reviewer` on any security-trigger slice) audits the built code as a skeptical staff engineer — try to break it, falsify the claimed behaviour. Every finding carries a severity (blocker / major / minor) and is marked **confirmed** (reproduced against the running code) or **suspected** (reasoned but not reproduced) — a suspected finding is never presented as a confirmed defect. Fix blockers and majors inside the capped 2-round fix loop; minors go in the final report.'''),
+  # Master prompt — final-report format additions in step 9.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''This step covers standalone orch-build-mvp runs only — orchestrate never invokes this skill, so orchestrate never owns this report.''',
+   r'''The report also includes: important design + engineering decisions (what was chosen, what was rejected, and why); the tests and visual checks actually performed (only checks that really ran, with their outcome — never a confident description in place of a check that did not happen); and the highest-value next improvements (prioritized by impact/effort/risk).
+
+This step covers standalone orch-build-mvp runs only — orchestrate never invokes this skill, so orchestrate never owns this report.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("master-prompt orch-build-mvp adversarial audit + final-report format applied")
+PYEOF
+
+# --- Fix program #5, Batch 2: orch-change-feature — removal re-upload /
+# redeploy conditionality, blocked-branch routing, step-3 cap ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after all
+# prior patches, whose old-strings the substitutions below are anchored on
+# (i.e. against the CURRENT built text in
+# hackathon-ecc/skills/orch-change-feature/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. Covers Fix-5 Batch 2 items B2, M2, M4, Audit M1 (+ step-6
+# coherence for B2).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Audit M1: step 3 dangling-reference fix had no cap (step 4 has the
+  # 2-round cap). Cap: one fix per found reference, then re-grep once; if
+  # new references keep appearing after 2 passes, mark blocked and skip
+  # to step 6 (the report delivery) instead of looping unboundedly.
+  ("skills/orch-change-feature/SKILL.md",
+   "3. Verify nothing still references the removed code, routes, UI, or database objects — grep the repo for the feature's identifiers (component, function, route, and table/column names) and check every file in the final-report inventory's entry for the feature — and fix or remove any dangling references.",
+   "3. Verify nothing still references the removed code, routes, UI, or database objects — grep the repo for the feature's identifiers (component, function, route, and table/column names) and check every file in the final-report inventory's entry for the feature — and fix or remove any dangling references, with a CAP of 2 passes: one fix per found reference, then re-grep once; if new references keep appearing after 2 passes, mark the removal blocked in the final report (with the still-dangling references as evidence) and skip to step 6 and deliver the updated final report — never loop unboundedly on dangling references."),
+  # M4: step 4's blocked branch said "stop" without routing to step 6,
+  # which delivers the updated final report as the reply (the done
+  # signal). Add the explicit skip-to-step-6 routing.
+  ("skills/orch-change-feature/SKILL.md",
+   "mark the removal blocked in the final report (with the failing test or the broken behaviour as evidence), stop, and leave the deletion uncommitted.",
+   "mark the removal blocked in the final report (with the failing test or the broken behaviour as evidence), stop, and leave the deletion uncommitted — then skip to step 6 and deliver the updated final report."),
+  # M2: step 5 assumed a git-linked deploy ("re-deploy by pushing the
+  # removal commit to `main`"), but no first-build step creates a GitHub
+  # repo, sets a git remote, or links Vercel to git (deploy-fast's Vercel
+  # CLI deploy links the local folder, not git). Conditional: push only
+  # if a git remote is linked to the deploy; otherwise redeploy via the
+  # path deploy-fast established in the first build. If neither exists,
+  # the existing blocked-deploy handling applies.
+  ("skills/orch-change-feature/SKILL.md",
+   "5. After the commit, re-deploy by pushing the removal commit to `main` — the git-linked deploy fires from that push (`deploy-fast`). That push redeploys ONLY the Vercel frontend: a split backend does NOT redeploy from it — redeploy the Railway API/backend separately with `railway up` from the backend directory, and apply any migration with `supabase db push` (both per `deploy-fast`, split-backend redeploy).",
+   "5. After the commit, re-deploy: if the project has a git remote linked to the deploy, push the removal commit to `main` — the git-linked deploy fires from that push (`deploy-fast`); otherwise redeploy via the path `deploy-fast` established in the first build (Vercel CLI link / `railway up` / `supabase db push`). Do not assume a git remote exists — no first-build step creates a GitHub repo, sets a git remote, or links Vercel to git (deploy-fast's Vercel CLI deploy links the local folder, not git). If neither a git-linked deploy nor a deploy-fast path exists, the blocked-deploy handling below applies. A push redeploys ONLY the Vercel frontend: a split backend does NOT redeploy from it — redeploy the Railway API/backend separately with `railway up` from the backend directory, and apply any migration with `supabase db push` (both per `deploy-fast`, split-backend redeploy)."),
+  # M2 follow-through: the downstream "After the push, wait for the
+  # deploy to be ready" assumed a push happened; reword to the redeploy
+  # so the no-git-remote branch reads coherently.
+  ("skills/orch-change-feature/SKILL.md",
+   "After the push, wait for the deploy to be ready before re-filming: poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes.",
+   "After the redeploy, wait for the deploy to be ready before re-filming: poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes."),
+  # B2 (BLOCKING): step 5 said "re-upload the new video to the same
+  # YouTube/Vimeo host" — but nothing in the first build ever uploads the
+  # video anywhere (no YouTube/Vimeo upload skill, command, CLI, or step
+  # exists, and the first build never runs devpost-autofiller), so there
+  # is no submission and no hosted video to re-upload to. The first
+  # build CANNOT upload (it needs the user's YouTube/Devpost account —
+  # no credentials, no tool), so no upload mechanism is invented here.
+  # Conditional instead: re-upload ONLY if a hosted video link exists
+  # (Devpost submission, README, or final report); ELSE record the honest
+  # hosting note in the final report and deliver it. Never claim a
+  # re-upload happened when it did not. The done-condition ("the demo
+  # video reflects the removal") is satisfied by the re-filmed LOCAL
+  # video + the honest hosting note, not by a phantom upload.
+  ("skills/orch-change-feature/SKILL.md",
+   "After re-filming, re-upload the new video to the same YouTube/Vimeo host (upload HOURS before the deadline — processing can take several hours, per `devpost-autofiller`) and update the video LINK wherever it appears (the Devpost submission and the README if it embeds it) — text updates alone leave the judge-visible artefact stale, so the link must point at the re-uploaded video, not the pre-removal one, and update the stage ledger (`.hackathon/run-ledger.md`),",
+   "After re-filming, IF a hosted video link exists (in the Devpost submission, the README, or the final report), re-upload the new video to the same YouTube/Vimeo host (upload HOURS before the deadline — processing can take several hours, per `devpost-autofiller`) and update the video LINK wherever it appears (the Devpost submission and the README if it embeds it) — text updates alone leave the judge-visible artefact stale, so the link must point at the re-uploaded video, not the pre-removal one; ELSE (no hosted video link exists — the first build never uploads the video anywhere, so there is nothing to re-upload to) record in the final report \"video re-filmed locally at <path>, not yet hosted — upload it and update the link at <location>\" and deliver that report. Never claim a re-upload happened when it did not. The removal's done-condition (\"the demo video reflects the removal\") is satisfied by the re-filmed LOCAL video + the honest hosting note, not by a phantom upload. Then update the stage ledger (`.hackathon/run-ledger.md`),"),
+  # B2 coherence in step 6: the final report lists the re-uploaded video
+  # link only when one exists; otherwise it carries the honest hosting
+  # note from step 5.
+  ("skills/orch-change-feature/SKILL.md",
+   "Update `docs/final-report.md` first (feature-to-files inventory plus what was removed, anything blocked, and the re-uploaded video link), then deliver the updated report as the reply.",
+   "Update `docs/final-report.md` first (feature-to-files inventory plus what was removed, anything blocked, and the re-uploaded video link if a hosted video existed, else the honest hosting note from step 5 — \"video re-filmed locally at <path>, not yet hosted\"), then deliver the updated report as the reply."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix5 batch 2: orch-change-feature B2 + M2 + M4 + Audit M1 applied")
+PYEOF
+
+# --- Fix program #5, Batch 2: orch-build-mvp — standalone alignment:
+# narration-key prompt early (B1-standalone), readme-writer invocation
+# (M11-standalone), final-report video handoff (B2a-standalone) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block to be placed LAST in build.sh, just before STEP 5, after all
+# prior patches, whose old-strings the substitutions below are anchored on
+# (i.e. against the CURRENT built text in
+# hackathon-ecc/skills/orch-build-mvp/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. Covers Fix-5 Batch 2 items B1-standalone, M11-standalone,
+# B2a-standalone (standalone flow only — the orchestrate-driven flow's
+# equivalents are handled elsewhere).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B1-standalone — CHECK FOUND IT BROKEN: the standalone flow had no
+  # early narration-key prompt. The only prompt trigger was step 8's
+  # `/demo` (commands/demo.md + pitch-deck-video's narration-key prompt),
+  # which fires at the END of the run — after scaffold, implement,
+  # reconcile, verify, commit, and deploy — with no build left as the
+  # "meanwhile" work the B1 principle requires (prompt once, early, right
+  # after grill-me; build continues regardless). The /demo prompt itself
+  # is non-blocking and the video never aborts (music-only/silent
+  # fallback), so nothing stalls — but the prompt was late, not early.
+  # Align: prompt once at the START of the standalone run (step 1),
+  # non-blocking, env var only, never written to disk; if the key never
+  # arrives, music-only/silent with a note. This is the ONE sanctioned
+  # user prompt during the standalone run besides grill-me (hackathon-mode
+  # §7 carve-out) — never a wait point, never an approval gate. And do
+  # NOT re-prompt at step 8 `/demo` time: the single early prompt covers
+  # the run; `/demo` uses the key if present, else falls back.
+  ("skills/orch-build-mvp/SKILL.md",
+   "If neither holds, do not auto-approve with zero recorded decisions and no check: proceed on the raw prompt with a stated assumption — do NOT re-run `grill-me` (see hackathon-mode §7).",
+   "If neither holds, do not auto-approve with zero recorded decisions and no check: proceed on the raw prompt with a stated assumption — do NOT re-run `grill-me` (see hackathon-mode §7).\n\n**Narration-key prompt — once, at the start of the standalone run, never blocking.** At the start of the run (step 1), if narration will need a key and none is set (no `ELEVENLABS_API_KEY` in the environment, no MiniMax credentials), issue the single `pitch-deck-video` narration-key prompt once (ElevenLabs free tier — 10,000 characters a month, no credit card — with the free-tier facts), then continue the build immediately without waiting: the prompt never blocks, the key is an env var only and is never written to any file, and if it never arrives the video renders music-only/silent with a note in the final report. This is the ONE sanctioned user prompt during the standalone run besides grill-me itself (hackathon-mode §7 carve-out) — never a wait point, never an approval gate. Do NOT re-prompt at step 8 `/demo` time: the single early prompt covers the run, and `/demo` uses the key if present, else falls back to music-only/silent."),
+  # M11-standalone — CHECK FOUND IT MISSING: no step in orch-build-mvp
+  # invoked readme-writer (verified: zero "readme" in the built skill).
+  # Add the named invocation after the build (deploy + film, step 8) and
+  # before the final report (step 9) — same placement logic as the
+  # orchestrate flow — so the README exists for devpost-autofiller to
+  # draft the Devpost submission from. Step numbering unchanged.
+  ("skills/orch-build-mvp/SKILL.md",
+   "If deploy was static-only or blocked, the final report notes that — never hard-abort the run for lack of a deployed URL.",
+   "If deploy was static-only or blocked, the final report notes that — never hard-abort the run for lack of a deployed URL. After filming, invoke `readme-writer` to write/update the README from the built app, before the final report in step 9 (the README is what `devpost-autofiller` later drafts the Devpost submission from)."),
+  # B2a-standalone — CHECK FOUND IT MISSING: step 9 (final report) did
+  # not state the video file path or any upload instruction (verified:
+  # zero "video" / "YouTube" / "Vimeo" / "Devpost" / "upload" in the
+  # built skill outside step 8's filming line). Add the handoff to step
+  # 9: the video file path AND the instruction to upload the file to
+  # YouTube/Vimeo and paste the link into Devpost — the first build never
+  # uploads the video anywhere (it has no YouTube/Devpost account
+  # access), so the path + upload instruction is how the video reaches
+  # the submission.
+  ("skills/orch-build-mvp/SKILL.md",
+   "The report also includes: important design + engineering decisions (what was chosen, what was rejected, and why); the tests and visual checks actually performed (only checks that really ran, with their outcome — never a confident description in place of a check that did not happen); and the highest-value next improvements (prioritized by impact/effort/risk).",
+   "The report also includes: important design + engineering decisions (what was chosen, what was rejected, and why); the tests and visual checks actually performed (only checks that really ran, with their outcome — never a confident description in place of a check that did not happen); and the highest-value next improvements (prioritized by impact/effort/risk). The report also states the demo video handoff: the video file path (the local filmed video file) AND the instruction \"upload this file to YouTube/Vimeo and paste the link into Devpost\" — the first build never uploads the video anywhere (it has no YouTube/Devpost account access), so the file path + upload instruction is how the video reaches the submission."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix5 batch 2: orch-build-mvp B1-standalone + M11-standalone + B2a-standalone applied")
+PYEOF
+
+# Fix program #5, Batch 3: ui-ux-pro-max — M9 MASTER.md conformance + Audit M3 ask-user carve-out.
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST, just before STEP 5, after the GATE / carve-out /
+# Batch E / Batch F / fix-program-#4 / master-prompt patches, whose
+# old-strings the substitutions below are anchored on (i.e. against the
+# CURRENT built text in hackathon-ecc/skills/ui-ux-pro-max/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The coordinator inserts this block last, just before STEP 5.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Audit M3 — uncarved "ask the user" (Step 1, Stack): inline carve-out in the wording used elsewhere (council): during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, do NOT ask — resolve by stated assumption with the safe/reversible default and proceed. Not a new wait point: the carve-out removes the ask in the first build.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r'''- **Stack**: detect from the project — check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user. **Never assume a stack** — a hardcoded default silently misroutes every recommendation.''',
+   r'''- **Stack**: detect from the project — check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT ask: resolve by stated assumption with the safe/reversible default and proceed. **Never assume a stack** — a hardcoded default silently misroutes every recommendation.'''),
+  # M9 — design-system cross-slice handoff (dashboard side): the frozen landing system (design-taste-frontend, frozen on the plan) is the single source of truth; this MASTER.md must conform to it, and on divergence the frozen landing system wins.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r'''**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — visual identity; typography + type scale; color palette + semantic tokens (no raw hex in components); spacing/layout system; component hierarchy; navigation/IA; responsive behavior; motion/microinteractions; accessibility; and loading / empty / success / error states for every data surface. Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. This is a pre-UI step, not an approval gate: define it, then build.''',
+   r'''**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — visual identity; typography + type scale; color palette + semantic tokens (no raw hex in components); spacing/layout system; component hierarchy; navigation/IA; responsive behavior; motion/microinteractions; accessibility; and loading / empty / success / error states for every data surface. Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. This is a pre-UI step, not an approval gate: define it, then build. **Single source of truth on divergence:** if a landing-page system was already frozen by `design-taste-frontend` on the plan, that frozen landing system is the single source of truth: this MASTER.md must conform to it — same tokens, same type scale, same component decisions. If the two diverge, the frozen landing system wins; do not re-derive a competing system.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix5 batch 3: ui-ux-pro-max M9 conformance + M3 ask-user carve-out applied")
+PYEOF
+
+# --- Fix program #6, Batch 1: orch-change-feature — removal re-film
+# narration continuity (B3) + skip deploy-ready poll when the deploy is
+# already known-blocked (M6) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches, whose old-strings the substitutions below are anchored on (i.e.
+# against the CURRENT built text in
+# hackathon-ecc/skills/orch-change-feature/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M6: step 5 polls the deployed app until it serves the new version with a
+  # ~5-minute bound — but nothing says to skip the poll when the deploy was
+  # ALREADY known-blocked (blocked-deploy handling: no git-linked deploy, no
+  # deploy-fast path, or an unauthenticated deploy CLI). A literal agent
+  # burns up to ~5 minutes polling a URL that can never become ready.
+  # Skip the poll entirely in that case; film local immediately.
+  ("skills/orch-change-feature/SKILL.md",
+   "After the redeploy, wait for the deploy to be ready before re-filming: poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes. If it never becomes ready in that bound, film local and note it in the final report — never film a stale deployed URL, and never wait unboundedly.",
+   "After the redeploy, wait for the deploy to be ready before re-filming — UNLESS the deploy was already known-blocked (blocked-deploy handling above: no git-linked deploy, no deploy-fast path, or an unauthenticated deploy CLI): in that case skip the poll entirely, film local immediately, and note it in the final report — polling a URL that can never become ready burns up to ~5 minutes for nothing. Otherwise poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes. If it never becomes ready in that bound, film local and note it in the final report — never film a stale deployed URL, and never wait unboundedly."),
+  # B3 (BLOCKING): a one-prompt removal re-films in a new session with no
+  # key (keys are never persisted, by design) — the old text said nothing
+  # about narration, so the re-film silently lost the first build's
+  # narration (or changed its voice). The code now reuses cached wavs in
+  # their original voice (tts.mjs cache key is the CONFIGURED provider;
+  # build.mjs reconcileNarration restores a line whose wav is on disk) —
+  # this step states the rule: unchanged lines reuse the cached audio;
+  # changed lines need the key, prompted once; the step-6 report states
+  # the narration status per line-set, never silently.
+  ("skills/orch-change-feature/SKILL.md",
+   "then re-film via `/demo --rebuild`, which films the LOCAL app from the project dir (`APP_DIR`/project root), never a deployed URL; if the deploy was blocked, film local anyway and note in the final report that the video shows the local app, not the deployed one.",
+   "then re-film via `/demo --rebuild`, which films the LOCAL app from the project dir (`APP_DIR`/project root), never a deployed URL; if the deploy was blocked, film local anyway and note in the final report that the video shows the local app, not the deployed one. **Narration continuity on the re-film:** narration lines that did not change are served from the per-line cache — the cached wavs from the first build are reused in their ORIGINAL voice (the cache key is the configured provider, and `reconcileNarration` restores a line whose wav is on disk), so a keyless removal run does NOT re-synthesise them in a fallback voice and does NOT go silent. If any narration line CHANGED (not just deleted) and no `ELEVENLABS_API_KEY` is set, issue the single `pitch-deck-video` narration-key prompt once (same prompt as the first build — free tier, 10,000 chars/month, no credit card), then continue without waiting: the key is an env var only, never written to a file. If the key never arrives, the changed lines render per the `tts.mjs` fallback and the step-6 report MUST state the narration status per line-set (unchanged lines: original voice reused; changed lines: voice actually rendered) — never present the video as fully narrated in the original voice when it is not."),
+  # B3 follow-through in step 6: the final report lists the narration
+  # status of the re-filmed video (full / partial / none + voice).
+  ("skills/orch-change-feature/SKILL.md",
+   "Update `docs/final-report.md` first (feature-to-files inventory plus what was removed, anything blocked, and the re-uploaded video link if a hosted video existed, else the honest hosting note from step 5 — \"video re-filmed locally at <path>, not yet hosted\"), then deliver the updated report as the reply.",
+   "Update `docs/final-report.md` first (feature-to-files inventory plus what was removed, anything blocked, the re-uploaded video link if a hosted video existed, else the honest hosting note from step 5 — \"video re-filmed locally at <path>, not yet hosted\" — AND the narration status of the re-filmed video: full / partial / none, and which voice rendered the narration — original ElevenLabs voice reused for unchanged lines, or the fallback voice for changed lines when no key arrived), then deliver the updated report as the reply."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix6 batch 1: orch-change-feature B3 + M6 applied")
+PYEOF
+
+# --- Fix program #6, Batch 2: orch-build-mvp — key handoff to step 8 (B1),
+# Phase 6 named composer (M5), TDD inside the GAN loop (M9) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches, whose old-strings the substitutions below are anchored on (i.e.
+# against the CURRENT built text in
+# hackathon-ecc/skills/orch-build-mvp/SKILL.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. Covers Fix-6 items B1 (standalone half), M5, M9 (standalone half;
+# the gan-build command half is Batch 3).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B1-standalone — CHECK FOUND IT BROKEN: step 0's key paragraph says to
+  # "pass it as the ELEVENLABS_API_KEY env var to the tts run at /demo
+  # time", but step 8 frames /demo as a dispatch and never mentions the
+  # key, and the dispatch template has no env-var field — if /demo is
+  # dispatched to a subagent, the key has no specified route into that
+  # executor's environment (tts.mjs reads it only from the process
+  # environment). Mechanism: the step-8 dispatch carries an explicit env
+  # instruction naming ELEVENLABS_API_KEY with the value held in working
+  # context (never a file). Also covers M7: if the key arrives after step
+  # 8 already rendered but before the step-9 report, re-run the video
+  # script step with the key set.
+  ("skills/orch-build-mvp/SKILL.md",
+   "Do NOT re-prompt at step 8 `/demo` time: the single early prompt covers the run, and `/demo` uses the key if present, else falls back to music-only/silent.",
+   "Do NOT re-prompt at step 8 `/demo` time: the single early prompt covers the run, and `/demo` uses the key if present, else falls back to music-only/silent. **Key handoff to step 8:** if the user replies with a key mid-run, hold it in working context ONLY and pass it to the step-8 `/demo` via the dispatch: the step-8 dispatch carries an explicit env instruction naming `ELEVENLABS_API_KEY` with the value held in working context, and the `/demo` executor runs the `tts` step with that variable set in its process environment — the key travels in the dispatch (working context), never in a file; `tts.mjs` reads it only from the environment. If the key arrives after step 8 already rendered but before the step-9 final report, re-run the video script step (`npm run script` in the video project — tts + render) with the key set, so the delivered video is the narrated cut; if it arrives after the report, note the re-run command in the report with the key redacted (`ELEVENLABS_API_KEY=$KEY npm run script` in the video project dir — the user supplies their own key)."),
+  # M5: step 9 only "takes" the expansion Phase 6 section from the ledger
+  # + return text — the return-text half has no named producer in the
+  # standalone flow. Name the composer: orch-build-mvp itself, mirroring
+  # orchestrate in the orchestrate-driven flow.
+  ("skills/orch-build-mvp/SKILL.md",
+   "Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the expansion Phase 6 return text (the landed / blocked / rejected lists).",
+   "Take the expansion Phase 6 section from the stage ledger (`.hackathon/run-ledger.md`, expansion section) AND the expansion Phase 6 return text (the landed / blocked / rejected lists). **Named producer:** ORCH-BUILD-MVP composes this section itself, from the stage ledger + the implementers' return texts — mirroring orchestrate, which is the named producer in the orchestrate-driven flow; the return-text half is the implementers' return texts, collected by orch-build-mvp."),
+  # M9 — CHECK FOUND IT BROKEN: step 4 reuses the GAN harness as
+  # orch-pipeline Phase 4, but Phase 4 is defined as TDD (tdd-guide:
+  # red → green → refactor) and /gan-build has no test-writing step — the
+  # generator builds, the evaluator tests the live app and scores it. The
+  # standalone flow therefore ends with no tests and no coverage,
+  # contradicting hackathon-mode §4 ("Plan first, write tests first") and
+  # the pipeline Verification checklist ("new / changed behavior has
+  # tests; coverage ≥ 80%"). Real fix, not a wording dodge: the generator
+  # writes tests FIRST per tdd-guide, and the evaluator RUNS them — a
+  # slice whose tests fail cannot score a pass.
+  ("skills/orch-build-mvp/SKILL.md",
+   "   - That command runs the `gan-generator` → `gan-evaluator` loop and writes\n     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.",
+   "   - That command runs the `gan-generator` → `gan-evaluator` loop and writes\n     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.\n   - **TDD inside the GAN loop (this step IS orch-pipeline Phase 4, which is TDD):** the generator writes tests FIRST per `tdd-guide` (red → green → refactor) for each slice's new/changed behaviour before implementing it, and the evaluator RUNS those tests as part of its check — a slice whose tests fail cannot score a pass. The loop's live-app evaluation does not replace written tests. The standalone flow ends with tests on disk for the new/changed behaviour, per hackathon-mode §4 (\"Plan first, write tests first\") and the pipeline Verification checklist (\"new / changed behavior has tests; coverage ≥ 80%\") — if coverage cannot reach 80% in the time left, the gap is recorded in the final report with the uncovered areas, never silently dropped."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix6 batch 2: orch-build-mvp B1 + M5 + M9 applied")
+PYEOF
+
+# --- Fix program #6, Batch 3: /gan-build command — test-writing in the
+# generator-evaluator loop (M9, command half) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches, whose old-strings the substitutions below are anchored on (i.e.
+# against the CURRENT built text in hackathon-ecc/commands/gan-build.md).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The skill half (orch-build-mvp step 4) is Batch 2.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M9 (command half): Phase 2 GENERATE builds with no test-writing step,
+  # and EVALUATE tests only the live app — so the loop can PASS with zero
+  # tests on disk. Add the TDD step to the generator and the test run to
+  # the evaluator: a failing repo test caps the score below the pass
+  # threshold regardless of how the live app looks.
+  ("commands/gan-build.md",
+   "    - Build/improve the application",
+   "    - Build/improve the application — TDD: write the tests for the new/changed behaviour FIRST (`tdd-guide`: red → green → refactor) before implementing it; the tests live in the repo with the code, not in the harness"),
+  ("commands/gan-build.md",
+   "    - Test the live application (mode: playwright/screenshot/code-only)",
+   "    - Test the live application (mode: playwright/screenshot/code-only)\n    - Run the repo tests the generator wrote (`tdd-guide` tests) — a failing test caps the score below the pass threshold regardless of how the live app looks"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix6 batch 3: gan-build M9 applied")
+PYEOF
+
+# --- Supply-chain pins: @latest / unpinned installs (pinned Nov 10, 2026) ---
+# Versions verified against the npm registry (npm view) and the
+# playwright-core 1.65.0 browsers.json (Chromium revision 1254) before
+# writing them in. No other patch block references these files, so this
+# block's placement before the fix6-batch-4 / fix7 late blocks is safe.
+# The clone pins (item 1) are shell edits in STEP 2, not patches here.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+def pin(rel, old, new, count=1):
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    n = text.count(old)
+    assert n == count, f"{rel}: expected {count} occurrence(s) of {old[:60]!r}, found {n}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+
+# (2) angular-developer (ECC-derived): @angular/cli@latest -> 22.2.6.
+# The prose above the command said "fetch the latest version" -- it now
+# names the pinned version so the file stays self-consistent.
+pin("skills/angular-developer/SKILL.md",
+    "you must use `npx` to fetch the latest version.",
+    "you must use `npx` to fetch the pinned version (`@angular/cli@22.2.6`).")
+pin("skills/angular-developer/SKILL.md",
+    "- **Command:** `npx @angular/cli@latest new <project-name>`",
+    "- **Command:** `npx @angular/cli@22.2.6 new <project-name>`")
+
+# (2) ui-ux-pro-max data (upstream clone): shadcn@latest (15x) -> 4.23.0,
+# npm create nuxt@latest (2x) -> create-nuxt 4.0.3. (The "nuxt-ui 4.12.0"
+# column in nuxt-ui.csv is the template's UI version, not the scaffolder.)
+pin("skills/ui-ux-pro-max/data/stacks/shadcn.csv", "shadcn@latest", "shadcn@4.23.0", 15)
+pin("skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv", "npm create nuxt@latest", "npm create nuxt@4.0.3", 2)
+
+# (3) frontend-slides export-pdf.sh (ECC-derived): playwright -> 1.65.0.
+# The version pin is what pins Chromium: playwright 1.65.0 ships Chromium
+# revision 1254 (playwright-core browsers.json), so the npx install of the
+# pinned CLI downloads exactly that revision. The revision is recorded in
+# the comment so a future version bump knows to re-check browsers.json.
+pin("skills/frontend-slides/scripts/export-pdf.sh",
+    "# Ensure Chromium browser binary is downloaded",
+    "# Ensure Chromium browser binary is downloaded (playwright 1.65.0 ships Chromium revision 1254)")
+pin("skills/frontend-slides/scripts/export-pdf.sh",
+    "npm install playwright &>/dev/null || {",
+    "npm install playwright@1.65.0 &>/dev/null || {")
+pin("skills/frontend-slides/scripts/export-pdf.sh",
+    '    err "Try running: npm install playwright"',
+    '    err "Try running: npm install playwright@1.65.0"')
+pin("skills/frontend-slides/scripts/export-pdf.sh",
+    "npx playwright install chromium 2>/dev/null || {",
+    "npx playwright@1.65.0 install chromium 2>/dev/null || {")
+pin("skills/frontend-slides/scripts/export-pdf.sh",
+    '    err "Try running manually: npx playwright install chromium"',
+    '    err "Try running manually: npx playwright@1.65.0 install chromium"')
+
+print("supply-chain pins applied: angular 22.2.6, shadcn 4.23.0, nuxt 4.0.3, playwright 1.65.0 / chromium r1254")
+PYEOF
+
+# --- Fix program #6, Batch 4: ui-ux-pro-max — design-token source is the
+# durable file now (B2 pointer) ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches, whose old-strings the substitutions below are anchored on (i.e.
+# against the CURRENT built text in
+# hackathon-ecc/skills/ui-ux-pro-max/SKILL.md, as written by fix5 batch 3).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match. The landing side (design-taste-frontend step 4a writing
+# docs/design-tokens.md) is a staged-source edit, not a patch.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B2 pointer: the frozen landing system used to be "frozen on the plan"
+  # with no named file — it is now frozen in docs/design-tokens.md
+  # (written by the landing slice at the end of design-taste-frontend
+  # step 4a). Name the file here so the divergence rule is applicable
+  # from a recorded file, not after the fact.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   "**Single source of truth on divergence:** if a landing-page system was already frozen by `design-taste-frontend` on the plan, that frozen landing system is the single source of truth: this MASTER.md must conform to it — same tokens, same type scale, same component decisions. If the two diverge, the frozen landing system wins; do not re-derive a competing system.",
+   "**Single source of truth on divergence:** if a landing-page system was already frozen by `design-taste-frontend` in `docs/design-tokens.md`, that frozen landing system is the single source of truth: this MASTER.md must conform to it — same tokens, same type scale, same component decisions. If the two diverge, the frozen landing system wins; do not re-derive a competing system. (The landing slice writes `docs/design-tokens.md` at the end of `design-taste-frontend` step 4a; if the file does not exist yet, the landing slice has not run — wait for it, do not guess the tokens.)"),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix6 batch 4: ui-ux-pro-max B2 pointer applied")
+PYEOF
+
+# --- Fix program #7: ui-ux-pro-max — M1 no-landing fallback for the
+# design-token handoff ---
+# Upstream ECC file, copied fresh on every build — this fix lives here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches, whose old-strings the substitutions below are anchored on (i.e.
+# against the CURRENT built text in
+# hackathon-ecc/skills/ui-ux-pro-max/SKILL.md, as written by fix6 batch 4).
+# Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
+# match.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M1 — no-landing fallback: the tokens file has exactly one writer (the
+  # landing slice) and ui-ux-pro-max said only "wait for it" when the file
+  # does not exist yet. In a dashboard-only app there is no landing slice,
+  # so the gate is never satisfied. The fallback: if there is no landing
+  # slice in this build (or it is blocked), the first UI slice defines the
+  # system itself in MASTER.md and writes docs/design-tokens.md from it.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r'''(The landing slice writes `docs/design-tokens.md` at the end of `design-taste-frontend` step 4a; if the file does not exist yet, the landing slice has not run — wait for it, do not guess the tokens.)''',
+   r'''(The landing slice writes `docs/design-tokens.md` at the end of `design-taste-frontend` step 4a; if the file does not exist yet, the landing slice has not run — wait for it, unless there is no landing slice in this build (dashboard-only app, or the landing slice is blocked): then define the system yourself in MASTER.md and write `docs/design-tokens.md` from it — you are the tokens file's writer then, and that file is the single source of truth. Never guess the tokens.)'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix7: ui-ux-pro-max M1 no-landing fallback applied")
+PYEOF
+
+# --- Fix program #8 (findings): pin the three unpinned registry-fetching
+# npx/npm instructions the security re-scan found outside the 5 pinned items
+# (F2) ---
+# Upstream ECC files, copied fresh on every build — these fixes live here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches (including fix7), whose old-strings the substitutions below are
+# anchored on (i.e. against the CURRENT built text). Versions verified on npm
+# before writing: ecc-universal 2.2.3, ccg-workflow 3.7.4. Never edit
+# hackathon-ecc/ directly. Each substitution asserts exactly one match. The
+# mcp-dependency-review classifier example mentioning `npx --package
+# ecc-universal ecc` is prose, not a runnable instruction, and is
+# deliberately left unpinned.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # F2 — loop-status: pin the packaged CLI invocation.
+  ("commands/loop-status.md",
+   r'''npx --package ecc-universal ecc loop-status --json''',
+   r'''npx --package ecc-universal@2.2.3 ecc loop-status --json'''),
+  # F2 — unified-memory: pin the global install.
+  ("skills/unified-memory/SKILL.md",
+   r'''npm install -g ecc-universal''',
+   r'''npm install -g ecc-universal@2.2.3'''),
+  # F2 — multi-* commands: pin the ccg-workflow prerequisite (both mentions).
+  ("commands/multi-backend.md",
+   r'''Initialize it with `npx ccg-workflow` to provision''',
+   r'''Initialize it with `npx ccg-workflow@3.7.4` to provision'''),
+  ("commands/multi-backend.md",
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow`)''',
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`)'''),
+  ("commands/multi-execute.md",
+   r'''Initialize it with `npx ccg-workflow` to provision''',
+   r'''Initialize it with `npx ccg-workflow@3.7.4` to provision'''),
+  ("commands/multi-execute.md",
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow`)''',
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`)'''),
+  ("commands/multi-frontend.md",
+   r'''Initialize it with `npx ccg-workflow` to provision''',
+   r'''Initialize it with `npx ccg-workflow@3.7.4` to provision'''),
+  ("commands/multi-frontend.md",
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow`)''',
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`)'''),
+  ("commands/multi-plan.md",
+   r'''Initialize it with `npx ccg-workflow` to provision''',
+   r'''Initialize it with `npx ccg-workflow@3.7.4` to provision'''),
+  ("commands/multi-plan.md",
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow`)''',
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`)'''),
+  ("commands/multi-workflow.md",
+   r'''Initialize it with `npx ccg-workflow` to provision''',
+   r'''Initialize it with `npx ccg-workflow@3.7.4` to provision'''),
+  ("commands/multi-workflow.md",
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow`)''',
+   r'''Requires the external ccg-workflow runtime (`npx ccg-workflow@3.7.4`)'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix8: F2 registry pins applied (ecc-universal@2.2.3, ccg-workflow@3.7.4)")
+PYEOF
+
+# --- Fix program #9: pin the remaining registry-fetching installs ---
+# Upstream ECC files, copied fresh on every build — these fixes live here as a
+# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patches (including fix8 findings), whose old-strings the substitutions below
+# are anchored on (i.e. against the CURRENT built text). Versions verified on
+# npm (npm view) before writing. Never edit hackathon-ecc/ directly. Each
+# substitution asserts exactly one match in its built file.
+# Deliberately left unpinned (same class, not genuine fetches):
+# - ui-to-vue SKILL.md:69 `npm install -g ui-to-vue-converter@1.0.2` and
+#   unified-memory SKILL.md:22 `npm install -g ecc-universal@2.2.3` — already
+#   pinned (fix #8).
+# - app-scaffold troubleshooting.md:36 "Don't `npm install -g supabase`" —
+#   prose that PROHIBITS the unpinned fetch.
+# - ecc-react-build-resolver.md:169 `# npm i react@^<major> react-dom@^<major>`
+#   — commented-out template with a <major> placeholder the agent fills in
+#   from the project; no concrete version exists to pin.
+# - scripts/lib/missing-dependency.js:51-52 — the install suggestion reads its
+#   version from package.json dependencies (already pinned); the unversioned
+#   branch fires only when package.json is unreachable, where no version
+#   exists to pin to. It suggests; it never installs.
+# - bare `npx <pkg>` invocations (npx tsc/vitest/eslint/prettier/prisma,
+#   `npx ecc-agentshield scan`) resolve an installed binary first; no install
+#   is involved.
+# - pip installs (bengali-nlp, django-*, frontend-slides html-template,
+#   python-patterns) are a different package manager, outside this sweep's
+#   npm scope; noted for a future pass, not pinned here.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Sweep — security-scan: pin the global install.
+  ("skills/security-scan/SKILL.md",
+   r"""npm install -g ecc-agentshield""",
+   r"""npm install -g ecc-agentshield@1.6.0"""),
+  # Sweep — ecc-e2e-runner: pin the global install.
+  ("agents/ecc-e2e-runner.md",
+   r"""npm install -g agent-browser && agent-browser install""",
+   r"""npm install -g agent-browser@0.42.0 && agent-browser install"""),
+  # Sweep — pm2 command: pin the global install.
+  ("commands/pm2.md",
+   r"""npm install -g pm2""",
+   r"""npm install -g pm2@7.1.2"""),
+  # Sweep — astra-review codex.js: pin the version in the install hint.
+  ("scripts/lib/astra-review/codex.js",
+   r"""npm i -g @openai/codex""",
+   r"""npm i -g @openai/codex@0.167.1"""),
+  # Sweep — angular-aria: pin the conditional install.
+  ("skills/angular-developer/references/angular-aria.md",
+   r"""npm install @angular/aria""",
+   r"""npm install @angular/aria@22.2.6"""),
+  # Sweep — tailwind-css: pin all three installs.
+  ("skills/angular-developer/references/tailwind-css.md",
+   r"""npm install tailwindcss @tailwindcss/postcss postcss""",
+   r"""npm install tailwindcss@4.3.5 @tailwindcss/postcss@4.3.5 postcss@8.5.32"""),
+  # Sweep — mcp-server-patterns: pin both installs.
+  ("skills/mcp-server-patterns/SKILL.md",
+   r"""npm install @modelcontextprotocol/sdk zod""",
+   r"""npm install @modelcontextprotocol/sdk@1.32.2 zod@4.6.7"""),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix9: sweep registry pins applied (ecc-agentshield@1.6.0, agent-browser@0.42.0, pm2@7.1.2, codex@0.167.1, angular/aria@22.2.6, tailwindcss@4.3.5, postcss@8.5.32, sdk@1.32.2, zod@4.6.7)")
+PYEOF
+
+# --- Fix program #11: ui-ux-pro-max — Impeccable craft-floor read ---
+# ui-ux-pro-max is fetched fresh from upstream on every build (pinned SHA),
+# so this wiring lives here as a patch block placed LAST in build.sh, just
+# before STEP 5, after the fix9 block. It anchors on the CURRENT built text
+# (post-copy). One substitution, asserts exactly one match.
+# The Impeccable craft floor lives in polish-pass (canonical location);
+# ui-ux-pro-max reads it by plugin-relative path before writing any UI.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("skills/ui-ux-pro-max/SKILL.md",
+   r"""Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them.""",
+   r"""Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. Also read the Impeccable craft floor (`skills/polish-pass/reference/impeccable-craft-floor.md` in the plugin) before writing any UI: its bans are absolute — a pinned brief never overrides a ban — and where it and this skill disagree, the stricter ban wins."""),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix11: ui-ux-pro-max Impeccable craft-floor read applied")
+PYEOF
+
+# --- Fix program #12 (D5): orch-change-feature routes landing redesigns
+# through the Hallmark redesign flow. Upstream ECC file, copied fresh on every
+# build — this fix lives here as a patch block placed LAST — just before
+# STEP 5 — after the GATE patch and all earlier patch blocks. The anchor is
+# the "Removing a feature" heading the B20 patch creates, so this block must
+# run after it. Each substitution asserts exactly one match.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  ("skills/orch-change-feature/SKILL.md",
+   "## Removing a feature\n\nWhen the request is to remove a feature",
+   """## Landing redesigns
+
+When the change is a redesign of the landing/company page — a new visual direction that keeps every fact, link, form, field, handler, route, id, and test hook — route the design work through the Hallmark redesign flow: `skills/design-taste-frontend/SKILL.md` (redesign paragraph before step 5) and the procedure in `references/hallmark/references/redesign.md`. Record the before-state first (`sloplint --before`, links/fields/handlers/headings + screenshots to `.hallmark/before*`), build, then `sloplint --kept` — anything lost is `FAIL kept` / `WARN kept`. Depths: **full** (system + composition change; default), **restyle** (system only, keep the layout), **polish** (only what a gate names). A dashboard/app-surface change is not a landing redesign — route that to `ui-ux-pro-max` instead. The engine steps above still run (tests first, gates auto-approve during a hackathon first build after grill-me or a one-prompt removal); the redesign flow owns only the design work.
+
+## Removing a feature
+
+When the request is to remove a feature"""),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("fix12: orch-change-feature landing-redesign routing applied")
+PYEOF
+
+# --- Weave program #1: connection/weaving loop (ordered Nov 10, ~23:05 CST).
+# Upstream ECC files, copied fresh on every build — these fixes live here as
+# a patch block placed LAST — just before STEP 5 — after the GATE patch and
+# all earlier patch blocks. Each substitution asserts exactly one match.
+# Staged-source edits live in weave1/weave1.py Part A; this block covers
+# only files no staged source owns, plus the skill-triggers JSON.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import json, os, sys
+base = sys.argv[1]
+subs = [
+  # W1-G8: the approved task_list gets a durable file at Gate 1.
+  ("skills/orch-pipeline/SKILL.md",
+   """1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
+   code until the user approves — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting.""",
+   """1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
+   code until the user approves — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where the gate auto-approves and the run proceeds without waiting. Record the approved `task_list` (one line per slice, with its files) in `.hackathon/run-ledger.md` at Gate 1, so later phases read it from there instead of the transcript."""),
+  # W4-G11: orch-build-mvp step 3 names app-scaffold.
+  ("skills/orch-build-mvp/SKILL.md",
+   """3. **Scaffold — orch-pipeline Phase 3.** Stand up the first end-to-end slice (the first thin vertical slice from orch-build-mvp step 1).""",
+   """3. **Scaffold — orch-pipeline Phase 3.** Stand up the first end-to-end slice via `app-scaffold` (the first thin vertical slice from orch-build-mvp step 1)."""),
+  # W1-G12 + W1-G15: GAN spec takes the expansion list; first UI slice
+  # writes design-tokens.md.
+  ("skills/orch-build-mvp/SKILL.md",
+   """   - Translate the record/scope (or the fallback spec doc, if that was the input) into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec).""",
+   """   - Translate the record/scope (or the fallback spec doc, if that was the input) — plus the planner-approved expansion list from `docs/expansion.md` (or the ledger's expansion section) — into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (this stands in for what `gan-planner` would generate — you already have the spec). Have the first UI slice in the GAN loop write `docs/design-tokens.md` from its design system (per orchestrate's no-landing fallback) so later slices brief from real tokens."""),
+  # W1-G13: reconcile reads the GAN loop's build report + feedback files.
+  ("skills/orch-build-mvp/SKILL.md",
+   """5. **Reconcile after each wave — this step owns collision reconciliation.** After each implementer wave, read every implementer's result (status, changed files, verification evidence, blockers); confirm the reported files exist, stayed in scope, and carry verification evidence.""",
+   """5. **Reconcile after each wave — this step owns collision reconciliation.** After each implementer wave, read every implementer's result (status, changed files, verification evidence, blockers) — the GAN loop's results are `gan-harness/build-report.md` and `gan-harness/feedback/feedback-*.md`; read those files, not just the return texts; confirm the reported files exist, stayed in scope, and carry verification evidence."""),
+  # W1-G14: the standalone flow gets its polish step (6b, before commit).
+  ("skills/orch-build-mvp/SKILL.md",
+   """Fix blockers and majors inside the capped 2-round fix loop; minors go in the final report.
+7. **Commit — orch-pipeline Phase 6.**""",
+   """Fix blockers and majors inside the capped 2-round fix loop; minors go in the final report.
+
+6b. **Final polish — after verification and before the step-7 commit.** Run `polish-pass` on the built UI (same role as orchestrate step 5b: it implements the subset that materially increases quality without destabilizing the build, at most one fix round per item) and carry its 10 highest-impact remaining improvements into the step-9 final report.
+
+7. **Commit — orch-pipeline Phase 6.**"""),
+  # W4-G3 + W1-G5: step 8 records the deploy URL/path; exact video path.
+  ("skills/orch-build-mvp/SKILL.md",
+   """8. **Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — LOCAL only.** Deploy the working MVP; then film the LOCAL app from the project dir (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it. The demo video is a required deliverable.""",
+   """8. **Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — LOCAL only.** Deploy the working MVP — record the production URL and the deploy path used in `.hackathon/run-ledger.md` (Vercel CLI link, git-linked push, Railway, static-only, or blocked with the failing command and error) — then film the LOCAL app from the project dir (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it. The demo video is a required deliverable; its file is `<app-name>-video/out/demo.mp4`."""),
+  # W4-G6 + W4-G7: step 9 runs the deferred six and reports the deployed
+  # URL, the adversarial findings, and the video handoff with its record.
+  ("skills/orch-build-mvp/SKILL.md",
+   """9. **Deliver the final report — this is the done signal.** Write it to `docs/final-report.md` in the project AND deliver it as the reply. State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory — the inventory lives in that file).""",
+   """9. **Deliver the final report — this is the done signal.** Before writing the report, run the six deferred end-of-project checks by name (`verification-loop`, `production-audit`, `delivery-gate`, `codehealth-mcp`, `santa-method`, `security-scan`) and record each result in the report (check name, pass/fail, findings count). Write it to `docs/final-report.md` in the project AND deliver it as the reply. State what was built, every assumption made, anything blocked or skipped, and anything the user may want to remove, with the files for each removable item (feature-to-files inventory — the inventory lives in that file). Also state the deployed URL from the ledger (or the blocked-deploy note), every adversarial-audit finding with its CONFIRMED/SUSPECTED label and fixed-or-open status, and the demo-video handoff: the video file path (`<app-name>-video/out/demo.mp4`) plus the narration record (ElevenLabs usage remaining, narration status per line-set, the provider decision-log entries, and the music credit)."""),
+  # W1-G11: a landing redesign re-runs the hero review.
+  ("skills/orch-change-feature/SKILL.md",
+   """Depths: **full** (system + composition change; default), **restyle** (system only, keep the layout), **polish** (only what a gate names). A dashboard/app-surface change is not a landing redesign — route that to `ui-ux-pro-max` instead.""",
+   """Depths: **full** (system + composition change; default), **restyle** (system only, keep the layout), **polish** (only what a gate names). A dashboard/app-surface change is not a landing redesign — route that to `ui-ux-pro-max` instead. After rebuilding a redesigned landing page, re-run the Hallmark hero review and update `.hallmark/hero-review.md` with the new findings and settlements before finishing — the old file holds pre-redesign findings, which Verify would otherwise read as current."""),
+  # W1-G9: removal polls the URL the first build recorded.
+  ("skills/orch-change-feature/SKILL.md",
+   """Otherwise poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes.""",
+   """Otherwise take the deployed URL and deploy path from `.hackathon/run-ledger.md` (or `docs/final-report.md` if the ledger is absent), then poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes."""),
+  # W1-G10: pitch/Devpost refresh only where those artifacts exist.
+  ("skills/orch-change-feature/SKILL.md",
+   """the pitch narrative, scripts, and demo storyboard (`hackathon-pitch` — refresh them so the pitch no longer promises the removed feature), and the Devpost submission (`devpost-autofiller`) if one exists — if no Devpost submission exists yet there is nothing to update, say so in the final report rather than leaving it silently stale —""",
+   """the pitch narrative, scripts, and demo storyboard (`hackathon-pitch` — refresh them only where those artifacts already exist, so the pitch no longer promises the removed feature; if no pitch artifacts exist yet, say so in the final report rather than leaving it silently stale), and the Devpost submission (`devpost-autofiller`) if one exists — if no Devpost submission exists yet there is nothing to update, say so in the final report rather than leaving it silently stale —"""),
+  # W4-G4: remaining shots re-checked against the updated storyboard
+  # before the re-film.
+  ("skills/orch-change-feature/SKILL.md",
+   """Then, before re-filming, update `shots.json` FIRST relative to the re-film — remove the feature's shots, selectors, and narration lines (FIRST means first before the re-film, not first in this step overall: the push/re-deploy above precedes it) — then re-film via `/demo --rebuild`,""",
+   """Then, before re-filming, update `shots.json` FIRST relative to the re-film — remove the feature's shots, selectors, and narration lines (FIRST means first before the re-film, not first in this step overall: the push/re-deploy above precedes it) — then re-check every remaining shot against the updated demo storyboard in `docs/scope.md` (move the feature to the cut list first, so the storyboard is current): a shot whose feature was removed, or whose narration still promises the removed feature, is removed or rewritten before the re-film — then re-film via `/demo --rebuild`,"""),
+  # W4-G13(c2): the interactive-login rule points at its canonical home.
+  ("skills/orch-change-feature/SKILL.md",
+   """Do not run an interactive deploy CLI for this step: if a deploy CLI is unauthenticated (or the project has no git-linked deploy), do not wait for a login""",
+   """Do not run an interactive deploy CLI for this step (per `deploy-fast` — never stall on a login): if a deploy CLI is unauthenticated (or the project has no git-linked deploy), do not wait for a login"""),
+  # W2-G7: browser-qa uses the polish-pass captures as its baseline.
+  ("skills/browser-qa/SKILL.md",
+   """2. Compare against committed baseline screenshots
+   — no baseline ⇒ report INCONCLUSIVE, never a silent PASS""",
+   """2. Compare against committed baseline screenshots — when `polish-pass` ran first, use `.polish-pass/captures/after/capture.json` + its PNGs as the committed baseline — no baseline ⇒ report INCONCLUSIVE, never a silent PASS"""),
+  # W2 dead-ends: the browser-MCP tool names are harness-provided, not plugin.
+  ("skills/browser-qa/SKILL.md",
+   """Works with any browser MCP:
+- `mChild__claude-in-chrome__*` tools (preferred — uses your actual Chrome)
+- Playwright via `mcp__browserbase__*`
+- Direct Puppeteer scripts""",
+   """Works with any browser MCP:
+- `mChild__claude-in-chrome__*` tools (preferred — uses your actual Chrome)
+- Playwright via `mcp__browserbase__*`
+- Direct Puppeteer scripts
+
+(The `mChild__*` and `mcp__browserbase__*` tool names are provided by the harness, not by this plugin — no such MCP is defined here. If the harness provides neither, use direct Puppeteer scripts against the running app.)"""),
+  # W2-G9: applied treatments get a durable record.
+  ("skills/less-flat-ui/SKILL.md",
+   """Put these in a `backgrounds.css` file (or a `<style>` block) and reference them by class. Do not cram data-URI SVGs into Tailwind arbitrary values.""",
+   """Put these in a `backgrounds.css` file (or a `<style>` block) and reference them by class. Do not cram data-URI SVGs into Tailwind arbitrary values. Record every treatment applied, on which surface, in `docs/design-tokens.md` (or MASTER.md on a dashboard-only build) — later slices and polish-pass read the record from there, not from the CSS."""),
+  # W2-C1: example hexes are placeholders — re-tint to the dealt palette.
+  ("skills/less-flat-ui/SKILL.md",
+   """## The 22 treatments
+
+### 1. Felt texture""",
+   """## The 22 treatments
+
+Re-tint every example below to the project's dealt palette and tokens before using it — the hex values are placeholders, not the palette. Never copy a purple/violet gradient onto a landing page (Hallmark gate 2a and Taste §6 Never ban it); the craft floor's purple-blue-gradient ban applies the same way on app surfaces.
+
+### 1. Felt texture"""),
+  # W2-C4: the touch floor is 44px, not 40-ideal-44.
+  ("skills/make-interfaces-feel-better/SKILL.md",
+   """Interactive controls should have at least a 40x40px hit area, ideally 44x44px
+where the layout allows it. Expand with a pseudo-element when the visible icon
+is smaller, but do not let expanded hit areas overlap.""",
+   """Interactive controls must have at least a 44x44px hit area (the plugin floor — quick-reference §2). Expand with a pseudo-element when the visible icon is smaller, but do not let expanded hit areas overlap."""),
+  # W2-C5: press scale aligns to the polish default 0.97.
+  ("skills/make-interfaces-feel-better/SKILL.md",
+   """- Press: `scale(0.96)` for tactile buttons, with a way to disable it when the
+  movement distracts.""",
+   """- Press: `scale(0.97)` for tactile buttons (the polish default — animate.md's 0.95–0.98 range, default 0.97), with a way to disable it when the
+  movement distracts."""),
+  # W2-C2 + W2-C3 + W2-C6: pro-max cites Taste step 4a for the item list;
+  # token rules and the one-accent rule name their canonical homes.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   """**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — visual identity; typography + type scale; color palette + semantic tokens (no raw hex in components); spacing/layout system; component hierarchy; navigation/IA; responsive behavior; motion/microinteractions; accessibility; and loading / empty / success / error states for every data surface. Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them.""",
+   """**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — the same 10 items `design-taste-frontend` step 4a defines (that step is the canonical item list). Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. Token rules: no raw hex in components (quick-reference `color-semantic`, `spacing-scale` govern on app surfaces; gates.md 48/24a on landing). One accent, one button pair, one card style: gates.md F4/F15 governs on landing pages, the Impeccable craft floor on app surfaces."""),
+  # W2-G8: the feel/timing decision is recorded in the design-system brief.
+  ("skills/ui-ux-pro-max/SKILL.md",
+   """Motion feel and timing decisions belong to `make-interfaces-feel-better` (see `rules/hackathon-mode.mdc` §5): decide feel/timing there first, then use `--motion` only to set the intensity tier of the implementation.""",
+   """Motion feel and timing decisions belong to `make-interfaces-feel-better` (see `rules/hackathon-mode.mdc` §5): decide feel/timing there first and record the decision as one line in the design-system brief (MASTER.md) before setting `--motion`, then use `--motion` only to set the intensity tier of the implementation."""),
+  # W4-G14: the Eval Harness row points at a skill that does not exist.
+  ("skills/santa-method/SKILL.md",
+   """| Eval Harness | Santa Method results feed eval metrics. Track pass@k across Santa runs to measure generator quality over time. |
+""",
+   """"""),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("weave1: upstream skill patches applied")
+
+# W3 trigger gaps: 22 new keys for flow-invoked skills, 3 mis-pointed
+# phrases moved to their owner skill. JSON round-trip verified identical
+# with indent=2 + ensure_ascii=False (the em dash in "notes" stays literal).
+tp = os.path.join(base, "manifests/context-packs/skill-triggers@1.json")
+data = json.load(open(tp, encoding="utf-8"))
+tr = data["triggers"]
+new_keys = {
+  "skill:api-integration": ["call this api", "wire up the api", "rest client setup"],
+  "skill:app-scaffold": ["scaffold the app", "set up auth and database"],
+  "skill:brainstorming": ["brainstorm features", "more ideas for this feature", "ideate on this feature"],
+  "skill:click-path-audit": ["button does nothing", "click doesn't work", "button not working", "click does nothing"],
+  "skill:council": ["should we do x or y", "go or no-go", "help us decide", "which approach should we take"],
+  "skill:deploy-fast": ["deploy this", "ship it live", "put it online", "deploy to vercel", "make it live"],
+  "skill:design-taste-frontend": ["design a landing page", "redesign the landing page", "landing page design", "company page design"],
+  "skill:devpost-autofiller": ["devpost submission", "submit to devpost", "fill in devpost"],
+  "skill:frontend-slides": ["pitch deck slides", "make slides for the pitch", "slide deck"],
+  "skill:hackathon-pitch": ["pitch script", "demo script", "judge q&a", "what do we say to the judges", "pitch rehearsal"],
+  "skill:hookify-rules": ["final hook configuration audit before launch", "hook rule audit", "review hook config"],
+  "skill:less-flat-ui": ["add texture to the ui", "less flat ui", "depth and texture"],
+  "skill:make-interfaces-feel-better": ["make it feel better", "motion design", "interaction feel"],
+  "skill:mcp-dependency-review": ["end of project mcp server audit", "mcp config review", "review mcp server config"],
+  "skill:mobile-ship": ["ship a testable mobile build", "package the mobile app"],
+  "skill:pitch-deck-video": ["demo video", "film the demo", "pitch video", "submission video"],
+  "skill:polish-pass": ["polish the ui", "fix the spacing", "make it look cleaner", "ui consistency fixes"],
+  "skill:readme-writer": ["write the readme", "readme for this project"],
+  "skill:systematic-debugging": ["find the root cause", "why is this broken", "debug this", "unknown bug cause"],
+  "skill:track-picker": ["which track should we enter", "pick a sponsor track"],
+  "skill:ui-ux-pro-max": ["design the dashboard", "redesign the app ui", "dashboard design", "app interface design"],
+  "skill:verification-before-completion": ["check my work before i finish", "verify everything works"],
+}
+for k, v in new_keys.items():
+    assert k not in tr, f"trigger key already exists: {k}"
+    tr[k] = v
+# Mis-pointed phrases: move them to their owner skill.
+assert "axe accessibility audit" in tr["skill:browser-qa"]
+tr["skill:browser-qa"].remove("axe accessibility audit")
+tr["skill:frontend-a11y"].append("axe accessibility audit")
+assert "end of project mcp server audit" in tr["skill:security-scan"]
+tr["skill:security-scan"].remove("end of project mcp server audit")
+assert "final hook configuration audit before launch" in tr["skill:security-scan"]
+tr["skill:security-scan"].remove("final hook configuration audit before launch")
+# Rebuild in alphabetical key order (the file's existing order).
+data["triggers"] = {k: tr[k] for k in sorted(tr)}
+data["coverage"]["withTriggers"] = len(data["triggers"])
+assert data["coverage"]["withTriggers"] == 58, data["coverage"]
+open(tp, "w", encoding="utf-8").write(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+print("weave1: skill-triggers updated (36 -> 58 keys; 3 phrases re-pointed)")
+PYEOF
+
+# --- Weave fix program #2 (dry-run #12: B1 blocking, M1 + M2 minor).
+# Upstream ECC files, copied fresh on every build — this block runs LAST,
+# just before STEP 5, AFTER the weave1 block (its anchors depend on weave1's
+# output). Each substitution asserts exactly one match.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # M1: the approved task_list lives in the appendix, pointer in the ledger.
+  ("skills/orch-pipeline/SKILL.md",
+   """Record the approved `task_list` (one line per slice, with its files) in `.hackathon/run-ledger.md` at Gate 1, so later phases read it from there instead of the transcript.""",
+   """Record the approved `task_list` (one line per slice, with its files) in `docs/run-ledger-appendix.md` at Gate 1, with a one-line pointer (slice count + file) in `.hackathon/run-ledger.md`, so later phases read it from there instead of the transcript."""),
+  # B1: the step-9 invocation cites the §3 carve-out as its authority.
+  ("skills/orch-build-mvp/SKILL.md",
+   """Before writing the report, run the six deferred end-of-project checks by name (`verification-loop`, `production-audit`, `delivery-gate`, `codehealth-mcp`, `santa-method`, `security-scan`) and record each result in the report (check name, pass/fail, findings count).""",
+   """Before writing the report, run the six deferred end-of-project checks by name (`verification-loop`, `production-audit`, `delivery-gate`, `codehealth-mcp`, `santa-method`, `security-scan`) and record each result in the report (check name, pass/fail, findings count). (Per the hackathon-mode §3 carve-out, this run is the very end of the project, not 'during the first build' for the deferral rule; it runs once, after deploy/demo/commit/README, and never gates a feature.)"""),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    text = open(p, encoding="utf-8").read()
+    assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
+    open(p, "w", encoding="utf-8").write(text.replace(old, new))
+print("weave2: upstream patches applied")
+PYEOF
+
 # STEP 5 — Counts
 # ============================================================================
 echo "skills: $(ls "$PLUGIN_DIR/skills" | wc -l)"
 echo "agents: $(ls "$PLUGIN_DIR/agents" | wc -l)"
 echo "rules: $(ls "$PLUGIN_DIR/rules" | wc -l)"
 echo "commands: $(ls "$PLUGIN_DIR/commands" | wc -l)"
-echo "hooks: $(ls "$PLUGIN_DIR/hooks" | wc -l)"
+echo "hooks: $(cat "$PLUGIN_DIR/hooks/hooks.json" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["hooks"]))')"
 echo "plugin.json: $(cat "$PLUGIN_DIR/.cursor-plugin/plugin.json" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["name"], d["version"])')"
 echo "marketplace.json: $(cat "$PLUGIN_ROOT/.cursor-plugin/marketplace.json" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["name"], d["plugins"][0]["name"], d["plugins"][0]["source"])')"
 echo "build complete: $PLUGIN_DIR"

@@ -24,12 +24,11 @@
     }
   },
   "tts": {
-    "provider": "minimax",
-    "voice": "Ukrainian_WiseScholar",
-    "model": "speech-2.8-hd",
+    "provider": "elevenlabs",
+    "voice": "21m00Tcm4TlvDq8ikWAM",
+    "model": "eleven_multilingual_v2",
     "speed": 1.0,
-    "languageBoost": "English",
-    "envFile": "~/path/to/some/.env.local",
+    "piperModel": "en_US-lessac-medium",
     "fallback": {
       "voice": "Samantha",
       "rate": 178

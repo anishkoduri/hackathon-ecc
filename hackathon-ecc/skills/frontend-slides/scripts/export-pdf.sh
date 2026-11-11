@@ -372,17 +372,17 @@ cat > "$TEMP_DIR/package.json" << 'PKG'
 PKG
 
 # Install Playwright into the temp directory
-npm install playwright &>/dev/null || {
+npm install playwright@1.65.0 &>/dev/null || {
     err "Failed to install Playwright."
-    err "Try running: npm install playwright"
+    err "Try running: npm install playwright@1.65.0"
     rm -rf "$TEMP_DIR"
     exit 1
 }
 
-# Ensure Chromium browser binary is downloaded
-npx playwright install chromium 2>/dev/null || {
+# Ensure Chromium browser binary is downloaded (playwright 1.65.0 ships Chromium revision 1254)
+npx playwright@1.65.0 install chromium 2>/dev/null || {
     err "Failed to install Chromium browser for Playwright."
-    err "Try running manually: npx playwright install chromium"
+    err "Try running manually: npx playwright@1.65.0 install chromium"
     rm -rf "$TEMP_DIR"
     exit 1
 }

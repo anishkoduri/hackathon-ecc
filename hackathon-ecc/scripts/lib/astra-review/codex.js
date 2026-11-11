@@ -149,7 +149,7 @@ function resolveCodexCommand(deps = {}) {
 }
 
 function translateSpawnError(error, task = 'review') {
-  if (error.code === 'ENOENT') return new Error('Codex CLI is not installed (install: npm i -g @openai/codex)');
+  if (error.code === 'ENOENT') return new Error('Codex CLI is not installed (install: npm i -g @openai/codex@0.167.1)');
   if (error.code === 'ETIMEDOUT') return new Error(`Codex ${task} timed out`);
   return new Error(`Codex invocation failed: ${error.message}`);
 }

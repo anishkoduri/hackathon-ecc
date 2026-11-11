@@ -31,6 +31,6 @@ Signals that a UI was generated and shipped without a designer's eye. Each one c
 
 ## How to check
 
-1. Run `node <skill dir>/scripts/detect.mjs <paths>` (catches emoji icons, gradient text, slop gradients, and some others).
+1. Run `node <skill dir>/scripts/detect.mjs <paths>` (catches emoji icons, gradient text, slop gradients, and some others). On a landing page, a guarded single-hue gradient-text ramp (Hallmark gate 2b: stops within 40°, both stops tokens) is permitted, not a tell — do not flag it.
 2. Look at the Capture for the visual tells the detector can't see: duplicate KPIs, dead cards, cluttered actions, avatar style, color overuse.
 3. In the polish report, list each tell as a finding under Consistency, Hierarchy & clarity, or Color & theming, with its fix.

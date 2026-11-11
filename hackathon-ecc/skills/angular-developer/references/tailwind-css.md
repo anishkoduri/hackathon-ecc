@@ -27,7 +27,7 @@ If setting up manually, use the following Tailwind v4 pattern:
 Install Tailwind CSS and PostCSS:
 
 ```shell
-npm install tailwindcss @tailwindcss/postcss postcss
+npm install tailwindcss@4.3.5 @tailwindcss/postcss@4.3.5 postcss@8.5.32
 ```
 
 ### 2. Configure PostCSS

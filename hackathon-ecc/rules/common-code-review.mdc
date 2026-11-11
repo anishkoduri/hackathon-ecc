@@ -42,7 +42,7 @@ Before marking code complete:
 
 ## Security Review Triggers
 
-**STOP and use security-reviewer agent when:**
+**STOP and use security-reviewer agent when:** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you invoke `security-reviewer` and proceed without waiting for a human decision; record any unresolved security concern in the final report.
 
 - Authentication or authorization code
 - User input handling
@@ -56,7 +56,7 @@ Before marking code complete:
 
 | Level | Meaning | Action |
 |-------|---------|--------|
-| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge |
+| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where an unresolvable CRITICAL is recorded as blocked in the final report instead of stopping the run |
 | HIGH | Bug or significant quality issue | **WARN** - Should fix before merge |
 | MEDIUM | Maintainability concern, including an unexplained source file over the soft 800-line ceiling | **INFO** - Consider fixing |
 | LOW | Style or minor suggestion | **NOTE** - Optional |
@@ -116,7 +116,7 @@ Use these agents for code review:
 
 - **Approve**: No CRITICAL or HIGH issues
 - **Warning**: Only HIGH issues (merge with caution)
-- **Block**: CRITICAL issues found
+- **Block**: CRITICAL issues found — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where an unresolvable CRITICAL is recorded as blocked in the final report and the run proceeds under auto-approval
 
 ## Integration with Other Rules
 

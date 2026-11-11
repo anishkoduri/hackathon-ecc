@@ -23,7 +23,7 @@ It's pulling several GB of images. Give it time on first run; check progress wit
 Another process (or a previous Supabase run) holds the port. `supabase stop`, or find it: `lsof -i :54322`. You can also change ports in `supabase/config.toml`.
 
 **Apple Silicon image / platform warnings**
-Recent Supabase images are multi-arch; update the CLI (`brew upgrade supabase`) and Docker Desktop. If a single image refuses to run, `supabase stop --no-backup` then `supabase start` to re-pull.
+Recent Supabase images are multi-arch; update the CLI to the pinned version (`npx supabase@3.1.0 --version`) and Docker Desktop. If a single image refuses to run, `supabase stop --no-backup` then `supabase start` to re-pull.
 
 **Out of disk space / weird container state**
 Reclaim space: `docker system prune` (removes stopped containers and dangling images — safe) or `docker volume prune` (deletes volumes — **destroys local DB data**; only when you mean it).
@@ -33,7 +33,7 @@ Reclaim space: `docker system prune` (removes stopped containers and dangling im
 ## Supabase CLI / database issues
 
 **`supabase: command not found`**
-Install it: `brew install supabase/tap/supabase`. Don't `npm install -g supabase` (unsupported) — use Homebrew or `npx supabase`.
+Install it: run `npx supabase@3.1.0 --version` (pinned 3.1.0 — Homebrew's tap has no version pin). Don't `npm install -g supabase` (unsupported) — use `npx supabase@3.1.0` in place of `supabase` in every command.
 
 **`supabase db reset` fails midway**
 A migration has a SQL error, or migrations are out of order. Read the error — it names the file and line. Fix the offending migration, then reset again. Remember reset runs the **whole chain** from scratch, so an earlier broken migration blocks everything after it.

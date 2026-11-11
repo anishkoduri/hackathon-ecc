@@ -11,6 +11,8 @@ Searchable local UI/UX guidance: 80 searchable styles (51 active), 192 product p
 
 Use this Skill when the task involves **UI structure, visual design decisions, interaction patterns, or user experience quality control**: designing new pages, creating/refactoring UI components, choosing color/typography/spacing/layout systems, reviewing UI for UX/accessibility/consistency, implementing navigation/animation/responsive behavior, or improving perceived quality and usability. Do NOT use it for a full company or landing-page build — that belongs to `design-taste-frontend` (see the frontmatter, the Query Contract, and Step 2).
 
+**Captivating bar for dashboard/app surfaces:** the primary view must have one unmistakable visual anchor a user remembers after leaving the page. Test: after closing the page, the user can describe that one anchor — its form and what it showed — without reopening it; if nothing is memorable, the surface fails even if every other check passes.
+
 Skip it for pure backend logic, API/database design, non-visual performance work, infrastructure/DevOps, or non-visual scripts — unless the task changes how something **looks, feels, moves, or is interacted with**.
 
 ## Rule Categories by Priority
@@ -70,7 +72,7 @@ Extract from the user request:
 - **Product type**: SaaS, e-commerce, portfolio, dashboard, entertainment, tool, productivity, or hybrid
 - **Target audience & context**: age group, usage context (commute, leisure, work)
 - **Style keywords**: playful, vibrant, minimal, dark mode, content-first, immersive, etc.
-- **Stack**: detect from the project — check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user. **Never assume a stack** — a hardcoded default silently misroutes every recommendation.
+- **Stack**: detect from the project — check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you do NOT ask: resolve by stated assumption with the safe/reversible default and proceed. **Never assume a stack** — a hardcoded default silently misroutes every recommendation.
 
 ### Step 2: Generate Design System (REQUIRED for new pages/projects)
 
@@ -81,6 +83,10 @@ python "<plugin>/skills/ui-ux-pro-max/scripts/search.py" "<product_type> <indust
 ```
 
 This aggregates product/style/color/typography matches, applies reasoning rules from `ui-reasoning.csv`, and returns pattern, style, colors, typography, effects, and anti-patterns to avoid.
+
+**Define the design system before implementing UI (dashboard/app surfaces):** before writing any UI code, record the system in `design-system/<project-slug>/MASTER.md` (Step 2b) — the same 10 items `design-taste-frontend` step 4a defines (that step is the canonical item list). Take the values from the `--design-system` output and `references/quick-reference.md` — this step fixes the decisions, it does not re-derive them. Token rules: no raw hex in components (quick-reference `color-semantic`, `spacing-scale` govern on app surfaces; gates.md 48/24a on landing). One accent, one button pair, one card style: gates.md F4/F15 governs on landing pages, the Impeccable craft floor on app surfaces. Also read the Impeccable craft floor (`skills/polish-pass/reference/impeccable-craft-floor.md` in the plugin) before writing any UI: its bans are absolute — a pinned brief never overrides a ban — and where it and this skill disagree, the stricter ban wins. This is a pre-UI step, not an approval gate: define it, then build. **Single source of truth on divergence:** if a landing-page system was already frozen by `design-taste-frontend` in `docs/design-tokens.md`, that frozen landing system is the single source of truth: this MASTER.md must conform to it — same tokens, same type scale, same component decisions. If the two diverge, the frozen landing system wins; do not re-derive a competing system. (The landing slice writes `docs/design-tokens.md` at the end of `design-taste-frontend` step 4a; if the file does not exist yet, the landing slice has not run — wait for it, unless there is no landing slice in this build (dashboard-only app, or the landing slice is blocked): then define the system yourself in MASTER.md and write `docs/design-tokens.md` from it — you are the tokens file's writer then, and that file is the single source of truth. Never guess the tokens.)
+
+**Anti-generic bar:** avoid generic AI-dashboard aesthetics — excessive gradients, repetitive same-size cards, decorative clutter. Earn distinction through deliberate typography, spacing, alignment, and contrast, plus the one memorable anchor from the captivating bar above; if a surface looks like a default template, it fails even if every checklist item passes.
 
 **Example:**
 ```bash
@@ -124,7 +130,7 @@ python "<plugin>/skills/ui-ux-pro-max/scripts/search.py" "<query>" --design-syst
 | `--motion` | Subtle micro-interactions | Standard scroll/stagger motion | Complex choreography (pin, Flip, SplitText) |
 | `--density` | Spacious (24-96px spacing scale) | Standard (16-64px, current default) | Dense/dashboard (8-32px spacing scale) |
 
-- `--motion` attaches a ready-to-use GSAP snippet (with framework notes, Do/Don't, and performance notes) pulled from `--domain gsap`, matched to the resolved tier (Subtle/Standard/Complex). The `--motion` dial is only an intensity parameter — it picks how much motion, not how the interface should feel or when it should move. Motion feel and timing decisions belong to `make-interfaces-feel-better` (see `rules/hackathon-mode.mdc` §5): decide feel/timing there first, then use `--motion` only to set the intensity tier of the implementation. Do not use `--motion` to make a feel/timing decision on its own.
+- `--motion` attaches a ready-to-use GSAP snippet (with framework notes, Do/Don't, and performance notes) pulled from `--domain gsap`, matched to the resolved tier (Subtle/Standard/Complex). The `--motion` dial is only an intensity parameter — it picks how much motion, not how the interface should feel or when it should move. Motion feel and timing decisions belong to `make-interfaces-feel-better` (see `rules/hackathon-mode.mdc` §5): decide feel/timing there first and record the decision as one line in the design-system brief (MASTER.md) before setting `--motion`, then use `--motion` only to set the intensity tier of the implementation. Do not use `--motion` to make a feel/timing decision on its own.
 - `--density` overrides the `--space-*` CSS variable table in the ASCII/markdown/MASTER.md output — use it for dashboards (high) vs. marketing pages (low) without hand-editing tokens.
 - Leaving a dial unset keeps that part of the output exactly as it was before (no behavior change).
 

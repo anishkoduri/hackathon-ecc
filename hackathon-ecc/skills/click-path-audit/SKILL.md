@@ -1,6 +1,6 @@
 ---
 name: click-path-audit
-description: "Trace every user-facing button/touchpoint through its full state change sequence to find bugs where functions individually work but cancel each other out, produce wrong final state, or leave the UI in an inconsistent state. Use when: systematic debugging found no bugs but users report broken buttons, or after any major refactor touching shared state stores."
+description: "Trace every user-facing button/touchpoint through its full state change sequence to find bugs where functions individually work but cancel each other out, produce wrong final state, or leave the UI in an inconsistent state. Use when: symptom inspection points at a broken button or dead click path (a button that does nothing goes to `click-path-audit` next, before `systematic-debugging`), or after any major refactor touching shared state stores."
 metadata:
   origin: community
 ---
@@ -186,7 +186,7 @@ Agent 1 MUST complete first. Its output is input for all other agents.
 
 ## When to Use
 
-- After systematic debugging finds "no bugs" but users report broken UI
+- After symptom inspection points at a broken button or dead click path — a button that does nothing goes to `click-path-audit` next, before `systematic-debugging`
 - After modifying any Zustand store action (check all callers)
 - After any refactor that touches shared state
 - Before release, on critical user flows
@@ -202,7 +202,7 @@ Agent 1 MUST complete first. Its output is input for all other agents.
 
 ## Integration with Other Skills
 
-- Run AFTER the `systematic-debugging` skill (which finds the other bug types)
+- **Debugging order:** start with symptom inspection; a button that does nothing goes to `click-path-audit` next; everything else with an unknown root cause goes to `systematic-debugging` (which finds the other bug types). `browser-qa` detects deployed-UI failures; `systematic-debugging` diagnoses them.
 - Run BEFORE the `verification-before-completion` skill (which verifies fixes work)
 - Feeds into the `tdd-workflow` skill — every bug found here should get a test
 

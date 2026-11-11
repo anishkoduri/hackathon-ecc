@@ -31,14 +31,14 @@ engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 1. Run the `orch-pipeline` engine with the settings above.
 2. For dead-code / duplication sweeps, delegate to the `refactor-cleaner` agent
    (it runs knip / depcheck / ts-prune and removes safely).
-3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit).
+3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
 4. Commit as `refactor:` — the diff must be behavior-neutral.
 
 ## Example
 
 ```
 orch-refine-code: extract the NWS HTTP client out of poller.py
-→ confirm tests green → plan extraction  [GATE 1: approve]
+→ confirm tests green → plan extraction  [GATE 1: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
 → move in small steps, tests green throughout → code-review
-→ commit refactor:  [GATE 2: confirm]
+→ commit refactor:  [GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]
 ```

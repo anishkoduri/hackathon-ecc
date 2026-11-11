@@ -98,7 +98,7 @@ Good motion defaults:
 
 - Enter: combine opacity, small `translateY`, and optionally blur.
 - Exit: shorter and quieter than enter, usually 150ms.
-- Press: `scale(0.96)` for tactile buttons, with a way to disable it when the
+- Press: `scale(0.97)` for tactile buttons (the polish default — animate.md's 0.95–0.98 range, default 0.97), with a way to disable it when the
   movement distracts.
 - Icon swaps: cross-fade with opacity, scale, and blur instead of instant
   visibility toggles.
@@ -121,9 +121,7 @@ properties such as `transform`, `opacity`, and `filter`. Never use
 
 ### Hit Areas
 
-Interactive controls should have at least a 40x40px hit area, ideally 44x44px
-where the layout allows it. Expand with a pseudo-element when the visible icon
-is smaller, but do not let expanded hit areas overlap.
+Interactive controls must have at least a 44x44px hit area (the plugin floor — quick-reference §2). Expand with a pseudo-element when the visible icon is smaller, but do not let expanded hit areas overlap.
 
 ## Review Output
 

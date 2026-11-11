@@ -26,7 +26,7 @@ Start from the resolved target (URL, screenshot, file path, or feature name; see
 - **Local project**: find the running dev server (check terminal output, `package.json` scripts, common ports 3000/5173/4321/8080). If none runs, start it in the background with the project's own dev script and wait until it responds. Stop it when you finish if you started it.
 - **Static HTML file**: use `file:///absolute/path.html`.
 - **Component**: capture the route/story/page that renders it (Storybook, a docs page, or the page using it). Scope screenshots to the component's selector when possible.
-- **Screenshot**: it *is* the Capture for the cells it covers. Note the missing cells. If you can find and run the matching code, capture the remaining cells yourself; otherwise ask for them only if they matter to the verdict. During `polish`, the after-Capture must come from the running code, not from the screenshot.
+- **Screenshot**: it *is* the Capture for the cells it covers. Note the missing cells. If you can find and run the matching code, capture the remaining cells yourself; otherwise ask for them only if they matter to the verdict — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you proceed without waiting and record the missing cells as blocked in the final report; never stop for a human decision mid-build. During `polish`, the after-Capture must come from the running code, not from the screenshot.
 
 ## Step 2: Pick a capture tool (first available wins)
 
@@ -36,7 +36,7 @@ Start from the resolved target (URL, screenshot, file path, or feature name; see
    node <skill dir>/scripts/capture.mjs <url> --out .polish-pass/captures/<label>
    ```
    Options: `--selector "<css>"` to scope to a section, `--full` for full-page, `--wait <ms>` for late content, `--zoom 4` to render at 4× pixel density (use with `--selector`), `--dark-class dark` (or `--dark-attr data-theme=dark`) when dark mode is toggled on `<html>` rather than by `prefers-color-scheme`, `--state hover|focus|active` with `--selector` to capture an interaction state, `--pad <px>` to widen a scoped shot so a tooltip or menu outside the element is included, and `--label before|after`. The script finds Playwright in the project or installs it into a user cache. It writes four PNGs and a `capture.json` with each cell's visible background colour and luminance, whether dark differs from light, and whether dark actually applied (`dark.applied`). It also measures controls that sit side by side (inputs, selects, buttons, tabs, segmented controls) and prints `⚠ row(s) of controls with unequal heights` with each control's height; the list is in `rowMismatches`. Every such row is a finding until the heights match, or you confirm the controls aren't one row (e.g. a button that only happens to sit beside an input in another group).
-3. **Ask the user** for screenshots of the missing cells. Name exactly which ones.
+3. **Ask the user** for screenshots of the missing cells (name exactly which ones) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you proceed without waiting and record it as blocked in the final report if you cannot resolve it; never stop for a human decision mid-build.
 
 Never silently skip. If every route fails, say so in the report: **"Not visually verified: <reason>"**, and lower your confidence accordingly.
 
@@ -76,7 +76,7 @@ A state you know exists gets captured; "not captured" is never an answer when yo
 | **Error** | Make the data request fail: intercept it and return a 500 or abort it, or go offline after load and retry the action. Capture, then restore. |
 | **Long content / worst-case data** | Swap in worst-case fixtures ([patterns/worst-case-data.md](patterns/worst-case-data.md)) at the data boundary. |
 
-Only a state that truly can't be reached (no runnable code, auth you don't have, a backend you can't stub) may stay uncaptured. In that case, ask the user for access or a screenshot before reporting.
+Only a state that truly can't be reached (no runnable code, auth you don't have, a backend you can't stub) may stay uncaptured. In that case, ask the user for access or a screenshot before reporting — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you proceed without waiting and record it as blocked in the final report if you cannot resolve it; never stop for a human decision mid-build.
 
 ## Step 4: Decide which cells exist
 

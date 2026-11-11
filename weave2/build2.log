@@ -1,0 +1,137 @@
+agent models pinned to Cursor IDs: 69
+hooks.json rewritten for plugin layout
+new-skill cleanup patches applied
+stale repo paths rewritten: 106 files
+delivery-gate install example repointed
+description routing notes appended (7)
+feature-expansion note inserted before final sentence
+description replacements applied (9)
+multi-line description replacements applied (2)
+small content fixes applied (2)
+agent-self-evaluation patched to manual-only
+audit description patched: production-audit
+audit description patched: delivery-gate
+audit description patched: codehealth-mcp
+audit description patched: verification-loop
+audit description patched: santa-method
+audit description patched: security-scan
+verification-loop tail sentence appended
+feature-expansion patched to ECC process
+polish-pass patched to name design-taste-frontend
+routing note appended: frontend-design-direction
+routing note appended: intent-driven-development
+routing note appended: investor-materials
+routing note appended: product-lens
+routing note applied: make-interfaces-feel-better
+codehealth-mcp body triggers fixed
+verification-loop body triggers fixed
+security-scan body triggers fixed
+D1/D2 dangling references removed
+playwright MCP added
+codebase-memory MCP added
+audit #1 fixes applied: 130 files, 243 replacements
+PNG optimization: 46 files, 5461134 -> 3671643 bytes (saved 1789491)
+Rule frontmatter: renamed paths: -> globs: in 81 files
+quality check fixes applied: 63 files, 94 replacements
+audit #2 fixes applied: 112 files, 134 replacements
+audit #3 fixes (Fixer B, Cleanliness) applied: 14 files, 16 replacements
+audit #4 fix (CF-D5, common-hooks) applied
+audit #4 fixes (Cleanliness) applied: 19 files, 23 replacements, 1 removal
+
+added 9 packages in 1s
+node_modules: 4.9M
+audit #4 fixes (Connectivity: resolver + qwen guard + opencode build guard) applied
+audit #4 fixes (Connectivity: command inlines regenerated: 12 standard + 1 auto-update, 5 instinct invocations, astra-review candidate) applied
+schemas: 17 files; manifests: 10 files
+audit #5 fixes applied: 13 files, 46 replacements
+audit #5 fixes (CLI dispatch + syntax checks) applied
+audit #6 fixes applied: 31 files, 54 replacements
+install-modules pruned: 47 -> 15 modules, 370 -> 165 paths, 0 dangling dependencies pruned
+audit #7 fixes applied: 25 files, 36 replacements
+install-profiles pruned: {'minimal': 5, 'opencode': 3, 'core': 6, 'developer': 9, 'security': 7, 'research': 9, 'full': 34} -> {'minimal': 5, 'opencode': 3, 'core': 6, 'developer': 9, 'security': 7, 'research': 8, 'full': 15}
+install-components pruned: 93 -> 61 components
+install-components orphans removed: 61 -> 57 components
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_catalog_refresh.py
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_catalog_summary_line_endings.py
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_skill_script_paths.py
+audit #8 fixes applied: 23 files, 26 replacements
+audit #9 fixes applied: 4 files, 18 replacements
+audit #9 fixer A fixes applied: 4 files, 7 replacements
+audit #9 fixer B fixes applied: 9 files, 33 replacements
+audit #10 fixes applied: 19 files, 47 replacements
+audit #11 fixes applied: 14 files, 21 replacements
+audit #12 fixes applied: 4 files, 5 replacements
+audit #13 fixes applied: 5 files, 5 replacements
+audit #14 fixes applied: 12 files, 19 replacements
+audit #15 fixes applied: 13 files, 43 replacements
+pi-core.json: pruned 41 unshipped skills.include entries; 93 remain, all resolve; commands.include all resolve
+audit #16 fixes applied: 4 files, 4 replacements
+audit #16 fixer B fixes applied: 1 files, 2 replacements
+audit #17 quality fixes applied: 2 files, 4 replacements
+audit #17 conflicts fixes applied: 2 files, 2 replacements
+audit #17 cleanliness fixes applied: 8 files, 8 replacements
+audit #18 fixes applied: 6 files, 4 replacements
+audit #19 fixes applied: 21 files, 21 replacements
+audit #20 fixer A fixes applied: 4 files, 4 replacements
+audit #20 fixer C fixes applied: 5 files, 2 replacements
+audit #20 fixer B fixes applied: 4 files, 4 replacements
+codebase-memory triggers added
+codebase-memory added to hackathon module
+orch pipeline gates patched to auto-approve during a hackathon first build
+orch engine + skills patched with first-build auto-approve carve-out
+batch E orch fixes applied
+batch F wave-2 fixes applied
+batch A one-engine fixes applied (orch-build-mvp)
+batch A orch-pipeline intake fix applied
+batch A orch-build-mvp command fixes applied
+batch C systematic-debugging :126 carve-out applied
+batch C systematic-debugging debugging order applied
+batch C browser-qa fixes applied
+batch C click-path-audit trigger fix applied
+batch C common-code-review BLOCK carve-out applied
+batch D shots.json + refilm fixes applied (orch-change-feature)
+batch D re-deploy mechanism fix applied (orch-change-feature)
+batch D remote-DB + migration + shared-table fixes applied (orch-change-feature)
+batch D docs/scope + README + Devpost fix applied (orch-change-feature)
+batch D final-report inventory fix applied (orch-change-feature)
+batch D routing-statement fix applied (orch-change-feature frontmatter)
+batch D reference-verification fix applied (orch-change-feature)
+batch D command removal-pointer fix applied (orch-change-feature command)
+fix4 batch A: orch-build-mvp one-engine + phase mapping + 9-step rewrite applied
+fix4 batch A: orch-build-mvp command rewritten to the skill's 9 steps
+fix4 batch A: orch-pipeline one-engine + Phase 4 belief + numbering applied
+orch-* commands patched with first-build carve-out on empty $ARGUMENTS
+batch E ui-ux-pro-max captivating bar applied
+batch E less-flat-ui captivating bar applied
+batch F fix4: orch-change-feature removal delivery + failure branches applied
+batch F fix4: orch-change-feature command removal pointer applied
+batch F fix4: devpost-autofiller re-uploaded video link applied
+batch F fix4: hackathon-pitch refresh on removal applied
+master-prompt ui-ux-pro-max design-system definition applied
+master-prompt browser-qa visual iteration loop applied
+master-prompt ecc-code-reviewer adversarial stance applied
+master-prompt orch-build-mvp adversarial audit + final-report format applied
+fix5 batch 2: orch-change-feature B2 + M2 + M4 + Audit M1 applied
+fix5 batch 2: orch-build-mvp B1-standalone + M11-standalone + B2a-standalone applied
+fix5 batch 3: ui-ux-pro-max M9 conformance + M3 ask-user carve-out applied
+fix6 batch 1: orch-change-feature B3 + M6 applied
+fix6 batch 2: orch-build-mvp B1 + M5 + M9 applied
+fix6 batch 3: gan-build M9 applied
+supply-chain pins applied: angular 22.2.6, shadcn 4.23.0, nuxt 4.0.3, playwright 1.65.0 / chromium r1254
+fix6 batch 4: ui-ux-pro-max B2 pointer applied
+fix7: ui-ux-pro-max M1 no-landing fallback applied
+fix8: F2 registry pins applied (ecc-universal@2.2.3, ccg-workflow@3.7.4)
+fix9: sweep registry pins applied (ecc-agentshield@1.6.0, agent-browser@0.42.0, pm2@7.1.2, codex@0.167.1, angular/aria@22.2.6, tailwindcss@4.3.5, postcss@8.5.32, sdk@1.32.2, zod@4.6.7)
+fix11: ui-ux-pro-max Impeccable craft-floor read applied
+fix12: orch-change-feature landing-redesign routing applied
+weave1: upstream skill patches applied
+weave1: skill-triggers updated (36 -> 58 keys; 3 phrases re-pointed)
+weave2: upstream patches applied
+skills: 169
+agents: 72
+rules: 123
+commands: 96
+hooks: 15
+plugin.json: hackathon-ecc 1.0.0
+marketplace.json: hackathon-ecc-marketplace hackathon-ecc hackathon-ecc
+build complete: /home/hatch/workspace/hackathon-plugin/hackathon-ecc

@@ -33,7 +33,7 @@ AgentShield must be installed. Check and install if needed:
 npx ecc-agentshield --version
 
 # Install globally (recommended)
-npm install -g ecc-agentshield
+npm install -g ecc-agentshield@1.6.0
 
 # Or run directly via npx (no install needed)
 npx ecc-agentshield scan .

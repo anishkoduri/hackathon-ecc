@@ -479,7 +479,7 @@ test('enforces rate limits', async () => {
 
 ## Pre-Deployment Security Checklist
 
-Before ANY production deployment:
+Before ANY production deployment — this checklist gates the FINAL deploy, not the first-hour deploy during a hackathon first build (a first-hour deploy ships the working MVP for demo and feedback; run this checklist before the final deploy):
 
 - [ ] **Secrets**: No hardcoded secrets, all in env vars
 - [ ] **Input Validation**: All user inputs validated

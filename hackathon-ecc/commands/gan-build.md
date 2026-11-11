@@ -35,7 +35,7 @@ while iteration <= max_iterations:
     Launch the `gan-generator` agent as a Cursor subagent:
     - Read spec.md
     - If iteration > 1: read feedback/feedback-{iteration-1}.md
-    - Build/improve the application
+    - Build/improve the application — TDD: write the tests for the new/changed behaviour FIRST (`tdd-guide`: red → green → refactor) before implementing it; the tests live in the repo with the code, not in the harness
     - Ensure dev server is running
     - Commit changes
 
@@ -45,6 +45,7 @@ while iteration <= max_iterations:
     Launch the `gan-evaluator` agent as a Cursor subagent:
     - Read eval-rubric.md and spec.md
     - Test the live application (mode: playwright/screenshot/code-only)
+    - Run the repo tests the generator wrote (`tdd-guide` tests) — a failing test caps the score below the pass threshold regardless of how the live app looks
     - Score against rubric
     - Write feedback to feedback/feedback-{iteration}.md
 

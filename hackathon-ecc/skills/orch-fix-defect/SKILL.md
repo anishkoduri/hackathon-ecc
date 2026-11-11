@@ -31,7 +31,7 @@ engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 1. Run the `orch-pipeline` engine with the settings above.
 2. If the root cause is unclear, scope it with `code-explorer` before the red
    test; escalate build breaks to `build-error-resolver` / `/build-fix`.
-3. Stop at **Gate 1** (only if a plan was produced) and **Gate 2** (pre-commit).
+3. Stop at **Gate 1** (only if a plan was produced) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
 4. Add `security-reviewer` if the defect sits in a security-sensitive path.
 
 ## Example
@@ -39,5 +39,5 @@ engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 ```
 orch-fix-defect: poller crashes on empty NWS response
 → write failing test reproducing the crash → fix to green
-→ code-review → commit  [GATE 2: confirm]   (commit: fix:)
+→ code-review → commit  [GATE 2: auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature]   (commit: fix:)
 ```

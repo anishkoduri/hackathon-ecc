@@ -50,6 +50,8 @@ These nine win over everything else in this skill.
 9. **Addresses:** street and district only (no street given: the district), no house number, postcode or coordinates; no register
    or VAT numbers; no phone in a real format; contacts on `.example`.
 
+**Captivating hero — the bar:** the hero's first view must make the product's most surprising moment visible immediately. Test: a first-time visitor can name, in 5 seconds and without scrolling, the one surprising thing this product does; if they cannot, the hero fails even if every other check passes.
+
 ## 1. The kind of business decides everything
 
 Write the kind on the plan's first line and declare it on the page: the page type on
@@ -74,6 +76,13 @@ A maker that also opens its door or teaches (a ceramics studio, a bakery with a 
 scenes, loops, counts, CSS grounds, dark pages and dark heroes are tech only. An other page is
 photographs, flat colour, type, real icons, the hero's entrance, its dealt moment (photo- or
 type-led, `moments.md`) and the hover layer.
+
+**Texture boundary with `less-flat-ui`.** This skill owns the whole page system: every
+section it lays out — including a flat-colour section — is styled by the page system, so do
+NOT texture it. `less-flat-ui` texture applies only to a surface the page system leaves
+unstyled (for example a bare app-chrome panel or an unstyled utility surface inside the
+`app-frame`), never to a section of the page itself. If a section looks flat, that is the
+page system's choice, not a gap to fill.
 
 ## 2. The page plan by kind
 
@@ -220,7 +229,19 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    `round` for consumer apps, square on a place. On tech only: the lit ground (`<html data-ground>`:
    `sand|sky|sage` through the one-liner), the CSS grounds (`backgrounds.md`) and the one effect
    (`effects-usage.md`). Write every result on plan line 2 and in
-   the comment at the top of `<body>`, and build exactly that (a short page drops what it has no section for: `sections.md` section 4).
+   the comment at the top of `<body>`, and build exactly that (a short page drops what it has no section for: `sections.md` section 4). Also write the deal's Picks block (Material and Signature rows) to `.hallmark/picks.md` in the project root — the hero review and finish review take those rows as file paths.
+
+   **Deal a Hallmark theme for the direction first.** Before the palette deal above, run the Hallmark theme deal — it picks the material world the page lives in, so the direction is dealt, not invented:
+
+   ```bash
+   node <skill>/references/hallmark/scripts/theme.mjs deal --genre <genre> --prompt "<the brief>" --log .hallmark/log.json
+   ```
+
+   Map the page kind to a Hallmark genre for the deal: tech/dark/atmospheric → `atmospheric`; SaaS/devtool/B2B → `modern-minimal`; playful/fun/kids/games → `playful`; anything else → `editorial` (default). The deal returns 3 themes from the 50-theme catalog (`references/hallmark/references/themes/`, `index.json`); pick the one whose material can carry the brief — read the theme file's header (paper/display/accent/posture), its `material` line, and its feel paragraph. After picking, log the pick so the next deal avoids it: `node <skill>/references/hallmark/scripts/theme.mjs log --entry '{"theme":"<picked theme name>","axes":"<paper>/<display>/<accent> triple from the deal line>","prompt":"<the brief>","shape":"<dealt hero/layout shape>","hero":"<hero posture>","nav":"<nav form>","footer":"<footer form>","imagery":"<imagery plan>","sections":"<section list>","fingerprint":"<shape + axes fingerprint>","signature":"<theme signature>"}' --log .hallmark/log.json` — the deal reads the recent 3 log entries to avoid re-dealing recent themes and axes, and without the log entry that avoidance never works. Log every field `theme.mjs` reads (it warns `missing … which Rotation reads` for a short entry): take shape/hero/nav/footer/imagery/sections/fingerprint/signature from the deal, the theme file, and the plan — and if the build changes the shape, re-log with the settled values, so the repetition check (gates.md:189) reads the real page. The theme pictures (`.jpg`) are NOT staged in this plugin, so pick by the material description, not the picture. Take the theme's palette balance, type voice, surfaces, and Range (the sections it makes without a photograph); the theme never sets what the page contains or in what order. The theme's Tokens block is the page's `:root` tokens — use it in place of `start.mjs css` for the palette (the hero deal, moments, and nav/footer/close lists above still run). If the dealt theme clashes with the client's own logo or photographs, re-deal once (`--reroll 1`); the client's own colours go through `start.mjs brand` instead. If you re-deal, log the re-dealt pick too — the log must record the theme actually built, not the first pick. Do NOT use `theme.mjs draw` or `theme.mjs scaffold` — Taste owns shape and scaffold. The Hallmark Floor binds the page: read `references/hallmark/references/hallmark-floor.md` (16 non-waivable rules + the 6-axis pre-emit critique) and follow it; where it and this skill disagree, the stricter ban wins.
+
+4a. **Define the design system before building any UI.** Before step 5, freeze the system on the plan (one line each) — this is a pre-UI step, not a gate: **visual identity** (the one idea the page looks like, in words); **typography + type scale** (the dealt pairing and tokens, `system.md` Type); **colour palette + semantic tokens** (ink, `--action`, `--g-main`/`--g-alt`/`--g-dark`, `--muted` — what each token MEANS, e.g. action, success, error, disabled — `system.md` Colour; no raw hex in components — gates.md 48/24a governs on landing); **spacing/layout system** (rhythm tokens + the 12-column grid, `system.md` Rhythm tokens); **component hierarchy** (which components exist, which are primary vs. secondary, one button pair / one card style / one radius scale — `system.md` Radius and buttons, Cards; gates.md F4/F15 governs on landing); **navigation / IA** (nav structure and section order — `system.md` Nav, `sections.md`); **responsive behaviour** (how each section stacks at 1024 / 768 / 390 / 320); **motion / micro-interactions** (hero entrance, hover/press, the dealt moments — house rule 5, `motion.md`); **accessibility** (contrast 4.5:1, focus rings, keyboard order, reduced motion — `system.md` Access, checklist); **loading / empty / success / error states** for every interactive surface (what each state shows, in the page's own voice — a loading state never an empty ground, an empty state that says what to do next, an error under its own field, a success confirmed only after a real send). Then write the frozen system to `docs/design-tokens.md` in the project root (one line each, same items) — first two lines are the dealt Hallmark theme: its slug, its Tokens block values, and its palette balance, so a later slice briefing from this file alone can recover which theme (and its Range/material) the landing used — and this file is the durable single source of truth: later UI slices' briefs restate tokens from it, and the dashboard MASTER.md (`ui-ux-pro-max`) must conform to it; on divergence this file wins. If the project has no landing page, this step does not run and the first UI slice (`ui-ux-pro-max`) writes the file instead — see orchestrate's no-landing fallback. **Anti-generic principles:** never a generic AI-dashboard look — no excessive gradients, no grid of repetitive look-alike cards, no decorative clutter that carries no information; every choice is deliberate typography, spacing, alignment, and contrast, and a surface that adds nothing is cut. Anything already fixed by the deal above is named, not re-decided; only the missing pieces (notably the states and the semantic token meanings) are defined here. Also read the Impeccable craft floor (`skills/polish-pass/reference/impeccable-craft-floor.md` in the plugin) before building any UI: its bans are absolute — a pinned brief never overrides a ban — and where it and this skill disagree, the stricter ban wins — except that on a landing page Hallmark gate 2b's guarded single-hue gradient-text ramp is permitted (gates.md §4 governs there; the polish detector's gradient-text tell does not apply to it). **Single source of truth on divergence:** this frozen landing system (recorded in `docs/design-tokens.md`) is the single source of truth for the whole product's design tokens. When the dashboard/app slice later records its system in `design-system/<project-slug>/MASTER.md` (ui-ux-pro-max), that MASTER.md must conform to this frozen system — same tokens, same type scale, same component decisions. If the two diverge, this frozen landing system wins; do not re-derive a competing system.
+
+**Redesign of an existing page (keeping content + wiring).** When the job is a full-page redesign that keeps every fact, link, form, field, handler, route, id, and test hook, follow the Hallmark redesign flow (`references/hallmark/references/redesign.md`): record the before-state (`sloplint --before`, links/fields/handlers/headings + screenshots to `.hallmark/before*`), build, then `sloplint --kept` — anything lost is `FAIL kept` / `WARN kept`. Depths: **full** (system + composition change; default), **restyle** (system only, keep the layout), **polish** (only what a gate names).
 
 5. **Build.** In `starter.html`: set `<html lang data-type data-radius data-buttons data-motion>`
    (lang: the brief's language), the three metas, the head block (title, description, og, icon,
@@ -271,7 +292,7 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    ```
 
    Fix what it lists and run it again until its last line is `GATE: PASS` or `GATE: OPEN`, three
-   rounds at most (to ask the user something after a block, just stop again). When the user tells you
+   rounds at most (to ask the user something after a block, just stop again). During a hackathon first build after grill-me, there is no user to ask — and a one-prompt removal of a first-build feature is auto-approved whenever it happens, so there is no user to ask then either: after 3 rounds without `GATE: PASS` or `GATE: OPEN`, stop, record the last `GATE:` line and every open FAIL in the final report, and finish — do not loop further and do not wait. When the user tells you
    to stop, or to ship the page as it is, run `gate.mjs --done "<what they said>"` (`GATE: DONE`)
    and report the open FAILs.
    `GATE: SETUP` (no page yet, a framework's source shell, a page that is not local): arm what a
@@ -281,6 +302,16 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    `.taste-skill/waivers.json` with its reason, never fixed by gaming the check (`references/gate.md`);
    a word from the client's own copy that copy-lint FAILs is waived hit by hit, the brief as the reason
    (a word inside the client's name, as the logo or the title writes it, is not counted: one WARN).
+
+   **Hallmark sloplint.** Before the report, run the Hallmark gate checker on the built page:
+
+   ```bash
+   node <skill>/references/hallmark/scripts/sloplint.mjs index.html --render
+   ```
+
+   The static tier always runs. The render tier needs `puppeteer-core` + Chrome: if `puppeteer-core` is missing, install the pinned version (`npm i -g puppeteer-core@25.17.0` — it cannot reuse the plugin's Playwright as a drop-in; the render script is written against the Puppeteer API); if Chrome is not found, set `CHROME_PATH` to the Chrome install (on Windows usually `C:\Program Files\Google\Chrome\Application\chrome.exe`). If the render tier cannot run, run the static tier only and record that the render tier did not run — never claim a render pass. Fix every `FAIL`; fix or waive every `REFLEX` (waivers recorded in the CSS stamp, per `references/hallmark/references/gates.md`).
+
+   **Hallmark hero review.** Once the hero is built and shot, run the hero review in a fresh context: a sub-agent if the harness has one (it reads `references/hallmark/references/review-hero.md` and follows it — you do not read the prompt yourself; pass the hero screenshots, the stamp's first two lines, and the Picks block (`.hallmark/picks.md`, written at the deal — its Material + Signature rows) as file paths); otherwise re-read the prompt yourself and judge from the screenshots alone. Act on its first word (`ship` / `fix`); findings join the fix batch. Write the hero review's findings to `.hallmark/hero-review.md` in the project root as soon as the review returns, and update the file with how each finding was settled (fixed, or waived with its reason) when you act on it — the finish review in Verify reads this file, so it must list every finding and its settlement, not just the open ones.
 
 7. **Report:** the `GATE:` line first, then every waiver with its reason and every open FAIL; the
    kind, the deal (palette and why it fits, pairing, hero, grounds, effect, moments, scene); the

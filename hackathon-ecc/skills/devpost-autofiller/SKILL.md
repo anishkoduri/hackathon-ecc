@@ -7,7 +7,7 @@ description: Drafts a complete Devpost hackathon submission (tagline, full proje
 
 You write the Devpost submission at hour 23 so the team doesn't have to choose between sleep and a writeup. The repo already contains the whole story — what was built, what broke, what got cut — your job is to excavate it and tell it in the team's voice, not LLM-brochure voice.
 
-How the form actually works (so the draft pastes in cleanly): the **tagline has a hard 140-character limit**; the project story is **one freeform field that renders Markdown** (and LaTeX), pre-seeded with seven standard headings; "Built with" tags are freeform strings; the demo video is a **link** to a publicly-hosted YouTube/Vimeo video, not an upload. Crucially, **submissions stay editable until the deadline and freeze after it** — so the right move is submit a rough draft *early* and keep improving it, never hold for perfect. Late submissions exist only at the organizer's discretion.
+How the form actually works (so the draft pastes in cleanly): the **tagline has a hard 140-character limit**; the project story is **one freeform field that renders Markdown** (and LaTeX), pre-seeded with seven standard headings; "Built with" tags are freeform strings; the demo video is a **link** to a publicly-hosted YouTube/Vimeo video, not an upload. If a feature is removed (or anything else changes) after the video was uploaded, re-upload the re-filmed video and update the link on the submission — a text-only update leaves judges watching the stale pre-removal video. Re-upload HOURS before the deadline: processing can take several hours, so a last-minute re-upload may still be processing when judging starts. Crucially, **submissions stay editable until the deadline and freeze after it** — so the right move is submit a rough draft *early* and keep improving it, never hold for perfect. Late submissions exist only at the organizer's discretion.
 
 ## Step 1 — Mine the sources
 
@@ -90,6 +90,7 @@ Close with the non-text checklist. Devpost's own warning applies: "you'd be surp
     for judges); on YouTube mark "Not made for kids" or embedding breaks
 [ ] Video uploaded HOURS early — YouTube processing can take "a few minutes to
     several hours" (Devpost's words), and the deadline doesn't care
+[ ] After any removal or re-film, the video LINK on the submission points at the re-uploaded video (not the pre-removal one) — re-upload hours early, the same processing delay applies
 [ ] Video length within THIS event's cap (~3 min is the norm; some events cap
     at 1 — read the rules page, not the vibes)
 [ ] Repo link public + API KEYS STRIPPED (MLH rules require both)

@@ -19,7 +19,7 @@ manual, and Claude plugin installs do not create the required commands on
 or MCP examples:
 
 ```bash
-npm install -g ecc-universal
+npm install -g ecc-universal@2.2.3
 ecc memory --help
 command -v ecc-memory-mcp
 ```
@@ -173,7 +173,7 @@ Repair reported files manually. The doctor does not delete or rewrite memory.
 ## MCP Setup
 
 The stdio server is optional and is not enabled by ECC's default `.mcp.json`.
-The `ecc-memory-vault` MCP server entry is not shipped in this plugin's `mcp.json` (which contains only `chrome-devtools` and `playwright`), and the upstream `mcp-configs/mcp-servers.json` file is not shipped either. To enable memory access in a harness, add an entry using the server command and tool list below, with `ECC_MEMORY_HARNESS` set to a lowercase server identity. The server command
+The `ecc-memory-vault` MCP server entry is not shipped in this plugin's `mcp.json` (which contains `chrome-devtools`, `playwright`, and `codebase-memory-mcp`), and the upstream `mcp-configs/mcp-servers.json` file is not shipped either. To enable memory access in a harness, add an entry using the server command and tool list below, with `ECC_MEMORY_HARNESS` set to a lowercase server identity. The server command
 is:
 
 ```text

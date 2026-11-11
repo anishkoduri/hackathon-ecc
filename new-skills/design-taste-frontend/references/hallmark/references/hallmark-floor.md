@@ -60,9 +60,11 @@ count does not match v2.0.0.)
 ## The 6-axis pre-emit self-critique (gates.md §3)
 
 Before the sweep, score the planned page 1-5 on six axes; anything under 3
-triggers a revision first. Stamp line:
+triggers a revision first — under the Scope note below (Specificity is candidate evidence for `browser-qa`, never a verdict; only the five craft axes join the fix list). Stamp line:
 `/* Hallmark · pre-emit critique: P5 H4 E5 S3 R5 V4 · weakest: S, <fix> */`
 — name the weakest axis + the fix taken; straight 5s name what was cut.
+
+**Scope:** the Specificity axis is candidate evidence for `browser-qa`, never a distinctiveness verdict (see gates.md §3); the other five axes join the fix list as craft judgments.
 
 - **P**hilosophy — 3: has a tone; 5: has an argument a reader could
   disagree with.

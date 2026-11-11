@@ -1,6 +1,6 @@
 ---
 name: gan-style-harness
-description: "GAN-inspired Generator-Evaluator agent harness for building high-quality applications autonomously. Based on Anthropic's March 2026 harness design paper. Use when a feature should be built autonomously through generator and evaluator iteration until it clears a quality bar. (Claude Code only \u2014 this skill drives the `claude` CLI and does not run in Cursor)"
+description: "GAN-inspired Generator-Evaluator agent harness for building high-quality applications autonomously. Based on Anthropic's March 2026 harness design paper. Use when a feature should be built autonomously through generator and evaluator iteration until it clears a quality bar. (The upstream `claude -p` invocation path is Claude Code only and does not run in Cursor; in this plugin the harness loop runs in Cursor through `/gan-build` + `/gan-design` and the `ecc-gan-*` agents as Cursor subagents — the skill contributes the harness design, prompts, and rubric, never the CLI commands.)"
 metadata:
   origin: ECC-community
 ---
@@ -27,7 +27,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 
 ## When NOT to Use
 
-- Quick single-file fixes (use standard `claude -p`)
+- Quick single-file fixes (Claude Code only — use standard `claude -p` there; in this plugin use the Cursor agent loop, never `claude -p`)
 - Tasks with tight budget constraints (<$10)
 - Simple refactoring (use de-sloppify pattern instead)
 - Tasks that are already well-specified with tests (use TDD workflow)
@@ -99,8 +99,8 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Uses **Playwright MCP** to interact with the live application
 - Clicks through features, fills forms, tests API endpoints
 - Scores against four criteria (configurable):
-  1. **Design Quality** — Does it feel like a coherent whole?
-  2. **Originality** — Custom decisions vs. template/AI patterns?
+  1. **Design Quality** — Is the recorded direction applied coherently in code (tokens, type, and spacing trace to it)?
+  2. **Originality** — Do the code-level choices trace to the recorded direction rather than defaults?
   3. **Craft** — Typography, spacing, animations, micro-interactions?
   4. **Functionality** — Do all features actually work?
 - Returns structured feedback with scores and specific issues
@@ -115,17 +115,19 @@ The default four criteria, each scored 1-10:
 ```markdown
 ## Evaluation Rubric
 
+**Screen distinctiveness is NOT scored here.** Whether a named direction is recorded AND visibly applied on the rendered screens is judged ONLY by `browser-qa` in the visual loop (orch-build-mvp step 6) — never by this evaluator. The Design Quality and Originality rows below score the recorded direction and its code-level application only (direction recorded in `docs/design-tokens.md`; tokens, type, and spacing trace to it in the code). A screen that reads as a default template is a browser-qa finding, not a rubric deduction — do not raise or lower a score for screen distinctiveness.
+
 ### Design Quality (weight: 0.3)
-- 1-3: Generic, template-like, "AI slop" aesthetics
-- 4-6: Competent but unremarkable, follows conventions
-- 7-8: Distinctive, cohesive visual identity
-- 9-10: Could pass for a professional designer's work
+- 1-3: No named direction recorded, or tokens, type, and spacing in the code do not trace to any recorded direction
+- 4-6: A direction is recorded but only partly applied in code — some tokens, type, or spacing trace to it, the rest do not
+- 7-8: Direction recorded and applied in code — tokens, type, and spacing trace to it coherently across the app
+- 9-10: Direction recorded and applied with professional-level craft in code — tokens, type, and spacing trace to it consistently, including edge states
 
 ### Originality (weight: 0.2)
-- 1-3: Default colors, stock layouts, no personality
-- 4-6: Some custom choices, mostly standard patterns
-- 7-8: Clear creative vision, unique approach
-- 9-10: Surprising, delightful, genuinely novel
+- 1-3: Code-level choices do not trace to the recorded direction — defaults throughout, no direction-specific decisions in code
+- 4-6: Some code-level choices trace to the recorded direction, most do not
+- 7-8: Clear creative direction recorded and applied in code — direction-specific choices in tokens, type, and spacing throughout
+- 9-10: Direction recorded and applied in code in a surprising, inventive way — direction-specific choices throughout, including details and edge states
 
 ### Craft (weight: 0.3)
 - 1-3: Broken layouts, missing states, no animations
@@ -174,19 +176,25 @@ GAN_EVAL_CRITERIA="functionality,performance,security" \
 ./scripts/gan-harness.sh "Build a REST API for task management"
 ```
 
-### Via Claude Code (Manual)
+### Via Claude Code (Manual — Claude Code only, never executed in this plugin)
+
+> In this plugin these `claude -p` commands are NOT executed — the loop runs in Cursor via `/gan-build` (planner/generator/evaluator as Cursor subagents). The rubric and prompts above are the operative parts; this section documents the upstream invocation path only.
 
 ```bash
 # Step 1: Plan
+# Claude Code only — never executed in this plugin; upstream documentation only.
 claude -p --model sonnet "You are a Product Planner. Read PLANNER_PROMPT.md. Expand this brief into a full product spec: 'Build a Kanban board app'. Write spec to spec.md"
 
 # Step 2: Generate (iteration 1)
+# Claude Code only — never executed in this plugin; upstream documentation only.
 claude -p --model sonnet "You are a Generator. Read spec.md. Implement Sprint 1. Start the dev server on port 3000."
 
 # Step 3: Evaluate (iteration 1)
+# Claude Code only — never executed in this plugin; upstream documentation only.
 claude -p --model sonnet --allowedTools "Read,Bash,mcp__playwright__*" "You are an Evaluator. Read EVALUATOR_PROMPT.md. Test the live app at http://localhost:3000. Score against the rubric. Write feedback to feedback-001.md"
 
 # Step 4: Generate (iteration 2 — reads feedback)
+# Claude Code only — never executed in this plugin; upstream documentation only.
 claude -p --model sonnet "You are a Generator. Read spec.md and feedback-001.md. Address all issues. Improve the scores."
 
 # Repeat steps 3-4 until pass threshold met
@@ -244,7 +252,7 @@ The harness should simplify as models improve. Following Anthropic's evolution:
 
 ## Anti-Patterns
 
-1. **Evaluator too lenient** — If the evaluator passes everything on iteration 1, your rubric is too generous. Tighten scoring criteria and add explicit penalties for common AI patterns.
+1. **Evaluator too lenient** — If the evaluator passes everything on iteration 1, your rubric is too generous. Tighten scoring criteria and add explicit penalties for common AI patterns (code-level direction-application failures only — never screen distinctiveness, which is judged ONLY by `browser-qa`).
 
 2. **Generator ignoring feedback** — Ensure feedback is passed as a file, not inline. The generator should read `feedback-NNN.md` at the start of each iteration.
 

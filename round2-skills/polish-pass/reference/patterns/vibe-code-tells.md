@@ -1,6 +1,6 @@
 # Pattern: vibe-code tells
 
-Signals that a UI was generated and shipped without a designer's eye. Each one costs trust with any Persona who has seen a hundred AI-built apps. This pass names every tell it finds and removes the ones a polish fix covers; the rows marked "report" are restyles, so they go in the report as redesign items instead. They complement the bans in [../craft-floor.md](../craft-floor.md).
+Signals that a UI was generated and shipped without a designer's eye. Each tell is a static/code-level signal and candidate evidence for `browser-qa`, not a pass/fail verdict on a rendered screen. Each one costs trust with any Persona who has seen a hundred AI-built apps. This pass names every tell it finds and removes the ones a polish fix covers; the rows marked "report" are restyles, so they go in the report as redesign items instead. They complement the bans in [../craft-floor.md](../craft-floor.md).
 
 | Tell | Why it hurts | Fix | Lens |
 |---|---|---|---|
@@ -33,4 +33,4 @@ Signals that a UI was generated and shipped without a designer's eye. Each one c
 
 1. Run `node <skill dir>/scripts/detect.mjs <paths>` (catches emoji icons, gradient text, slop gradients, and some others). On a landing page, a guarded single-hue gradient-text ramp (Hallmark gate 2b: stops within 40°, both stops tokens) is permitted, not a tell — do not flag it.
 2. Look at the Capture for the visual tells the detector can't see: duplicate KPIs, dead cards, cluttered actions, avatar style, color overuse.
-3. In the polish report, list each tell as a finding under Consistency, Hierarchy & clarity, or Color & theming, with its fix.
+3. In the polish report, list each tell as a static/code-level finding under Consistency, Hierarchy & clarity, or Color & theming, with its fix. A tell — or three or more tells — is candidate evidence for `browser-qa`, never a generic-template finding on its own; that finding exists only on `browser-qa`'s visual-loop verdict (see scoring.md).

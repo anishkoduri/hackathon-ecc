@@ -53,13 +53,13 @@ If browser automation is available, each assessment creates its own new tab. Nev
 Read relevant source files and visually inspect the live page when browser automation is available. Think like a design director.
 
 Evaluate:
-- **Design specificity**: Is the composition, interaction, and visual language grounded in this product, or could an unrelated product use it unchanged? Make this judgment before seeing detector output.
+- **Design specificity**: Is the composition, interaction, and visual language grounded in this product, or could an unrelated product use it unchanged? Record this assessment as candidate evidence for `browser-qa` to weigh — never a verdict — before seeing detector output.
 - **Holistic design**: hierarchy, IA, emotional fit, discoverability, composition, typography, color, accessibility, states, copy, and edge cases.
 - **Cognitive load**: consult the [Cognitive Load Assessment](#cognitive-load-assessment) section below; report checklist failures and decision points with >4 visible options.
 - **Emotional journey**: peak-end rule, emotional valleys, reassurance at high-stakes moments.
 - **Nielsen heuristics**: consult the [Heuristics Scoring Guide](#heuristics-scoring-guide) section below; score all 10 heuristics 0-4, marking any heuristic the mode-applicability rule allows as `n/a` instead of forcing a number.
 
-Return: design-specificity verdict, heuristic scores, cognitive load, emotional journey, 2-3 strengths, 3-5 priority issues, persona red flags, minor observations, and provocative questions.
+Return: design-specificity assessment (candidate evidence for `browser-qa`, not a verdict), heuristic scores, cognitive load, emotional journey, 2-3 strengths, 3-5 priority issues, persona red flags, minor observations, and provocative questions.
 
 ### Assessment B: Detector + Browser Evidence
 
@@ -137,7 +137,9 @@ Be honest with scores. A 4 means genuinely excellent. Most real interfaces score
 
 **Mode applicability**: heuristics 7 (Flexibility and Efficiency) and 10 (Help and Documentation) may be scored `n/a` on Persuade and Experience surfaces (landing pages, campaigns, portfolios, bodies of work), as may any other heuristic that genuinely cannot apply to the surface under review. Write `n/a` in the Score cell with a one-line reason, and renormalize the total to the applicable maximum (e.g. **24/32** when two heuristics are n/a) so the rating band stays proportional. The persisted snapshot must record the applicable maximum and which heuristics were scored n/a.
 
-#### Design Specificity Verdict
+#### Design Specificity Assessment
+
+Record the outcome as candidate evidence for `browser-qa`'s visual-loop verdict, not as a verdict: the specificity assessment goes only to `.hallmark/candidate-evidence.md` (screen + what reads as a template) and never into the Priority fixes as a template finding; Priority fixes carry a generic-template item only when `browser-qa`'s verdict has established it — other Priority fixes carry non-specificity issues only.
 
 **Start here.** Does the result feel authored for this product, or category-interchangeable?
 
@@ -219,7 +221,7 @@ Ask questions along these lines (adapt to the specific findings; do not ask gene
 
 1. **Priority direction**: Based on the issues found, ask which category matters most to the user right now. For example: "I found problems with visual hierarchy, color usage, and information overload. Which area should we tackle first?" Offer the top 2-3 issue categories as options.
 
-2. **Design intent**: If the critique found a tonal mismatch, ask whether it was intentional. For example: "The interface feels clinical and corporate. Is that the intended tone, or should it feel warmer/bolder/more playful?" Offer 2-3 tonal directions as options based on what would fix the issues found.
+2. **Design intent**: If the critique found a tonal mismatch, ask whether it was intentional. For example: "The interface feels clinical and corporate. Is that the intended tone, or should it feel warmer / more playful / more distinctive?" Offer 2-3 tonal directions as options based on what would fix the issues found.
 
 3. **Scope**: Ask how much the user wants to take on. For example: "I found N issues. Want to address everything, or focus on the top 3?" Offer scope options like "Top 3 only", "All issues", "Critical issues only".
 
@@ -590,11 +592,13 @@ Even if the system is usable without docs, help should be easy to find, task-foc
 
 | Score Range | Rating | What It Means |
 |-------------|--------|---------------|
-| 36–40 | Excellent | Minor polish only; ship it |
+| 36–40 | Excellent | Minor polish only; informs candidate evidence, never a ship verdict |
 | 28–35 | Good | Address weak areas, solid foundation |
 | 20–27 | Acceptable | Significant improvements needed before users are happy |
-| 12–19 | Poor | Major UX overhaul required; core experience broken |
-| 0–11 | Critical | Redesign needed; unusable in current state |
+| 12–19 | Poor | Major UX issues; core experience broken — record as candidate evidence for `browser-qa` |
+| 0–11 | Critical | Redesign indicated, not decided; unusable in current state — record as candidate evidence for `browser-qa` |
+
+The bands inform candidate evidence for `browser-qa`; only `browser-qa`'s verdict establishes a finding.
 
 When heuristics were scored `n/a`, the maximum is lower than 40; read the band off the percentage instead of the raw number (90%+ Excellent, 70%+ Good, 50%+ Acceptable, 30%+ Poor, below that Critical). 24/32 is 75%, so Good.
 

@@ -1,0 +1,42 @@
+# --- fix13j: dry-run M1 — snapshot manifest lives in the run-ledger appendix, not the 20-line ledger; revert step (2) and the coverage check name the manifest file ---
+# (skills/orch-build-mvp/SKILL.md has no staged source; it is upstream ECC
+#  patched here. The orchestrate half of the same fix is in fix13j/fix13j.py
+#  — staged source.)
+# Placement: LAST, just before STEP 5 (after the fix13i block).
+# All anchors were verified count==1 against the post-fix13i built tree by
+# fix13j/fix13j.py (preflight); the asserts below re-verify at build time and
+# fail the build loudly on mismatch.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # Snapshot intro names the manifest + its appendix home + the ledger pointer.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''the orchestrator first SNAPSHOTS the whole tree (see the snapshot rule at the end of this bullet — copy the whole tree, except `.hackathon/` and `.hallmark/candidate-evidence.md`, to `.hackathon/redesign-snapshot/<redesign-id>/` and record the file list + per-file hashes in `.hackathon/run-ledger.md`, BEFORE any redesign file is overwritten)''',
+   r'''the orchestrator first SNAPSHOTS the whole tree (see the snapshot rule at the end of this bullet — copy the whole tree, except `.hackathon/` and `.hallmark/candidate-evidence.md`, to `.hackathon/redesign-snapshot/<redesign-id>/` and record the snapshot manifest — the file list + per-file hashes — in `docs/run-ledger-appendix.md` (one line per file: relative path + hash), with a one-line pointer in `.hackathon/run-ledger.md` (snapshot path + appendix file + line count), BEFORE any redesign file is overwritten)'''),
+  # Snapshot rule: manifest lives in the appendix (defined inline — standalone has no ledger-cap rule); ledger carries only the pointer.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''record the snapshot path + the full file list (excluding those two paths) + per-file hashes in `.hackathon/run-ledger.md`.''',
+   r'''record the snapshot manifest — the snapshot path + the full file list (excluding those two paths) + per-file hashes, one line per file — in `docs/run-ledger-appendix.md` under a `<redesign-id>` heading, and record a one-line pointer in `.hackathon/run-ledger.md` (snapshot path + appendix file + line count). The manifest lives in the appendix, never in the ledger itself: a whole-tree file list is a bulky load, and the ledger stays a short run-state file — bulky records go to the appendix (one line per item) with a one-line pointer in the ledger.'''),
+  # Coverage check names the manifest file.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''After the build, the orchestrator compares the design skill's changed-file list against the snapshot manifest;''',
+   r'''After the build, the orchestrator compares the design skill's changed-file list against the snapshot manifest in `docs/run-ledger-appendix.md` (the `<redesign-id>` section);'''),
+  # Revert (2) created-file identification names the manifest file.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''or by comparing the post-redesign tree against the snapshot manifest — then restore''',
+   r'''or by comparing the post-redesign tree against the snapshot manifest in `docs/run-ledger-appendix.md` (the `<redesign-id>` section) — then restore'''),
+  # Revert (2) no-repo fallback names the manifest file.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''when the tree has no repo, verify against the snapshot manifest alone — each restored path diffed against its snapshot copy and its recorded hash — the manifest check is the fallback and the authority, `git status` is only a convenience.''',
+   r'''when the tree has no repo, verify against the snapshot manifest in `docs/run-ledger-appendix.md` (the `<redesign-id>` section) alone — each restored path diffed against its snapshot copy and its recorded hash — the manifest check is the fallback and the authority, `git status` is only a convenience.'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix13j anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, new))
+print("fix13j upstream block applied")
+PYEOF
+

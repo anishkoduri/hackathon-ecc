@@ -1,6 +1,6 @@
 ---
 name: gan-planner
-description: "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, evaluation criteria, and design direction. (Claude Code only — no Cursor equivalent in this plugin)"
+description: "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, and evaluation criteria, and records the design direction supplied by the design-lead (model grok-4.7-high) before the loop — the planner records the direction, it does not generate or re-derive one. (Cursor subagent — launched by `/gan-build`; the upstream `claude -p` path is Claude Code only and is never executed here.)"
 model: composer-2.5[fast=false]
 color: purple
 ---
@@ -41,7 +41,7 @@ Write your output to `gan-harness/spec.md` in the project root. Structure:
 - **Typography**: [font choices and hierarchy]
 - **Layout philosophy**: [e.g., "dense dashboard" vs "airy single-page"]
 - **Visual identity**: [unique design elements that prevent AI-slop aesthetics]
-- **Inspiration**: [specific sites/apps to draw from]
+- **Direction source**: [the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` BEFORE this loop — copied here, not generated: the planner records the supplied direction and never re-derives one from a searched reference or a fresh invention; if no direction is recorded, do NOT invent one and do NOT record a brief default: the design-lead step in `/gan-build` Phase 1 records the direction before this agent launches — if this agent is ever launched with no direction recorded, invoke the design-lead (model `grok-4.7-high`) to generate it through the package skills and record it in `docs/design-tokens.md` first, then copy it here — never a searched external reference, per the anti-derivative rule]
 
 ## Features (prioritized)
 
@@ -92,7 +92,7 @@ Write your output to `gan-harness/spec.md` in the project root. Structure:
 ## Guidelines
 
 1. **Name the app** — Don't call it "the app." Give it a memorable name.
-2. **Specify exact colors** — Not "blue theme" but "#1a73e8 primary, #f8f9fa background"
+2. **Record the supplied direction's exact tokens** — copy the colours, type and layout from the design-lead's recorded direction in `docs/design-tokens.md` (not "blue theme" but "#1a73e8 primary, #f8f9fa background"); do not invent a new palette — the planner records the direction, it does not generate one
 3. **Define user flows** — "User clicks X, sees Y, can do Z"
 4. **Set the quality bar** — What would make this genuinely impressive, not just functional?
 5. **Anti-AI-slop directives** — Explicitly call out patterns to avoid (gradient abuse, stock illustrations, generic cards)
@@ -104,4 +104,4 @@ Write your output to `gan-harness/spec.md` in the project root. Structure:
 1. Read the user's brief prompt
 2. Research: If the prompt references a specific type of app, read any existing examples or specs in the codebase
 3. Write the full spec to `gan-harness/spec.md`
-4. Also write a concise `gan-harness/eval-rubric.md` with the evaluation criteria in a format the Evaluator can consume directly
+4. Also write a concise `gan-harness/eval-rubric.md` with the evaluation criteria in a format the Evaluator can consume directly — and include the screen-distinctiveness scoping note at its top (copy it from `gan-style-harness` SKILL.md's rubric: screen distinctiveness is NOT scored here; it is judged ONLY by `browser-qa` in the visual loop). Every rubric this agent writes must carry that deferral. Before handing off, re-read `gan-harness/eval-rubric.md` and confirm the scoping note is at its top; if it is missing, prepend it — never hand off a rubric without it.

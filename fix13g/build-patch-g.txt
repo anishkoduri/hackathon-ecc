@@ -1,0 +1,103 @@
+# --- fix13g: single-executor mechanics remainder — standalone step-6 fresh-verdict run + render fallback, sloplint landing run, shared fresh-verdict budget definition + ledger accounting, deploy of the reverted verified tree, cold-start predicate + --skip-planner step 0, removal re-upload conditioned on account access, Anti-Template Policy as guidance, craft-floor template bans + critique specificity to candidate evidence ---
+# (skills/orch-build-mvp/SKILL.md, commands/gan-build.md, commands/gan-design.md,
+#  skills/orch-change-feature/SKILL.md, rules/web-design-quality.mdc have no staged
+#  sources; they are upstream ECC patched here. The orchestrate half of B3 / M3 / M4 /
+#  M5 and the staged gates.md / craft-floor.md / impeccable-critique.md edits are
+#  in fix13g/fix13g.py — staged sources.)
+# Placement: LAST, just before STEP 5 (after the fix13f block).
+# All anchors were verified count==1 against the post-fix13f built tree by
+# fix13g/fix13g.py (preflight); the asserts below re-verify at build time and
+# fail the build loudly on mismatch.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B3 orch-build-mvp 6b: 'round' defined, orchestrator named counter, ledger line required.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''on the fresh-verdict budget — 2 rounds total across 6b and step 6 (ONE shared budget, not two: rounds the step-6 finish-review re-inspection consumes count against the same 2; if both rounds are already spent there, no fresh round remains here) — on the redesigned screens only, at most 1 fix round per problem list; this budget is separate from the step-6 visual loop's consumed caps (max 3 rounds total, at most 2 fix rounds per problem list) and is not drawn from them''',
+   r'''on the fresh-verdict budget — 2 rounds total across 6b and step 6 (ONE shared budget, not two: rounds the step-6 finish-review re-inspection consumes count against the same 2; if both rounds are already spent there, no fresh round remains here) — on the redesigned screens only, at most 1 fix round per problem list (a fix round costs one round: the re-verdict run that closes it); this budget is separate from the step-6 visual loop's consumed caps (max 3 rounds total, at most 2 fix rounds per problem list) and is not drawn from them. **What a 'round' is (definition — same in both engines):** one `browser-qa` verdict run (one inspect-and-render-verdict pass on the screens in scope). The orchestrator is the counter: after every verdict run that draws on this budget, it updates the single ledger line `fresh-verdict rounds used: N/2` in `.hackathon/run-ledger.md` (N = rounds consumed so far in this run, out of 2) and consults that line before spending another round — never spend from working-context memory.'''),
+  # B3 orch-build-mvp 6b: ledger line after the fresh run.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''the redesign decision follows `browser-qa`'s verdict.''',
+   r'''the redesign decision follows `browser-qa`'s verdict. After the run, the orchestrator records `fresh-verdict rounds used: N/2` in `.hackathon/run-ledger.md` (see the round definition above) and consults that line before spending more.'''),
+  # M3+M5 orch-build-mvp 6b: budget check before building; superseded entries marked, fresh run scoped.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''BEFORE any redesign file is overwritten), then the design skill builds it and the orchestrator runs a fresh `browser-qa` verdict run on the redesigned screens BEFORE the redesign decision and BEFORE the step-7 commit and step-8 deploy: `browser-qa` renders its verdict on the redesigned screens and the candidate evidence in `.hallmark/candidate-evidence.md`, on the fresh-verdict budget''',
+   r'''BEFORE any redesign file is overwritten), then checks the remaining fresh-verdict budget in `.hackathon/run-ledger.md` (`fresh-verdict rounds used: N/2`): if no rounds remain, HOLD immediately without building — do NOT build the redesign, record `re-verification: BLOCKED` (no fresh-verdict rounds remain) in the ledger and the final report, and keep the hold; the tree stays the verified state. Otherwise the design skill builds it, the orchestrator marks the candidate-evidence entries about the redesigned screens as superseded in `.hallmark/candidate-evidence.md` (`Superseded by redesign <redesign-id> — do not re-judge`), and the orchestrator runs a fresh `browser-qa` verdict run on the redesigned screens BEFORE the redesign decision and BEFORE the step-7 commit and step-8 deploy: `browser-qa` renders its verdict on the redesigned screens and the candidate evidence in `.hallmark/candidate-evidence.md` — scoped to evidence about the redesigned screens only, never stale evidence about the pre-redesign screens — on the fresh-verdict budget'''),
+  # M4 orch-build-mvp snapshot rule: changed-file list checked against the snapshot.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''and record the snapshot path + file list in `.hackathon/run-ledger.md`. File-copy, not git: the tree may be uncommitted or have no repo at all, and a copy is deterministic to revert (copy the snapshot files back over the tree at their recorded relative paths). The snapshot is scratch under `.hackathon/` (never committed); keep it until the final report is delivered.''',
+   r'''and record the snapshot path + file list in `.hackathon/run-ledger.md`. File-copy, not git: the tree may be uncommitted or have no repo at all, and a copy is deterministic to revert (copy the snapshot files back over the tree at their recorded relative paths). The snapshot is scratch under `.hackathon/` (never committed); keep it until the final report is delivered. After the build, the orchestrator compares the design skill's changed-file list against the snapshot file list; any file the redesign touched outside the enumeration is recorded in `.hackathon/run-ledger.md` as a snapshot-coverage gap before the fresh verdict runs (restored on revert per step (2) below, or named as unreverted if no copy exists).'''),
+  # M4 orch-build-mvp revert steps: diff tree against the snapshot directory.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''**Revert steps on a failed re-verification:** (1) copy every file in the snapshot back over the tree at its recorded relative path; (2) confirm the reverted files match the snapshot (re-read or diff); (3) record `re-verification: BLOCKED` + snapshot path + reverted files in the ledger and final report; (4) keep the deploy/commit hold — the redesign is not deployed, not committed, not filmed, and not reported as landed.''',
+   r'''**Revert steps on a failed re-verification:** (1) copy every file in the snapshot back over the tree at its recorded relative path; (2) confirm the reverted files match the snapshot (re-read or diff) AND diff the tree against the snapshot directory to catch any file the redesign touched outside the snapshot enumeration — any such file is restored from version control if the tree is under it (`git checkout -- <file>` where the file was committed), otherwise named in the ledger and final report as a snapshot-coverage gap (the hold stands regardless); (3) record `re-verification: BLOCKED` + snapshot path + reverted files in the ledger and final report; (4) keep the deploy/commit hold — the redesign is not deployed, not committed, not filmed, and not reported as landed.'''),
+  # B2 orch-build-mvp step 6: sloplint landing run (static always, render where it applies, --json counts).
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''a sloplint app-scope pass does NOT prove distinctiveness (that check lives only in the visual loop above). Then, on a build with a landing page, run the Hallmark landing audit as candidate-evidence generation for `browser-qa` (not a verdict): the 6-axis pre-emit self-critique''',
+   r'''a sloplint app-scope pass does NOT prove distinctiveness (that check lives only in the visual loop above). Then, on a build with a landing page, first run sloplint on the landing page: `node <plugin>/skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs <built page> --render` (static tier always; render tier needs `puppeteer-core@25.17.0` + Chrome — install the pinned version if it is missing; on Windows set `CHROME_PATH` if Chrome is not found; if the render tier cannot run, run the static tier only and record that the render tier did not run — never claim a render pass). Run sloplint with `--json` and paste its summary counts into the Verify fix list, so the FAIL/REFLEX/waiver list survives as a durable record, not just stdout. Fix every `FAIL`; fix or waive every `REFLEX` (waivers on the record, in the CSS stamp). Then run the Hallmark landing audit as candidate-evidence generation for `browser-qa` (not a verdict): the 6-axis pre-emit self-critique'''),
+  # B1 orch-build-mvp step 6: finish review gets its inputs + a render fallback (mirror orchestrate).
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''and the Hallmark finish review in a fresh context (`skills/design-taste-frontend/references/hallmark/references/review-finish.md`), whose template observations (`Seen before`, machine-made) are likewise appended to `.hallmark/candidate-evidence.md` for `browser-qa`; its gates, plain defects, copy, and layout findings join the fix batch (same capped 2-round fix loop).''',
+   r'''and the Hallmark finish review in a fresh context (`skills/design-taste-frontend/references/hallmark/references/review-finish.md`), passing the render-tier screenshots, the stamp theme/idea line, the theme file, and the hero review's findings (`.hallmark/hero-review.md`, written by the landing slice) as file paths: if the render tier did not run, skip the finish review as a named step — record that it was skipped and judge the page from browser-qa's step-6 captures instead, passing `.hallmark/hero-review.md` to the browser-qa visual loop as an input file — and never return `recapture` in that case (there is nothing to recapture from). Act on its first word (`recapture` / `rebuild` / `fix` / `ship`) for its gates, plain defects, copy, and layout findings, which join the fix batch (same capped 2-round fix loop); its template observations (`Seen before`, machine-made) are likewise appended to `.hallmark/candidate-evidence.md` for `browser-qa`.'''),
+  # B1 orch-build-mvp step 6: the fresh-verdict run (mirror orchestrate :195) — the consumer of the Hallmark evidence.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''A standalone first build's landing page otherwise produces no gates Specificity evidence or finish-review template observations for candidate evidence. Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.''',
+   r'''A standalone first build's landing page otherwise produces no gates Specificity evidence or finish-review template observations for candidate evidence. The ORCHESTRATOR runs the fresh verdict run on the affected screens (the fresh-verdict budget — 2 rounds total across 6b and step 6, at most 1 fix round per problem list; rounds consumed here count against the same 2; after the run, the orchestrator records `fresh-verdict rounds used: N/2` in `.hackathon/run-ledger.md` — see the round definition in 6b — and consults that line before spending more), before polish/commit/deploy, and only `browser-qa`'s verdict decides whether a fix is owed; the run is scoped to the candidate evidence about the affected screens (entries a redesign supersedes are marked `Superseded` — see 6b). If that run's final verdict still fails, the template finding stands and routes into the 6b redesign/hold/revert path: it becomes a polish-routed redesign in 6b (snapshot BEFORE the redesign is built, budget check first, re-verification on the same shared budget, hold + revert to the snapshot on failure). If the Hallmark audit produces no candidate evidence (no Specificity under 3, no template observations), no fresh round is spent — record that in the ledger (rounds used unchanged). Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.'''),
+  # B4 orch-build-mvp step 8: deploy of the reverted verified tree is explicit (mirror 5c).
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''and do not proceed to deploy the redesign in this run (this is a safety hold, not a user question — it never asks the user anything). The demo films and the README describes the verified tree: after a revert that is the pre-redesign verified state, never the held redesign. Otherwise, deploy the working MVP''',
+   r'''and do not proceed to deploy the redesign in this run (this is a safety hold, not a user question — it never asks the user anything). The hold blocks only the redesign: deploy the reverted verified tree and record its URL and deploy path in `.hackathon/run-ledger.md`; only the deploy of the held redesign is forbidden. The demo films and the README describes the verified tree: after a revert that is the pre-redesign verified state, never the held redesign. Deploy the working MVP'''),
+  # M2 consistency (orch-build-mvp step 4): first UI slice writes tokens FROM the recorded direction.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''Have the first UI slice in the GAN loop write `docs/design-tokens.md` from its design system (per orchestrate's no-landing fallback) so later slices brief from real tokens.''',
+   r'''Have the first UI slice in the GAN loop write `docs/design-tokens.md` from its design system (per orchestrate's no-landing fallback) — from the direction the design-lead recorded in gan-build step 0, which runs even under `--skip-planner`, never inventing one — so later slices brief from real tokens.'''),
+  # M1 gan-build step 0: the cold-start predicate, defined.
+  ("commands/gan-build.md",
+   r'''0. Design-direction check (cold start) — BEFORE launching the planner, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`): if it does, pass it to the planner as in step 1;''',
+   r'''0. Design-direction check (cold start) — BEFORE launching the planner, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`). 'Carries a direction' means the file exists AND contains a named `Design direction:` line (the theme slug + axes/mood, or the named style + axes) with its tokens — an empty file, a heading-only file, or a file with no `Design direction:` line does NOT count. If it does, pass it to the planner as in step 1;'''),
+  # M2 gan-build Phase 1: step 0 runs even under --skip-planner.
+  ("commands/gan-build.md",
+   r'''### Phase 1: Planning (Planner Agent)
+Unless `--skip-planner` is set (with `--skip-planner`, no rubric is written here — the existing `gan-harness/eval-rubric.md` is used as-is and is validated in Phase 2 before any scoring):
+0. Design-direction check (cold start)''',
+   r'''### Phase 1: Planning (Planner Agent)
+Step 0 runs ALWAYS, including under `--skip-planner` — it is a direction check, not planner work; only steps 1–4 are skipped under `--skip-planner` (with `--skip-planner`, no rubric is written here — the existing `gan-harness/eval-rubric.md` is used as-is and is validated in Phase 2 before any scoring). On the `--skip-planner` path (including every `/orch-build-mvp` step-4 drive, which always passes `--skip-planner`), step 0 is the cold-start path: the design-lead generates the direction first and records it in `docs/design-tokens.md` — the first UI slice then writes its tokens FROM that recorded direction, never inventing one.
+0. Design-direction check (cold start)'''),
+  # M1 gan-design intro: the direction lives in the file, never in the brief alone.
+  ("commands/gan-design.md",
+   r'''the brief IS the spec, and the brief carries the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` (Setup step 0 records it first on a cold start)''',
+   r'''the brief IS the spec, and the brief RESTATES the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` (Setup step 0 records it first on a cold start) — the direction lives in the file, never in the brief alone'''),
+  # M1 gan-design Setup step 0: check the file, not the brief; predicate defined.
+  ("commands/gan-design.md",
+   r'''0. Design-direction check (cold start) — BEFORE writing the spec or rubric, check whether the brief carries a direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md`: if it does, proceed as below;''',
+   r'''0. Design-direction check (cold start) — BEFORE writing the spec or rubric, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`). 'Carries a direction' means the file exists AND contains a named `Design direction:` line (the theme slug + axes/mood, or the named style + axes) with its tokens — an empty file, a heading-only file, or a file with no `Design direction:` line does NOT count. If it does, proceed as below;'''),
+  # M6 orch-change-feature step 5: re-upload conditioned on account access; fallback is the default.
+  ("skills/orch-change-feature/SKILL.md",
+   r'''After re-filming, IF a hosted video link exists (in the Devpost submission, the README, or the final report), re-upload the new video to the same YouTube/Vimeo host (upload HOURS before the deadline — processing can take several hours, per `devpost-autofiller`) and update the video LINK wherever it appears (the Devpost submission and the README if it embeds it) — text updates alone leave the judge-visible artefact stale, so the link must point at the re-uploaded video, not the pre-removal one.''',
+   r'''After re-filming, IF a hosted video link exists (in the Devpost submission, the README, or the final report) AND the agent has YouTube/Vimeo account access for that host, re-upload the new video to the same YouTube/Vimeo host (upload HOURS before the deadline — processing can take several hours, per `devpost-autofiller`) and update the video LINK wherever it appears (the Devpost submission and the README if it embeds it) — text updates alone leave the judge-visible artefact stale, so the link must point at the re-uploaded video, not the pre-removal one. Account access is the exception, not the rule: the first build never uploads the video anywhere, so the default path is the blocked fallback below — do NOT attempt an upload without account access, and do NOT ask the user mid-flow.'''),
+  # Sweep M1 web-design-quality.mdc: Anti-Template Policy as design guidance, routed to candidate evidence.
+  ("rules/web-design-quality.mdc",
+   r'''Do not ship generic template-looking UI. Frontend output should look intentional, opinionated, and specific to the product.''',
+   r'''Design guidance, not a ship verdict: frontend output should look intentional, opinionated, and specific to the product — never a default template. This rule never decides whether a surface ships: a surface that looks like a default template is candidate evidence for `browser-qa` — append it (screen + what reads as a template) to `.hallmark/candidate-evidence.md`; only `browser-qa`'s pass/fail verdict on the rendered screen decides template-ness.'''),
+  # Sweep M1 web-design-quality.mdc: policy header carries the guidance framing.
+  ("rules/web-design-quality.mdc",
+   r'''## Anti-Template Policy''',
+   r'''## Anti-Template Policy — design guidance, not a ship verdict'''),
+  # Sweep M1 web-design-quality.mdc: "Banned Patterns" is guidance, not verdicts.
+  ("rules/web-design-quality.mdc",
+   r'''### Banned Patterns''',
+   r'''### Patterns to avoid'''),
+  # Sweep M1 web-design-quality.mdc: checklist routes to candidate evidence.
+  ("rules/web-design-quality.mdc",
+   r'''- [ ] Does it avoid looking like a default Tailwind or shadcn template?''',
+   r'''- [ ] If it looks like a default Tailwind or shadcn template, is that recorded as candidate evidence in `.hallmark/candidate-evidence.md` for `browser-qa` (not decided here)?'''),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix13g anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, new))
+print("fix13g upstream block applied")
+PYEOF

@@ -129,6 +129,14 @@ Audit #2 found 6 skills with invalid YAML frontmatter (their `description:` cont
 - [ ] **Hallmark render tier:** on a Taste landing build, confirm `sloplint --render` runs: it needs `puppeteer-core@25.17.0` (`npm i -g puppeteer-core@25.17.0` if missing) + Chrome. If Chrome is not found, set `CHROME_PATH` to the Chrome install. Note whether the render tier ran or fell back to static-only.
 - [ ] **Hallmark theme deal:** ask Cursor to build a landing page and confirm the deal picks a theme from the 50-theme catalog (theme name + material in the report) rather than inventing a direction.
 
+## 14. Grok 4.7 High handles design (fix program #13)
+
+- [ ] **Picker selection:** before the first build, select **Grok 4.7 High** in Cursor's model picker. The plugin pins its design role to `grok-4.7-high` (slug form only — no bracket syntax), but Cursor's subagent model allowlist is coupled to the picker dropdown, so the pin can silently fall back to another model if Grok 4.7 High is not selected.
+- [ ] **Design role runs on Grok 4.7 High:** on a build with UI work, confirm the design lead (the agent/skill doing design direction — Taste theme deal, ui-ux-pro-max direction, polish-pass) actually runs on Grok 4.7 High, not on Opus or another model. Note what it ran on and any error or fallback.
+- [ ] **"High" cost note:** "High" is a reasoning effort, not a price tier — higher effort generates more reasoning tokens and burns the Cursor weekly usage pool faster. Note whether usage feels materially higher; this does not change the model choice.
+
+**Record the answer here:** the design role ran on ____________________ (Grok 4.7 High / another model — which one / fell back silently).
+
 ## Results
 
 - Date run: _______________

@@ -21,6 +21,7 @@ stated up front).
    is your operating procedure; follow it: `<path>/SKILL.md`"*. The tier's
    contract and return format still bind. On the blind-parallel path this
    line is part of the verbatim task body both executors receive.
+5a. **Design package — named by default on every UI dispatch (not custom-roster-only).** Every dispatch whose work touches a UI surface names the design components for that surface in the Inputs, per the design-package rule (orchestrate SKILL.md row 10): landing/company page — `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; dashboard/app surface or component — `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion work — + `make-interfaces-feel-better`; new design-system work — + `design-system`; legacy drift — + `inherit-legacy-style`. The dispatch also restates the recorded direction from `docs/design-tokens.md` (theme/axes/mood, named) inline — never "see the design system". A UI dispatch with no named design skill is incomplete; the custom roster is not the only path a design skill reaches a dispatch.
 6. **Before-you-begin clause** — questions surface now, not mid-work.
 7. **Report contract** — status vocabulary + final-message cap (+ report file
    for implement-type work).
@@ -173,6 +174,15 @@ Inputs:           The diff: <path>. The original contract's acceptance
                   criteria ONLY — nothing else from the build conversation.
 Constraints:      Review the changed code PLUS its callers and callees.
                   [risk-domain:] explicit security/correctness focus.
+                  [UI diff:] ALSO check the design-direction record: a
+                  named direction recorded in `docs/design-tokens.md` /
+                  the decision record, present in the diff, with tokens
+                  tracing to it in the changed code; a missing record is
+                  a finding, minor at least. Do NOT judge the built
+                  screens — you cannot see them (you receive only the
+                  diff and the acceptance criteria). Screen-level
+                  distinctiveness is judged by `browser-qa` in the
+                  visual loop, not here.
 Acceptance check: n/a — you are the check.
 Return format:    Status first, then a DEFECT LIST — each item `path:line`
                   + why it is wrong — AND an explicit answer to: is there a

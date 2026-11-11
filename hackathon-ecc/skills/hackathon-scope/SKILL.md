@@ -45,6 +45,7 @@ WRITE the scoping output to `docs/scope.md` in the project before handing off. I
 - Unknowns / assumptions — the unknowns and assumptions carried from the decision record (each with owner and resolution point). Unknowns from the record flow into `docs/scope.md` here; they are not blockers, and they are resolved during the build by the safe/reversible default per hackathon-mode §7's assumption rule
 - The filled demo storyboard above, with the 0:00–4:00 timings (a 2–4 min live demo)
 - The hours-left number, copied from the decision record, plus the time budget split (build vs demo vs slack, rule of thirds below)
+- The design direction, copied from the decision record's `Design direction:` line (theme/axes/mood, named) — if the record has no such line, record the stated default as an assumption in `docs/scope.md` (derived from the brief's mood/domain, marked assumed, not user-stated), never leave it blank; orchestrate's slice briefs and `docs/design-tokens.md` build on this line
 - The chosen winnable category
 
 If the decision record has no hours-left number, do not block and do not leave the number blank to proceed: use the recorded assumption — the remaining time until the demo deadline if known, else 8 hours — write it into `docs/scope.md` marked as an assumption, and proceed.

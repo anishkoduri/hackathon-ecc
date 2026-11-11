@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Code only — this script shells out to 'claude -p' and 'claude mcp'; it will not run in a Cursor-only install with no 'claude' CLI.
+# Claude Code only — this script shells out to 'claude -p' and 'claude mcp'; it will not run in a Cursor-only install with no 'claude' CLI. The plugin's GAN loop runs in Cursor via /gan-build and never executes this script; this script is the upstream Claude Code invocation path only.
 # gan-harness.sh — GAN-Style Generator-Evaluator Harness Orchestrator
 #
 # Inspired by Anthropic's "Harness Design for Long-Running Application Development"
@@ -202,6 +202,16 @@ ok "Harness directory created: $HARNESS_DIR"
 
 if [ "$SKIP_PLANNER" = "true" ] && [ -f "${HARNESS_DIR}/spec.md" ]; then
   phase "PHASE 1: Planning — SKIPPED (spec.md exists)"
+  # Rubric validation (screen-distinctiveness deferral): a skipped planner means
+  # the rubric on disk may be stale or hand-written. If it does not carry the
+  # scoping note, prepend it and log the repair — the evaluator never scores
+  # screen distinctiveness.
+  if [ ! -f "${HARNESS_DIR}/eval-rubric.md" ]; then
+    warn "No gan-harness/eval-rubric.md found — nothing to validate; the evaluator will fall back to the canonical rubric in the gan-style-harness skill and record the missing file."
+  elif ! grep -q "Screen distinctiveness is NOT scored here" "${HARNESS_DIR}/eval-rubric.md"; then
+    { printf '%s\n\n' "**Screen distinctiveness is NOT scored here.** Whether a named direction is recorded AND visibly applied on the rendered screens is judged ONLY by \`browser-qa\` in the visual loop — never by this evaluator. The Design Quality and Originality rows below score the recorded direction and its code-level application only."; cat "${HARNESS_DIR}/eval-rubric.md"; } > "${HARNESS_DIR}/eval-rubric.md.tmp" && mv "${HARNESS_DIR}/eval-rubric.md.tmp" "${HARNESS_DIR}/eval-rubric.md"
+    warn "eval-rubric.md lacked the screen-distinctiveness scoping note — prepended it before scoring."
+  fi
 else
   phase "PHASE 1: Planning"
   log "Launching Planner agent (model: $PLANNER_MODEL)..."
@@ -213,7 +223,7 @@ Your brief: \"$BRIEF\"
 
 Create two files:
 1. gan-harness/spec.md — Full product specification
-2. gan-harness/eval-rubric.md — Evaluation criteria for the Evaluator
+2. gan-harness/eval-rubric.md — Evaluation criteria for the Evaluator. Put the screen-distinctiveness scoping note at the top of eval-rubric.md (copy it from the gan-style-harness skill's rubric: screen distinctiveness is NOT scored here; it is judged ONLY by browser-qa in the visual loop) — every rubric written on any path must carry that deferral.
 
 Be ambitious. Push for 12-16 features. Specify exact colors, fonts, and layouts. Don't be generic." \
     2>&1 | tee "${HARNESS_DIR}/planner-output.log"
@@ -278,6 +288,7 @@ Eval mode: $EVAL_MODE
 Dev server: http://localhost:$DEV_PORT
 
 1. Read gan-harness/eval-rubric.md for scoring criteria
+1a. Validate the rubric before scoring: confirm gan-harness/eval-rubric.md carries the screen-distinctiveness scoping note at its top ("Screen distinctiveness is NOT scored here" — judged ONLY by browser-qa); if it does not, prepend that note to the rubric file, note the repair in your feedback file, and score the Design Quality / Originality rows on the recorded direction and its code-level application only — never score screen distinctiveness.
 2. Read gan-harness/spec.md for feature requirements
 3. Read gan-harness/generator-state.md for what was built
 4. Test the live application (mode: $EVAL_MODE)

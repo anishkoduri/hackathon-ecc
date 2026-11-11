@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* sloplint-render: Hallmark's render-tier gate checker (rendered-page checks in a real browser). Its FAIL/REFLEX/WARN grades are render-check grades, not pass/fail verdicts on rendered screens — screen distinctiveness is judged only by `browser-qa` in the visual loop. Template gates (80, 81, 82, 83, 85) never issue REFLEX verdicts here: on landing pages they emit NOTE candidate evidence for `browser-qa`; on app screens they are skipped (mirroring sloplint.mjs APP_SKIP). */
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, basename, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -198,7 +199,7 @@ export async function renderCheck(htmlFiles, metaIn) {
             await shoot(page, file, '1440-full', true);
           }
           await frames(page);
-          const res = await page.evaluate(observeSpace, w === 1440, heroOnly, meta.heroPostureByFile[file] || '', !!meta.photoShapeByFile[file], meta.jobByFile[file] || '');
+          const res = await page.evaluate(observeSpace, w === 1440, heroOnly, meta.heroPostureByFile[file] || '', !!meta.photoShapeByFile[file], meta.jobByFile[file] || '', meta.scope);
           for (const f of res) findings.push({ ...f, file, line: 1, evidence: `[${w}px] ${f.evidence}` });
         }
         if (!heroOnly) {
@@ -677,7 +678,7 @@ function observe(checkFold, meta) {
       const warnAt = meta.genre === 'atmospheric' ? 20 : 5;
       const failAt = meta.genre === 'atmospheric' ? 30 : 8;
       if (pct > failAt) {
-        push(23, 'FAIL', `accent paints ~${pct.toFixed(1)}% of the 1280x800 viewport (> ${failAt}%)`,
+        push(23, 'FAIL', `accent paints ~${pct.toFixed(1)}% of the 1280x800 viewport (> ${failAt}%) — craft-level accent footprint above the declared-posture budget`,
           'Retreat the accent to <= 5%; large colour belongs to paper/field tokens or a declared posture');
       } else if (pct > warnAt) {
         push(23, 'WARN', `accent paints ~${pct.toFixed(1)}% of the 1280x800 viewport`,
@@ -736,7 +737,15 @@ function lineBreaks() {
   return out;
 }
 
-function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
+function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job, scope) {
+  // Template gates (80, 81, 82, 83, 85) never issue REFLEX verdicts here: they
+  // are candidate evidence for browser-qa, not a verdict. On app screens they
+  // are skipped outright (mirroring sloplint.mjs APP_SKIP); on landing pages
+  // they emit a NOTE, which sloplint.mjs counts as a note and never enforces
+  // as FAIL or REFLEX. (The render tier grades no gates 8/9, so there is
+  // nothing further to guard.)
+  const isAppScope = scope === 'app';
+  const templateEvidence = (gate, evidence, fix) => { if (!isAppScope) push(gate, 'NOTE', `${evidence} — candidate evidence for browser-qa`, fix); };
   const freeFold = /^(poster|ledge|banner|custom)$/.test(heroPosture || '');
   const out = [];
   const push = (gate, grade, evidence, fix) => out.push({ gate: String(gate), grade, evidence, fix });
@@ -856,7 +865,7 @@ function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
       const fills = new Set(shapes.map((s) => getComputedStyle(s).fill).filter((f) => f && f !== 'none'));
       if (curvy >= 3 || (shapes.length >= 6 && fills.size >= 3)) drawn.push(`${nameOf(svg.parentElement || svg)} (${Math.round(r.width)}x${Math.round(r.height)}, ${shapes.length} shapes)`);
     }
-    if (drawn.length) push(80, 'REFLEX', `drawn illustration: ${drawn.slice(0, 3).join('; ')}`, 'A photograph (theme.mjs photos), the product built, or type at scale; SVG is for icons, logos and labelled charts or diagrams (imagery.md § 7)');
+    if (drawn.length) templateEvidence(80, `drawn illustration: ${drawn.slice(0, 3).join('; ')}`, 'A photograph (theme.mjs photos), the product built, or type at scale; SVG is for icons, logos and labelled charts or diagrams (imagery.md § 7)');
 
     const empty = [];
     const shows = (box) => {
@@ -874,7 +883,7 @@ function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
       if ((e.innerText || '').trim().length > 60 || e.querySelector('img, video, canvas, svg, picture, input, table')) continue;
       if (!shows(e)) empty.push(`${nameOf(e)} ${Math.round(r.width)}x${Math.round(r.height)}, a gradient with nothing in it`);
     }
-    if (empty.length) push(81, 'REFLEX', `${empty.length} empty picture${empty.length > 1 ? 's' : ''}: ${empty.slice(0, 3).join('; ')}`, 'Put the picture in: the user\'s image, a library photograph (theme.mjs photos) or the product built at full fidelity; the wash is only a loading colour (imagery.md § 3)');
+    if (empty.length) templateEvidence(81, `${empty.length} empty picture${empty.length > 1 ? 's' : ''}: ${empty.slice(0, 3).join('; ')}`, 'Put the picture in: the user\'s image, a library photograph (theme.mjs photos) or the product built at full fidelity; the wash is only a loading colour (imagery.md § 3)');
 
     const marks = [];
     const colourOf = (e) => { const cs = getComputedStyle(e); return e instanceof SVGElement ? `${cs.fill}|${cs.stroke}` : `${cs.backgroundColor}|${cs.borderTopColor}|${cs.color}`; };
@@ -900,7 +909,7 @@ function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
       const counting = ONE_FOR_EACH.test(t) || (ONE_FOR_EACH_BARE.test(t) && (e.matches('figcaption') || (e.getAttribute('aria-label') && e.closest('svg, figure, [role="img"]'))));
       if (counting && !marks.some((m) => m.el.contains(e))) marks.push({ el: e, text: `"${t.trim().slice(0, 60)}"` });
     }
-    if (marks.length) push(82, 'REFLEX', `counting device: ${marks.slice(0, 2).map((m) => m.text).join('; ')}`, 'Set the number in type at the size it deserves; never one mark for each thing (imagery.md § 7)');
+    if (marks.length) templateEvidence(82, `counting device: ${marks.slice(0, 2).map((m) => m.text).join('; ')}`, 'Set the number in type at the size it deserves; never one mark for each thing (imagery.md § 7)');
 
     if (heroEnd != null) {
       const foot = [...document.querySelectorAll('body footer, [role="contentinfo"]')].filter(vis).pop();
@@ -913,7 +922,7 @@ function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
       for (const m of document.querySelectorAll('img, video')) { if (m.closest('[data-kind="product"], [data-product]')) continue; const nw = m.naturalWidth || m.videoWidth || 0; if (m.tagName === 'IMG' && /\.svg(\?|$)/i.test(m.currentSrc || m.src || '')) continue; if (m.tagName === 'IMG' && nw && nw < 200) continue; add(m); }
       for (const e of document.querySelectorAll('section *, main *')) { const bi = getComputedStyle(e).backgroundImage; if (/url\(/.test(bi) && !/svg|data:image\/svg/i.test(bi)) add(e); }
       const share = area / Math.max(1, (docH - from) * cw);
-      if (share > (photoShape ? 0.45 : 0.36) && n >= 3) push(83, 'REFLEX', `photographs cover ${Math.round(share * 100)}% of the page below the hero (${n} pictures${photoShape ? ', a photograph-led shape' : ''})`, 'Balance the page: cut or shrink pictures until they cover a quarter to a third of it, and carry the freed sections in type, figures, the product or a list (imagery.md § 5)');
+      if (share > (photoShape ? 0.45 : 0.36) && n >= 3) templateEvidence(83, `photographs cover ${Math.round(share * 100)}% of the page below the hero (${n} pictures${photoShape ? ', a photograph-led shape' : ''})`, 'Balance the page: cut or shrink pictures until they cover a quarter to a third of it, and carry the freed sections in type, figures, the product or a list (imagery.md § 5)');
     }
     if (heroEnd != null && !/subscribe|join|attend|listen|visit|newsletter|waitlist/.test(job || '')) {
       const foot = [...document.querySelectorAll('body footer, [role="contentinfo"]')].filter(vis).pop();
@@ -922,7 +931,7 @@ function observeSpace(atLaptop, heroOnly, heroPosture, photoShape, job) {
       const asks = (f) => { const t = [...f.querySelectorAll('button, input[type=submit]')].map((b) => b.innerText || b.value || '').join(' '); return /\b(book|enquir|inquir|request|contact|walkthrough|demo|quote|reserve|apply|start|create|order|buy|download|try)/i.test(t) && !/newsletter|updates|subscribe|the list|mailing/i.test(t); };
       const signup = (box) => box && [...box.querySelectorAll('form, [role="form"]')].find((f) => { if (asks(f)) return false; const fields = [...f.querySelectorAll('input:not([type=hidden]):not([type=submit]):not([type=checkbox]):not([type=radio]), textarea, select')].filter(vis); return fields.length >= 1 && fields.length <= 2 && fields.some((x) => x.type === 'email' || /e-?mail/i.test(`${x.name} ${x.id} ${x.placeholder} ${x.getAttribute('autocomplete') || ''}`)); });
       const hit = signup(before) || signup(foot);
-      if (hit) push(85, 'REFLEX', `the page closes on an email sign-up${job ? ` on a ${job} page` : ' and the stamp names no job'}`, 'End on what the visitor came to do (the booking, the buy box, the download, the next date, the latest issue) or on the last strong section; an email close is for a subscribe or join page, and the stamp says job: (anatomy.md)');
+      if (hit) templateEvidence(85, `the page closes on an email sign-up${job ? ` on a ${job} page` : ' and the stamp names no job'}`, 'End on what the visitor came to do (the booking, the buy box, the download, the next date, the latest issue) or on the last strong section; an email close is for a subscribe or join page, and the stamp says job: (anatomy.md)');
     }
 
     let heroFoot = null;

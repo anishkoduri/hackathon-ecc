@@ -27,12 +27,12 @@ Each of these is a check on the built result, not an intention. Run them togethe
 
 ## Refuse
 
-These are the category's defaults, not bans: the brief's own words can earn any of them. Reaching for one when the axis is free means you were not deciding; recognizing that means rewriting the element, not softening it.
+These are the category's defaults, not bans: the brief's own words can earn any of them. Reaching for one when the axis is free means you were not deciding; recognizing that means rewriting the element, not softening it — except the two page-level template patterns below (same-size cards as the page structure; the hero-metric template), which are candidate evidence for `browser-qa`, never a rewrite on this check alone (see craft-floor.md).
 
 Page scaffolds:
 
-- Same-size cards of icon plus heading plus text as the page structure. Cards are the lazy container; nested cards are always wrong.
-- The hero-metric template: big number, small label, supporting stats, accent.
+- Same-size cards of icon plus heading plus text as the page structure. Cards are the lazy container; nested cards are always wrong. As a page-level template pattern this is candidate evidence for `browser-qa` — append it (screen + pattern) to `.hallmark/candidate-evidence.md`; do not rewrite on this check alone.
+- The hero-metric template: big number, small label, supporting stats, accent. As a page-level template pattern this is candidate evidence for `browser-qa` — append it (screen + pattern) to `.hallmark/candidate-evidence.md`; do not rewrite on this check alone.
 - A kicker or eyebrow above a heading. This one is a ban, not a default: no brief earns it back. The heading carries its own weight; delete the label and let the heading speak.
 - Section numbers (01 / 02 / 03) unless the sequence itself carries information the reader needs.
 - A modal for a task that needs neither interruption nor protected focus.

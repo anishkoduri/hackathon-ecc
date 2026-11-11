@@ -40,7 +40,7 @@ Mark a Dimension `n/a` only if it truly can't apply (e.g. Motion on a static scr
 
 ## Levels: place the whole surface first
 
-Before scoring Dimensions, place the surface on this ladder for its mode. It anchors the overall Score; Dimension scores explain *why* it sits there.
+Before scoring Dimensions, place the surface on this ladder for its mode. It anchors the overall Score; Dimension scores explain *why* it sits there. This Level placement is an internal scoring anchor for polish's own Score, not a pass/fail verdict on a rendered screen; a generic-template FINDING exists only on `browser-qa`'s visual-loop verdict.
 
 | Level | Persuade | Operate | Read / Experience |
 |---|---|---|---|
@@ -51,12 +51,12 @@ Before scoring Dimensions, place the surface on this ladder for its mode. It anc
 
 Rules:
 - Every score cites evidence (a screenshot cell, an element, a file/line).
-- The **overall Score is a judgment, not an average.** It's capped by the worst blocker: any Dimension ≤3 caps overall at 6; any craft-floor ban ([craft-floor.md](craft-floor.md)) present caps overall at 7.
-- Generic "AI-template" look (the craft-floor slop tells) can't score above 6 on Persona fit for a Persuade surface.
-- Each vibe-code tell ([patterns/vibe-code-tells.md](patterns/vibe-code-tells.md)) is a finding. Three or more tells cap the overall Score at 6.
+- The **overall Score is a judgment, not an average.** It's capped by the worst blocker: any Dimension ≤3 caps overall at 6; any craft-floor ban ([craft-floor.md](craft-floor.md)) present caps overall at 7. (A ban present is a static/code-level finding; the cap records that finding in polish's own Score — it is not a pass/fail verdict on a rendered screen.)
+- Generic "AI-template" look (the craft-floor slop tells) can't score above 6 on Persona fit for a Persuade surface — but only on `browser-qa`'s visual-loop verdict: a generic-template diagnosis exists ONLY when `browser-qa`'s verdict says so. Polish's own observation of an AI-template look is candidate evidence for `browser-qa` (append which screens and how to `.hallmark/candidate-evidence.md`), never the cap or the FINDING on its own. On `browser-qa`'s verdict the diagnosis is a FINDING routed to the design skill for a redesign (polish.md Step 3), not only a score cap — record which screens fail and how.
+- Each vibe-code tell ([patterns/vibe-code-tells.md](patterns/vibe-code-tells.md)) is a finding. Three or more tells are candidate evidence for `browser-qa` (append screen + tells to `.hallmark/candidate-evidence.md`) that the surface reads as a template; the overall Score cap at 6 for a template look applies only on `browser-qa`'s generic-template verdict, never on the tell count alone.
 - An action that fails the cold read (looks like plain text at rest) caps Hierarchy & clarity at 6 and the overall Score at 7. Knowing from the code that it is a button doesn't count.
 - A section seen only in an error or empty state it wasn't meant to be in is uncaptured: it caps the overall Score at 7 until its success state is captured.
-- The overall Score can't exceed the surface's Level by more than 1.
+- The overall Score can't exceed the surface's Level by more than 1. (Level is polish's internal scoring anchor, not a pass/fail verdict on a rendered screen.)
 - **Capture every state you know exists before scoring.** If you know about a state (from the UI, the code, or the user's task), you must capture it. Listing it as "not captured" is a miss, not a disclosure. Force each state as [capture.md](capture.md) → "Force every state" describes. Only if a state truly can't be reached (no runnable code, auth you don't have) does it cap the Dimensions that depend on it at 6 and the overall Score at 7: hover, pressed, and tooltip/menu-open states for Motion & interaction; focus-visible for Accessibility; dark mode (when supported) for Color & theming; loading, empty, and error for Robustness. Reading the CSS doesn't count. In that case, ask the user for what you need before reporting — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you proceed without waiting and record it as blocked in the final report if you cannot resolve it; never stop for a human decision mid-build.
 - Don't inflate to be kind. Don't deflate to seem tough. If it's good, say why precisely.
 

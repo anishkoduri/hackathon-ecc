@@ -65,6 +65,7 @@ a feature mid-build (stock ECC rules/commands such as `/quality-gate`, `/securit
   downloads the Playwright browser. The `/demo` skill also needs a MiniMax
   key for good narration (or record the narration yourself).
 - **Taste** needs Node 22+ and Chrome/Edge/Chromium for its finish gate (run the gate explicitly — it does not auto-run on stop in Cursor).
+- **Before the first build — Grok 4.7 High in the model picker:** the plugin pins its design role to `grok-4.7-high`. Cursor's subagent model allowlist is coupled to the model-picker dropdown, so select **Grok 4.7 High** in Cursor's model picker before the first build, or the design pin may silently fall back to another model. This is a one-time setup note, not a mid-build ask. File-level pin only — whether it holds is decided by the live smoke test (`LIVE_SMOKE_TEST.md` §14).
 - The plugin's Node scripts (`/harness-audit`, `/skill-host-compat`, the
   `/epic-*` commands, `validate-skills.js`) ship with their dependencies
   vendored in `node_modules/` (~4.9 MB after pruning unused sql.js builds);

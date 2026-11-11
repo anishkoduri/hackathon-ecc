@@ -24,7 +24,7 @@ Analyzes your codebase and generates a cohesive design system:
 ```
 1. Scan CSS/Tailwind/styled-components for existing patterns
 2. Extract: colors, typography, spacing, border-radius, shadows, breakpoints
-3. Research 3 competitor sites for inspiration (via browser MCP)
+3. Generate the direction through the design package skills (`ui-ux-pro-max` direction / `design-taste-frontend` / dealt Hallmark theme) and record it in `design-tokens.md` — never competitor sites and never a searched external reference (orchestrate row-10 anti-derivative rule)
 4. Propose a design token set (JSON + CSS custom properties)
 5. Generate DESIGN.md with rationale for each decision
 6. Create an interactive HTML preview page (self-contained, no deps)
@@ -53,7 +53,7 @@ Each dimension gets a score, specific examples, and a fix with exact file:line.
 
 ### Mode 3: AI Slop Detection
 
-Identifies generic AI-generated design patterns:
+Identifies generic AI-generated design patterns. **Scope — pattern evidence, not a distinctiveness verdict:** the patterns below are code-level evidence (they exist in the code); a slop finding — including "Generic hero with centered text over stock gradient" — is candidate evidence for `browser-qa`, never a verdict that a screen reads as a default template. Whether a named direction is recorded AND visibly applied on the rendered screens is judged ONLY by `browser-qa` in the visual loop. Append slop findings to `.hallmark/candidate-evidence.md` with the screen and pattern for `browser-qa` to judge.
 
 ```
 - Gratuitous gradients on everything

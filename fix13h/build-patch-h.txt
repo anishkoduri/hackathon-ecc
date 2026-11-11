@@ -1,0 +1,125 @@
+# --- fix13h: single-executor mechanics remainder #2 — whole-tree snapshot + revert that deletes created files, cold-start direction chain (decision record first), Impeccable template-pattern Refuse items to candidate evidence, Verify-step numbering, per-redesign-id re-verification, resolved-marking, Harmony consistency record, critique bands as evidence ---
+# (skills/orch-build-mvp/SKILL.md, commands/gan-build.md, commands/gan-design.md
+#  have no staged sources; they are upstream ECC patched here. The orchestrate
+#  half of B2 / M1 / M2 / M3 / M5 / M7 / M8 / M9 and the staged gates.md /
+#  craft-floor / polish.md / SKILL.md / critique edits are in fix13h/fix13h.py
+#  — staged sources.)
+# Placement: LAST, just before STEP 5 (after the fix13g block).
+# All anchors were verified count==1 against the post-fix13g built tree by
+# fix13h/fix13h.py (preflight); the asserts below re-verify at build time and
+# fail the build loudly on mismatch.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+subs = [
+  # B2 orch-build-mvp 6b: snapshot is the whole tree.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''the orchestrator first SNAPSHOTS the screens being redesigned (see the snapshot rule at the end of this bullet — copy the affected files to `.hackathon/redesign-snapshot/<redesign-id>/` and record the file list in `.hackathon/run-ledger.md`, BEFORE any redesign file is overwritten)''',
+   r'''the orchestrator first SNAPSHOTS the whole tree (see the snapshot rule at the end of this bullet — copy the whole tree to `.hackathon/redesign-snapshot/<redesign-id>/` and record the file list + per-file hashes in `.hackathon/run-ledger.md`, BEFORE any redesign file is overwritten)'''),
+  # B2 orch-build-mvp 6b: whole-tree snapshot + file list + hashes.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''before the design skill overwrites any file, copy every file the redesign will touch (the redesigned screens' source files, enumerated from the polish routing / redesign brief) into `.hackathon/redesign-snapshot/<redesign-id>/` (one directory per redesign; `<redesign-id>` is the polish finding's short id, e.g. `landing-template`), preserving relative paths, and record the snapshot path + file list in `.hackathon/run-ledger.md`.''',
+   r'''before the design skill overwrites any file, copy the WHOLE tree into `.hackathon/redesign-snapshot/<redesign-id>/` (one directory per redesign; `<redesign-id>` is the polish finding's short id, e.g. `landing-template`), preserving relative paths, and record the snapshot path + the full file list + per-file hashes in `.hackathon/run-ledger.md`. The snapshot covers every file in the tree, not just the files the redesign brief enumerates — the brief enumeration is not the snapshot boundary.'''),
+  # B2 orch-build-mvp 6b: changed-file list checked against the snapshot manifest.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''After the build, the orchestrator compares the design skill's changed-file list against the snapshot file list; any file the redesign touched outside the enumeration is recorded in `.hackathon/run-ledger.md` as a snapshot-coverage gap before the fresh verdict runs (restored on revert per step (2) below, or named as unreverted if no copy exists).''',
+   r'''After the build, the orchestrator compares the design skill's changed-file list against the snapshot manifest; every file the redesign touched is covered by the whole-tree snapshot, so there is no snapshot-coverage gap by construction — a file on the changed-file list that is missing from the manifest is recorded in `.hackathon/run-ledger.md` as a snapshot-integrity failure before the fresh verdict runs (and the hold stands until the snapshot is repaired or the redesign is abandoned).'''),
+  # B2 orch-build-mvp 6b: revert (1) whole-tree restore restores verified state.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''(1) copy every file in the snapshot back over the tree at its recorded relative path;''',
+   r'''(1) copy every file in the snapshot back over the tree at its recorded relative path (the snapshot is the whole tree, so this restores the verified state exactly);'''),
+  # B2 orch-build-mvp 6b: revert (2) delete created files, restore from snapshot copy, never git alone.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''confirm the reverted files match the snapshot (re-read or diff) AND diff the tree against the snapshot directory to catch any file the redesign touched outside the snapshot enumeration — any such file is restored from version control if the tree is under it (`git checkout -- <file>` where the file was committed), otherwise named in the ledger and final report as a snapshot-coverage gap (the hold stands regardless)''',
+   r'''confirm the reverted files match the snapshot (re-read or diff) AND delete every file the redesign created that the snapshot does not contain — identify created files from the design skill's changed-file list plus the `git status` untracked listing, or by comparing the post-redesign tree against the snapshot manifest — then restore modified files from the SNAPSHOT COPY, never from version control alone (`git checkout` restores HEAD, not the verified state, and never deletes untracked files; nothing is committed to restore from in the normal first-build timeline), and verify with `git status` plus a diff restricted to snapshot-listed paths (each restored path diffed against its snapshot copy). A file that cannot be restored from the snapshot is named in the ledger and final report as a snapshot-coverage gap (the hold stands regardless)'''),
+  # M1 orch-build-mvp 6b: stray period removed.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''working-context memory.; the redesign decision follows''',
+   r'''working-context memory; the redesign decision follows'''),
+  # M2 orch-build-mvp 6b: duplicated ledger-update sentence removed.
+  ("skills/orch-build-mvp/SKILL.md",
+   r''' the redesign decision follows `browser-qa`'s verdict. After the run, the orchestrator records `fresh-verdict rounds used: N/2` in `.hackathon/run-ledger.md` (see the round definition above) and consults that line before spending more.''',
+   r''' the redesign decision follows `browser-qa`'s verdict.'''),
+  # M6 orch-build-mvp step 6: landing sloplint runs before the Hallmark landing audit.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''Then, on a build with a landing page, first run sloplint on the landing page:''',
+   r'''Then, on a build with a landing page, run sloplint on the landing page before the Hallmark landing audit:'''),
+  # M7a orch-build-mvp step 6: hero-review routes to the fresh-verdict run.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''passing `.hallmark/hero-review.md` to the browser-qa visual loop as an input file''',
+   r'''passing `.hallmark/hero-review.md` to the fresh-verdict run as an input file (via `.hallmark/candidate-evidence.md`)'''),
+  # M7b orch-build-mvp step 6: finish-review input list gains the HTML/component source.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''passing the render-tier screenshots, the stamp theme/idea line, the theme file, and the hero review's findings (`.hallmark/hero-review.md`, written by the landing slice) as file paths''',
+   r'''passing the render-tier screenshots, the page's HTML or component source, the stamp theme/idea line, the theme file, and the hero review's findings (`.hallmark/hero-review.md`, written by the landing slice) as file paths'''),
+  # M8a orch-build-mvp step 6: visual-loop fixed entries marked resolved.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''fix and re-inspect within the same caps as orchestrate (max 3 rounds total, at most 2 fix rounds per problem list; if the app cannot run, record that as blocked with evidence instead of iterating).''',
+   r'''fix and re-inspect within the same caps as orchestrate (max 3 rounds total, at most 2 fix rounds per problem list; if the app cannot run, record that as blocked with evidence instead of iterating). Candidate-evidence entries the visual loop fixes are marked resolved in `.hallmark/candidate-evidence.md` (`Resolved in visual loop — do not re-judge`, with the screen + fix), so the step-6 fresh run does not spend a round re-judging already-fixed screens.'''),
+  # M8b orch-build-mvp step 6: fresh run scoped to unresolved evidence.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''the run is scoped to the candidate evidence about the affected screens (entries a redesign supersedes are marked `Superseded` — see 6b).''',
+   r'''the run is scoped to the unresolved candidate evidence about the affected screens (entries a redesign supersedes are marked `Superseded` — see 6b — and entries the visual loop fixed are marked `Resolved in visual loop — do not re-judge`).'''),
+  # M9 orch-build-mvp 6b: step-7/step-8 checks consult the per-redesign-id entry.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''the step-7/step-8 checks below consult that ledger entry, not working-context memory.''',
+   r'''the step-7/step-8 checks below consult the entry for that redesign-id (`re-verification <redesign-id>: PASSED/BLOCKED`), not working-context memory.'''),
+  # B3 gan-build step 0: read the decision record FIRST.
+  ("commands/gan-build.md",
+   r'''0. Design-direction check (cold start) — BEFORE launching the planner, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`).''',
+   r'''0. Design-direction check (cold start) — BEFORE launching the planner, read `docs/decision-record.md` FIRST: if the record carries a named direction, adopt it — it is the direction for this build, and `docs/design-tokens.md` carries it (write it into the tokens file if the tokens file lacks it or carries a different one). Only when the record carries no direction, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`).'''),
+  # B3 gan-build step 0: cold start only when neither record nor tokens carries one + precedence.
+  ("commands/gan-build.md",
+   r'''If it does, pass it to the planner as in step 1; if it does not (cold start — no direction recorded yet), INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction through the package skills (`design-taste-frontend` for a landing page, `ui-ux-pro-max` for a dashboard/app surface, per the design-package rule) and record it in `docs/design-tokens.md`, then launch the planner with that recorded direction.''',
+   r'''If it does, pass it to the planner as in step 1; if neither the record nor the tokens file carries a direction (cold start — no direction recorded yet), INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction through the package skills (`design-taste-frontend` for a landing page, `ui-ux-pro-max` for a dashboard/app surface, per the design-package rule) and record it in `docs/design-tokens.md`, then launch the planner with that recorded direction. Precedence on divergence: the decision record wins over `gan-harness/spec.md` — spec.md is translated from the record/scope before `/gan-build` runs, so a divergence means the translation drifted and the record is authoritative; the tokens file carries the record's direction.'''),
+  # B3 gan-build Phase 1: step 0 cold-start path reads the record first.
+  ("commands/gan-build.md",
+   r'''step 0 is the cold-start path: the design-lead generates the direction first and records it in `docs/design-tokens.md` — the first UI slice then writes its tokens FROM that recorded direction, never inventing one.''',
+   r'''step 0 is the cold-start path: step 0 reads the decision record first and adopts its direction when one exists; only when neither the record nor the tokens file carries one does the design-lead generate the direction first and record it in `docs/design-tokens.md` — the first UI slice then writes its tokens FROM that recorded direction, never inventing one.'''),
+  # B3 gan-build step 1: direction comes from step 0 (record first), record wins on divergence.
+  ("commands/gan-build.md",
+   r'''plus the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` (step 0 records it first on a cold start) — the direction comes from the design-lead BEFORE the loop;''',
+   r'''plus the design direction in `docs/design-tokens.md` (step 0 records it first on a cold start — from `docs/decision-record.md` when the record carries one, else from the design-lead; on any divergence between the record and the spec, the record wins) — the direction comes from step 0 BEFORE the loop;'''),
+  # B3 gan-build Phase 2: generator reads the tokens file too; record wins on divergence.
+  ("commands/gan-build.md",
+   r'''    - Read spec.md
+    - If iteration > 1: read feedback/feedback-{iteration-1}.md''',
+   r'''    - Read spec.md and `docs/design-tokens.md` (the tokens file carries the decision record's direction; on any divergence between spec.md and the tokens file, the record's direction — as carried in the tokens file — wins: spec.md is derived from the record/scope, so a divergence means the translation drifted and the record is authoritative; never re-derive a direction from spec.md alone)
+    - If iteration > 1: read feedback/feedback-{iteration-1}.md'''),
+  # B3 gan-design Setup step 0: read the decision record FIRST.
+  ("commands/gan-design.md",
+   r'''0. Design-direction check (cold start) — BEFORE writing the spec or rubric, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`).''',
+   r'''0. Design-direction check (cold start) — BEFORE writing the spec or rubric, read `docs/decision-record.md` FIRST: if the record carries a named direction, adopt it — it is the direction for this build, and `docs/design-tokens.md` carries it (write it into the tokens file if the tokens file lacks it or carries a different one). Only when the record carries no direction, check whether `docs/design-tokens.md` carries a direction recorded by the design-lead (model `grok-4.7-high`).'''),
+  # B3 gan-design Setup step 0: cold start only when neither record nor tokens carries one + precedence.
+  ("commands/gan-design.md",
+   r'''If it does, proceed as below; if it does not (cold start — no direction recorded yet), INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction through the package skills (`design-taste-frontend` for a landing page, `ui-ux-pro-max` for a dashboard/app surface, per the design-package rule) and record it in `docs/design-tokens.md`, then restate that recorded direction in the brief/spec and proceed.''',
+   r'''If it does, proceed as below; if neither the record nor the tokens file carries a direction (cold start — no direction recorded yet), INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction through the package skills (`design-taste-frontend` for a landing page, `ui-ux-pro-max` for a dashboard/app surface, per the design-package rule) and record it in `docs/design-tokens.md`, then restate that recorded direction in the brief/spec and proceed. Precedence on divergence: the decision record wins over the spec — the spec is translated from the record/scope, so a divergence means the translation drifted and the record is authoritative; the tokens file carries the record's direction.'''),
+  # B3 gan-design intro: brief restates the record's direction when one exists; record wins.
+  ("commands/gan-design.md",
+   r'''the brief IS the spec, and the brief RESTATES the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` (Setup step 0 records it first on a cold start) — the direction lives in the file, never in the brief alone''',
+   r'''the brief IS the spec, and the brief RESTATES the design direction from `docs/decision-record.md` when the record carries one, else the direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` (Setup step 0 records it first on a cold start) — the direction lives in the file, never in the brief alone; on any divergence between the record and the spec, the record wins'''),
+]
+# (relative path, old text, new text, expected count) — counted global replaces.
+gsubs = [
+  # M9 orch-build-mvp 6b/7/8: re-verification entries keyed per redesign-id.
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''`re-verification: PASSED`''',
+   r'''`re-verification <redesign-id>: PASSED`''', 3),
+  ("skills/orch-build-mvp/SKILL.md",
+   r'''`re-verification: BLOCKED`''',
+   r'''`re-verification <redesign-id>: BLOCKED`''', 7),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix13h anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, new))
+for rel, old, new, want in gsubs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == want, f"fix13h global anchor in {rel}: {old[:50]!r} (count={n} want={want})"
+    open(p, "w").write(t.replace(old, new))
+print("fix13h upstream block applied")
+PYEOF

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* sloplint: Hallmark's mechanical gate checker. Zero dependencies, Node 18+. Gate ids and tiers: references/gates.md. */
+/* sloplint: Hallmark's mechanical gate checker (static/code-level checks on source only). Zero dependencies, Node 18+. Gate ids and tiers: references/gates.md. Its FAIL/REFLEX/WARN grades are static-check grades, not pass/fail verdicts on rendered screens — screen distinctiveness is judged only by `browser-qa` in the visual loop. */
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync, realpathSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, extname, dirname, basename, resolve } from 'node:path';
@@ -2958,6 +2958,7 @@ function accentedWordInHero(ctx) {
   if (count === 1 && aboveFirstH2) return true;
   return count !== 1 ? `.${cls} appears ${count} times in the markup; the signature appears once, in the hero` : `.${cls} sits below the first h2, outside the hero`;
 }
+// Gate 38iii is a static/code-level check on the source (an accented word inside a heading); its FAIL/REFLEX grade is not a pass/fail verdict on a rendered screen — that verdict is `browser-qa`'s alone.
 function check38c(ctx) {
   for (const { r } of accentedHeads(ctx)) {
     report('38iii', 'FAIL', r.file, r.line, `accented word inside a heading (${r.selector})`, 'Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero');

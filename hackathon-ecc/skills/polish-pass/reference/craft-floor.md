@@ -2,7 +2,7 @@
 
 The minimum every UI must meet before any polish pass counts as done. Read it before editing UI, apply it silently, and check it against the Capture, not against your intentions. Craft is not cosmetic: people judge a well-made UI as easier to use and forgive its small flaws (aesthetic-usability effect), and a sloppy one loses that trust before it is used.
 
-The project's design tokens and design notes win over this file where they conflict. Bans hold unless the project's design notes explicitly record an exception; accessibility and dark-pattern bans never yield. Your own habits never override either.
+The project's design tokens and design notes win over this file where they conflict. Bans hold as static/code-level checks unless the project's design notes explicitly record an exception; accessibility and dark-pattern bans never yield. A ban is a code-level finding and candidate evidence for `browser-qa`, never a pass/fail verdict on a rendered screen. Your own habits never override either.
 
 ## Default standard
 
@@ -15,7 +15,7 @@ Every project meets this unless the project's design notes record an explicit ex
 - **Performance:** LCP under 2.5s on mobile.
 - **Dependencies:** no new fonts or dependencies without the user's approval.
 
-## Floor (every item must pass)
+## Floor (every item must pass as a static/code-level check)
 
 ### Contrast
 - [ ] Body text, placeholder text, and small labels: contrast ≥ 4.5:1 against their actual background.
@@ -108,7 +108,7 @@ Every project meets this unless the project's design notes record an explicit ex
 
 ## Bans (AI-slop tells)
 
-Each of these marks a UI as generated rather than designed. Remove or rewrite the element; do not just tone it down.
+Each of these marks a UI as generated rather than designed. Each ban is a static/code-level check on the source, and a finding under it is candidate evidence for `browser-qa` — never a pass/fail verdict on a rendered screen (that verdict is `browser-qa`'s alone). Non-template bans (accessibility, dark patterns, copy, effects, type): remove or rewrite the element; do not just tone it down. Template-pattern bans (the centered-everything hero, the hero-metric template, grids of identical cards, equal-weight text-only feature sections): do NOT fix on this check alone — append the finding (screen + pattern) to `.hallmark/candidate-evidence.md` for `browser-qa`; it is fixed only on `browser-qa`'s verdict, or when the project's design notes explicitly allow the pattern.
 
 ### Color and surface
 - Purple-to-blue (or pink-to-orange) gradients as the default brand look, on buttons, hero backgrounds, and headings alike.
@@ -165,5 +165,5 @@ Each of these marks a UI as generated rather than designed. Remove or rewrite th
 1. Before editing, read the project's design tokens and shared components (see SKILL.md → Design system). Use its tokens; extend them rather than inventing values.
 2. After editing, take a Capture across the Capture Matrix (light/dark × desktop/mobile, where each exists).
 3. Walk the Floor checklist against the Capture. Fix failures before claiming any Score improvement.
-4. Scan for every Ban. Any remaining ban is a finding in the report; the polish pass is not done until it is fixed or the project's design notes explicitly allow it.
+4. Scan for every Ban. Any remaining non-template ban is a finding in the report; the polish pass is not done until it is fixed or the project's design notes explicitly allow it. A remaining template-pattern ban is done when it is appended to `.hallmark/candidate-evidence.md` (screen + pattern) for `browser-qa` — it is fixed only on `browser-qa`'s verdict or a design-notes exception, never on this check alone.
 5. The floor is a minimum, not a goal. Once it passes, spend effort on what makes this product distinct for its Personas.

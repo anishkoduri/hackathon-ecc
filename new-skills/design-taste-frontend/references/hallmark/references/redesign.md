@@ -37,7 +37,7 @@ node <skill-dir>/scripts/sloplint.mjs <target> --genre <genre> --render --before
 
 It prints the findings grouped by gate and writes them to `.hallmark/before.txt`, the screenshots to `.hallmark/before/` and the record to `.hallmark/before.json`: every link, form, field, inline handler, test hook, script tag, selector a script queries, heading and figure. Git ignores the folder's screenshots and records.
 
-3. Look at the screenshots before you weigh the findings, so the linter does not write the verdict, then give the read in four lines: what the page is for (the audience, the one action); what works and stays (at least one thing); what reads as generated (the worst tells, by gate); what is broken.
+3. Look at the screenshots before you weigh the findings, so the linter does not write the verdict, then give the read in four lines: what the page is for (the audience, the one action); what works and stays (at least one thing); what suggests a generated look (the strongest candidate evidence, by gate); what is broken.
 
 **`audit <target>` stops here.** It loads `gates.md` § 1, § 4 and § 5, walks the judged gates from the screenshots, and reports the findings by tier with `file:line`, the read, the lightest depth that settles them and what only a deeper one would. It changes none of the project's files.
 

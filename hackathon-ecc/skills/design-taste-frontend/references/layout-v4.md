@@ -179,9 +179,7 @@ dealt only without a strong photograph.
 
 Every hero is one screen, stands on the edge lines, has one h1 within its `maxChars`
 (`heroes.json`) and one motion of its own at most, which rests under reduced motion and on a phone.
-A hero fails with a picture out to one viewport edge, a hero taller than the screen, the visual
-above the text on a phone, words over the busy part of a picture, a second float card, a slogan, a
-caption under the picture.
+A hero with a picture out to one viewport edge, a hero taller than the screen, the visual above the text on a phone, words over the busy part of a picture, a second float card, a slogan, or a caption under the picture is candidate evidence of a weak hero for `browser-qa` to weigh, not a fail verdict on its own.
 
 ### The place hero
 
@@ -293,5 +291,5 @@ node <skill>/assets/layout/check.mjs --url index.html --profile <own dir> \
 | `lines` | text starts on more than two left lines |
 | `overflow-x` | the page scrolls sideways |
 
-Run it without `--no-stress`; every finding fails the page. In another script:
+Run it without `--no-stress`; every finding fails the page on layout-correctness grounds, not as a distinctiveness verdict. In another script:
 `await page.evaluate(src + ';window.lyCheck()')` returns `{ vw, vh, L, R, nav, screen, hero, sections, findings }`.

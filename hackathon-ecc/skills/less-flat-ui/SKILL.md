@@ -9,7 +9,9 @@ Source of the 22 treatments: Instagram reel by @charles.unemployed, "22 Backgrou
 
 ## When to use
 
-Apply treatments when the UI looks flat or dull: heroes, landing pages, empty states, cards, buttons, dividers, headings, modals. Apply EVERY treatment that fits the project's mood, not just one. The picker table below is a menu, not a single choice. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface unstyled — never over the hero, dealt moments, or shader scenes. A flat-colour section IS part of the page system — do not texture it.
+Apply treatments when the UI looks flat or dull: heroes, landing pages, empty states, cards, buttons, dividers, headings, modals. Apply EVERY treatment that fits the project's mood, not just one. The picker table below is a menu, not a single choice.
+
+**Check every surface, on every UI build or change.** First build, one-prompt change, redesign, small component, UI fix, or removal flow that rebuilds a surface — for each surface, ask: is it dull or flat, and would a treatment keep text readable (4.5:1)? If yes, a fitting treatment is REQUIRED, not optional. A surface is left flat only when it fits one of the Do NOT cases below (dense dashboard, form, or data table; strong brand background; photo-led design; treatment fights the content) — and then say so in one line. Never skip the check because a surface is small. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface unstyled — never over the hero, dealt moments, or shader scenes. A flat-colour section IS part of the page system — do not texture it.
 
 A treatment fits when:
 
@@ -65,7 +67,7 @@ Backgrounds are the default surface, but the same treatments work on components:
 | Badges, tags, chips | Pixel mosaics, halftone, stippled gradients |
 | Empty states and illustrations | Single-hue landscapes, cloud sky, impressionist dabs, pixel mosaics |
 
-A treatment on a small surface can be bolder than on a full page: a button can carry a full thermal gradient, a page background usually should not.
+A treatment on a small surface can carry more than on a full page: a button can carry a full thermal gradient, a page background usually should not — more craft on the surface, not a bolder look.
 
 ## Shared utilities
 
@@ -479,6 +481,10 @@ el.textContent = out;
 ```
 
 Characters cluster into a soft radial blob. Keep opacity low; ASCII is texture, not content, so it must never be readable as text or selectable.
+
+## Record what you applied
+
+Record every treatment applied, per surface, in `docs/design-tokens.md`: append a Treatments list (surface → treatments applied, or "none — <Do NOT reason>" for a surface deliberately left flat), so the polish-pass harmony check can verify the texture layer against the recorded direction. Never rewrite the direction line at the top of `docs/design-tokens.md` (the named direction from `ui-ux-pro-max`, or the dealt Hallmark theme from `design-taste-frontend`) — treatments are recorded under it, not instead of it.
 
 ## Tailwind notes
 

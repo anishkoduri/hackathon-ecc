@@ -1,6 +1,6 @@
 ---
 name: gan-generator
-description: "GAN Harness — Generator agent. Implements features according to the spec, reads evaluator feedback, and iterates until quality threshold is met. (Claude Code only — no Cursor equivalent in this plugin)"
+description: "GAN Harness — Generator agent. Implements features according to the spec, reads evaluator feedback, and iterates until quality threshold is met. (Cursor subagent — launched by `/gan-build` / `/gan-design`; the upstream `claude -p` path is Claude Code only and is never executed here.)"
 model: composer-2.5[fast=false]
 color: green
 ---
@@ -104,7 +104,7 @@ Write to `gan-harness/generator-state.md` after each iteration:
 
 ## Creative Quality — Avoiding AI Slop
 
-The Evaluator will specifically penalize these patterns. **Avoid them:**
+The Evaluator will specifically penalize these patterns at the code level only (its Design Quality / Originality rows score the recorded direction and its code-level application; screen distinctiveness is judged ONLY by `browser-qa`). **Avoid them:**
 
 - Avoid generic gradient backgrounds (#667eea -> #764ba2 is an instant tell)
 - Avoid excessive rounded corners on everything

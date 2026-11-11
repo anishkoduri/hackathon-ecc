@@ -116,5 +116,5 @@ your data access without scanning every component. This is a lightweight
 
 ```bash
 npm install @supabase/supabase-js@2.119.0 @supabase/ssr@0.12.7
-npm install -D supabase            # optional: pin the CLI per-project via npx
+npm install -D supabase@3.1.0       # optional: CLI pinned per-project (3.1.0)
 ```

@@ -66,7 +66,7 @@ export async function getPublishedItems(): Promise<Item[]> {
 }
 ```
 
-Benefits: one place to change a query, easy to test, and Claude can reason about
+Benefits: one place to change a query, easy to test, and Cursor can reason about
 your data access without scanning every component. This is a lightweight
 "repository" pattern — enough structure for an MVP without over-engineering.
 

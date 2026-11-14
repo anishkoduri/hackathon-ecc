@@ -30,8 +30,8 @@ The hour before sleep, set quietly: Instrument Sans at 400, upright and tightly 
   --edge-light: inset 0 1px 0 oklch(100% 0 0 / 0.5);
   --shadow-part: 0 1px 0 oklch(20% 0.01 80 / 0.25), 0 10px 18px -6px oklch(20% 0.01 80 / 0.3);
   --shadow-panel: 0 1px 0 oklch(20% 0.01 80 / 0.2), 0 24px 48px -16px oklch(20% 0.02 80 / 0.35);
-  --font-display: "Instrument Sans", ui-sans-serif, system-ui, sans-serif; --font-body: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Instrument Sans"; --font-body: "Figtree";
+  --font-outlier: "JetBrains Mono";
   --radius-card: 20px; --radius-part: 6px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: none;
   --tracking-display: -0.035em; --display-weight: 400;

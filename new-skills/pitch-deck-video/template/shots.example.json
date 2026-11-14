@@ -1,6 +1,18 @@
 {
   "brand": "Acme",
   "tagline": "The one sentence you want left on screen at the end.",
+  "features": [
+    {
+      "name": "Get the booked week back",
+      "beat": "result"
+    }
+  ],
+  "cuts": [
+    {
+      "name": "Example cut — a must-have left out of this video",
+      "reason": "would push the video past the 2:10 cap; shown in the live demo instead"
+    }
+  ],
   "theme": {
     "colors": {
       "bg": "#0d0a24",
@@ -18,9 +30,9 @@
       "captionText": "#ffffff"
     },
     "fonts": {
-      "sans": "\"Hanken Grotesk\", system-ui, sans-serif",
-      "serif": "\"Instrument Serif\", Georgia, serif",
-      "mono": "\"JetBrains Mono\", ui-monospace, monospace"
+      "sans": "\"Hanken Grotesk\"",
+      "serif": "\"Instrument Serif\"",
+      "mono": "\"JetBrains Mono\""
     }
   },
   "tts": {
@@ -88,17 +100,20 @@
         {
           "label": "Ranker",
           "note": "candidates scored",
-          "kind": "llm"
+          "kind": "llm",
+          "stack": "GPT-5"
         },
         {
           "label": "Scheduler",
           "note": "real calendar, real slots",
-          "kind": "code"
+          "kind": "code",
+          "stack": "Next.js 15"
         },
         {
           "label": "Writer",
           "note": "the brief",
-          "kind": "llm"
+          "kind": "llm",
+          "stack": "GPT-5"
         },
         {
           "label": "Your week",
@@ -162,9 +177,24 @@
       ]
     },
     {
+      "id": "edge",
+      "kind": "app",
+      "say": "The edge: the one thing no alternative does. Name the alternative, then the difference, in one sentence.",
+      "do": [
+        {
+          "focus": {
+            "sel": "text=Result",
+            "pad": 300,
+            "max": 1.7,
+            "ms": 900
+          }
+        }
+      ]
+    },
+    {
       "id": "arch",
       "kind": "card",
-      "say": "What is a model call and what is not. This is the credibility beat."
+      "say": "What is a model call and what is not. Built on Next.js and GPT-5 — this is the credibility beat."
     },
     {
       "id": "close",

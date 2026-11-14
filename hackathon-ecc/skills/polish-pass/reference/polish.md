@@ -23,6 +23,8 @@ Each Lens has a playbook in `reference/lenses/`. Read a Lens's file before apply
 
 7. Run the **harmony check** (SKILL.md → The harmony rule): read the recorded direction in `docs/design-tokens.md` (or `design-system/<project-slug>/MASTER.md`), then check each primary screen for consistency of tokens/type/color/spacing against that direction. Record per-screen consistency (consistent / diverges, with the tokens cited) for the report. Harmony does NOT judge whether a screen reads as a default template — that is the distinctiveness bar: pass/fail verdicts on rendered screens, executed by `browser-qa` ONLY, in the visual loop. A screen whose consistency check suggests the direction is not applied is appended to `.hallmark/candidate-evidence.md` as candidate evidence for `browser-qa` (which screen, which tokens diverge) — a **generic-template finding** exists only on `browser-qa`'s visual-loop verdict, and only then does it route to the design skill for a redesign (see Step 3); it is never restyled here, and it stays listed under "Still short of 10/10" until redesigned and re-verified by `browser-qa` before deploy. If neither file exists, do NOT infer a direction from the code — record a missing-direction finding (minor at least) routed to the design skill, and do not pass any screen on consistency against an unrecorded direction.
 
+8. Run the **slop checklist** ([slop-checklist.md](slop-checklist.md), `SLOP_F22`) on the target's source and Capture: walk the 20 checks (C1–C20) plus the accent-sprawl check (`ACCENT_F22`) and the accent-hierarchy check (`ACCENTUATION_F22`). Each flagged instance is a static/code-level finding and candidate evidence for `browser-qa` — never a verdict. A flag is cleared only by a recorded D19 reason + theme-fit in `docs/design-tokens.md`; a flag with neither stays a finding and is fixed with its paired fix in [unslop-fixes.md](unslop-fixes.md) (`UNSLOP_F22`). Template-pattern instances (a whole screen built from the flagged defaults) go to `.hallmark/candidate-evidence.md` for `browser-qa`.
+
 ## Step 3: Plan the Lenses
 
 - **Forced Lenses** (named by the user) always run. Also fix any P0 issue you see, and mention it.
@@ -36,7 +38,7 @@ If the baseline sits below Level 6 (template) on [scoring.md](scoring.md), polis
 
 ## Step 4: Apply
 
-1. Read [craft-floor.md](craft-floor.md) once before the first edit, and the Impeccable craft floor ([impeccable-craft-floor.md](impeccable-craft-floor.md)) — its bans are absolute as static/code-level checks — a ban is design guidance / static-check evidence, never a pass/fail verdict on a rendered screen (that verdict is `browser-qa`'s alone); where the two floors disagree, the stricter ban wins — except page-level template patterns, which are candidate evidence for `browser-qa`, never a rewrite decided here.
+1. Read [craft-floor.md](craft-floor.md) once before the first edit, and the Impeccable craft floor ([impeccable-craft-floor.md](impeccable-craft-floor.md)) — its bans are absolute as static/code-level checks — a ban is design guidance / static-check evidence, never a pass/fail verdict on a rendered screen (that verdict is `browser-qa`'s alone); where the two floors disagree, the stricter ban wins — except page-level template patterns, which are candidate evidence for `browser-qa`, never a rewrite decided here. Also read the slop checklist ([slop-checklist.md](slop-checklist.md), `SLOP_F22`) and its fixes ([unslop-fixes.md](unslop-fixes.md), `UNSLOP_F22`) once before the first edit — a flag there is cleared only by a recorded D19 reason + theme-fit.
 2. For each planned Lens, read its file in `reference/lenses/` and apply it to the target. When animate runs, build from [patterns/motion-recipes.md](patterns/motion-recipes.md); when harden runs on a data-driven component, test it against [patterns/worst-case-data.md](patterns/worst-case-data.md). When harden runs on a first-run, empty-state, or activation surface, also read [impeccable-onboard.md](impeccable-onboard.md) and apply its first-run/empty-state/activation guidance (fix-only: do not invent onboarding copy or product claims). When consistency finds the same pattern or value repeated in three or more places, consolidate it into the shared system following [impeccable-extract.md](impeccable-extract.md) (pull repeated patterns/tokens/components into the design system; never extract a one-off).
 3. Use the project's tokens. If a needed value doesn't exist, add a token to the system (and to the token file) instead of hard-coding.
 4. Keep changes scoped to the target and to the shared code it genuinely needs. No drive-by refactors.
@@ -87,6 +89,9 @@ Direction-application is `browser-qa`'s verdict, cited not judged: record it her
 - <rule> at <file:line>: <why it's safe, and how you verified it> (omit if none)
 
 List every real Impeccable detector finding here, fixed and left open, with its rule id and file:line — this section is the findings' durable record, not the detector's stdout.
+
+### Slop-checklist findings (SLOP_F22)
+- <check id, e.g. C6 / ACCENT_F22> on <screen>: <what was seen> — <fixed with D<fix> | cleared with D19 reason + theme-fit, reason cited> (omit if none; a flag with neither stays listed here as open)
 
 ### 10 highest-impact REMAINING improvements
 1. <highest-impact remaining improvement, with impact/effort/risk>

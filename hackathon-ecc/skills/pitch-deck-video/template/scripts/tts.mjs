@@ -131,8 +131,8 @@ const recordUsage = (chars) => {
   fs.writeFileSync(usagePath, JSON.stringify(u, null, 2));
 };
 
-// Piper: local binary, zero keys, offline. Install with `pip install
-// piper-tts`, then download a voice model (default en_US-lessac-medium,
+// Piper: local binary, zero keys, offline. Install with `pip install piper-tts==1.8.0`
+// (Windows PowerShell: `py -m pip install piper-tts==1.8.0`), then download a voice model (default en_US-lessac-medium,
 // voices live in ~/.piper/models). This is the no-key fallback on Windows,
 // where macOS `say` does not exist. Piper writes a WAV even though the
 // scratch path ends in .raw; ffmpeg below probes content, not extension.
@@ -177,7 +177,7 @@ const preflightVoice = () => {
 };
 
 const piperTo = async (text, mp3) => {
-  if (!hasPiper()) throw new Error('piper binary not found — install with: pip install piper-tts, then download a voice model');
+  if (!hasPiper()) throw new Error('piper binary not found — install with: pip install piper-tts (Windows PowerShell: py -m pip install piper-tts), then download a voice model');
   const args = ['--model', tts.piperModel ?? 'en_US-lessac-medium'];
   const dataDir = path.join(process.env.HOME ?? process.env.USERPROFILE ?? '.', '.piper', 'models');
   if (fs.existsSync(dataDir)) args.push('--data-dir', dataDir);

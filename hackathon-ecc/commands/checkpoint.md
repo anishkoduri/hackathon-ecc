@@ -16,10 +16,10 @@ When creating a checkpoint:
 
 1. Run `verification-before-completion` to ensure current state is clean
 2. Create a git stash or commit with checkpoint name
-3. Log checkpoint to `.claude/checkpoints.log`:
+3. Log checkpoint to `.ecc/checkpoints.log`:
 
 ```bash
-echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> .claude/checkpoints.log
+echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> .ecc/checkpoints.log
 ```
 
 4. Report checkpoint created

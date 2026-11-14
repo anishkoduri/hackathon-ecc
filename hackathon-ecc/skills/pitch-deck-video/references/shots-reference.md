@@ -8,14 +8,16 @@ The one file a human edits. Everything else is generated from it.
 | --- | --- |
 | `brand` | Name on the closing card, and available to `textSwaps`. |
 | `tagline` | The sentence left on screen at the end. |
-| `theme` | `colors` and `fonts` for the cards and captions. Pull from the app's own tokens. |
+| `theme` | `colors` and `fonts` for the cards and captions. Pull from the app's own tokens, and record the source (file + values) in `theme.source` — the QA fails the video if the theme is still the seed theme with no recorded source. `theme.vignette` (0–1, default 0.3) darkens the frame edges: set 0 for light apps and record the choice either way. |
 | `tts` | Voice provider and settings. See below. |
 | `music` | Background track and mix levels. Optional — delete the block to go without. |
-| `gapMs` | Silence added after every line. 200–300 reads well. |
+| `gapMs` | Silence added after every line. 200–300 reads well. It counts toward the 2:10 total: measured narration + `gapMs` per beat + card durations + lead/tail — `qa.mjs` prints the total and flags over 2:10 as BLOCKING. |
 | `app` | `url`, `width`, `height`, `bg`, `captureScale`, `storageState`, `loadingSelectors`. See below. |
 | `textSwaps` | Capture-only copy patches. See below. |
 | `cards` | Per-card config: `hook.accent`, `arch.title`, `arch.nodes`, `close.credits`. |
 | `shots` | The video, in order. |
+| `features` | One entry per must-have feature: `{name, beat}` — `beat` is the shot id that shows it. A feature is 'shown' only if it is visible on camera AND named (narration or caption) in its beat. See below. |
+| `cuts` | Must-have features deliberately left out of the video: `{name, reason}`. A cut is a reported decision, never a silent omission — if the feature count would push the video past the 2:10 cap, cut the least important features here. |
 
 ## A shot
 
@@ -30,6 +32,17 @@ The one file a human edits. Everything else is generated from it.
 
 A `card` shot needs a component registered under the same id in `CARDS` in
 `src/Video.tsx`. The template ships `hook`, `arch` and `close`.
+
+## features / cuts
+
+From `docs/scope.md`'s must-have list plus every route screenshotted in step 3 (a route with no must-have feature behind it is not a feature).
+
+```json
+"features": [{ "name": "Automatic scheduling", "beat": "result" }],
+"cuts": [{ "name": "Admin dashboard", "reason": "would push the video past the 2:10 cap; shown in the live demo instead" }]
+```
+
+One entry per must-have feature; `beat` is the shot id that shows it. `qa.mjs` prints the coverage table (feature → beat, plus the cuts list) and flags any feature whose beat id is missing from `shots.json` or whose beat produced no footage. If a feature is cut, say so in the final report.
 
 ## Actions
 
@@ -120,6 +133,10 @@ Narrow it per app if you get `settle: still loading` warnings — apps use
 **A page that renders its skeleton with the same labels as its loaded state will
 pass `waitFor` too early.** Wait on something that only exists once the data is
 in — a computed number, not a heading.
+
+## cards — arch nodes
+
+`cards.arch.nodes[]` is the real architecture: each node is `{label, note, kind}` where `kind` is `in` (input), `llm` (model call), `code` (deterministic code), or `out` (output) — plus an optional `stack` label: the concrete framework / model / service / infra that box runs on (e.g. `"Next.js 15"`, `"GPT-5"`, `"Supabase"`), taken from the app's `package.json` + `docs/decision-record.md` / `docs/scope.md`, never invented. `Arch.tsx` renders the stack label under each node label in mono. The arch beat's narration names the stack in one spoken phrase ("Built on Next.js, GPT-5, and Supabase") — one phrase, not a list read aloud.
 
 ## app
 
@@ -227,7 +244,7 @@ and the run continues — the video never aborts on a voice failure.
 - Free-plan audio is non-commercial and must credit "elevenlabs.io" or
   "11.ai" in the title of anything published from it. If the video will be
   monetised or used commercially, use a paid plan instead.
-- Piper fallback: local `piper` binary, zero keys (`pip install piper-tts`,
+- Piper fallback: local `piper` binary, zero keys (`pip install piper-tts==1.8.0`,
   then download a voice model; default `en_US-lessac-medium`, voices live
   in `~/.piper/models`). If `piper` is missing it falls through to `say`
   (macOS only). On Windows, Piper is the no-key fallback.
@@ -253,4 +270,4 @@ cards. `scripts/music.mjs` cuts the bed to the current video length; it runs
 as part of `scripts/build.mjs` right after narration. If the fetch fails the
 build logs a warning and the video renders without a music bed rather than
 aborting — `src/Video.tsx` skips the music `<Audio>` element when no
-`public/music/bed.wav` exists (flagged in `src/vo-durations.json`).
+`public/music/bed.wav` exists (flagged in `src/vo-durations.json`). `under` above 0.20 risks burying the voice — `qa.mjs` warns on it, and the step-6 mix check (a 10-second listen from the middle of the video) is the confirmation; keep `under` at or below 0.20 unless the listen says otherwise.

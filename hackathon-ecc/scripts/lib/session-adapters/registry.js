@@ -1,19 +1,13 @@
 'use strict';
 
-const { createClaudeHistoryAdapter } = require('./claude-history');
 const { createDmuxTmuxAdapter } = require('./dmux-tmux');
-const { createCodexWorktreeAdapter } = require('./codex-worktree');
-const { createOpencodeAdapter } = require('./opencode');
 
+// fix #16 (D10/F2): session adapters are dmux-tmux only. The other host
+// adapters (and their transcript/history readers) were deleted with
+// their host modules.
 const TARGET_TYPE_TO_ADAPTER_ID = Object.freeze({
   plan: 'dmux-tmux',
   session: 'dmux-tmux',
-  'claude-history': 'claude-history',
-  'claude-alias': 'claude-history',
-  'session-file': 'claude-history',
-  'codex-worktree': 'codex-worktree',
-  codex: 'codex-worktree',
-  opencode: 'opencode'
 });
 
 function buildDefaultAdapterOptions(options, adapterId) {
@@ -34,10 +28,7 @@ function buildDefaultAdapterOptions(options, adapterId) {
 
 function createDefaultAdapters(options = {}) {
   return [
-    createClaudeHistoryAdapter(buildDefaultAdapterOptions(options, 'claude-history')),
-    createDmuxTmuxAdapter(buildDefaultAdapterOptions(options, 'dmux-tmux')),
-    createCodexWorktreeAdapter(buildDefaultAdapterOptions(options, 'codex-worktree')),
-    createOpencodeAdapter(buildDefaultAdapterOptions(options, 'opencode'))
+    createDmuxTmuxAdapter(buildDefaultAdapterOptions(options, 'dmux-tmux'))
   ];
 }
 
@@ -68,27 +59,6 @@ function normalizeStructuredTarget(target, context = {}) {
     ...context,
     adapterId
   };
-
-  if (type === 'claude-history' || type === 'claude-alias') {
-    return {
-      target: `claude:${value}`,
-      context: nextContext
-    };
-  }
-
-  if (type === 'codex-worktree' || type === 'codex') {
-    return {
-      target: `codex:${value}`,
-      context: nextContext
-    };
-  }
-
-  if (type === 'opencode') {
-    return {
-      target: `opencode:${value}`,
-      context: nextContext
-    };
-  }
 
   return {
     target: value,

@@ -12,6 +12,7 @@ This skill ensures that digital interfaces are Perceivable, Operable, Understand
 ## When to Use
 
 - Defining UI component specifications for Web, iOS, or Android.
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 - Auditing existing code for accessibility barriers or compliance gaps.
 - Implementing new WCAG 2.2 standards like Target Size (Minimum) and Focus Appearance.
 - Mapping high-level design requirements to technical attributes (ARIA roles, traits, hints).

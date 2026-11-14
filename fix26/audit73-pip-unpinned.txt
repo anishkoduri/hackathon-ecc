@@ -1,0 +1,22 @@
+./skills/bengali-nlp/SKILL.md:87:import regex  # pip install regex
+./skills/bengali-nlp/SKILL.md:139:# - bnlp (pip install bnlp_toolkit)
+./skills/bengali-nlp/SKILL.md:207:# Preferred: use PyICU for reliable Bengali collation (pip install PyICU)
+./skills/django-verification/SKILL.md:428:          pip install -r requirements.txt
+./skills/python-patterns/SKILL.md:546:# pip install isort
+./skills/generating-python-installer/SKILL.md:150:py -3.12-32 -m pip install -r requirements.txt
+./skills/windows-desktop-e2e/SKILL.md:610:      pip install -r requirements.txt;
+./skills/pitch-deck-video/template/scripts/tts.mjs:180:  if (!hasPiper()) throw new Error('piper binary not found — install with: pip install piper-tts (Windows PowerShell: py -m pip install piper-tts), then download a voice model');
+./agents/ecc-agent-evaluator.md:33:The `Bash` tool is granted for read-only verification only. Allowed: `grep`, `cat`, `ls`, `find`, `head`, `tail`, `wc`, `stat`. Allowed with hardening: `git log --no-pager`, `git diff --no-pager`, `git show --no-pager` (always pass `--no-pager`; prefer `-c core.pager=cat` to disable pager-driven code execution via repo-local `.git/config`). Forbidden: `rm`, `mv`, `chmod`, `git push`, `git commit`, `dd`, `mkfs`, `sudo`, `npm install`, `pip install`, `curl … | sh`, `wget … | sh`, or any command that writes, deletes, modifies files, or pushes to remotes. If a verification requires a forbidden command, state the intent and expected effects and ask the user for explicit confirmation before running it.
+./agents/ecc-django-build-resolver.md:77:| `ModuleNotFoundError: No module named 'X'` | Missing package | `pip install X` or add to `requirements.txt` |
+./agents/ecc-django-build-resolver.md:79:| `ERROR: pip's dependency resolver...` | Conflicting deps | Upgrade pip: `pip install --upgrade pip`, then `pip install -r requirements.txt` |
+./agents/ecc-django-build-resolver.md:85:pip install --force-reinstall -r requirements.txt
+./agents/ecc-django-build-resolver.md:94:pip install -r requirements.txt
+./agents/ecc-django-build-resolver.md:182:| `psycopg2 not installed` | Missing driver | `pip install psycopg2-binary` |
+./agents/ecc-django-build-resolver.md:229:- Prefer `pip install --upgrade` over manual `requirements.txt` edits when resolving conflicts
+./agents/ecc-opensource-packager.md:137:{npm install | pip install -r requirements.txt | cargo build | go mod download}
+./scripts/hooks/insaits-security-monitor.py:205:        log.warning("Not installed. Run: pip install insa-its")
+./scripts/hooks/insaits-security-wrapper.js:78:    process.stderr.write('[InsAIts] python3/python not found. Install Python 3.9+ and: pip install insa-its\n');
+./manifests/pi-core.json:25:      "makes network calls, needs API keys, or downloads at runtime (npx, pip install, curl|sh)",
+./manifests/pi-core.json:223:      "manim-video": "niche video production; pip installs at runtime",
+./manifests/pi-core.json:297:      "windows-desktop-e2e": "niche Windows desktop automation; pip installs at runtime",
+./manifests/pi-core.json:407:    "semantics": "URLs: documentation hosts in urlAllowlistHosts, placeholder hosts (example.com/org/net and subdomains), and non-FQDN internal hostnames (localhost, docker service names) are allowed; everything else fails. Runtime downloads: pipe-to-shell (curl|sh, wget|sh) and fetch-and-run npx forms (-y/--yes, pkg@version, create-*, degit, \"skills add\") fail. Local-first npx <tool> and standard project dependency installation (pip install <dep>) are the reader's own project workflow and are allowed; skills whose own operation downloads tooling are excluded above. Absolute per-user home paths fail; portable tilde references are allowed.",

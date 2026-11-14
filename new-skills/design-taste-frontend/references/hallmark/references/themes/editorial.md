@@ -24,7 +24,7 @@ A contemporary magazine voice: warm white uncoated stock, a printed black with a
   --color-ink: oklch(16% 0.012 280); --color-ink-2: oklch(29% 0.011 280); --color-muted: oklch(48% 0.010 75);
   --color-rule: oklch(85% 0.009 85); --color-rule-2: oklch(64% 0.010 80);
   --color-accent: oklch(49% 0.130 152); --color-accent-ink: oklch(98% 0.005 88); --color-focus: oklch(52% 0.135 152);
-  --font-display: "Bricolage Grotesque", ui-sans-serif, sans-serif; --font-body: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-display: "Bricolage Grotesque"; --font-body: "Source Serif 4", Georgia;
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-heavy: 4px; --shadow-card: none;
   --tracking-display: -0.012em; --display-weight: 800;
 }
@@ -51,6 +51,7 @@ A contemporary magazine voice: warm white uncoated stock, a printed black with a
 - **The standfirst as a statement:** one or two sentences in Source Serif at `--text-display-s`, ink across ten columns under the heavy rule; the serif at size is as much this theme as the head.
 - **Figures reversed out:** on the ink band, three or four of the prompt's numbers in the condensed head at `--text-display`, parted by hairlines, labels beneath.
 - **The order as a spec sheet:** a form on the paper-2 well, its facts in a ruled table beside the fields, the total in the display face, updated as the quantity changes.
+- **Endless marquees (TRENDS_F22 E18):** a row of real words scrolling without end, with a pause button and never a logo, as this theme's own marquee. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

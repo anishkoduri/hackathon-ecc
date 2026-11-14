@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Lifecycle hook bootstrap — Claude Code-only (not wired in this Cursor plugin — Cursor has no lifecycle hook events).
+ * Lifecycle hook bootstrap — Upstream-only (not wired in this Cursor plugin — Cursor has no lifecycle hook events).
  */
 'use strict';
 
@@ -64,7 +64,7 @@ async function main() {
   }
 
   const pluginRoot = normalizePluginRootForPlatform(
-    process.env.CLAUDE_PLUGIN_ROOT || process.env.ECC_PLUGIN_ROOT
+    process.env.ECC_PLUGIN_ROOT || process.env.ECC_PLUGIN_ROOT
   );
   if (!pluginRoot) {
     writeStderr('[Hook] lifecycle bootstrap could not resolve ECC plugin root; skipping hook');
@@ -92,7 +92,7 @@ async function main() {
       encoding: 'utf8',
       env: {
         ...process.env,
-        CLAUDE_PLUGIN_ROOT: resolvedRoot,
+        ECC_PLUGIN_ROOT: resolvedRoot,
         ECC_PLUGIN_ROOT: resolvedRoot,
         ECC_HOOK_INPUT_MAX_BYTES: String(maxStdin),
         ECC_HOOK_INPUT_TRUNCATED_UPSTREAM: truncated ? '1' : '0',

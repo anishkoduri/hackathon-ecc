@@ -26,8 +26,8 @@ An instrument kept by careful people: a graphite ground stepped in three lightne
   --color-accent: oklch(82% 0.15 80); --color-accent-ink: oklch(18% 0.04 75); --color-accent-soft: oklch(29% 0.05 80); --color-focus: oklch(82% 0.15 80);
   --color-cool: oklch(77% 0.12 245); --color-cool-soft: oklch(29% 0.05 245);
   --color-ok: oklch(76% 0.15 150); --color-ok-soft: oklch(24.5% 0.03 150); --color-bad: oklch(70% 0.17 25); --color-bad-soft: oklch(24.5% 0.035 25);
-  --font-display: "Host Grotesk", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
-  --font-outlier: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+  --font-display: "Host Grotesk"; --font-body: var(--font-display);
+  --font-outlier: "Atkinson Hyperlegible Mono";
   --radius-card: 10px; --radius-pill: 6px; --rule-hair: 1px;
   --shadow-card: none;
   --tracking-display: -0.03em; --display-weight: 500;

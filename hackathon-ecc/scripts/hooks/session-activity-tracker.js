@@ -2,8 +2,8 @@
 /**
  * Session Activity Tracker Hook
  *
- * Claude Code-only PostToolUse hook (not wired in this Cursor plugin) that records sanitized per-tool activity to
- * ~/.claude/metrics/tool-usage.jsonl for ECC2 metric sync.
+ * Upstream-only PostToolUse hook (not wired in this Cursor plugin) that records sanitized per-tool activity to
+ * ~/.cursor/ecc/metrics/tool-usage.jsonl for ECC2 metric sync.
  */
 
 'use strict';
@@ -14,7 +14,7 @@ const { spawnSync } = require('child_process');
 const { sanitizeSessionId } = require('../lib/session-bridge');
 const {
   appendFile,
-  getClaudeDir,
+  getAgentDataHome,
   stripAnsi,
 } = require('../lib/utils');
 
@@ -562,10 +562,10 @@ function summarizeOutput(toolOutput) {
 }
 
 function buildActivityRow(input, env = process.env) {
-  // Claude Code does not set CLAUDE_HOOK_EVENT_NAME for hook subprocesses.
+  // Cursor does not set ECC_HOOK_EVENT_NAME for hook subprocesses.
   // Real hook stdin payloads carry hook_event_name as a JSON field.
   const hookEvent = String(
-    input?.hook_event_name || env.CLAUDE_HOOK_EVENT_NAME || ''
+    input?.hook_event_name || env.ECC_HOOK_EVENT_NAME || ''
   ).trim();
   if (hookEvent && hookEvent !== 'PostToolUse') {
     return null;
@@ -580,7 +580,7 @@ function buildActivityRow(input, env = process.env) {
   const sessionId =
     sanitizeSessionId(input?.session_id) ||
     sanitizeSessionId(env.ECC_SESSION_ID) ||
-    sanitizeSessionId(env.CLAUDE_SESSION_ID) ||
+    sanitizeSessionId(env.ECC_SESSION_ID) ||
     '';
   if (!toolName || !sessionId) {
     return null;
@@ -614,7 +614,7 @@ function run(rawInput) {
     const row = buildActivityRow(input);
     if (row) {
       appendFile(
-        path.join(getClaudeDir(), 'metrics', METRICS_FILE_NAME),
+        path.join(getAgentDataHome(), 'metrics', METRICS_FILE_NAME),
         `${JSON.stringify(row)}\n`
       );
     }

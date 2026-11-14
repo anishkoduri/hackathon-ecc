@@ -221,14 +221,13 @@ function hasFileWithExtension(rootDir, relativeDir, extensions) {
 
 function detectTargetMode(rootDir) {
   const packageJson = safeParseJson(safeRead(rootDir, 'package.json'));
-  // 'everything-claude-code' is the legacy package name, kept for older checkouts.
-  if (['ecc-universal', 'everything-claude-code'].includes(packageJson?.name)) {
+  if (['ecc-universal'].includes(packageJson?.name)) {
     return 'repo';
   }
 
   if (
     fileExists(rootDir, 'scripts/harness-audit.js') &&
-    fileExists(rootDir, '.claude-plugin/plugin.json') &&
+    fileExists(rootDir, '.cursor-plugin/plugin.json') &&
     fileExists(rootDir, 'agents') &&
     fileExists(rootDir, 'skills')
   ) {
@@ -238,22 +237,17 @@ function detectTargetMode(rootDir) {
   return 'consumer';
 }
 
-// The everything-claude-code entries below are legacy install ids, kept so
-// existing 1.x installs are still detected.
 const ECC_PLUGIN_KEY_PATTERNS = [
   /^ecc@/i,
-  /^everything-claude-code@/i,
 ];
 
 const ECC_LEGACY_PLUGIN_DIRS = [
   'ecc',
   'ecc@ecc',
-  'everything-claude-code',
-  'everything-claude-code@everything-claude-code',
 ];
 
-const ECC_CACHE_MARKETPLACES = ['everything-claude-code', 'ecc'];
-const ECC_CACHE_PLUGIN_NAMES = ['ecc', 'everything-claude-code'];
+const ECC_CACHE_MARKETPLACES = ['ecc'];
+const ECC_CACHE_PLUGIN_NAMES = ['ecc'];
 
 function uniquePaths(paths) {
   return [...new Set(paths.filter(Boolean))];
@@ -276,7 +270,7 @@ function compareVersionDesc(a, b) {
 }
 
 function findPluginJsonUnder(installRoot) {
-  const pluginJson = path.join(installRoot, '.claude-plugin', 'plugin.json');
+  const pluginJson = path.join(installRoot, '.cursor-plugin', 'plugin.json');
   if (fs.existsSync(pluginJson)) {
     return pluginJson;
   }
@@ -374,12 +368,12 @@ function findPluginInstall(rootDir) {
     os.homedir(),
   ]);
   const pluginRoots = uniquePaths([
-    path.join(rootDir, '.claude', 'plugins'),
-    ...homeDirs.map(homeDir => path.join(homeDir, '.claude', 'plugins')),
+    path.join(rootDir, '.cursor', 'plugins'),
+    ...homeDirs.map(homeDir => path.join(homeDir, '.cursor', 'plugins')),
   ]);
   const installedPluginsPaths = uniquePaths([
-    path.join(rootDir, '.claude', 'plugins', 'installed_plugins.json'),
-    ...homeDirs.map(homeDir => path.join(homeDir, '.claude', 'plugins', 'installed_plugins.json')),
+    path.join(rootDir, '.cursor', 'plugins', 'installed_plugins.json'),
+    ...homeDirs.map(homeDir => path.join(homeDir, '.cursor', 'plugins', 'installed_plugins.json')),
   ]);
   const flatRoots = uniquePaths([
     ...pluginRoots,
@@ -396,6 +390,10 @@ function findPluginInstall(rootDir) {
 function getRepoChecks(rootDir) {
   const packageJson = safeParseJson(safeRead(rootDir, 'package.json'));
   const commandPrimary = safeRead(rootDir, 'commands/harness-audit.md').trim();
+  // fix #24 (D-8): '.opencode/commands/harness-audit.md' is an upstream-only
+  // path and does not ship in this Cursor plugin, so the parity check below
+  // can never pass here — treat a failure of tool-command-parity as
+  // not-applicable, not as a real finding.
   const commandParity = safeRead(rootDir, '.opencode/commands/harness-audit.md').trim();
   const hooksJson = safeRead(rootDir, 'hooks/hooks.json');
 
@@ -446,9 +444,9 @@ function getRepoChecks(rootDir) {
       points: 2,
       scopes: ['repo', 'commands'],
       path: '.opencode/commands/harness-audit.md',
-      description: 'Harness-audit command parity exists between primary and OpenCode command docs',
+      description: 'Harness-audit command parity exists between primary and OpenCode command docs (upstream-only path; does not ship in this Cursor plugin — not applicable here)',
       pass: commandPrimary.length > 0 && commandPrimary === commandParity,
-      fix: 'Sync commands/harness-audit.md and .opencode/commands/harness-audit.md.',
+      fix: 'Upstream-only path; does not ship in this Cursor plugin — ignore this check here.',
     },
     {
       id: 'context-strategic-compact',
@@ -779,7 +777,7 @@ function collectProviderChecks(rootDir, packageJson) {
 function getConsumerChecks(rootDir) {
   const packageJson = safeParseJson(safeRead(rootDir, 'package.json'));
   const gitignore = safeRead(rootDir, '.gitignore');
-  const projectHooks = safeRead(rootDir, '.claude/settings.json');
+  const projectHooks = safeRead(rootDir, '.ecc/settings.json');
   const pluginInstall = findPluginInstall(rootDir);
   const pythonTestCount = countPythonTestFiles(rootDir);
 
@@ -789,7 +787,7 @@ function getConsumerChecks(rootDir) {
       category: 'Tool Coverage',
       points: 4,
       scopes: ['repo'],
-      path: '~/.claude/plugins/ecc/ (legacy everything-claude-code paths also supported)',
+      path: '~/.cursor/plugins/hackathon-ecc/',
       description: 'ECC is installed for the active user or project',
       pass: Boolean(pluginInstall),
       fix: 'Install the ECC plugin for this user or project before auditing project-specific harness quality.',
@@ -799,14 +797,14 @@ function getConsumerChecks(rootDir) {
       category: 'Tool Coverage',
       points: 3,
       scopes: ['repo', 'hooks', 'skills', 'commands', 'agents'],
-      path: '.claude/',
-      description: 'Project-specific harness overrides exist under .claude/',
-      pass: countFiles(rootDir, '.claude/agents', '.md') > 0 ||
-        countFiles(rootDir, '.claude/skills', 'SKILL.md') > 0 ||
-        countFiles(rootDir, '.claude/commands', '.md') > 0 ||
-        fileExists(rootDir, '.claude/settings.json') ||
-        fileExists(rootDir, '.claude/hooks.json'),
-      fix: 'Add project-local .claude hooks, commands, skills, or settings that tailor ECC to this repo.',
+      path: '.ecc/',
+      description: 'Project-specific harness overrides exist under .ecc/',
+      pass: countFiles(rootDir, '.ecc/agents', '.md') > 0 ||
+        countFiles(rootDir, '.ecc/skills', 'SKILL.md') > 0 ||
+        countFiles(rootDir, '.ecc/commands', '.md') > 0 ||
+        fileExists(rootDir, '.ecc/settings.json') ||
+        fileExists(rootDir, '.ecc/hooks.json'),
+      fix: 'Add project-local .ecc hooks, commands, skills, or settings that tailor ECC to this repo.',
     },
     {
       id: 'consumer-instructions',
@@ -815,8 +813,8 @@ function getConsumerChecks(rootDir) {
       scopes: ['repo'],
       path: 'AGENTS.md',
       description: 'The project has explicit agent or instruction context',
-      pass: fileExists(rootDir, 'AGENTS.md') || fileExists(rootDir, 'CLAUDE.md') || fileExists(rootDir, '.claude/CLAUDE.md'),
-      fix: 'Add AGENTS.md or CLAUDE.md so the harness has project-specific instructions.',
+      pass: fileExists(rootDir, 'AGENTS.md') || fileExists(rootDir, '.ecc/AGENTS.md'),
+      fix: 'Add AGENTS.md so the harness has project-specific instructions.',
     },
     {
       id: 'consumer-project-config',
@@ -824,9 +822,9 @@ function getConsumerChecks(rootDir) {
       points: 2,
       scopes: ['repo', 'hooks'],
       path: '.mcp.json',
-      description: 'The project declares local MCP or Claude settings',
-      pass: fileExists(rootDir, '.mcp.json') || fileExists(rootDir, '.claude/settings.json') || fileExists(rootDir, '.claude/settings.local.json'),
-      fix: 'Add .mcp.json or .claude/settings.json so project-local tool configuration is explicit.',
+      description: 'The project declares local MCP or Cursor settings',
+      pass: fileExists(rootDir, '.mcp.json') || fileExists(rootDir, '.ecc/settings.json'),
+      fix: 'Add .mcp.json or .ecc/settings.json so project-local tool configuration is explicit.',
     },
     {
       id: 'consumer-test-suite',
@@ -856,10 +854,10 @@ function getConsumerChecks(rootDir) {
       category: 'Memory Persistence',
       points: 2,
       scopes: ['repo'],
-      path: '.claude/memory.md',
+      path: '.ecc/memory.md',
       description: 'Project memory or durable notes are checked in',
-      pass: fileExists(rootDir, '.claude/memory.md') || countFiles(rootDir, 'docs/adr', '.md') > 0,
-      fix: 'Add durable project memory such as .claude/memory.md or ADRs under docs/adr/.',
+      pass: fileExists(rootDir, '.ecc/memory.md') || countFiles(rootDir, 'docs/adr', '.md') > 0,
+      fix: 'Add durable project memory such as .ecc/memory.md or ADRs under docs/adr/.',
     },
     {
       id: 'consumer-eval-coverage',
@@ -897,9 +895,9 @@ function getConsumerChecks(rootDir) {
       category: 'Security Guardrails',
       points: 2,
       scopes: ['repo', 'hooks'],
-      path: '.claude/settings.json',
+      path: '.ecc/settings.json',
       description: 'Project-local hook settings reference tool/prompt guardrails',
-      pass: projectHooks.includes('PreToolUse') || projectHooks.includes('beforeSubmitPrompt') || fileExists(rootDir, '.claude/hooks.json'),
+      pass: projectHooks.includes('PreToolUse') || projectHooks.includes('beforeSubmitPrompt') || fileExists(rootDir, '.ecc/hooks.json'),
       fix: 'Add project-local hook settings or hook definitions for prompt/tool guardrails.',
     },
     ...buildGithubChecks(rootDir),

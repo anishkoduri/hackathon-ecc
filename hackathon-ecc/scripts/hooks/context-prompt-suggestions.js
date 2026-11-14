@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * UserPromptSubmit hook — Claude Code-only (not wired in this Cursor plugin — Cursor has no UserPromptSubmit event): suggest up to three skills from the managed profile's
+ * UserPromptSubmit hook — Upstream-only (not wired in this Cursor plugin — Cursor has no UserPromptSubmit event): suggest up to three skills from the managed profile's
  * routing index. Suggest-only; it loads no skill body, changes no selection,
  * and grants nothing. Opt in by setting ECC_CONTEXT_STATE_ROOT to the store
  * used with `ecc profile set`, and build the index with

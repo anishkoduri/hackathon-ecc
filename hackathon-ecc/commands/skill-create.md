@@ -5,7 +5,7 @@ description: Analyze local git history to extract coding patterns and generate S
 
 # /skill-create - Local Skill Generation
 
-Analyze your repository's git history to extract coding patterns and generate SKILL.md files that teach Claude your team's practices.
+Analyze your repository's git history to extract coding patterns and generate SKILL.md files that teach Cursor your team's practices.
 
 ## Usage
 
@@ -20,7 +20,7 @@ Analyze your repository's git history to extract coding patterns and generate SK
 
 1. **Parses Git History** - Analyzes commits, file changes, and patterns
 2. **Detects Patterns** - Identifies recurring workflows and conventions
-3. **Generates SKILL.md** - Creates valid Claude Code skill files
+3. **Generates SKILL.md** - Creates valid Cursor skill files
 4. **Optionally Creates Instincts** - For the continuous-learning-v2 system
 
 ## Analysis Steps
@@ -63,15 +63,15 @@ Set `skill-name` once; it defaults to the normalized `{repo-name}-patterns`, and
 the same value must be used for the directory and frontmatter. Validate the
 final `skill-name`, then write the generated skill to
 `<output-dir>/<skill-name>/SKILL.md`. The default project root is
-`.cursor/skills/` in Cursor (this plugin's host) or `.claude/skills/` in
-Claude Code; a global skill uses `~/.cursor/skills/` or `~/.claude/skills/`.
+`.cursor/skills/` in Cursor (this plugin's host) or `.ecc/skills/` in
+Cursor; a global skill uses `~/.cursor/skills/`.
 
 Discovery depends on the root, not only the filename. A custom `--output` is a
 configured skill root only when the active harness is set up to discover it.
 Otherwise, treat the result as an export-only artifact that must be installed
 into a configured root before it can activate.
 
-The directory form is required for discovery: Claude Code treats
+The directory form is required for discovery: Cursor treats
 `<name>/SKILL.md` as the skill entrypoint. Keep the directory name and
 frontmatter `name:` identical.
 

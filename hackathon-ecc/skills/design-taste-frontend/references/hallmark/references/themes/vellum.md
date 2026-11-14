@@ -25,8 +25,8 @@ An old printing house: a parchment ground, umber ink, Grenze Gotisch for the hea
   --color-rule: oklch(75% 0.035 72);
   --color-accent: oklch(43% 0.17 268); --color-accent-deep: oklch(35% 0.15 268); --color-accent-soft: oklch(89% 0.035 268); --color-accent-ink: oklch(95% 0.02 82);
   --color-focus: oklch(50% 0.18 268); --color-field: var(--color-accent);
-  --font-display: "Grenze Gotisch", ui-serif, Georgia, serif; --font-body: "Hanken Grotesk", ui-sans-serif, sans-serif;
-  --font-outlier: "Grenze", ui-serif, Georgia, serif;
+  --font-display: "Grenze Gotisch", Georgia; --font-body: "Hanken Grotesk";
+  --font-outlier: "Grenze", Georgia;
   --radius-card: 2px; --radius-pill: 2px; --rule-hair: 1px; --rule-double: 4px; --shadow-card: none;
   --tracking-display: -0.01em; --display-weight: 600; --fibre: 0.5;
 }
@@ -61,6 +61,7 @@ Three colourways, stated in the stamp (`vellum: parchment`).
 - **Statement with figures:** one sentence of the prompt in Grenze 400 across nine or ten columns on the fibre band, and beneath it, parted by a hairline, the prompt's own numbers in Grenze Gotisch at display size in pigment with a plain label under each.
 - **Form on the field:** the ultramarine band holding a working choice (a size, a frequency) as square cells joined edge to edge, the running answer in Grenze Gotisch at section size.
 - **Rows as an index:** three to five ruled rows, the title in Grenze Gotisch at section size, one line of Hanken beside it: terms, visits, ways to buy.
+- **Renaissance branding (TRENDS_F22 E5):** the brand set in the theme's own parchment and pigment world, as material and letterform, never a copied painting. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

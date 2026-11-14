@@ -308,7 +308,7 @@ function admissibility(byId, excluded, reader) {
 
 /** Entries the resolver could suggest for a profile: not excluded and admissible
  * without explicit selection. Metadata only; bodies are never returned. */
-function routingEntries({ repoRoot = DEFAULT_REPO_ROOT, profileId = 'lean@1', target = 'codex',
+function routingEntries({ repoRoot = DEFAULT_REPO_ROOT, profileId = 'lean@1', target = 'cursor',
   selectionMode = 'auto', include = [], exclude = [] } = {}) {
   // One registry load serves the plan and the routing entries.
   const { registry, plan } = compileContextProfileWithRegistry({ repoRoot, profileId, target, selectionMode, include, exclude });
@@ -330,7 +330,7 @@ function routingEntries({ repoRoot = DEFAULT_REPO_ROOT, profileId = 'lean@1', ta
  * @param {object|null} [options.previous=null] Receipt reusable only when its binding matches.
  * @returns {object} Selection decision, candidates, verified resources, and a bound receipt.
  */
-function resolveTaskContext({ repoRoot = DEFAULT_REPO_ROOT, task, profileId = 'lean@1', target = 'codex',
+function resolveTaskContext({ repoRoot = DEFAULT_REPO_ROOT, task, profileId = 'lean@1', target = 'cursor',
   selectionMode = 'auto', include = [], exclude = [], load = false, previous = null, expectedDigest = null } = {}) {
   validateTask(task);
   validatePrevious(previous);

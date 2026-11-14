@@ -19,7 +19,7 @@ The schema is **code**. Two ways to author changes, pick one and be consistent:
 
 ### A. SQL-first (recommended, AI-friendly)
 1. `supabase migration new add_reviews_table`
-2. Write the SQL by hand (or have Claude write it) in the new file.
+2. Write the SQL by hand (or have Cursor write it) in the new file.
 3. `supabase db reset` to apply locally and verify.
 4. Commit the migration file.
 
@@ -44,16 +44,16 @@ supabase db push                    # applies new local migrations to hosted
 
 Never hand-edit the hosted schema in the dashboard for anything you want reproducible — drift between local and hosted is the #1 source of "works on my machine" bugs. See `deployment.md`.
 
-## Recommended Claude Code workflow (AI-assisted full-stack)
+## Recommended Cursor workflow (AI-assisted full-stack)
 
-This skill is built to make Claude an effective pair on Supabase work. Patterns that work well:
+This skill is built to make Cursor an effective pair on Supabase work. Patterns that work well:
 
-- **Schema changes:** "Add a `reviews` table (item_id, author_id, rating 1–5, body, timestamps) with RLS so anyone can read but only the author can write. Create the migration and the RLS policies, then run `db reset` and regenerate types." Claude can write the migration, apply it, and update types in one loop.
-- **Type-safe queries:** Because `database.types.ts` is generated and the client is typed (`createClient<Database>()`), Claude gets autocomplete-grade signal on table/column names and will catch mismatches.
-- **RLS reasoning:** Ask Claude to "explain who can read/write each row under these policies" before shipping — RLS bugs are silent and security-critical.
-- **Seed + verify:** After a schema change, have Claude update `seed.sql` and a quick query in a Server Component to confirm the data flows end to end.
-- **Keep secrets out of context:** Don't paste `service_role` keys or `.env.local` contents into the chat. Reference them by name; Claude reads them from `process.env` in code, not from the conversation.
-- **Commit discipline:** Ask Claude to keep each migration + its type regeneration in a focused commit so the schema history is readable.
+- **Schema changes:** "Add a `reviews` table (item_id, author_id, rating 1–5, body, timestamps) with RLS so anyone can read but only the author can write. Create the migration and the RLS policies, then run `db reset` and regenerate types." Cursor can write the migration, apply it, and update types in one loop.
+- **Type-safe queries:** Because `database.types.ts` is generated and the client is typed (`createClient<Database>()`), Cursor gets autocomplete-grade signal on table/column names and will catch mismatches.
+- **RLS reasoning:** Ask Cursor to "explain who can read/write each row under these policies" before shipping — RLS bugs are silent and security-critical.
+- **Seed + verify:** After a schema change, have Cursor update `seed.sql` and a quick query in a Server Component to confirm the data flows end to end.
+- **Keep secrets out of context:** Don't paste `service_role` keys or `.env.local` contents into the chat. Reference them by name; Cursor reads them from `process.env` in code, not from the conversation.
+- **Commit discipline:** Ask Cursor to keep each migration + its type regeneration in a focused commit so the schema history is readable.
 
 ## Common mistakes beginners make
 

@@ -1,7 +1,7 @@
 ---
 name: cpp-reviewer
 description: Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance. Use for all C++ code changes. MUST BE USED for C++ projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

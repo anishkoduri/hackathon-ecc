@@ -47,7 +47,7 @@
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "description": "Configuration for Cursor hooks, as shipped in hooks/hooks.json. Cursor format: camelCase event names as keys, each mapping to an array of items with a command, the event name, and an optional description. This is distinct from schemas/hooks.schema.json, which describes the Claude Code hooks format (PascalCase events, matcher entries with {type, command} items) and does not accept this file.",
+  "description": "Configuration for Cursor hooks, as shipped in hooks/hooks.json. Cursor format: camelCase event names as keys, each mapping to an array of items with a command, the event name, and an optional description. This is distinct from schemas/hooks.schema.json, which describes the legacy hooks format (PascalCase events, matcher entries with {type, command} items) and does not accept this file.",
   "properties": {
     "hooks": {
       "additionalProperties": {

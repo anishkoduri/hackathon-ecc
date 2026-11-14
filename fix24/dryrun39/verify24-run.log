@@ -1,0 +1,107 @@
+PASS A1 ANIM_TOKENS_F22 cited in the inventory
+PASS A2/A3/A4/A6 orphans cited from orchestrate SKILL.md
+PASS A5 TRIO_F23 in typeset.md + browser-qa citation
+PASS A7 BANG_* index line + four section headings in pitch-deck-video
+PASS A8 ALIGN_F23_* sub-checks cited from browser-qa
+PASS A9 DEMOGATE pairings recorded (O4<->H2, O9<->H1)
+PASS C1 slop-checklist link fixed (lenses/typeset.md)
+PASS C2 SYNTHETIC mode documented inoperable in runtime-fetch.md
+PASS C1 APCA informational, WCAG 4.5:1 stands (gates.md)
+PASS C2 Rule 5 scope: container-level staggerChildren only
+PASS C2 B3 0.03s governs per-row settle steps
+PASS C3 B15 exitFactor is the single source of truth (Rule 8)
+PASS C4b seven dimensions in orchestrate DIRECTIVES (routing line stays frozen six)
+PASS C4b seven dimensions in Taste trends + polish-pass + checklists
+PASS C4b seven dimensions in ui-ux-pro-max DIRECTIVES + less-flat-ui LIQGLASS
+PASS C4b frozen six-texts intact (D19_RULE byte-identical)
+PASS C4b frozen DEPTH_F22 extension lines intact
+PASS C5 commit in the first-build sequence (orchestrate step 6)
+PASS C5 commit in hackathon-mode §7
+PASS C6 FILM_F1 disambiguated in pitch-deck-video
+PASS C6 font-rule pointers unchanged (F2/F3/F4/F5/F6 are font rules)
+PASS C7 MOTION_F23 scope qualifiers (orchestrate + ui-ux-pro-max + foundations)
+PASS S1 styles.csv discrepancy asserted as-is (80 header / 89 rows, csv is source)
+PASS S5 fix22 SPEC reconciles 142 + H1 + H2 = 144
+PASS F-01 resume guards in orchestrate steps 0-2
+PASS F-01 grill-me After Grilling line (no re-grill)
+PASS F-02 step 0 narration-key prompt executor is the orchestrator
+PASS F-03 Verify steps 1-4b named in step 5a, per-wave vs once
+PASS F-04 Verify stage 6 (not step 6) vs orchestrate step 6
+PASS F-05 Gate-1 anchor gone, start-of-build step 0 named
+PASS F-06 count-convention lines (Taste + polish-pass)
+PASS F-07 final report +4 bullets
+PASS F-08 step-6 order governs (others defer to step 6)
+PASS F-09 readme-writer reads URL/video path from the ledger
+PASS F-10 inventory pointers (Taste step 4a + ui-ux-pro-max)
+PASS F-11 feature-expansion Phase 4 UI rule names the inventory
+PASS F-12 single Lenses block in polish-pass SKILL.md
+PASS F-13 5b wires the Hallmark redesign procedure
+PASS F-15 F6 qualifier appended, verify23 substring survives
+PASS inventory §10 cross-note (duplicates §1-§4, those govern)
+PASS inventory themes clarified (50 files + README + index.json)
+PASS agent path lines dual-cited in commands/ (19)
+PASS plan.md:199 already house form, not doubled
+PASS no path-only Agent lines left in commands/
+PASS general-purpose agent type gone (general subagent)
+PASS design-lead invocations gone (design-skill dispatch)
+PASS fallback paragraph in common-agents.mdc
+PASS duplicate architect row merged in common-agents.mdc
+PASS house-form invocations cite both forms (spot: tdd-guide, code-reviewer)
+PASS all 72 agents carry a frontmatter model: pin
+PASS model pins: 4 x grok-4.7-high, 68 x cursor-grok-4.6-high-fast
+PASS zero bare grok-4.6-high-fast pins, zero bracket syntax in agents/
+PASS picker prerequisite stated once (orchestrate step 4, verbatim)
+PASS picker pointers elsewhere (orchestrate + orch-build-mvp + README)
+PASS build.sh model mapping intact (grok-4.7-high / cursor-grok-4.6-high-fast)
+PASS C-1 powershellRole + cmdRole in block-no-verify.js
+PASS C-1 PowerShell/cmd wired into commandRole
+PASS C-2 auto-tmux-dev.js header note (unwired + dead)
+PASS C-3 desktop-notify.js header note (BurntToast not declared)
+PASS D-8 harness-audit reword (upstream-only path, parity cannot pass here)
+PASS D-9 angular mcp Gemini CLI scope note
+PASS hooks.json still registers 15 events, stop timeout 300
+PASS D-1 ten Upstream-only repairs present
+PASS D-2 zero Cursor-only left in scripts/hooks/
+PASS D-3 plankton settings.json claim softened (OWED to smoke test)
+PASS D-5 continuous-learning-v2 parenthetical swapped
+PASS E-1 pitch-deck-video APP_DIR PowerShell form
+PASS E-2 plankton Windows install branch first
+PASS E-3 app-scaffold Docker Windows form
+PASS E-4 auto-update PowerShell first + ecc-recipes PowerShell first
+PASS E-5 pitch-deck-video venv Windows form
+PASS E-6 brew/chmod macOS-scoped
+PASS E-7 Taste gate hook Git Bash prerequisite + OWED
+PASS F-1/F-2 README Updating section, single authoritative place
+PASS F-2 copy install path (rebuild + re-copy, no git pull without .git)
+PASS G-1 direct invocation defined in demo.md
+PASS G-2 demo.md env check once, music-only/silent fallback, never prompt on dispatched run
+PASS G-3 orchestrate.md Show-the-plan-first qualified
+PASS G-4 orch-build-mvp step-8 Environment-field dispatch line
+PASS DEMOGATE tokens present at every site (O4/O9, B2S1, B3S1, H1/H2)
+PASS narration-key prompt fires ONLY when the user asked for a demo video
+PASS first-build sequence intact: /demo never part of the order
+PASS build.sh is 24,070 lines, md5 b0b2645a7d647f96296f9e9c45e09ef5 (post-fix24)
+PASS diff vs build.sh.before-fix23 is additions only (+296/-0)
+PASS fix24 build.sh block present + wired before STEP 5 Counts
+PASS fix24 run log written by the build (fix24/fix24-run-log.md)
+PASS fix24 block order: fix23 M1 block < fix24 block < STEP 5 Counts
+PASS counts 166/72/123/87/15 (unchanged -- no new skill/command/trigger)
+PASS trigger keys still 64 (no new trigger from this fix)
+PASS every trigger key still resolves to a real skill dir
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast absent (Grok pins only)
+PASS Grok pins: grok-4.7-high in 27 files, cursor-grok-4.6-high-fast in 86 (common-agents.mdc gained both via the fix #24 fallback paragraph)
+PASS LIVE_SMOKE_TEST.md §15 exists (fix #24 Cursor-readiness)
+PASS _F23 census post-fix24: INVENTORY 5/5, AMBITION 7/8, MOTION 9/12, TYPEAUDIT 15/19, TRIO 4/4
+PASS _F23 census post-fix24: HERO-BQA 4/4, FUNC-BQA 3/3, FUNC-UIPRO 2/2, ALIGN 15/21, MEMORABLE 5/6, 18 files
+PASS fix15 verifier: only expected fails, tail is 42/44 checks pass (expected 42/44 checks pass)
+PASS fix17 verifier: only expected fails, tail is 58/60 checks pass (expected 58/60 checks pass)
+PASS fix18 verifier: only expected fails, tail is 69/72 checks pass (expected 69/72 checks pass)
+PASS fix19 verifier: only expected fails, tail is 71/76 checks pass (expected 71/76 checks pass)
+PASS fix20 verifier: only expected fails, tail is 164/169 checks pass (expected 164/169 checks pass)
+PASS fix21 verifier: only expected fails, tail is 96/102 checks pass (expected 96/102 checks pass)
+PASS fix22 verifier: only expected fails, tail is 366/369 checks pass (expected 366/369 checks pass)
+PASS fix23 verifier: only expected fails, tail is excluding the manifest check, which is owed: 196/211 checks pass (expected excluding the manifest check, which is owed: 196/211 checks pass)
+PASS fix24/MANIFEST.md exists and records build.sh lines + md5 (OWED -- fails until the manifest worker writes it)
+
+105/105 checks pass

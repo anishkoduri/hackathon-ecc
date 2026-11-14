@@ -1,7 +1,7 @@
 ---
 name: swift-reviewer
 description: Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomatic patterns. Use for all Swift code changes. MUST BE USED for Swift projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -98,7 +98,7 @@ When invoked:
 
 ```bash
 swift build
-if command -v swiftlint >/dev/null 2>&1; then swiftlint lint --quiet; else echo "[info] swiftlint not installed - skipping lint (install via 'brew install swiftlint')"; fi
+if command -v swiftlint >/dev/null 2>&1; then swiftlint lint --quiet; else echo "[info] swiftlint not installed - skipping lint (macOS: install via 'brew install swiftlint'; SwiftLint is macOS-only and does not run on Windows — skip this lint step on Windows)"; fi
 swift test
 swift package resolve
 if command -v swift-format >/dev/null 2>&1; then swift-format lint -r . 2>&1 | head -30; else echo "[info] swift-format not installed - skipping format check"; fi

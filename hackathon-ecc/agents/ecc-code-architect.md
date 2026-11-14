@@ -1,7 +1,7 @@
 ---
 name: code-architect
 description: Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concrete files, interfaces, data flow, and build order.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

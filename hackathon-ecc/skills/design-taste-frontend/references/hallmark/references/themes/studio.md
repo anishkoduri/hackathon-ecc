@@ -25,8 +25,8 @@ A design studio's proof sheet, caught mid-build: cool studio-white paper with an
   --color-rule: oklch(84% 0.010 225);
   --color-accent: oklch(68% 0.172 50); --color-accent-ink: oklch(16% 0.032 250); --color-focus: oklch(52% 0.15 48);
   --color-dot: color-mix(in oklab, var(--color-ink) 20%, transparent); --color-mark: color-mix(in oklab, var(--color-ink) 72%, transparent);
-  --font-display: "Hedvig Letters Serif", ui-serif, Georgia, serif; --font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Sofia Sans Extra Condensed", "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-display: "Hedvig Letters Serif", Georgia; --font-body: "Geist";
+  --font-outlier: "Sofia Sans Extra Condensed", "Arial Narrow";
   --radius-card: 3px; --radius-pill: 3px; --rule-hair: 1px;
   --shadow-card: none;
   --shadow-sheet: 1px 2px 0 color-mix(in oklab, var(--color-ink) 7%, transparent), 10px 18px 36px -14px color-mix(in oklab, var(--color-ink) 32%, transparent);

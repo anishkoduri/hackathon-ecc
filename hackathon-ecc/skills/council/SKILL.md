@@ -154,7 +154,7 @@ Keep it scannable on a phone screen.
 
 ## Persistence Rule
 
-Do **not** write ad-hoc notes to `~/.claude/notes` or other shadow paths from this skill.
+Do **not** write ad-hoc notes to the agent's notes directory or other shadow paths from this skill.
 
 If the council materially changes the recommendation:
 - or use `/save-session` if the outcome belongs in session memory

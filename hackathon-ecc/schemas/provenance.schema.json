@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Skill Provenance",
-  "description": "Provenance metadata for learned and imported skills. Required in ~/.claude/skills/learned/* and ~/.claude/skills/imported/*",
+  "description": "Provenance metadata for learned and imported skills. Required in ~/.cursor/ecc/skills/learned/* and ~/.cursor/ecc/skills/imported/*",
   "type": "object",
   "properties": {
     "source": {

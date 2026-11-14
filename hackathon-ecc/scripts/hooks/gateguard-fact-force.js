@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * PreToolUse Hook: GateGuard Fact-Forcing Gate — Claude Code-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
+ * PreToolUse Hook: GateGuard Fact-Forcing Gate — Upstream-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
  *
- * Forces Claude to investigate before editing files or running commands.
+ * Forces Cursor to investigate before editing files or running commands.
  * Instead of asking "are you sure?" (which LLMs always answer "yes"),
  * this hook demands concrete facts: importers, public API, data schemas.
  *
@@ -16,7 +16,7 @@
  * Compatible with run-with-flags.js via module.exports.run().
  * Cross-platform (Windows, macOS, Linux).
  *
- * Full package with config support: pip install gateguard-ai
+ * Full package with config support: pip install gateguard-ai==0.6.2
  * Repo: https://github.com/zunoworks/gateguard
  */
 
@@ -246,7 +246,7 @@ function realAbsoluteGlobRegex(glob, isWin) {
 // The path as written and its real location must both match: a symlink inside
 // an exempt tree does not exempt its target. See docs/gateguard/design-notes.md#exempt-globs
 function isExemptPath(filePath, data) {
-  const projectRoot = process.env.CLAUDE_PROJECT_DIR || data.cwd || process.cwd();
+  const projectRoot = process.env.CURSOR_PROJECT_DIR || data.cwd || process.cwd();
   if (typeof projectRoot !== 'string' || typeof filePath !== 'string') return false;
   const isWin = targetClass().WINDOWS_PATH_PATTERN.test(projectRoot);
   const paths = isWin ? path.win32 : path.posix;
@@ -1587,7 +1587,7 @@ function hashSessionKey(prefix, value) {
 }
 
 function resolveSessionKey(data) {
-  const directCandidates = [data && data.session_id, data && data.sessionId, data && data.session && data.session.id, process.env.CLAUDE_SESSION_ID, process.env.ECC_SESSION_ID];
+  const directCandidates = [data && data.session_id, data && data.sessionId, data && data.session && data.session.id, process.env.ECC_SESSION_ID, process.env.ECC_SESSION_ID];
 
   for (const candidate of directCandidates) {
     const sanitized = sanitizeSessionKey(candidate);
@@ -1596,12 +1596,12 @@ function resolveSessionKey(data) {
     }
   }
 
-  const transcriptPath = (data && (data.transcript_path || data.transcriptPath)) || process.env.CLAUDE_TRANSCRIPT_PATH;
+  const transcriptPath = (data && (data.transcript_path || data.transcriptPath)) || process.env.ECC_TRANSCRIPT_PATH;
   if (transcriptPath && String(transcriptPath).trim()) {
     return hashSessionKey('tx', path.resolve(String(transcriptPath).trim()));
   }
 
-  const projectFingerprint = process.env.CLAUDE_PROJECT_DIR || process.cwd();
+  const projectFingerprint = process.env.CURSOR_PROJECT_DIR || process.cwd();
   return hashSessionKey('proj', path.resolve(projectFingerprint));
 }
 
@@ -2009,9 +2009,9 @@ function normalizeForMatch(value) {
     .toLowerCase();
 }
 
-function isClaudeSettingsPath(filePath) {
+function isAgentSettingsPath(filePath) {
   const normalized = normalizeForMatch(filePath);
-  return /(^|\/)\.claude\/settings(?:\.[^/]+)?\.json$/.test(normalized);
+  return /(^|\/)\.ecc\/settings(?:\.[^/]+)?\.json$/.test(normalized);
 }
 
 
@@ -2443,7 +2443,7 @@ function flushMetrics() {
 
 function exemptReason(filePath, data) {
   if (!filePath) return 'no-path';
-  if (isClaudeSettingsPath(filePath)) return 'claude-settings';
+  if (isAgentSettingsPath(filePath)) return 'agent-settings';
   return isExemptPath(filePath, data) ? 'exempt-glob' : '';
 }
 
@@ -2617,7 +2617,7 @@ function gateMultiEdit(ctx) {
 function gateMultiEditSubagent(edits, data, rawInput) {
   for (const edit of edits) {
     const filePath = (edit && edit.file_path) || '';
-    if (!filePath || isClaudeSettingsPath(filePath) || isExemptPath(filePath, data)) continue;
+    if (!filePath || isAgentSettingsPath(filePath) || isExemptPath(filePath, data)) continue;
     const denial = subagentRestrictedDenial(filePath, data, false);
     if (denial) return denial;
   }

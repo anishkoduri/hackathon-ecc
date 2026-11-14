@@ -26,7 +26,7 @@ A late-night cabinet: an aubergine ground under a CRT screen, Bungee capitals sp
   --color-accent: oklch(66% 0.215 40); --color-accent-2: oklch(88% 0.195 115); --color-accent-ink: oklch(14% 0.04 312);
   --color-focus: oklch(88% 0.195 115);
   --color-crt-r: oklch(63% 0.24 25); --color-crt-g: oklch(80% 0.25 140); --color-crt-b: oklch(60% 0.24 265); --color-crt-c: oklch(78% 0.14 200); --color-shade: oklch(8% 0.02 315);
-  --font-display: "Bungee", "Impact", sans-serif; --font-body: "Chivo", ui-sans-serif, sans-serif; --font-outlier: "Silkscreen", monospace;
+  --font-display: "Bungee", "Impact"; --font-body: "Chivo"; --font-outlier: "Silkscreen";
   --radius-card: 4px; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: 6px 6px 0 var(--color-accent-2);
   --tracking-display: 0; --display-weight: 400;
@@ -56,6 +56,7 @@ Two dials, each stated in the stamp (`arcade: ember/grille`). Colourway, lead ov
 - **Two-player comparison:** two wells side by side, one keyed ember and one acid (a top bar and the figure ink), rows matched across them for two audiences or two choices; the inks are the players, nothing is drawn.
 - **A timetable or price list as a menu:** Rows of Silkscreen times or prices against Chivo 900 titles on hairlines, one cursor row lit ember.
 - **Statement and working control:** one Bungee line at display size on the ember field; or the press surface as a stepper with a running total in Silkscreen at display size.
+- **Pixel loaders (TRENDS_F22 E8):** a loading state set in the theme's own pixel figures, shown only while a real action runs, never a gate before reading. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

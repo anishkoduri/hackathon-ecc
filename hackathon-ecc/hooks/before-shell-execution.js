@@ -3,7 +3,7 @@ const {
   readStdin,
   hookEnabled,
   runExistingHook,
-  transformToClaude,
+  transformToHookPayload,
 } = require('./adapter');
 
 readStdin({ includeMetadata: true })
@@ -38,19 +38,19 @@ readStdin({ includeMetadata: true })
         input = {};
         cmd = String(raw || '');
       }
-      const claudeInput = transformToClaude(input, {
+      const hookInput = transformToHookPayload(input, {
         tool_input: { command: cmd },
       });
-      const claudeRaw = JSON.stringify(claudeInput);
+      const hookRaw = JSON.stringify(hookInput);
 
       // Cursor may execute only the first hook registered for an event. Keep
       // every blocking shell guard behind this single event-level dispatcher.
       if (hookEnabled('pre:bash:block-no-verify', ['minimal', 'standard', 'strict'])) {
-        runExistingHook('block-no-verify.js', claudeRaw);
+        runExistingHook('block-no-verify.js', hookRaw);
       }
 
       if (hookEnabled('pre:bash:dev-server-block', ['standard', 'strict']) && process.platform !== 'win32') {
-        runExistingHook('pre-bash-dev-server-block.js', claudeRaw);
+        runExistingHook('pre-bash-dev-server-block.js', hookRaw);
       }
 
       if (

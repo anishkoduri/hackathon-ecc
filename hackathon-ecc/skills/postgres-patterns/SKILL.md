@@ -7,7 +7,7 @@ metadata:
 
 # PostgreSQL Patterns
 
-Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` agent.
+Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` agent (`agents/ecc-database-reviewer.md`).
 
 ## When to Activate
 

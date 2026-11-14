@@ -101,7 +101,7 @@ Do not assume `npm test`. The commands in the steps and examples below use `<tes
 
    The resolution lines use the configured plugin root or standalone install and stop when the selected root lacks the helper. For a plugin install, the root is resolved from this skill file as shown above. Project marker files do not establish executable trust. Keep the working directory at the project under test, and keep paths quoted because install locations may contain spaces.
 
-   It resolves the package manager (npm / pnpm / yarn / bun) from, in order: `CURSOR_PACKAGE_MANAGER` (Cursor) or `CLAUDE_PACKAGE_MANAGER` (Claude Code), then `.cursor/package-manager.json` then `.claude/package-manager.json`, then the `package.json` `packageManager` field, then the lockfile, then global config.
+   It resolves the package manager (npm / pnpm / yarn / bun) from, in order: `CURSOR_PACKAGE_MANAGER`, then `.cursor/package-manager.json` then `.ecc/package-manager.json`, then the `package.json` `packageManager` field, then the lockfile, then global config.
 
 2. **Distinguish the package manager from the test runner — they are not the same.** A project can use Bun to install dependencies yet still run Jest or Vitest. Inspect `package.json` `scripts.test` and the test files:
    - `scripts.test` invokes `jest` / `vitest` -> run through the detected PM (`npm test`, `pnpm test`, `yarn test`, or `bun run test`).
@@ -240,10 +240,10 @@ Store the evidence report in the project's standard documentation directory, for
 ```text
 docs/releases/<version>/<plan-or-task-name>.tdd.md
 .github/tdd/<plan-or-task-name>.tdd.md
-.claude/tdd/<plan-or-task-name>.tdd.md
+.ecc/tdd/<plan-or-task-name>.tdd.md
 ```
 
-If the repository already uses Claude-specific local artifacts, the `.claude/tdd/` location is also acceptable. Include:
+If the repository already uses Cursor-specific local artifacts, the `.ecc/tdd/` location is also acceptable. Include:
 
 1. **Source plan** - link the `*.plan.md` file if one was used, or state that journeys were derived during this TDD run.
 2. **User journeys** - list the journeys from the plan or the ones written in Step 1.

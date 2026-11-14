@@ -1,7 +1,7 @@
 /**
  * Transcript context-size helpers for the strategic-compact hook (#2155).
  *
- * Reads the latest assistant `usage` record from a Claude Code session
+ * Reads the latest assistant `usage` record from an agent session
  * transcript (JSONL) and derives a context-size signal:
  *
  * - `input_tokens + cache_read_input_tokens + cache_creation_input_tokens`
@@ -27,32 +27,6 @@ const DEFAULT_CONTEXT_INTERVAL_TOKENS = 60000;
 const MAX_TOKEN_SETTING = 10000000;
 const LARGE_WINDOW_MODEL_MARKER = '[1m]';
 
-// Known large-window model families whose ids carry no `[1m]` marker (#2461).
-// Matched boundary-aware against the model id — covers dated/region-prefixed
-// variants (e.g. `us.anthropic.claude-fable-5-20260115-v1:0`) without matching
-// hypothetical smaller tiers sharing the prefix (e.g. `claude-fable-5-mini`).
-// Checked in order, first match wins. Best-effort and expected to lag new
-// releases; the env override remains the escape hatch for unlisted models.
-const KNOWN_MODEL_WINDOW_TOKENS = [
-  ['claude-opus-5', LARGE_CONTEXT_WINDOW_TOKENS],
-  ['claude-fable-5', LARGE_CONTEXT_WINDOW_TOKENS],
-  ['claude-mythos-5', LARGE_CONTEXT_WINDOW_TOKENS]
-];
-
-/**
- * True when `model` contains `familyId` ending at a token boundary: end of id,
- * a delimiter (`[`, `:`, `.`), or a dated/versioned suffix (`-20260115`).
- * Alphanumeric continuations and letter suffixes (`-mini`) are different
- * models, possibly with smaller windows, and must not match.
- */
-function isKnownModelFamilyMatch(model, familyId) {
-  const start = model.indexOf(familyId);
-  if (start === -1) {
-    return false;
-  }
-  const rest = model.slice(start + familyId.length);
-  return !/^[A-Za-z0-9]/.test(rest) && !/^-[A-Za-z]/.test(rest);
-}
 
 /**
  * Read the trailing `tailBytes` of a file as UTF-8.
@@ -142,8 +116,8 @@ function readLatestContextTokens(transcriptPath, options = {}) {
 function resolveContextWindow(tokens, model) {
   const env = (typeof process !== 'undefined' && process.env) || {};
 
-  // Explicit window override wins: 400k models (e.g. Opus 4.x) match neither the
-  // 200k default nor the 1M marker and would otherwise report ~double usage (#2290).
+  // Explicit window override wins: a model whose window matches neither the
+  // 200k default nor the 1M marker would otherwise report ~double usage (#2290).
   const explicitWindow = Number(env.ECC_CONTEXT_WINDOW_TOKENS || '');
   if (Number.isSafeInteger(explicitWindow) && explicitWindow > 0) {
     return { windowTokens: explicitWindow, inferred: false };
@@ -153,37 +127,20 @@ function resolveContextWindow(tokens, model) {
     return { windowTokens: LARGE_CONTEXT_WINDOW_TOKENS, inferred: false };
   }
 
-  // Large-window model families without a [1m] marker fall through the checks
-  // above and would be misreported against the 200k default (#2461).
-  if (typeof model === 'string') {
-    const known = KNOWN_MODEL_WINDOW_TOKENS.find(([familyId]) => isKnownModelFamilyMatch(model, familyId));
-    if (known) {
-      return { windowTokens: known[1], inferred: false };
-    }
-  }
 
   if (Number.isFinite(tokens) && tokens > STANDARD_CONTEXT_WINDOW_TOKENS) {
     return { windowTokens: LARGE_CONTEXT_WINDOW_TOKENS, inferred: true };
   }
 
-  // Claude Code's CLAUDE_CODE_AUTO_COMPACT_WINDOW is the harness auto-compact
-  // trigger point (e.g. 786432 on a 1M-window model), not the context window
-  // size. Honor it only as a last-resort fallback so it cannot mask the [1m]
-  // marker, known large-window families, or >200k observed tokens above.
-  const autoCompactWindow = Number(env.CLAUDE_CODE_AUTO_COMPACT_WINDOW || '');
-  if (Number.isSafeInteger(autoCompactWindow) && autoCompactWindow > 0) {
-    return { windowTokens: autoCompactWindow, inferred: false };
-  }
 
   return { windowTokens: STANDARD_CONTEXT_WINDOW_TOKENS, inferred: true };
 }
 
 /**
  * Detect the context window size for a turn.
- * 1M when the model id carries the `[1m]` marker, matches a known large-window
- * model family, or when the observed token count already exceeds the standard
- * 200k window (covers logs that drop the suffix); otherwise the standard 200k
- * window.
+ * 1M when the model id carries the `[1m]` marker, or when the observed token
+ * count already exceeds the standard 200k window (covers logs that drop the
+ * suffix); otherwise the standard 200k window.
  */
 function resolveContextWindowTokens(tokens, model) {
   return resolveContextWindow(tokens, model).windowTokens;
@@ -192,7 +149,7 @@ function resolveContextWindowTokens(tokens, model) {
 /**
  * True when the resolved window is the assumed 200k default rather than a
  * detected size. Opt-in large-window models that ship no `[1m]` marker in the
- * transcript (e.g. a 1M-context Opus tier, where the base tier is 200k and the
+ * transcript (e.g. a 1M-context tier, where the base tier is 200k and the
  * two are indistinguishable by model id) land here, so a percentage computed
  * against 200k can be wildly wrong while usage sits below that mark.
  */
@@ -203,8 +160,7 @@ function isContextWindowInferred(tokens, model) {
 /**
  * Resolve the context-size suggestion threshold (tokens).
  * `COMPACT_CONTEXT_THRESHOLD=0` disables the context signal entirely;
- * other invalid values fall back to the window-scaled default, capped at
- * 80 percent of a valid native compaction budget when that is earlier.
+ * other invalid values fall back to the window-scaled default.
  */
 function resolveContextThreshold(env, windowTokens) {
   const raw = env && env.COMPACT_CONTEXT_THRESHOLD;
@@ -219,12 +175,7 @@ function resolveContextThreshold(env, windowTokens) {
   }
 
   const defaultThreshold = windowTokens >= LARGE_CONTEXT_WINDOW_TOKENS ? DEFAULT_CONTEXT_THRESHOLD_LARGE : DEFAULT_CONTEXT_THRESHOLD_STANDARD;
-  const nativeBudget = Number(env && env.CLAUDE_CODE_AUTO_COMPACT_WINDOW);
-  if (!Number.isSafeInteger(nativeBudget) || nativeBudget <= 0) return defaultThreshold;
-  // Keep the standard 160k/200k headroom before native compaction, without
-  // changing model-capacity evidence or an explicit reminder policy above.
-  const nativeThreshold = Math.max(1, Math.floor(nativeBudget * (DEFAULT_CONTEXT_THRESHOLD_STANDARD / STANDARD_CONTEXT_WINDOW_TOKENS)));
-  return Math.min(defaultThreshold, nativeThreshold);
+  return defaultThreshold;
 }
 
 /**

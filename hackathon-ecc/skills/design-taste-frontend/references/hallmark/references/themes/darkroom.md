@@ -24,7 +24,7 @@ A print room with the lights off: a warm black ground a step lighter than a prin
   --color-ink: oklch(92% 0.012 78); --color-ink-2: oklch(80% 0.012 75); --color-muted: oklch(64% 0.012 65);
   --color-rule: oklch(29% 0.01 55);
   --color-accent: oklch(73% 0.15 58); --color-accent-deep: oklch(50% 0.11 52); --color-accent-ink: oklch(12.5% 0.008 55); --color-focus: oklch(73% 0.15 58);
-  --font-display: "Sofia Sans Extra Condensed", ui-sans-serif, sans-serif; --font-body: "Barlow", ui-sans-serif, sans-serif;
+  --font-display: "Sofia Sans Extra Condensed"; --font-body: "Barlow";
   --font-outlier: var(--font-body);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.005em; --display-weight: 200; --grain: 0.07;

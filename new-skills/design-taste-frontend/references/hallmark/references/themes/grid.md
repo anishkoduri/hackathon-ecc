@@ -26,7 +26,7 @@ Swiss international style as it is practised now: a white sheet, a blue-black in
   --color-accent: oklch(44% 0.2 266); --color-accent-ink: oklch(97.5% 0.005 90); --color-focus: oklch(46% 0.2 266);
   --color-field: oklch(44% 0.2 266); --color-field-ink: oklch(97.5% 0.005 90);
   --color-mark: oklch(57% 0.215 29); --color-mark-ink: oklch(97.5% 0.005 90);
-  --font-display: "Radio Canada Big", ui-sans-serif, system-ui, sans-serif; --font-body: "Radio Canada", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Radio Canada Big"; --font-body: "Radio Canada";
   --font-outlier: var(--font-display);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.035em; --display-weight: 700;

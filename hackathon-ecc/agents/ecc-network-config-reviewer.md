@@ -1,7 +1,7 @@
 ---
 name: network-config-reviewer
 description: Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

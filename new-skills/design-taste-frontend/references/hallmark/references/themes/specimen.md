@@ -25,8 +25,8 @@ A foundry's material: warm oat paper, warm near-black ink, Bodoni Moda 400 pinne
   --color-rule: oklch(80% 0.018 75); --color-rule-2: oklch(66% 0.02 72);
   --color-accent: oklch(45% 0.18 262); --color-accent-ink: oklch(97% 0.012 82); --color-focus: oklch(50% 0.18 262);
   --color-guide: oklch(55% 0.16 262 / 0.5);
-  --font-display: "Bodoni Moda", ui-serif, Georgia, serif; --font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Bodoni Moda", Georgia; --font-body: "Geist";
+  --font-outlier: "Geist Mono";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px;
   --shadow-card: none;
   --tracking-display: -0.02em; --display-weight: 400; --display-optical: 96;

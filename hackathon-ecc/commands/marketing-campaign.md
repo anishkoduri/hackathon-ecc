@@ -79,10 +79,10 @@ Goal: [launch, waitlist, signups, awareness — and timeline]
 
 ## Output Location
 
-When saving campaign assets, the convention is `.claude/campaigns/{campaign-name}/`:
+When saving campaign assets, the convention is `.ecc/campaigns/{campaign-name}/`:
 
 ```
-.claude/campaigns/product-launch/
+.ecc/campaigns/product-launch/
 ├── positioning.md
 ├── landing-page.md
 ├── email-sequence.md
@@ -105,7 +105,7 @@ Confirm the save location before writing files.
 ```
 
 ```
-/marketing-campaign review .claude/campaigns/the-key/landing-page.md
+/marketing-campaign review .ecc/campaigns/the-key/landing-page.md
 ```
 
 ## Agent Delegation

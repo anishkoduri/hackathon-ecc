@@ -1,0 +1,33 @@
+rendering 12 stills…
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+ TypeError  Failed to fetch
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npx -p @remotion/cli@4.0.526 remotion still src/index.ts Demo /home/hatch/workspace/hackathon-plugin/fix23/dryrun38/demo-sample-video/out/qa/00111_problem.png --frame=111 --log=error
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at checkExecSyncError (node:child_process:943:11)
+    at execFileSync (node:child_process:979:15)
+    at file:///home/hatch/workspace/hackathon-plugin/fix23/dryrun38/demo-sample-video/scripts/qa.mjs:42:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 38617,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v24.22.1

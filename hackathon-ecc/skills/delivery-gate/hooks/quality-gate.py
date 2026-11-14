@@ -58,11 +58,11 @@ def get_project_memory_dir() -> Optional[str]:
 
     Returns None if no memory directory exists for this project.
     Does NOT fall back to other projects (privacy boundary)."""
-    cwd = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())
-    # Claude Code names project dirs by replacing every non-alphanumeric
+    cwd = os.environ.get('CURSOR_PROJECT_DIR', os.getcwd())
+    # Cursor names project dirs by replacing every non-alphanumeric
     # character (including spaces) with '-'.
     safe = re.sub(r'[^A-Za-z0-9]', '-', cwd)
-    mem = os.path.expanduser(f'~/.claude/projects/{safe}/memory')
+    mem = os.path.expanduser(f'~/.cursor/ecc/projects/{safe}/memory')
     log.info('Looking for memory dir: cwd=%s -> %s', cwd, mem)
     if os.path.isdir(mem):
         return mem
@@ -135,7 +135,7 @@ def count_edits(text: str) -> int:
 def main() -> None:
     raw = sys.stdin.read()
     # Stop hooks write feedback to stderr, not stdout.
-    # Claude Code reads stderr as the hook's response message.
+    # Cursor reads stderr as the hook's response message.
     # Do NOT echo raw JSON to stdout — it would overwrite the blocking reason.
 
     # Resolve transcript: Stop hooks may receive raw text OR JSON with transcript_path.

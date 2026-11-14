@@ -24,8 +24,8 @@ A dark page that reads as green, not night: a deep leaf-green ground, cream ink,
   --color-ink: oklch(93% 0.022 88); --color-ink-2: oklch(81% 0.035 150); --color-muted: oklch(69% 0.045 150);
   --color-rule: oklch(35% 0.05 158);
   --color-accent: oklch(87% 0.19 118); --color-accent-2: oklch(92% 0.13 118); --color-accent-deep: oklch(46% 0.12 128); --color-accent-ink: oklch(22% 0.05 158); --color-focus: oklch(92% 0.13 118);
-  --font-display: "Prata", Georgia, serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Prata", Georgia; --font-body: "Manrope";
+  --font-outlier: "IBM Plex Mono";
   --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: none;
   --tracking-display: -0.005em; --display-weight: 400;

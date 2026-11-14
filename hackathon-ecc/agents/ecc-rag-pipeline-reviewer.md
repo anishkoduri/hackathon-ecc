@@ -1,7 +1,7 @@
 ---
 name: rag-pipeline-reviewer
 description: Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage. Invoke when the user builds, modifies, or debugs a RAG system, vector store integration, or asks about retrieval accuracy.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

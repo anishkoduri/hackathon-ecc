@@ -191,18 +191,6 @@
     "markUrl": "https://www.ansible.com/"
   },
   {
-    "file": "anthropic.svg",
-    "icon": "logos:anthropic-icon",
-    "name": "Anthropic",
-    "kind": "colour",
-    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
-    "author": "Gil Barbara",
-    "licence": "CC0-1.0",
-    "url": "https://github.com/gilbarbara/logos",
-    "trademark": true,
-    "markUrl": "https://www.anthropic.com/"
-  },
-  {
     "file": "app-store.svg",
     "icon": "logos:apple-app-store",
     "name": "App Store",
@@ -705,30 +693,6 @@
     "markUrl": "https://circleci.com/"
   },
   {
-    "file": "claude-code.svg",
-    "icon": "logos:claude-code",
-    "name": "Claude Code",
-    "kind": "colour",
-    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
-    "author": "Gil Barbara",
-    "licence": "CC0-1.0",
-    "url": "https://github.com/gilbarbara/logos",
-    "trademark": true,
-    "markUrl": "https://claude.com/product/claude-code"
-  },
-  {
-    "file": "claude.svg",
-    "icon": "logos:claude-icon",
-    "name": "Claude",
-    "kind": "colour",
-    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
-    "author": "Gil Barbara",
-    "licence": "CC0-1.0",
-    "url": "https://github.com/gilbarbara/logos",
-    "trademark": true,
-    "markUrl": "https://claude.ai/"
-  },
-  {
     "file": "clerk.svg",
     "icon": "logos:clerk-icon",
     "name": "Clerk",
@@ -811,18 +775,6 @@
     "url": "https://github.com/gilbarbara/logos",
     "trademark": true,
     "markUrl": "https://www.codecademy.com/"
-  },
-  {
-    "file": "codex.svg",
-    "icon": "logos:codex",
-    "name": "Codex",
-    "kind": "colour",
-    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
-    "author": "Gil Barbara",
-    "licence": "CC0-1.0",
-    "url": "https://github.com/gilbarbara/logos",
-    "trademark": true,
-    "markUrl": "https://openai.com/codex/"
   },
   {
     "file": "cohere.svg",

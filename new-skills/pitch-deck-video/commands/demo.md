@@ -1,16 +1,16 @@
 ---
-description: Generate a narrated 1:30–1:50 product demo video of the hackathon project. Use when the user wants a demo video, launch video, product walkthrough, or hackathon submission video.
+description: Generate a narrated product demo video, under 2:10, of the hackathon project. Use when the user wants a demo video, launch video, product walkthrough, or hackathon submission video.
 ---
 
 <!-- Build note: place this file at hackathon-ecc/commands/demo.md so it is invoked as /demo. It loads the pitch-deck-video skill. -->
 
 # Demo video
 
-Use the pitch-deck-video skill to generate a narrated 1:30–1:50 product demo video of the app in the current directory, or of the app path given after /demo. Follow that skill exactly: scaffold its template next to the app, learn the app from screenshots before writing any narration, write shots.json, build, and QA by looking at the contact sheets — do not skip the QA step.
+Use the pitch-deck-video skill to generate a narrated product demo video, under 2:10, of the app in the current directory, or of the app path given after /demo. Follow that skill exactly: scaffold its template next to the app, learn the app from screenshots before writing any narration, write shots.json, build, and QA by looking at the contact sheets — do not skip the QA step — then link the video into the README per the skill's step 7 (README_UPDATE_F26), so a /demo run after the final report does not leave the README stale.
 
 /demo films the local app from the project directory. The video is made from the code, not from a link: never set `shots.json` `app.url` to a deployed URL, and never film a deployed product. Deploying the app is a separate step; its URL goes in the final report, not in `shots.json`.
 
-When narration needs a key and none is set, the skill's narration-key prompt applies: if the user invoked /demo directly, prompt the user once, at the point the video is confirmed, for the ElevenLabs key (free tier, 10,000 chars/month, no credit card), and keep building meanwhile. If this /demo run was dispatched by orchestrate (step 5d) or orch-build-mvp (step 8), do NOT prompt — the prompt was already sent once at the start of the run; the key, if received, arrives via the dispatch's Environment field as an `ELEVENLABS_API_KEY` env instruction — run the `tts` step with that variable set in the process environment. If the dispatch says no key was received, use the key if present, else fall back to music-only/silent. Never ask twice, never ask for MiniMax separately, never block on the key. Keys are env vars only, never written to any file.
+When narration needs a key and none is set, the skill's narration-key prompt applies: if the user invoked /demo directly, prompt the user once, at the point the video is confirmed, for the ElevenLabs key (free tier, 10,000 chars/month, no credit card), and keep building meanwhile. If this /demo run was invoked with a narration key already provided (via the dispatch's Environment field as an `ELEVENLABS_API_KEY` env instruction), do NOT prompt again — run the `tts` step with that variable set in the process environment. If the dispatch says no key was received, use the key if present, else fall back to music-only/silent. Never ask twice, never ask for MiniMax separately, never block on the key. Keys are env vars only, never written to any file.
 
 Pass through the arguments as the skill defines them:
 

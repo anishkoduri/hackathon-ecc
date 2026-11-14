@@ -14,7 +14,7 @@ Most teams lose by being too ambitious. They start building the "real" version, 
 ## The single rule of hackathon scoping
 **Build for the demo, not the product.**
 
-The judges will see 2–4 minutes of your work. Optimize every hour of build time toward what makes those minutes great. Which length governs what: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90 seconds.
+The judges will see 2–4 minutes of your work. Optimize every hour of build time toward what makes those minutes great. Which length governs what: the live demo storyboard is 2–4 min; the demo video is under 2:10 (hard rule; absolute max 2:30); the pitch storyboard is under 90 seconds.
 
 ## Day 1, hour 1: the demo storyboard
 Before writing a line of code, write the demo:
@@ -46,11 +46,25 @@ WRITE the scoping output to `docs/scope.md` in the project before handing off. I
 - The filled demo storyboard above, with the 0:00–4:00 timings (a 2–4 min live demo)
 - The hours-left number, copied from the decision record, plus the time budget split (build vs demo vs slack, rule of thirds below)
 - The design direction, copied from the decision record's `Design direction:` line (theme/axes/mood, named) — if the record has no such line, record the stated default as an assumption in `docs/scope.md` (derived from the brief's mood/domain, marked assumed, not user-stated), never leave it blank; orchestrate's slice briefs and `docs/design-tokens.md` build on this line
+- The platform, copied from the decision record — web (what this plugin builds), or the platform the record names if it names another (grill-me's platform rule, PLATFORM_F25): a scope that names a non-web platform does NOT convert it to web — the conversion needs the user's recorded choice (state the constraint, name the options, ask before scoping); a scope written as web from a native-app record with no recorded choice is an incomplete scope.
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 - The chosen winnable category
 
 If the decision record has no hours-left number, do not block and do not leave the number blank to proceed: use the recorded assumption — the remaining time until the demo deadline if known, else 8 hours — write it into `docs/scope.md` marked as an assumption, and proceed.
 
 Then NAME the next step in the file and in your reply: `feature-expansion` runs next (automatically, during the first build, right after this scoping step), and after expansion the build runs via `orchestrate` (the first-build engine — one engine per run; `orch-build-mvp` is standalone-only and never runs in a first build orchestrate is driving). Do not end scoping without the file written and the next step named.
+
+## Technical substance — hard ideas get hard builds (fix #25 §4(e), TECHDEPTH_F25)
+
+`docs/scope.md` carries a **Technical substance** block, one entry per CORE
+demo flow, written before the build starts:
+
+- **Architecture** — the components and data flow this flow owns, one line each (what talks to what, where state lives, where persistence lives).
+- **Algorithm / data structure** — the named choice that does the hard work (the algorithm, the data structure, the model or protocol — with one line on why this choice, not a generic "we process the data"). A flow whose hard work is genuinely "look it up / call the API" says so and names what the build does with the result — the substance is the architecture, algorithms, and system design around the chosen tools, never a from-scratch rewrite of one (off-the-shelf maximalism above stands).
+- **Performance budget** — named numbers the flow must meet (latency, throughput, payload size, render budget — as fits the flow), or an explicit `no budget — <reason>` where genuinely not applicable. A budget is a number, not an adjective.
+- **Edge cases** — at least 3 named per CORE flow, each with its handling (empty input, bad input, duplicate, timeout, offline, overflow — as fits the flow). "Demo doesn't enter X" is not a handling; it is a cut, and it goes in the cut list below with its reason.
+
+**No silent re-scope.** A hard idea must not be quietly re-scoped down to an easy one. If the build cuts technical substance — a real algorithm replaced by canned output, real-time replaced by a static mock, a real data flow replaced by hardcoded demo data, a real system replaced by a single in-memory dict where the demo needs more — `docs/scope.md`'s cut list says what was cut and why, in one line per cut ("cut substance: <what> — <why>"), and the decision record carries the same line. A cut with no recorded reason is a scope gap, not a decision. The cut list is where the trade-off lives; the demo storyboard never silently shows the easy version as if it were the hard one.
 
 ## Vertical slices, not horizontal layers
 **Wrong (horizontal):**
@@ -73,12 +87,13 @@ These traps apply ONLY to unrequested infra — generic auth, database, or deplo
 | **"Real" auth** | "We need login first" | Hardcode a demo user |
 | **Real database** | "Let's set up Postgres" | In-memory dict, JSON file |
 | **Real deploy** | "Let's set up CI/CD" | Demo from laptop, ngrok if needed |
-| **Edge case obsession** | "What if the user enters X" | Demo doesn't enter X |
+| **Edge case obsession** | "What if the user enters X" | Demo doesn't enter X — that is a cut, not a handling: record what was cut and why in the cut list (TECHDEPTH_F25) |
 | **Generality** | "Make it work for any input" | Hardcode the demo input |
 | **Architecture astronautism** | "Let's use microservices" | One file. Maybe two. |
 | **Real ML training** | "Train a custom model" | Use an off-the-shelf API |
 | **Real scale** | "Make it handle 1000 users" | One user is fine for judging |
 | **Generic UI** | Polished design system | The 3 screens for the demo, that's it |
+| **Quiet re-scope** | Hard idea rebuilt as an easy one (real algorithm → canned output; real-time → static mock; real data flow → hardcoded demo data) | Name the substitution in `docs/scope.md`'s cut list with the reason — "cut substance: <what> — <why>" — and carry it in the decision record (TECHDEPTH_F25); never present the easy version as the hard one |
 
 ## Time budget (rule of thirds)
 - **First third**: build core flow end-to-end (hacky)

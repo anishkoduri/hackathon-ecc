@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tmux reminder — Claude Code-only PreToolUse hook (not wired in this Cursor plugin — Cursor has no PreToolUse event).
+ * Tmux reminder — Upstream-only PreToolUse hook (not wired in this Cursor plugin — Cursor has no PreToolUse event).
  */
 'use strict';
 

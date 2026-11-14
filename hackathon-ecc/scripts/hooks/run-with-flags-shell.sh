@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Claude Code-only: shell counterpart of run-with-flags.js (not wired in this Cursor plugin — it never runs; resolves the plugin root from CLAUDE_PLUGIN_ROOT).
+# Upstream-only: shell counterpart of run-with-flags.js (not wired in this Cursor plugin — it never runs; resolves the plugin root from ECC_PLUGIN_ROOT).
 set -euo pipefail
 
 HOOK_ID="${1:-}"
 REL_SCRIPT_PATH="${2:-}"
 PROFILES_CSV="${3:-standard,strict}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
+PLUGIN_ROOT="${ECC_PLUGIN_ROOT:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
 
 # Preserve stdin for passthrough or script execution
 INPUT="$(cat)"
@@ -33,7 +33,7 @@ case "$REL_SCRIPT_PATH" in
     ;;
 esac
 
-# Canonicalize PLUGIN_ROOT (CLAUDE_PLUGIN_ROOT is env-controlled) and the
+# Canonicalize PLUGIN_ROOT (ECC_PLUGIN_ROOT is env-controlled) and the
 # candidate script path, then enforce containment inside the plugin root.
 PLUGIN_ROOT_CANON="$(realpath -m "$PLUGIN_ROOT" 2>/dev/null || readlink -f "$PLUGIN_ROOT" 2>/dev/null || printf '%s' "$PLUGIN_ROOT")"
 SCRIPT_PATH="${PLUGIN_ROOT_CANON}/${REL_SCRIPT_PATH}"

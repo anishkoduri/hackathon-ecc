@@ -25,8 +25,8 @@ A producer's tool in one pigment: a paper tinted the same hue as the ink, one sa
   --color-rule: oklch(84% 0.04 300); --color-rule-2: oklch(70% 0.08 295);
   --color-accent: oklch(50% 0.25 290); --color-accent-deep: oklch(43% 0.22 290); --color-accent-soft: oklch(86% 0.08 295);
   --color-accent-ink: oklch(97% 0.01 300); --color-focus: oklch(50% 0.25 290);
-  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif; --font-body: "Onest", ui-sans-serif, sans-serif;
-  --font-outlier: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Outfit"; --font-body: "Onest";
+  --font-outlier: "JetBrains Mono";
   --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 1px 2px oklch(18% 0.02 300 / 0.06);
   --tracking-display: -0.03em; --display-weight: 500;

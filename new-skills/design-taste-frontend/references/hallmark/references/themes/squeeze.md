@@ -24,7 +24,7 @@ A market stall in colour: a forest-green ground with real chroma, warm white ink
   --color-ink: oklch(99% 0.005 90); --color-ink-2: oklch(94% 0.020 120); --color-muted: oklch(90% 0.030 150); --color-rule: oklch(55% 0.100 154);
   --color-accent: oklch(83% 0.115 56); --color-accent-2: oklch(74% 0.150 46); --color-accent-ink: oklch(30% 0.070 40); --color-focus: oklch(88% 0.14 85);
   --color-card: oklch(97% 0.012 85); --color-card-ink: oklch(24% 0.05 160);
-  --font-display: "Gabarito", ui-sans-serif, system-ui, sans-serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Gabarito"; --font-body: "Manrope";
   --font-outlier: var(--font-display);
   --radius-card: 24px; --radius-control: 16px; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: 0 14px 32px -16px oklch(22% 0.05 160 / 0.5);
@@ -54,6 +54,7 @@ A market stall in colour: a forest-green ground with real chroma, warm white ink
 - A timetable of real dates as tiles or full-width rows: each date big in Gabarito, the weekday in the label style, the chosen one sunk to `--color-paper-3` and ringed in peach; a stall's chalkboard that works as a control.
 - A promise set as a statement on the deeper green band, Gabarito at display size across ten columns, one action under it.
 - Questions or plain terms as rows: Gabarito titles on the left, Manrope answers on the right, hair rules in `--color-rule` between.
+- **Squircles (TRENDS_F22 E19):** the soft rounded tile is this theme's own corner shape, used with a recorded theme reason, never the default radius on every container. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

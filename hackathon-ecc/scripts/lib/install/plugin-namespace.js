@@ -2,7 +2,7 @@
 
 // The ecc@ecc plugin exposes agents, commands and skills under an `ecc:`
 // namespace (`ecc:planner`, `/ecc:plan`). A manual install
-// (install-apply --target claude|claude-project) places the same files at bare
+// (install-apply --target cursor) places the same files at bare
 // names, so plugin-prefixed references in copied markdown must drop the prefix
 // or they point at agents and commands that do not exist in that layout.
 //

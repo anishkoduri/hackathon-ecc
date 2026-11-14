@@ -25,8 +25,8 @@ A notice printed in plain black: white paper, a black with no hue, Epilogue at 7
   --color-rule: oklch(89% 0.004 100); --color-rule-2: oklch(93.5% 0.003 100);
   --color-accent: oklch(50% 0.095 188); --color-accent-ink: oklch(99.5% 0.003 100); --color-accent-soft: oklch(93% 0.05 190); --color-accent-soft-ink: oklch(27% 0.045 190);
   --color-focus: oklch(50% 0.095 188);
-  --font-display: "Epilogue", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
-  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Epilogue"; --font-body: var(--font-display);
+  --font-outlier: "IBM Plex Mono";
   --radius-card: 12px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 20px 40px oklch(20% 0 0 / 0.16);
   --tracking-display: -0.04em; --display-weight: 700;

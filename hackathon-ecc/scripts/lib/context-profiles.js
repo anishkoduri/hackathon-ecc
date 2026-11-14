@@ -86,7 +86,7 @@ function estimateMetadata(entries, target, profile) {
   };
 }
 
-function validatePlanOptions({ selectionMode = 'manual', target = 'codex' }) {
+function validatePlanOptions({ selectionMode = 'manual', target = 'cursor' }) {
   validateTarget(target);
   if (!MODES.includes(selectionMode)) throw new Error(`Unknown selection mode: ${selectionMode}`);
 }
@@ -105,7 +105,7 @@ function compileContextProfileWithRegistry({ repoRoot = DEFAULT_REPO_ROOT, ...op
 
 function compileContextPlan(registry, {
   repoRoot = DEFAULT_REPO_ROOT, profileId = 'lean@1', selectionMode = 'manual',
-  target = 'codex', include = [], exclude = [],
+  target = 'cursor', include = [], exclude = [],
 } = {}) {
   validatePlanOptions({ selectionMode, target });
   const profile = loadContextProfile(profileId, { repoRoot });

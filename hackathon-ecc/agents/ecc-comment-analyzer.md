@@ -1,7 +1,7 @@
 ---
 name: comment-analyzer
 description: Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

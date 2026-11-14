@@ -1,0 +1,95 @@
+anchors: all rule texts present verbatim in the built tree
+PASS 6.3a slop defaults: pills + gradient wash + divider soup, no reasons -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C1 used as an unconsidered default (no deliberate use through the skills); C19 used as an unconsidered default (no deliberate use through the skills); C6 used as an unconsidered default (no deliberate use through the skills)
+PASS 6.3b same slop items with recorded D19 reason + theme-fit -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared; deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared; deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS 6.3c default purple gradient wash -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C19 used as an unconsidered default (no deliberate use through the skills)
+PASS 6.3c-control theme-matched gradient treatment (#3/#9) + D19 -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS 6.3d theme-matched dithering (less-flat-ui #11) + D19 -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS 6.3d-control dithering as the whole visual identity, no reason -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C14 used as an unconsidered default (no deliberate use through the skills)
+PASS 6.3e layoutId reuse (shared-element transition, B20/G20) -> PASS
+     expected PASS, observed PASS -- dropdown in 150-250ms band, 30ms stagger, popover 0.95, layoutId reused
+PASS 6.3f dropdown 200ms + 30ms row stagger -> PASS token check
+     expected PASS, observed PASS -- dropdown in 150-250ms band, 30ms stagger, popover 0.95, layoutId reused
+PASS 6.3f-control dropdown at 600ms -> FAIL token check
+     expected FLAG/FAIL, observed FLAG/FAIL -- dropdown 600ms outside the 150-250ms band
+PASS 6.3g trend (dark gradient heroes) with no theme reason -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- trend 'E7 dark gradient heroes' used with no theme-match reason -- incomplete build
+PASS 6.3g-control same trend with theme-match reason + D19 -> PASS
+     expected PASS, observed PASS -- trend 'E7 dark gradient heroes' recorded with theme-match reason + D19
+PASS 6.3h eyebrow label with no D19 reason -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C13 used as an unconsidered default (no deliberate use through the skills)
+PASS 6.3h single deliberate key label + D19 + F5 record -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS 6.3h-extra repeated eyebrow above every heading, even with a reason -> FLAG (stricter rule wins)
+     expected FLAG/FAIL, observed FLAG/FAIL -- repeated eyebrow above every section heading stays a craft-floor ban regardless of any reason recorded
+PASS family ASCII: ASCII as the default visual, no reason -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C15 used as an unconsidered default (no deliberate use through the skills)
+PASS family ASCII: theme-matched ASCII (less-flat-ui #22) + D19 -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS family Instrument Serif: defaulted-to face, no recorded choice -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C3 used as an unconsidered default (no deliberate use through the skills)
+PASS family Instrument Serif: chosen through the skills + D19 + Source cell -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS family squircle: default container shape, no reason -> FLAG
+     expected FLAG/FAIL, observed FLAG/FAIL -- C16 used as an unconsidered default (no deliberate use through the skills)
+PASS family squircle: theme-matched squircle + D19 -> CLEAR
+     expected PASS, observed PASS -- deliberate use through the named skill path with recorded D19 reason + theme-fit -- flag cleared
+PASS 8-H2a screen with no deliberate accentuation -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- no deliberate accentuation -- everything the same weight, nothing draws the eye
+PASS 8-H2b declared first/second/third + means + D19 reasons -> PASS
+     expected PASS, observed PASS -- hierarchy declared first/second/third with means + D19 reason for each accent
+PASS 8-H1a three competing accent colours -> FAIL sprawl check
+     expected FLAG/FAIL, observed FLAG/FAIL -- 3 competing accent hues ['#06B6D4', '#7C3AED', '#F59E0B'] -- accent sprawl
+PASS 8-H1b single consistent accent colour, action-only -> PASS
+     expected PASS, observed PASS -- one accent colour, action/emphasis only, recorded in the brand identity tokens with a D19 reason
+PASS 9a decision record cites a Mobbin URL as design source -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- decision record cites a Mobbin URL as its design source -- FAILS the check
+PASS 9b consulted Mobbin categories, direction generated through Taste -> PASS
+     expected PASS, observed PASS -- Mobbin categories consulted (onboarding, paywall); direction generated through Taste, the recorded source
+PASS 9c Mobbin unreachable, gap recorded -> PASS (never blocked)
+     expected PASS, observed PASS -- Mobbin unreachable, gap recorded, design proceeds from the skills alone -- never blocked
+PASS 9d copies a specific Mobbin screen's layout -> FAIL anti-derivative
+     expected FLAG/FAIL, observed FLAG/FAIL -- layout copied from a specific Mobbin screen -- FAILS the anti-derivative check
+PASS 10a prose-only handoff (no exact values) -> FAIL handoff check
+     expected FLAG/FAIL, observed FLAG/FAIL -- prose-only handoff, no exact values -- FAILS the handoff check
+PASS 10b handoff with exact tokens/values/copy + D19 -> PASS
+     expected PASS, observed PASS -- directive with exact tokens/values/copy + D19 reason
+PASS 10c implementer re-interprets a directive -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- implementer re-interpreted the directive instead of executing it or flagging a recorded gap -- FAILS
+PASS 10d directive with values but no D19 reason -> FAIL (incomplete)
+     expected FLAG/FAIL, observed FLAG/FAIL -- directive with exact values but no D19 reason -- incomplete
+PASS 10e directive with values + D19 reason -> PASS
+     expected PASS, observed PASS -- directive with exact tokens/values/copy + D19 reason
+PASS 10c-control ambiguous directive surfaced as a recorded gap -> PASS
+     expected PASS, observed PASS -- ambiguous directive surfaced as a recorded gap, not improvised around
+PASS 11a Vanta background with no reduced-motion fallback -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- Vanta background with no reduced-motion fallback -- incomplete build
+PASS 11b React Bits on a non-React stack -> FAIL scope check
+     expected FLAG/FAIL, observed FLAG/FAIL -- React Bits on a html-tailwind stack -- FAILS the scope check (React/Next only)
+PASS 11c GSAP effect by name + exact parameters -> PASS
+     expected PASS, observed PASS -- gsap at pinned gsap@3.15.1, theme-matched, reduced-motion handled
+PASS 11d library effect with no theme reason -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- library effect with no theme reason -- not applied
+PASS 11e unpinned ('latest') library version -> FAIL pin check
+     expected FLAG/FAIL, observed FLAG/FAIL -- unpinned version 'latest' -- FAILS the pin check
+PASS 11a-control Vanta pinned + reduced-motion fallback + theme reason -> PASS
+     expected PASS, observed PASS -- vanta at pinned vanta@0.5.24, theme-matched, reduced-motion handled
+PASS 12a /demo composition built as slides with fades -> FAIL anti-slide
+     expected FLAG/FAIL, observed FLAG/FAIL -- composition built as slides with fades; no camera that actually moves; no subject that persists across scenes
+PASS 12b one continuous world + moving camera + persistent subject -> PASS
+     expected PASS, observed PASS -- one continuous world, moving camera, persistent subject, text >= 30px, style direction theme-matched, filmed footage kept
+PASS 12c text 22px on a 1080-wide stage -> FAIL (under 30px)
+     expected FLAG/FAIL, observed FLAG/FAIL -- text 22px on a 1080-wide stage (under 30px)
+PASS 12d Bang style direction with no theme/brand reason -> FAIL
+     expected FLAG/FAIL, observed FLAG/FAIL -- style direction 'brutalist mono' with no theme/brand reason
+PASS 12e generated motion graphics replace filmed app footage -> FAIL (film-the-real-app)
+     expected FLAG/FAIL, observed FLAG/FAIL -- generated motion graphics replace filmed app footage -- film-the-real-app rule
+PASS 12f kinetic type + camera moves in the A/V table -> PASS
+     expected PASS, observed PASS -- kinetic type and camera moves are rows in the A/V table
+
+46/46 fixture expectations met

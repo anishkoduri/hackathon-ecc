@@ -1,12 +1,12 @@
 ---
-description: Enable or disable hookify rules interactively (Claude Code only — no Cursor equivalent in this plugin)
+description: Enable or disable hookify rules interactively (Upstream only — no Cursor equivalent in this plugin)
 ---
 
 Interactively enable or disable existing hookify rules.
 
 ## Steps
 
-1. Find all `.claude/hookify.*.local.md` files
+1. Find all `.ecc/hookify.*.local.md` files
 2. Read the current state of each rule
 3. Present the list with current enabled / disabled status
 4. Ask which rules to toggle

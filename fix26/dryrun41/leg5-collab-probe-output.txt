@@ -1,0 +1,9 @@
+PASS live-type-A-to-B -- A="Hello collab" B="Hello collab"
+PASS live-type-B-to-A -- A="Hello collab +B" B="Hello collab +B"
+PASS live-offline-diverged -- while offline A="Hello collab +B [A-offline]" B="Hello collab +B [B-online]"
+PASS live-offline-merge -- after reconnect A="Hello collab +B [B-online] [A-offline]" B="Hello collab +B [B-online] [A-offline]"
+PASS live-cross-undo -- after B undoes "!": A="Hello collab +B [B-online] [A-offline]" B="Hello collab +B [B-online] [A-offline]"
+PASS live-presence-badge -- A's presence badge reads: "B is here — cursor at char 39"
+screenshot: demo-shot.png
+
+6/6 live probe checks passed

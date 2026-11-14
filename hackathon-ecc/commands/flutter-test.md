@@ -138,7 +138,7 @@ Test Status: PASS ✓
 
 ## Related
 
-- Agent: `agents/ecc-flutter-reviewer.md`
-- Agent: `agents/ecc-dart-build-resolver.md`
+- Agent: `flutter-reviewer` (`agents/ecc-flutter-reviewer.md`)
+- Agent: `dart-build-resolver` (`agents/ecc-dart-build-resolver.md`)
 - Skill: `skills/flutter-dart-code-review/`
 - Rules: `rules/dart-testing.mdc`

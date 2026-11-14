@@ -1,7 +1,7 @@
 ---
 name: loop-operator
 description: Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: orange
 ---
 

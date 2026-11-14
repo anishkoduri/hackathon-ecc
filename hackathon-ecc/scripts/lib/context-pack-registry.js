@@ -149,7 +149,7 @@ function projectionFor(entry, target) {
   };
 }
 
-function explainContextEntry({ repoRoot = DEFAULT_REPO_ROOT, id, target = 'codex' } = {}) {
+function explainContextEntry({ repoRoot = DEFAULT_REPO_ROOT, id, target = 'cursor' } = {}) {
   validateTarget(target);
   const registry = loadContextRegistry({ repoRoot });
   const entry = registry.entries.find(value => value.id === id);

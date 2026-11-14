@@ -9,13 +9,13 @@ metadata:
 # Continuous Learning v2.1 - Instinct
 -Based Architecture
 
-An advanced learning system that turns your Claude Code sessions into reusable knowledge through atomic "instincts" - small learned behaviors with confidence scoring.
+An advanced learning system that turns your Cursor sessions into reusable knowledge through atomic "instincts" - small learned behaviors with confidence scoring.
 
 **v2.1** adds **project-scoped instincts** — React patterns stay in your React project, Python conventions stay in your Python project, and universal patterns (like "always validate input") are shared globally.
 
 ## When to Activate
 
-- Setting up automatic learning from Claude Code sessions
+- Setting up automatic learning from Cursor sessions
 - Configuring instinct-based behavior extraction via hooks
 - Tuning confidence thresholds for learned behaviors
 - Reviewing, exporting, or importing instinct libraries
@@ -27,7 +27,7 @@ An advanced learning system that turns your Claude Code sessions into reusable k
 
 | Feature | v2.0 | v2.1 |
 |---------|------|------|
-| Storage | Global (`~/.claude/homunculus/`) | Project-scoped (`${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects/<hash>/`) |
+| Storage | Global (`~/.local/share/ecc-homunculus/`) | Project-scoped (`${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects/<hash>/`) |
 | Scope | All instincts apply everywhere | Project-scoped + global |
 | Detection | None | git remote URL / repo path |
 | Promotion | N/A | Project → global when seen in 2+ projects |
@@ -38,8 +38,8 @@ An advanced learning system that turns your Claude Code sessions into reusable k
 
 | Feature | v1 | v2 |
 |---------|----|----|
-| Observation | Stop hook (session end) | PreToolUse/PostToolUse (Claude Code only) |
-| Analysis | Main context | Background agent (Haiku) |
+| Observation | Stop hook (session end) | PreToolUse/PostToolUse (upstream only) |
+| Analysis | Main context | Background agent (Grok 4.6 High Fast) |
 | Granularity | Full skills | Atomic "instincts" |
 | Confidence | None | 0.3-0.9 weighted |
 | Evolution | Direct to skill | Instincts -> cluster -> skill/command/agent |
@@ -83,7 +83,7 @@ Use functional patterns over classes when appropriate.
 ```
 Session Activity (in a git repo)
       |
-      | Claude Code hooks capture prompts + tool use (Claude Code only)
+      | Cursor hooks capture prompts + tool use (upstream only)
       | + detect project context (git remote / repo path)
       v
 +---------------------------------------------+
@@ -91,7 +91,7 @@ Session Activity (in a git repo)
 |   (prompts, tool calls, outcomes, project)   |
 +---------------------------------------------+
       |
-      | Observer agent reads (background, Haiku)
+      | Observer agent reads (background, Grok 4.6 High Fast)
       v
 +---------------------------------------------+
 |          PATTERN DETECTION                   |
@@ -120,7 +120,7 @@ Session Activity (in a git repo)
 |  evolved/ (global) (example names of generated artifacts) |
 |   * commands/new-feature.md                  |
 |   * skills/testing-workflow.md               |
-|   * agents/ecc-refactor-cleaner.md           |
+|   * `refactor-cleaner` (`agents/ecc-refactor-cleaner.md`) |
 +---------------------------------------------+
 ```
 
@@ -128,7 +128,7 @@ Session Activity (in a git repo)
 
 The system automatically detects your current project:
 
-1. **`CLAUDE_PROJECT_DIR` env var** (highest priority) -- honored as an explicit override even when the directory is not a git repo (hashed by its absolute path)
+1. **`CURSOR_PROJECT_DIR` env var** (highest priority) -- honored as an explicit override even when the directory is not a git repo (hashed by its absolute path)
 2. **`git remote get-url origin`** -- hashed to create a portable project ID (same repo on different machines gets the same ID)
 3. **`git rev-parse --show-toplevel`** -- fallback using repo path (machine-specific)
 4. **Global fallback** -- if no project is detected, instincts go to global scope
@@ -137,17 +137,12 @@ Each project gets a 12-character hash ID (e.g., `a1b2c3d4e5f6`). A registry file
 
 ### Data Directory
 
-Continuous-learning-v2 stores observer data outside `~/.claude` so Claude Code's sensitive-path guard does not block background instinct writes:
+Continuous-learning-v2 stores observer data under `~/.local/share/ecc-homunculus/` (outside the agent's config directory) so the agent's sensitive-path guard does not block background instinct writes:
 
 1. `CLV2_HOMUNCULUS_DIR` when set to an absolute path
 2. `$XDG_DATA_HOME/ecc-homunculus`
 3. `$HOME/.local/share/ecc-homunculus`
 
-Existing users with data at `~/.claude/homunculus` can migrate once:
-
-```bash
-bash skills/continuous-learning-v2/scripts/migrate-homunculus.sh
-```
 
 ## Quick Start
 
@@ -155,13 +150,13 @@ bash skills/continuous-learning-v2/scripts/migrate-homunculus.sh
 
 **In Cursor, PreToolUse/PostToolUse observation does not run.** This plugin's `hooks/hooks.json` registers Cursor events only and has no `observe.sh` entry, and `scripts/hooks/posttooluse-dispatcher.js` is referenced by nothing, so it never runs. In Cursor, observation is limited to the Stop hook (session end) plus manual `/learn` runs.
 
-**In Claude Code, if installed as a plugin** (recommended):
+**In Cursor, if installed as a plugin** (recommended):
 
 No extra `settings.json` hook block is required.
 
-If you previously copied `observe.sh` into `~/.claude/settings.json`, remove that duplicate `PreToolUse` / `PostToolUse` block. Duplicating the plugin hook causes double execution and `${CLAUDE_PLUGIN_ROOT}` resolution errors because that variable is only available inside a plugin's `hooks/hooks.json` entries.
+If you previously copied `observe.sh` into a host settings file, remove that duplicate `PreToolUse` / `PostToolUse` block. Duplicating the plugin hook causes double execution and `${ECC_PLUGIN_ROOT}` resolution errors because that variable is only available inside a plugin's `hooks/hooks.json` entries.
 
-**If installed manually in Claude Code** to `~/.claude/skills`, add this to your `~/.claude/settings.json`:
+**If installed manually** to `~/.cursor/skills`, add this to your hook config:
 
 ```json
 {
@@ -170,14 +165,14 @@ If you previously copied `observe.sh` into `~/.claude/settings.json`, remove tha
       "matcher": "*",
       "hooks": [{
         "type": "command",
-        "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh"
+        "command": "$ECC_PLUGIN_ROOT/skills/continuous-learning-v2/hooks/observe.sh"
       }]
     }],
     "PostToolUse": [{
       "matcher": "*",
       "hooks": [{
         "type": "command",
-        "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh"
+        "command": "$ECC_PLUGIN_ROOT/skills/continuous-learning-v2/hooks/observe.sh"
       }]
     }]
   }
@@ -345,9 +340,9 @@ Confidence evolves over time:
 
 ## Why Hooks vs Skills for Observation?
 
-> "v1 relied on skills to observe. Skills are probabilistic -- they fire ~50-80% of the time based on Claude's judgment."
+> "v1 relied on skills to observe. Skills are probabilistic -- they fire ~50-80% of the time based on Cursor's judgment."
 
-In Claude Code, hooks fire on every tool call, deterministically. This means:
+In Cursor, hooks fire on every tool call, deterministically. This means:
 - Every tool call is observed
 - No patterns are missed
 - Learning is comprehensive
@@ -357,8 +352,7 @@ In Cursor, the PreToolUse/PostToolUse observation hooks do not run (no `observe.
 ## Backward Compatibility
 
 v2.1 is fully compatible with v2.0 and v1:
-- Existing global instincts can be migrated from `~/.claude/homunculus/instincts/` with `skills/continuous-learning-v2/scripts/migrate-homunculus.sh` (shipped with this skill; run it from the plugin root)
-- Existing `~/.claude/skills/learned/` skills from v1 still work
+- Existing the agent's local learned-skills directory skills from v1 still work
 - Stop hook still runs (but now also feeds into v2)
 - Gradual migration: run both in parallel
 
@@ -378,4 +372,4 @@ v2.1 is fully compatible with v2.0 and v1:
 
 ---
 
-*Instinct-based learning: teaching Claude your patterns, one project at a time.*
+*Instinct-based learning: teaching Cursor your patterns, one project at a time.*

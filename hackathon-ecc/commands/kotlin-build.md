@@ -170,5 +170,5 @@ The agent will stop and report if:
 
 ## Related
 
-- Agent: `agents/ecc-kotlin-build-resolver.md`
+- Agent: `kotlin-build-resolver` (`agents/ecc-kotlin-build-resolver.md`)
 - Skill: `skills/kotlin-patterns/`

@@ -26,9 +26,9 @@ function neverThrows(fn, fallback) {
   };
 }
 
-/** Transcript path from the hook payload or CLAUDE_TRANSCRIPT_PATH; '' when none. */
+/** Transcript path from the hook payload or ECC_TRANSCRIPT_PATH; '' when none. */
 function transcriptPathFor(data) {
-  const candidate = (isObject(data) && (data.transcript_path || data.transcriptPath)) || process.env.CLAUDE_TRANSCRIPT_PATH;
+  const candidate = (isObject(data) && (data.transcript_path || data.transcriptPath)) || process.env.ECC_TRANSCRIPT_PATH;
   return typeof candidate === 'string' ? candidate : '';
 }
 

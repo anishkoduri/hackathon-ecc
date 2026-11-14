@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-InsAIts Security Monitor -- PreToolUse Hook for Claude Code
+InsAIts Security Monitor -- PreToolUse Hook for Cursor
 ============================================================
 
-Real-time security monitoring for Claude Code tool inputs.
+Real-time security monitoring for Cursor tool inputs.
 Detects credential exposure, prompt injection, behavioral anomalies,
 hallucination chains, and 20+ other anomaly types -- runs 100% locally.
 
 Writes audit events to .insaits_audit_session.jsonl for forensic tracing.
 
 Setup:
-  pip install insa-its
+  pip install insa-its==4.9.10
   export ECC_ENABLE_INSAITS=1
 
-  Add to .claude/settings.json:
+  Add to .ecc/settings.json:
   {
     "hooks": {
       "PreToolUse": [
@@ -31,16 +31,16 @@ Setup:
   }
 
 How it works:
-  Claude Code passes tool input as JSON on stdin.
+  Cursor passes tool input as JSON on stdin.
   This script runs InsAIts anomaly detection on the content.
   Exit code 0 = clean (pass through).
   Exit code 2 = critical issue found (blocks tool execution).
-  Stderr output = non-blocking warning shown to Claude.
+  Stderr output = non-blocking warning shown to Cursor.
 
 Environment variables:
   INSAITS_DEV_MODE   Set to "true" to enable dev mode (no API key needed).
                      Defaults to "false" (strict mode).
-  INSAITS_MODEL      LLM model identifier for fingerprinting. Default: claude-opus.
+  INSAITS_MODEL      LLM model identifier for fingerprinting. Default: grok-4.7-high.
   INSAITS_FAIL_MODE  "open" (default) = continue on SDK errors.
                      "closed" = block tool execution on SDK errors.
   INSAITS_VERBOSE    Set to any value to enable debug logging.
@@ -88,12 +88,12 @@ except ImportError:
 AUDIT_FILE: str = ".insaits_audit_session.jsonl"
 MIN_CONTENT_LENGTH: int = 10
 MAX_SCAN_LENGTH: int = 4000
-DEFAULT_MODEL: str = "claude-opus"
+DEFAULT_MODEL: str = "grok-4.7-high"
 BLOCKING_SEVERITIES: frozenset = frozenset({"CRITICAL"})
 
 
 def extract_content(data: Dict[str, Any]) -> Tuple[str, str]:
-    """Extract inspectable text from a Claude Code tool input payload.
+    """Extract inspectable text from a Cursor tool input payload.
 
     Returns:
         A (text, context) tuple where *text* is the content to scan and
@@ -158,7 +158,7 @@ def get_anomaly_attr(anomaly: Any, key: str, default: str = "") -> str:
 
 
 def format_feedback(anomalies: List[Any]) -> str:
-    """Format detected anomalies as feedback for Claude Code.
+    """Format detected anomalies as feedback for Cursor.
 
     Returns:
         A human-readable multi-line string describing each finding.
@@ -185,7 +185,7 @@ def format_feedback(anomalies: List[Any]) -> str:
 
 
 def main() -> None:
-    """Entry point for the Claude Code PreToolUse hook."""
+    """Entry point for the Cursor PreToolUse hook."""
     raw: str = sys.stdin.read().strip()
     if not raw:
         sys.exit(0)
@@ -208,14 +208,14 @@ def main() -> None:
     # Wrap SDK calls so an internal error does not crash the hook
     try:
         monitor: insAItsMonitor = insAItsMonitor(
-            session_name="claude-code-hook",
+            session_name="ecc-hook",
             dev_mode=os.environ.get(
                 "INSAITS_DEV_MODE", "false"
             ).lower() in ("1", "true", "yes"),
         )
         result: Dict[str, Any] = monitor.send_message(
             text=text[:MAX_SCAN_LENGTH],
-            sender_id="claude-code",
+            sender_id="cursor",
             llm_id=os.environ.get("INSAITS_MODEL", DEFAULT_MODEL),
         )
     except Exception as exc:  # Broad catch intentional: unknown SDK internals
@@ -256,7 +256,7 @@ def main() -> None:
     feedback: str = format_feedback(anomalies)
 
     if has_critical:
-        # stdout feedback -> Claude Code shows to the model
+        # stdout feedback -> Cursor shows to the model
         sys.stdout.write(feedback + "\n")
         sys.exit(2)  # PreToolUse exit 2 = block tool execution
     else:

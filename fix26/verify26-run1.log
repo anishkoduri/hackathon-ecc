@@ -1,0 +1,59 @@
+PASS build.sh is 24,088 lines, md5 e1944a6e2b81bf3b869c191633c04aae (post-fix26)
+PASS diff vs build.sh.before-fix23 is additions only (+314/-0)
+PASS fix26 patch log: 16 changes, 0 errors
+PASS fix26 run log (run 4): 16 change(s), fix26 OK
+PASS counts 166/72/123/87/15 (unchanged -- no new skill/command/trigger)
+PASS trigger keys still 64 (no new trigger from this fix)
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast absent (Grok pins only)
+PASS Grok pins: grok-4.7-high x54, cursor-grok-4.6-high-fast x103 (occurrences)
+PASS pip install lines in the built tree: 42 total, 20 pinned (==), 22 unpinned by design
+   missing upstream pins: [('skills/windows-desktop-e2e/SKILL.md', 'yt-dlp==2026.10.26')]
+FAIL §1 upstream pins P-01-P-13 all present in the built tree (13 lines)
+PASS §1 staged pins: piper-tts==1.8.0 x3 on pitch SKILL.md:843
+FAIL §1 staged pins: shots-reference + troubleshooting + tts.mjs
+PASS §1 yt-dlp pinned (verify24 E-5 line): no unpinned 'pip install yt-dlp' in windows-desktop-e2e
+PASS §1 unpinned lines are exactly the 22 classified (b)/(c)/(d) lines (Audit #73)
+PASS §1 tts.mjs:180 is the unpinned runtime error string (class (b), deliberate)
+PASS README_UPDATE_F26 x4 in the built tree (pitch step 7, demo.md, orchestrate :101, readme-writer :95)
+PASS F-14 step 7: ledger first, no new gate, re-cut no-op, final report not rewritten
+PASS F-14 orchestrate :101 clause + readme-writer :95 + demo.md :9 agree
+PASS F-14 /demo gates intact: never automatic, callable only
+PASS §3 fix25 comment matches the comment-fix 'After' block (7 lines)
+PASS §3 fix26 comment (M2): header names ck + §1 pip pins, :24075 names the 13 upstream lines
+PASS §3 verify25.py docstring says +314/-0, no +305 left (M1)
+PASS VARFONT_F26 x1 in the built tree (inventory §11 scoped exceptions)
+PASS varfont scope: template only, Hanken + JetBrains variable, Instrument static
+PASS template fonts: woff2 sizes match the vendored files (34704 / 21032 / 30376)
+PASS app-UI static-only stands (orchestrate :139 NEVER + F2 check)
+PASS B6 call-map :38 DOCUMENTATION-ONLY (consumer chain, upstream-only, defined not live)
+PASS B6 flow strings: 128 qualified, 0 bare 'on-request (trigger-routed)'
+PASS B6 generator :342 emits the qualified string, :383 calls skill-triggers documentation-only (Sweep #34 minors)
+PASS call-map-data.json: trigger_only [] and counts agree (166/72/123/87/15/64)
+PASS no 'is a live routing table' claim in the built tree
+PASS Dim 7 owed in the benchmark file (NONE RECORDED, owed never claimed statically)
+PASS Dim 7: no Campus Eats render exists (no index.html)
+PASS Dim 7 note records OWED as a decision, not a pass
+PASS R1/R4 note records OWED as defined, not verified
+PASS ck cost lines corrected to ~1k tokens/session (3 lines)
+PASS ck session-start.mjs:129 block figure (~100 tokens) kept
+PASS ck no other stale cost claims ('~100 tokens' / '~50 lines' only at :129)
+PASS ck wire itself untouched (hooks/session-start.js still spawns session-start.mjs)
+PASS _F26 token census in the built tree: README_UPDATE_F26 4, VARFONT_F26 1
+PASS _F25 token census unchanged: RECIPES 1, TESTCOV 1, PLATFORM 2, BENCHMARK 10, TECHDEPTH 8, ADAPT 2, REASON 6, CREATIVE 3
+PASS frozen D19 texts intact (orchestrate + Taste + polish-pass)
+PASS fix15 verifier: only expected fails, tail is 42/44 checks pass (expected 42/44 checks pass)
+PASS fix17 verifier: only expected fails, tail is 58/60 checks pass (expected 58/60 checks pass)
+PASS fix18 verifier: only expected fails, tail is 69/72 checks pass (expected 69/72 checks pass)
+PASS fix19 verifier: only expected fails, tail is 71/76 checks pass (expected 71/76 checks pass)
+PASS fix20 verifier: only expected fails, tail is 164/169 checks pass (expected 164/169 checks pass)
+PASS fix21 verifier: only expected fails, tail is 96/102 checks pass (expected 96/102 checks pass)
+PASS fix22 verifier: only expected fails, tail is 366/369 checks pass (expected 366/369 checks pass)
+PASS fix23 verifier: only expected fails, tail is excluding the manifest check, which is owed: 194/211 checks pass (expected excluding the manifest check, which is owed: 194/211 checks pass)
+PASS fix24 verifier: only expected fails, tail is excluding the manifest check, which is owed: 97/104 checks pass (expected excluding the manifest check, which is owed: 97/104 checks pass)
+PASS fix25 verifier: only expected fails, tail is excluding the manifest check, which is owed: 72/74 checks pass (expected excluding the manifest check, which is owed: 72/74 checks pass)
+PASS verify13h: exactly 6/97 fail (2 B2 + M3 :61, :62, :70, :71; F-04 checks :57, :63, :66 pass)
+FAIL fix26/MANIFEST.md exists and records build.sh lines + md5 (OWED -- fails until the manifest worker writes it)
+
+52/55 checks pass
+excluding the manifest check, which is owed: 52/54 checks pass

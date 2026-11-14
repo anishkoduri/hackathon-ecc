@@ -1,7 +1,7 @@
 {
   "coverage": {
-    "skills": 169,
-    "withTriggers": 58
+    "skills": 166,
+    "withTriggers": 64
   },
   "generatedAt": "2026-10-30T00:01:34.569Z",
   "notes": "END-ONLY deferred skills — their trigger phrases below are end-of-project-only, so only an end-of-project request routes to them. SchemaVersion 1 has no per-key deferral flag and the router matches on trigger text only, so this note documents the deferral; it does not enforce it. Deferred: production-audit, delivery-gate, codehealth-mcp, santa-method, security-scan, verification-loop.",
@@ -14,6 +14,17 @@
   "registryDigest": "6f213dc845937b4093bc018d041b25b538d88d78451b9d799ad614989b360ee4",
   "schemaVersion": 1,
   "triggers": {
+    "skill:accessibility": [
+      "make this accessible",
+      "wcag compliance",
+      "accessibility audit",
+      "aria labels"
+    ],
+    "skill:ai-feature-spec": [
+      "spec an ai feature",
+      "ai feature spec",
+      "specify the ai feature"
+    ],
     "skill:api-design": [
       "rest endpoint design",
       "pagination api",
@@ -194,6 +205,11 @@
       "make slides for the pitch",
       "slide deck"
     ],
+    "skill:gan-style-harness": [
+      "gan build",
+      "generator evaluator loop",
+      "build with the gan harness"
+    ],
     "skill:git-workflow": [
       "merge vs rebase",
       "commit conventions",
@@ -255,6 +271,22 @@
     "skill:mobile-ship": [
       "ship a testable mobile build",
       "package the mobile app"
+    ],
+    "skill:motion-advanced": [
+      "advanced motion",
+      "drag and drop animation",
+      "gesture animation"
+    ],
+    "skill:motion-foundations": [
+      "motion tokens",
+      "spring animation",
+      "motion presets"
+    ],
+    "skill:motion-patterns": [
+      "animate this component",
+      "button animation",
+      "page transition",
+      "modal animation"
     ],
     "skill:orch-add-feature": [
       "add a feature",

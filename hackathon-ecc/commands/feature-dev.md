@@ -14,7 +14,7 @@ A structured feature-development workflow that emphasizes understanding existing
 
 ### 2. Codebase Exploration
 
-- use `code-explorer` to analyze the relevant existing code
+- use `code-explorer` agent (`agents/ecc-code-explorer.md`) to analyze the relevant existing code
 - trace execution paths and architecture layers
 - understand integration points and conventions
 
@@ -26,7 +26,7 @@ A structured feature-development workflow that emphasizes understanding existing
 
 ### 4. Architecture Design
 
-- use `code-architect` to design the feature
+- use `code-architect` agent (`agents/ecc-code-architect.md`) to design the feature
 - provide the implementation blueprint
 - wait for approval before implementing
 
@@ -38,7 +38,7 @@ A structured feature-development workflow that emphasizes understanding existing
 
 ### 6. Quality Review
 
-- use `code-reviewer` to review the implementation
+- use `code-reviewer` agent (`agents/ecc-code-reviewer.md`) to review the implementation
 - address critical and important issues
 - verify test coverage
 

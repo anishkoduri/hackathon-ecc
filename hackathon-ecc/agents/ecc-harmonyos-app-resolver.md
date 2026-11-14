@@ -1,7 +1,7 @@
 ---
 name: harmonyos-app-resolver
 description: HarmonyOS application development expert specializing in ArkTS and ArkUI. Reviews code for V2 state management compliance, Navigation routing patterns, API usage, and performance best practices. Use for HarmonyOS/OpenHarmony projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -44,7 +44,7 @@ In all code generation, Q&A, and technical recommendations, you MUST strictly fo
 
 ### Step 1: Understand Project Context
 
-- Read `CLAUDE.md`, `module.json5`, `oh-package.json5` for project conventions
+- Read `AGENTS.md`, `module.json5`, `oh-package.json5` for project conventions
 - Identify existing state management version (V1 vs V2) and routing approach
 - Check `build-profile.json5` for API level and device targets
 

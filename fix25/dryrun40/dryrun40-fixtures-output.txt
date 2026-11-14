@@ -1,0 +1,87 @@
+anchors: all rule texts present verbatim in the built tree
+PASS 13a
+     expected FLAG/FAIL, observed FLAG/FAIL -- design package with no depth strategy named (D1)
+PASS 13b
+     expected PASS, observed PASS -- package naming flat by choice + reason (D1 justified use)
+PASS 13c
+     expected PASS, observed PASS -- deliberate depth: layered + parallax + elevation values + theme-matched + 7 D19 lines incl. Depth: line (D1/D2/D4/D5/D6)
+PASS 13d
+     expected FLAG/FAIL, observed FLAG/FAIL -- 3D motion with no reduced-motion fallback (D4)
+PASS 13e
+     expected FLAG/FAIL, observed FLAG/FAIL -- 3D hurting text contrast: no scrim, no 4.5:1 (D5)
+PASS 13f
+     expected FLAG/FAIL, observed FLAG/FAIL -- depth as decoration with no theme reason (D2)
+PASS 13g
+     expected FLAG/FAIL, observed FLAG/FAIL -- decision-record entry with six lines and no Depth line (D6)
+PASS 14a
+     expected FLAG/FAIL, observed FLAG/FAIL -- generic spinner for an AI/agent wait
+PASS 14b
+     expected PASS, observed PASS -- state-matched orb: searching while retrieving
+PASS 14c
+     expected FLAG/FAIL, observed FLAG/FAIL -- mismatched orb state: solving while the app is just loading a page
+PASS 14d
+     expected FLAG/FAIL, observed FLAG/FAIL -- orb used as decoration (logo/background, nothing waiting)
+PASS 14e
+     expected FLAG/FAIL, observed FLAG/FAIL -- orb that animates under prefers-reduced-motion instead of a frozen one-frame orb
+PASS 15a
+     expected FLAG/FAIL, observed FLAG/FAIL -- surface stacking two WebGL-heavy effects (R3F scene + Vanta)
+PASS 15b
+     expected PASS, observed PASS -- one theme-matched WebGL effect + static fallback
+PASS 15c
+     expected FLAG/FAIL, observed FLAG/FAIL -- React 18 build installing R3F v9
+PASS 15d
+     expected FLAG/FAIL, observed FLAG/FAIL -- build installing legacy shadergradient v1 (1.3.5)
+PASS 15e
+     expected FLAG/FAIL, observed FLAG/FAIL -- animated logo with no static fallback
+PASS 15f
+     expected FLAG/FAIL, observed FLAG/FAIL -- library effect applied with no theme reason
+PASS 15g
+     expected FLAG/FAIL, observed FLAG/FAIL -- unpinned ("latest") library version
+PASS 15h
+     expected PASS, observed PASS -- React 19 build installing R3F v9 (paired)
+PASS 15i
+     expected PASS, observed PASS -- ShaderGradient v2 with URL-as-config (customize URL + preset)
+PASS 16a
+     expected FLAG/FAIL, observed FLAG/FAIL -- build whose polish-pass fetches rules from a live URL; the checklist holds no fetch instruction and no unpinned URL
+PASS 16b
+     expected PASS, observed PASS -- build checked against the pinned snapshot (commit 4ecfb9f, 2026-10-05, recorded at the top of vercel-checklist.md)
+PASS 16c
+     expected PASS, observed PASS -- Vercel finding on code with a recorded D19 reason + theme-fit is CLEARED (deliberate decision stands) and recorded
+PASS 16d
+     expected PASS, observed PASS -- Vercel finding with no D19 reason is REPORTED as a fixable finding (file:line + rule id + paired Fix:), never silently dropped
+PASS 16e
+     expected FLAG/FAIL, observed FLAG/FAIL -- rule claimed as new that duplicates an existing Impeccable rule (V-AN3 = transition: all, already-covered in the dedupe table) FAILS the dedupe check
+PASS 17a
+     expected PASS, observed PASS -- Casberry export passes the one-WebGL rule and the export code is reviewed line by line
+PASS 17b
+     expected PASS, observed PASS -- build needing 12 OriginKit fetches in a day hits the 10/day cap gracefully: proceeds from the skills alone, records the gap, never pays for Pro/Ultimate
+PASS 17c
+     expected FLAG/FAIL, observed FLAG/FAIL -- daisyUI component shipped with the default theme unexamined
+PASS 17d
+     expected PASS, observed PASS -- daisyUI component re-themed to the brand deal
+PASS 17e
+     expected FLAG/FAIL, observed FLAG/FAIL -- Origin UI cited when the build means OriginKit
+PASS 17f
+     expected FLAG/FAIL, observed FLAG/FAIL -- Casberry exported code pasted without review
+PASS 8-H1a
+     expected FLAG/FAIL, observed FLAG/FAIL -- three competing accent hues, accent on non-action elements (ACCENT_F22 sprawl flag)
+PASS 8-H2b
+     expected PASS, observed PASS -- declared first/second/third accent hierarchy + means + D19 each
+PASS 9a
+     expected FLAG/FAIL, observed FLAG/FAIL -- decision record cites a Mobbin URL as its design source
+PASS 9b
+     expected PASS, observed PASS -- Mobbin categories consulted; direction generated through Taste
+PASS 10a
+     expected FLAG/FAIL, observed FLAG/FAIL -- handoff is prose-only, no exact values
+PASS 10b
+     expected PASS, observed PASS -- handoff with exact tokens/values/copy + D19 reason
+PASS 11a
+     expected FLAG/FAIL, observed FLAG/FAIL -- Vanta background with no reduced-motion fallback
+PASS 11c
+     expected PASS, observed PASS -- GSAP effect directed by name + exact parameters, pinned, theme-matched
+PASS 12a
+     expected FLAG/FAIL, observed FLAG/FAIL -- composition built as slides with fades, static camera, no persistent subject
+PASS 12b
+     expected PASS, observed PASS -- one continuous world + moving camera + persistent subject, text >=30px, style direction theme-matched
+
+42/42 fixture expectations met

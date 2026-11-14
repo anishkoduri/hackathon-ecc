@@ -110,6 +110,8 @@ Every project meets this unless the project's design notes record an explicit ex
 
 Each of these marks a UI as generated rather than designed. Each ban is a static/code-level check on the source, and a finding under it is candidate evidence for `browser-qa` — never a pass/fail verdict on a rendered screen (that verdict is `browser-qa`'s alone). Non-template bans (accessibility, dark patterns, copy, effects, type): remove or rewrite the element; do not just tone it down. Template-pattern bans (the centered-everything hero, the hero-metric template, grids of identical cards, equal-weight text-only feature sections): do NOT fix on this check alone — append the finding (screen + pattern) to `.hallmark/candidate-evidence.md` for `browser-qa`; it is fixed only on `browser-qa`'s verdict, or when the project's design notes explicitly allow the pattern.
 
+The slop checklist ([slop-checklist.md](slop-checklist.md), `SLOP_F22`) covers the same territory at flag granularity: each of the 20 indicators names what counts as a flag and what counts as justified use, with a clearance path (recorded D19 reason + theme-fit). It never overrides a ban in this section — where a ban and a checklist item overlap, the ban governs, and the checklist's justified-use path applies only where the ban allows an exception (a single deliberate key label, a theme-matched treatment with a recorded reason — never a repeated or default use).
+
 ### Color and surface
 - Purple-to-blue (or pink-to-orange) gradients as the default brand look, on buttons, hero backgrounds, and headings alike.
 - Gradient text. Emphasis comes from size and weight.

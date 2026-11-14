@@ -133,18 +133,18 @@ waiver, the first WARNs. `--quick` (the checker at 1440 and 390, the layout chec
 
 ## As a hook
 
-In Claude Code the skill's own frontmatter adds the gate as a Stop hook once the skill is invoked. The
-command is one POSIX `sh` line (Git Bash on Windows, `sh` on macOS and Linux) that runs the first
-`gate.mjs` it finds, in this order: `$CLAUDE_SKILL_DIR/scripts/`, `$CLAUDE_PLUGIN_ROOT/scripts/` and
-`$CLAUDE_PLUGIN_ROOT/skills/design-taste-frontend/scripts/` (a plugin install), each only when the variable is
-set; then the install folders by name, `$CLAUDE_PROJECT_DIR/.claude/skills/design-taste-frontend/`,
-`$CLAUDE_PROJECT_DIR/.agents/skills/design-taste-frontend/`, `~/.claude/skills/design-taste-frontend/`
+In Cursor the skill's own frontmatter adds the gate as a Stop hook once the skill is invoked. The
+command is one POSIX `sh` line (Git Bash on Windows — prerequisite: the hook needs Git Bash installed; whether it fires at all on Windows without Git Bash is untested, OWED to the live smoke test — `sh` on macOS and Linux) that runs the first
+`gate.mjs` it finds, in this order: `$ECC_PLUGIN_ROOT/skills/design-taste-frontend/scripts/`,
+`$ECC_PLUGIN_ROOT/scripts/` (a plugin install), each only when the variable is set; then the
+install folders by name, `$CURSOR_PROJECT_DIR/.cursor/skills/design-taste-frontend/`,
+`$CURSOR_PROJECT_DIR/.agents/skills/design-taste-frontend/`, `~/.cursor/skills/design-taste-frontend/`
 and `~/.agents/skills/design-taste-frontend/` (`npx skills`, `install.sh`). When it finds none, the stop
 is allowed with no hook error; when the folder has a `.taste-skill` it writes
 `.taste-skill/gate-hook-missing.txt` (the time and the variables it read), and when a build is armed
-there or one folder below it prints `tasteskill gate: gate.mjs not found (CLAUDE_PLUGIN_ROOT=...)` on
+there or one folder below it prints `tasteskill gate: gate.mjs not found (ECC_PLUGIN_ROOT=...)` on
 stderr, so a hook that never reached the gate shows in the transcript. A skill installed under another
-folder name, other apps, or a Claude Code without skill hooks take one of these. Each runs in every
+folder name, other apps, or a Cursor without skill hooks take one of these. Each runs in every
 session of the project and finds a build in its folder or one or two below. Where none is active it
 exits at once, but once for a tasteskill page (a `page-type` meta) changed in the last day in the
 folder or one below that was never armed: it says how to arm it (`.taste-skill/unarmed.json` records
@@ -152,37 +152,13 @@ that it told). It holds only the first session it blocks, lets an orchestrator
 whose builds sit in two or more folders below stop, and ignores a build idle for 24 hours. Replace
 `/path/to/skill` with the skill's folder.
 
-**Claude Code**, `.claude/settings.json` (blocks with JSON on stdout):
+**Cursor**, `.ecc/settings.json` (blocks with JSON on stdout):
 
 ```json
 {
   "hooks": {
     "Stop": [
-      { "hooks": [ { "type": "command", "command": "node \"/path/to/skill/scripts/gate.mjs\" --hook claude", "timeout": 600 } ] }
-    ]
-  }
-}
-```
-
-**Codex**, `.codex/hooks.json` (the same output as Claude Code: `{"decision":"block","reason":...}`):
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      { "hooks": [ { "type": "command", "command": "node \"/path/to/skill/scripts/gate.mjs\" --hook codex", "timeout": 600 } ] }
-    ]
-  }
-}
-```
-
-**Antigravity**, `.agents/hooks.json` (it answers `{"decision":"continue","reason":...}` to keep the agent working):
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      { "hooks": [ { "type": "command", "command": "node \"/path/to/skill/scripts/gate.mjs\" --hook antigravity", "timeout": 600 } ] }
+      { "hooks": [ { "type": "command", "command": "node \"/path/to/skill/scripts/gate.mjs\" --hook cursor", "timeout": 600 } ] }
     ]
   }
 }

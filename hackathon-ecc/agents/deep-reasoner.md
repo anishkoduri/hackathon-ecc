@@ -1,12 +1,12 @@
 ---
 name: deep-reasoner
-description: Reasoning-heavy executor pinned to claude-opus-5. Use for architecture, debugging complex issues, algorithm design, and hard multi-constraint trade-offs. Thinks thoroughly, returns a concise conclusion the orchestrator can act on.
-model: claude-opus-5
+description: Reasoning-heavy executor pinned to grok-4.7-high. Use for architecture, debugging complex issues, algorithm design, and hard multi-constraint trade-offs. Thinks thoroughly, returns a concise conclusion the orchestrator can act on.
+model: grok-4.7-high
 ---
 
-<!-- Model pin: claude-opus-5 pins the strongest Claude tier. The pin is a bare model ID — the bracket form for opus (claude-opus-5[effort=high]) was removed as unverified in Cursor; the bracket form still applies to the fast-worker pin, composer-2.5[fast=false], which is the documented workaround for Cursor sometimes ignoring a subagent's model choice. Confirm the pin resolves in a live Cursor install (see LIVE_SMOKE_TEST.md step 7). Update the ID when Cursor's model list turns over — never use the bare Claude alias "opus" as a pin. Note this is a third-party model billed at API list price outside the plan's included usage. -->
+<!-- Model pin: grok-4.7-high pins the strongest Grok tier, first-party to Cursor (no third-party billing). The pin is the slug alone — never bracket syntax, never a bare alias as a pin. Confirm the pin resolves in a live Cursor install (see LIVE_SMOKE_TEST.md step 7). Update the ID when Cursor's model list turns over. -->
 
-You are the **deep-reasoner** in a multi-model orchestration workflow. The orchestrator (a lighter, fast model) delegates reasoning-heavy work to you: architecture, complex/multi-file debugging, algorithm design, hard trade-offs, ambiguous specs.
+You are the **deep-reasoner** in a multi-model orchestration workflow. The orchestrator delegates reasoning-heavy work to you: architecture, complex/multi-file debugging, algorithm design, hard trade-offs, ambiguous specs.
 
 Operating contract:
 

@@ -25,8 +25,8 @@ A drafting sheet as a material: Prussian-blue paper, a white line for ink, Chakr
   --color-rule: oklch(93% 0.02 240 / 0.85); --color-rule-2: oklch(93% 0.02 240 / 0.32);
   --color-grid: oklch(97% 0.01 240 / 0.09); --color-grid-2: oklch(97% 0.01 240 / 0.2);
   --color-accent: oklch(97% 0.012 240); --color-accent-ink: oklch(33% 0.105 256); --color-focus: oklch(97% 0.012 240);
-  --font-display: "Chakra Petch", ui-sans-serif, sans-serif; --font-body: "IBM Plex Sans", ui-sans-serif, sans-serif;
-  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Chakra Petch"; --font-body: "IBM Plex Sans";
+  --font-outlier: "IBM Plex Mono";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-heavy: 2px; --shadow-card: none;
   --tracking-display: -0.012em; --display-weight: 600; --sheet-inset: 20px; --tick: 14px;
 }
@@ -60,6 +60,8 @@ Three sheets, stated in the stamp (`blueprint: cyanotype`).
 - **Tables as drawing registers:** a stage schedule, a deliverables list or a price list as a keylined table, stage numbers in mono in their own column, the row title one weight heavier, a `--rule-heavy` line under the head row; on `--color-paper-2` it reads as the register sheet of a set.
 - **Forms as a title block:** fields set as cells of a keylined block, each label at the cell's top left, the cells sized by what they hold, the submit in the ink fill at the block's foot.
 - **Comparisons and steps as elevations:** two options side by side as columns parted by one heavy line, or stages as a run along one long dimension string with a tick at each stage, each stage a numeral, a title and a line.
+- **Infinite canvases (TRENDS_F22 E3):** the drafting sheet extended past the frame as a pannable canvas, with nothing the user needs living only off the sheet. Full D19 reason in the TRENDS_F22 menu entry.
+- **Decorative flowcharts (TRENDS_F22 E17):** a simple chart set in the theme's own white lines and dimension strings, with few nodes and a recorded theme reason. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

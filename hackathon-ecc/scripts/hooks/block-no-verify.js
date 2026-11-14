@@ -168,7 +168,7 @@ function isNoVerifyLongFlag(value) {
 
 const PROTECTED_GIT_COMMANDS = new Set(['commit', 'push', 'merge', 'cherry-pick', 'rebase', 'am']);
 const GIT_GLOBAL_VALUES = new Set(['-c', '-C', '--config-env', '--work-tree', '--git-dir', '--namespace', '--super-prefix']);
-const SHELLS = new Set(['sh', 'bash', 'dash', 'zsh', 'ksh']);
+const SHELLS = new Set(['sh', 'bash', 'dash', 'zsh', 'ksh']); // POSIX shells only — PowerShell/cmd are handled by powershellRole/cmdRole below (fix #24, C-1); do not add them here, their option grammar differs.
 const DATA_COMMANDS = new Set(['echo', 'printf', 'cat', 'tee', 'grep', 'head', 'tail', 'wc', 'sort', 'uniq', ':', 'true', 'false']);
 const CONTROL_WORDS = new Set(['!', 'if', 'then', 'elif', 'while', 'until', 'do', 'else']);
 
@@ -521,6 +521,56 @@ function scanShellOptionCluster(option, words, start, shell, budget) {
   return cluster;
 }
 
+// --- PowerShell / cmd wrappers (fix #24, C-1) ---------------------------------
+// Cursor runs shell commands through PowerShell on Windows. The POSIX shell
+// grammar above cannot read PowerShell: `-Command`/`-c` takes the script as
+// its operand (or as all remaining words), `-EncodedCommand` is base64 the
+// scanner cannot read, and `-File` is a file we cannot read. Best-effort
+// only: PowerShell quoting, variables, the `&` call operator,
+// `Invoke-Expression`, and `Start-Process` are NOT modeled — a bypass hidden
+// behind one of those falls back to the opaque word scan (inspectOpaque),
+// which still catches a literal `git ... --no-verify` in the raw text.
+function powershellRole(words, budget) {
+  let i = 1;
+  while (i < words.length) {
+    const option = words[i].value;
+    budget.spend(option.length + 1);
+    if (option === '--' || option === '-') { i++; break; }
+    if (!/^-/.test(option)) break;
+    const lower = option.toLowerCase();
+    if (lower === '-command' || lower === '-c') {
+      // The script is the next operand, or all remaining words when unquoted.
+      const rest = words.slice(i + 1).map(word => word.value).join(' ');
+      return { kind: 'shell', code: rest || undefined, stdin: false };
+    }
+    if (lower === '-encodedcommand' || lower === '-e' || lower === '-ec') return { ...OPAQUE_SHELL };
+    if (lower === '-file' || lower === '-f') return { ...OPAQUE_SHELL };
+    if (lower === '-executionpolicy' || lower === '-ep' || lower === '-windowstyle' || lower === '-workingdirectory' || lower === '-inputformat' || lower === '-outputformat' || lower === '-configurationname') { i += 2; continue; }
+    if (lower === '-noprofile' || lower === '-noninteractive' || lower === '-nologo' || lower === '-sta' || lower === '-mta') { i++; continue; }
+    return { ...OPAQUE_SHELL };
+  }
+  // No -Command/-File: a script filename and its arguments are not shell source.
+  return { kind: 'shell', stdin: i === words.length };
+}
+
+// cmd.exe: `/c` (or `/k`) runs the rest of the line as the command; anything
+// else is opaque. Best-effort (fix #24, C-1): cmd quoting/expansion is not modeled.
+function cmdRole(words, budget) {
+  let i = 1;
+  while (i < words.length) {
+    const option = words[i].value;
+    budget.spend(option.length + 1);
+    const lower = option.toLowerCase();
+    if (lower === '/c' || lower === '/k') {
+      const rest = words.slice(i + 1).map(word => word.value).join(' ');
+      return { kind: 'shell', code: rest || undefined, stdin: false };
+    }
+    if (lower === '/d' || lower === '/q') { i++; continue; }
+    return { ...OPAQUE_SHELL };
+  }
+  return { kind: 'shell', stdin: i === words.length };
+}
+
 function shellRole(words, budget, shell) {
   let i = 1;
   let stdin = false;
@@ -790,6 +840,10 @@ function commandRole(words, budget) {
   const name = basename(words[0].value);
   if (isGitExecutable(words[0].value)) return { kind: 'git' };
   if (SHELLS.has(name)) return shellRole(words, budget, name);
+  // fix #24 (C-1): PowerShell/cmd wrappers (POSIX SHELLS set above is not them).
+  const lowerName = name.toLowerCase();
+  if (lowerName === 'powershell' || lowerName === 'powershell.exe' || lowerName === 'pwsh' || lowerName === 'pwsh.exe') return powershellRole(words, budget);
+  if (lowerName === 'cmd' || lowerName === 'cmd.exe') return cmdRole(words, budget);
   if (name === 'eval') {
     for (const word of words) budget.spend(word.value.length + 3);
     return { kind: 'shell', code: words.slice(words[1]?.value === '--' ? 2 : 1).map(word => word.value).join(' '), stdin: false };
@@ -1189,7 +1243,7 @@ function extractCommand(rawInput) {
       return trimmed;
     }
 
-    // Claude Code format: { tool_input: { command: "..." } }
+    // Cursor format: { tool_input: { command: "..." } }
     const cmd = parsed.tool_input?.command;
     if (typeof cmd === 'string') {
       return cmd;

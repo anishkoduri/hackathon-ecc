@@ -4,7 +4,7 @@ description: Comprehensive Vue.js code review for Composition API correctness, r
 
 # Vue Code Review
 
-This command invokes the **vue-reviewer** agent for Vue-specific code review. For pull requests touching `.vue` files or Vue-containing `.ts`/`.js` files, both `vue-reviewer` and `typescript-reviewer` should run — each owns a distinct lane.
+This command invokes the **vue-reviewer** agent for Vue-specific code review. For pull requests touching `.vue` files or Vue-containing `.ts`/`.js` files, both `vue-reviewer` agent (`agents/ecc-vue-reviewer.md`) and `typescript-reviewer` agent (`agents/ecc-typescript-reviewer.md`) should run — each owns a distinct lane.
 
 ## What This Command Does
 
@@ -26,7 +26,7 @@ Use `/vue-review` when:
 - Auditing Vue Router guards and navigation
 - Reviewing Nuxt server routes or SSR-specific code
 
-For pure `.ts`/`.js` changes with no Vue imports, use `/code-review` (general) or invoke `typescript-reviewer` directly.
+For pure `.ts`/`.js` changes with no Vue imports, use `/code-review` (general) or invoke `typescript-reviewer` agent (`agents/ecc-typescript-reviewer.md`) directly.
 
 ## Scope vs `/code-review` and TypeScript Review
 
@@ -37,7 +37,7 @@ For pure `.ts`/`.js` changes with no Vue imports, use `/code-review` (general) o
 | `security-reviewer` | Project-wide security audit |
 | `/code-review` | Generic uncommitted-changes or PR review |
 
-On a `.vue` / Vue-related PR, invoke both `vue-reviewer` and `typescript-reviewer`. Findings from each are non-overlapping by design.
+On a `.vue` / Vue-related PR, invoke both `vue-reviewer` agent (`agents/ecc-vue-reviewer.md`) and `typescript-reviewer` agent (`agents/ecc-typescript-reviewer.md`). Findings from each are non-overlapping by design.
 
 ## Review Categories
 
@@ -168,7 +168,7 @@ Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 
 ## Related
 
-- Agent: `agents/ecc-vue-reviewer.md`
-- Companion agent: `agents/ecc-typescript-reviewer.md` (run alongside for Vue-related TS/JS)
+- Agent: `vue-reviewer` (`agents/ecc-vue-reviewer.md`)
+- Companion agent: `typescript-reviewer` (`agents/ecc-typescript-reviewer.md`) (run alongside for Vue-related TS/JS)
 - Skills: `skills/vue-patterns/`
 - Rules: `rules/vue-*.mdc`

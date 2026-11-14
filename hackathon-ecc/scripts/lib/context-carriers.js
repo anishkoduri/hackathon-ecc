@@ -11,10 +11,6 @@ const {
 
 const INPUT_KEYS = new Set(['repoRoot', 'profileId', 'selectionMode', 'target', 'include', 'exclude']);
 const LAYOUTS = Object.freeze({
-  claude: { id: 'claude-plugin@1', skillRoot: 'skills', manifestPath: '.claude-plugin/plugin.json' },
-  codex: { id: 'codex-plugin@1', skillRoot: 'skills', manifestPath: '.codex-plugin/plugin.json' },
-  pi: { id: 'pi-package@1', skillRoot: 'skills', manifestPath: 'package.json' },
-  opencode: { id: 'opencode-project@1', skillRoot: '.opencode/skills', manifestPath: null },
   cursor: { id: 'cursor-project@1', skillRoot: '.cursor/skills', manifestPath: null },
 });
 const SHA256 = /^[a-f0-9]{64}$/;
@@ -91,20 +87,11 @@ function copyDescriptors(entries, layout) {
 
 // New, allowlisted discovery manifests. Never inherit source hooks, MCP, commands,
 // package scripts, or Pi extensions. OpenCode/Cursor use native project directories.
+// New, allowlisted discovery manifests. Cursor uses native project
+// directories, so no generated manifest is needed (the carrier
+// installs skills directly under `.cursor/skills`).
 function generatedManifest(target, layout) {
-  if (!layout.manifestPath) return [];
-  const name = 'ecc-context-carrier';
-  const manifests = {
-    claude: { name, skills: ['./skills/'] },
-    codex: { name, skills: './skills/' },
-    pi: { name, private: true, pi: { skills: ['./skills'] } },
-  };
-  const content = `${stableStringify(manifests[target])}\n`;
-  return [{
-    kind: 'generated', destinationPath: layout.manifestPath, content, encoding: 'utf8',
-    digest: crypto.createHash('sha256').update(content, 'utf8').digest('hex'),
-    bytes: Buffer.byteLength(content, 'utf8'),
-  }];
+  return [];
 }
 
 function validateDestinations(files) {

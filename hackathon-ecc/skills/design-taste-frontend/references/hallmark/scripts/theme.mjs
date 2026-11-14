@@ -467,7 +467,7 @@ const CUSTOM_TOKENS = `  --color-paper: FILL ME; --color-paper-2: FILL ME; --col
   --color-ink: FILL ME; --color-ink-2: FILL ME; --color-muted: FILL ME;
   --color-rule: FILL ME;
   --color-accent: FILL ME; --color-accent-ink: FILL ME; --color-focus: FILL ME;
-  --font-display: "FILL ME", ui-serif, serif; --font-body: "FILL ME", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);
+  --font-display: "FILL ME"; --font-body: "FILL ME"; --font-outlier: var(--font-body);
   --radius-card: 4px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.02em;`;
 

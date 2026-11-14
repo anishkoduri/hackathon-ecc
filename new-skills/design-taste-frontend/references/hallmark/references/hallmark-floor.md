@@ -17,6 +17,8 @@ numbers (14 retired, never reused) + 26 Finish checks F1-F26 — see
 `references/gates.md` §4-§5. (Note: older write-ups say "57 gates"; that
 count does not match v2.0.0.)
 
+**Element variety, all theme-matched.** Every build applies design elements across a wide variety of kinds — treatments, moments, effects, diagrams, components, motion, and type moments — never all of one kind: a build whose new elements are all one kind has not met this rule. Every element, of whatever kind, must match the dealt theme (its material, tokens, palette balance, and do-nots): theme-match is a precondition, not a preference — an element that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element. Every element application is recorded per surface in `docs/design-tokens.md` (surface → elements applied, kind, theme-fit).
+
 1. Every colour and every font goes through a token declared at `:root`
    (or a declared theme block). No literal colour or `font-family` past
    the token block. (48)

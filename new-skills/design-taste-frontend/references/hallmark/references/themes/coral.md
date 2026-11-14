@@ -28,8 +28,8 @@ A warm, plain product voice made physical: fine stationery on a felt desk, seen 
   --color-board: oklch(22% 0.011 40); --color-board-type: oklch(96.5% 0.006 70); --color-paid: oklch(55.5% 0.15 33);
   --tex-cotton: url("cotton.svg"); --tex-desk: url("felt.svg");
   --shade: 32% 0.03 50; --lit: 100% 0.005 80; --deep: 7% 0.01 40;
-  --font-display: "General Sans", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "General Sans"; --font-body: var(--font-display);
+  --font-outlier: "Geist Mono";
   --radius-card: 8px; --radius-input: 6px; --radius-pill: 999px; --radius-stock: 8px; --rule-hair: 1px;
   --shadow-card: 0 1px 2px oklch(20% 0.01 35 / 0.05);
   --edge-stock: inset 0 1px 0 oklch(var(--lit) / 0.9), inset 0 -1px 0 oklch(var(--shade) / 0.07), 0 0 0 0.5px oklch(var(--shade) / 0.22), 0 1px 0 oklch(var(--shade) / 0.12);

@@ -23,7 +23,7 @@ Production-grade patterns for background task processing in Django using Celery 
 ### Installation
 
 ```bash
-pip install 'celery[redis]' django-celery-results django-celery-beat
+pip install 'celery[redis]==5.7.0' django-celery-results==2.6.0 django-celery-beat==2.9.0
 ```
 
 ### `celery.py` — App Entrypoint
@@ -408,7 +408,7 @@ celery -A config inspect reserved
 redis-cli llen celery
 
 # Flower: web-based real-time monitor
-pip install flower
+pip install flower==2.2.0
 celery -A config flower --port=5555
 ```
 

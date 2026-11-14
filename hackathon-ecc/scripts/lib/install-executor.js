@@ -21,7 +21,7 @@ const { getInstallTargetAdapter } = require('./install-targets/registry');
 const { resolveInvocationEnvironment } = require('./invocation-environment');
 
 const LANGUAGE_NAME_PATTERN = /^[a-zA-Z0-9_-]+$/;
-const CLAUDE_ECC_NAMESPACE = 'ecc';
+const ECC_NAMESPACE = 'ecc';
 
 function readDirectoryNames(dirPath) {
   if (!fs.existsSync(dirPath)) {
@@ -214,10 +214,10 @@ function isDirectoryNonEmpty(dirPath) {
   return fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory() && fs.readdirSync(dirPath).length > 0;
 }
 
-function planClaudeStyleLegacyInstall(context, { adapterId, adapterRootInput, rulesDir: rulesDirOverride }) {
+function planCursorStyleLegacyInstall(context, { adapterId, adapterRootInput, rulesDir: rulesDirOverride }) {
   const adapter = getInstallTargetAdapter(adapterId);
   const targetRoot = adapter.resolveRoot(adapterRootInput);
-  const rulesDir = rulesDirOverride || path.join(targetRoot, 'rules', CLAUDE_ECC_NAMESPACE);
+  const rulesDir = rulesDirOverride || path.join(targetRoot, 'rules', ECC_NAMESPACE);
   const installStatePath = adapter.getInstallStatePath(adapterRootInput);
   const operations = [];
   const warnings = [];
@@ -227,7 +227,7 @@ function planClaudeStyleLegacyInstall(context, { adapterId, adapterRootInput, ru
   }
 
   addRecursiveCopyOperations(operations, {
-    moduleId: 'legacy-claude-rules',
+    moduleId: 'legacy-cursor-rules',
     sourceRoot: context.sourceRoot,
     sourceRelativeDir: path.join('rules', 'common'),
     destinationDir: path.join(rulesDir, 'common')
@@ -246,7 +246,7 @@ function planClaudeStyleLegacyInstall(context, { adapterId, adapterRootInput, ru
     }
 
     addRecursiveCopyOperations(operations, {
-      moduleId: 'legacy-claude-rules',
+      moduleId: 'legacy-cursor-rules',
       sourceRoot: context.sourceRoot,
       sourceRelativeDir: path.join('rules', language),
       destinationDir: path.join(rulesDir, language)
@@ -263,24 +263,8 @@ function planClaudeStyleLegacyInstall(context, { adapterId, adapterRootInput, ru
     installStatePath,
     operations,
     warnings,
-    selectedModules: ['legacy-claude-rules']
+    selectedModules: ['legacy-cursor-rules']
   };
-}
-
-function planClaudeLegacyInstall(context) {
-  return planClaudeStyleLegacyInstall(context, {
-    adapterId: 'claude',
-    adapterRootInput: { homeDir: context.homeDir, env: context.env },
-    rulesDir: context.claudeRulesDir || null
-  });
-}
-
-function planClaudeProjectLegacyInstall(context) {
-  return planClaudeStyleLegacyInstall(context, {
-    adapterId: 'claude-project',
-    adapterRootInput: { repoRoot: context.projectRoot },
-    rulesDir: null
-  });
 }
 
 function planCursorLegacyInstall(context) {
@@ -375,88 +359,11 @@ function planCursorLegacyInstall(context) {
   };
 }
 
-function planAntigravityLegacyInstall(context) {
-  const adapter = getInstallTargetAdapter('antigravity');
-  const targetRoot = adapter.resolveRoot({ repoRoot: context.projectRoot });
-  const installStatePath = adapter.getInstallStatePath({ repoRoot: context.projectRoot });
-  const operations = [];
-  const warnings = [];
-
-  if (isDirectoryNonEmpty(path.join(targetRoot, 'rules'))) {
-    warnings.push(`Destination ${path.join(targetRoot, 'rules')}/ already exists and files may be overwritten`);
-  }
-
-  addMatchingRuleOperations(operations, {
-    moduleId: 'legacy-antigravity-install',
-    sourceRoot: context.sourceRoot,
-    sourceRelativeDir: path.join('rules', 'common'),
-    destinationDir: path.join(targetRoot, 'rules'),
-    matcher: fileName => fileName.endsWith('.md'),
-    rename: fileName => `common-${fileName}`,
-    contentTransform: 'antigravity-rule-frontmatter',
-  });
-
-  for (const language of context.languages) {
-    if (!LANGUAGE_NAME_PATTERN.test(language)) {
-      warnings.push(`Invalid language name '${language}'. Only alphanumeric, dash, and underscore are allowed`);
-      continue;
-    }
-
-    const sourceDir = path.join(context.sourceRoot, 'rules', language);
-    if (!fs.existsSync(sourceDir)) {
-      warnings.push(`rules/${language}/ does not exist, skipping`);
-      continue;
-    }
-
-    addMatchingRuleOperations(operations, {
-      moduleId: 'legacy-antigravity-install',
-      sourceRoot: context.sourceRoot,
-      sourceRelativeDir: path.join('rules', language),
-      destinationDir: path.join(targetRoot, 'rules'),
-      matcher: fileName => fileName.endsWith('.md'),
-      rename: fileName => `${language}-${fileName}`,
-      contentTransform: 'antigravity-rule-frontmatter',
-    });
-  }
-
-  addRecursiveCopyOperations(operations, {
-    moduleId: 'legacy-antigravity-install',
-    sourceRoot: context.sourceRoot,
-    sourceRelativeDir: 'commands',
-    destinationDir: path.join(targetRoot, 'workflows')
-  });
-  addRecursiveCopyOperations(operations, {
-    moduleId: 'legacy-antigravity-install',
-    sourceRoot: context.sourceRoot,
-    sourceRelativeDir: 'agents',
-    destinationDir: path.join(targetRoot, 'agents'),
-    contentTransform: 'antigravity-agent-frontmatter'
-  });
-  addRecursiveCopyOperations(operations, {
-    moduleId: 'legacy-antigravity-install',
-    sourceRoot: context.sourceRoot,
-    sourceRelativeDir: 'skills',
-    destinationDir: path.join(targetRoot, 'skills')
-  });
-
-  return {
-    mode: 'legacy',
-    adapter,
-    target: 'antigravity',
-    targetRoot,
-    installRoot: targetRoot,
-    installStatePath,
-    operations,
-    warnings,
-    selectedModules: ['legacy-antigravity-install']
-  };
-}
-
 function createLegacyInstallPlan(options = {}) {
   const sourceRoot = options.sourceRoot || getSourceRoot();
   const projectRoot = options.projectRoot || process.cwd();
   const homeDir = options.homeDir || process.env.HOME || os.homedir();
-  const target = options.target || 'claude';
+  const target = options.target || 'cursor';
 
   validateLegacyTarget(target);
 
@@ -466,18 +373,14 @@ function createLegacyInstallPlan(options = {}) {
     homeDir,
     env: options.env || {},
     languages: Array.isArray(options.languages) ? options.languages : [],
-    claudeRulesDir: options.claudeRulesDir || process.env.CLAUDE_RULES_DIR || null
+    cursorRulesDir: options.cursorRulesDir || process.env.CURSOR_RULES_DIR || null
   };
 
   let plan;
-  if (target === 'claude') {
-    plan = planClaudeLegacyInstall(context);
-  } else if (target === 'claude-project') {
-    plan = planClaudeProjectLegacyInstall(context);
-  } else if (target === 'cursor') {
+  if (target === 'cursor') {
     plan = planCursorLegacyInstall(context);
   } else {
-    plan = planAntigravityLegacyInstall(context);
+    throw new Error(`Unknown legacy install target: ${target}`);
   }
 
   const source = {
@@ -526,7 +429,7 @@ function createLegacyInstallPlan(options = {}) {
 function createLegacyCompatInstallPlan(options = {}) {
   const sourceRoot = options.sourceRoot || getSourceRoot();
   const projectRoot = options.projectRoot || process.cwd();
-  const target = options.target || 'claude';
+  const target = options.target || 'cursor';
   const includeComponentIds = Array.isArray(options.includeComponentIds) ? [...options.includeComponentIds] : [];
   const excludeComponentIds = Array.isArray(options.excludeComponentIds) ? [...options.excludeComponentIds] : [];
 

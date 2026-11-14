@@ -24,8 +24,8 @@ A printer's bill: grained buff stock, near-black ink, Six Caps fitted to the mea
   --color-ink: oklch(18% 0.01 50); --color-ink-2: oklch(30% 0.012 50); --color-muted: oklch(43% 0.02 62);
   --color-rule: oklch(75% 0.028 82);
   --color-accent: oklch(53% 0.19 33); --color-accent-ink: oklch(95.5% 0.018 88); --color-focus: oklch(53% 0.19 33);
-  --font-display: "Six Caps", "Impact", sans-serif; --font-display-2: "Bevan", Georgia, serif;
-  --font-body: "Archivo Narrow", "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-display: "Six Caps", "Impact"; --font-display-2: "Bevan", Georgia;
+  --font-body: "Archivo Narrow", "Arial Narrow";
   --font-outlier: var(--font-body);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 5px; --rule-frame: 3px;
   --shadow-card: none;

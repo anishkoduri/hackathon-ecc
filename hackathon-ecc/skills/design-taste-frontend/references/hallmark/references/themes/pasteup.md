@@ -24,7 +24,7 @@ A hand-made flyer: kraft board, near-black toner, League Gothic capitals at post
   --color-ink: oklch(17% 0.01 60); --color-ink-2: oklch(24% 0.014 60); --color-muted: oklch(28% 0.026 62);
   --color-rule: oklch(50% 0.055 68); --color-rule-2: oklch(84% 0.012 85);
   --color-accent: oklch(93% 0.2 112); --color-accent-ink: oklch(17% 0.01 60); --color-focus: oklch(17% 0.01 60);
-  --font-display: "League Gothic", Impact, sans-serif; --font-body: "Newsreader", Georgia, serif;
+  --font-display: "League Gothic", Impact; --font-body: "Newsreader", Georgia;
   --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 1px 0 oklch(18% 0.01 60 / 0.2), 0 4px 10px oklch(18% 0.01 60 / 0.12);
   --shadow-sheet: 0 14px 30px oklch(18% 0.01 60 / 0.26), 0 2px 4px oklch(18% 0.01 60 / 0.14);

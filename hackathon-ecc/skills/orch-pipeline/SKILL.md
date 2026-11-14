@@ -57,19 +57,20 @@ contract is **at least** standard, regardless of file count.
 
 ## The phases
 
-Each phase delegates — it does not do the work inline.
+Each phase delegates — it does not do the work inline. **Binding routing (fix #20 BIND/INNOV):** each phase names its operating skill before delegating; a decision with no named skill is refused and routed; on-skill innovation passes with its D19 reason, off-skill improvisation fails.
 
 - **0. Intake** — restate the request. For `orch-build-mvp`, read `docs/decision-record.md` + `docs/scope.md` by default — the grill-me decision record and the scope output — and extract scope, locked decisions, and a feature list; if neither file exists, fall back to the spec/design doc (or the raw prompt with a stated assumption) — never ask the user for a path during a first build. The pipeline ingests the record/scope at Phase 0; they are the handoff from grill-me and hackathon-scope. Numbering: Phases 0–6 here are orch-pipeline phases — not orch-build-mvp steps (which map 1:1 onto them: orch-build-mvp steps 1/3/4/6/7 are Phases 0–2/3/4/5/6) and not feature-expansion phases.
 - **1. Research & Reuse** — per `rules/common-development-workflow.mdc`: `gh search repos` /
   `gh search code`, then Context7 / vendor docs, then package registries, then
   Exa. Prefer adopting a proven implementation over net-new code.
-- **2. Plan** — delegate to the `architect` agent (or `code-architect` for structural decisions). Output a `task_list` ordered as
+- **2. Plan** — delegate to the `architect` agent (`agents/ecc-architect.md`) (or `code-architect` agent (`agents/ecc-code-architect.md`) for structural decisions). Output a `task_list` ordered as
   thin vertical slices. → **GATE 1** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature).
 - **3. Scaffold** — `orch-build-mvp` only: stand up the first end-to-end slice.
 - **4. Implement (TDD)** — drive each task through the `tdd-guide` agent (or the `tdd-workflow` skill):
-  red → green → refactor. Honor the operation's first-move rule. **Belief in the brief:** implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall. In a standalone `orch-build-mvp` run, this phase builds the approved expansions per the feature-expansion Phase 4 brief format (Tool/API cell + UI rule + capped 2-round fix loop + per-feature `code-reviewer` pass).
+  red → green → refactor. Honor the operation's first-move rule. **Belief in the brief:** implementers trust the brief and build it — they do not second-guess the plan, hedge, or wait for reassurance; they commit to the approach and make it work; if a detail is ambiguous, they pick the reasonable option and note it, they don't stall. In a standalone `orch-build-mvp` run, this phase builds the approved expansions per the feature-expansion Phase 4 brief format (Tool/API cell + UI rule + capped 2-round fix loop + per-feature `code-reviewer` agent (`agents/ecc-code-reviewer.md`) pass).
 - **5. Review** — `code-reviewer` agent / `/code-review`. Add `security-reviewer`
   whenever the diff touches a security trigger (below). On any diff that touches a UI surface, the reviewer ALWAYS runs regardless of size (UI diffs are not exempt from review) and checks the direction is RECORDED — a named direction in `docs/design-tokens.md` / the decision record, present in the diff, with tokens tracing to it in the changed code; a missing record is a finding, minor at least. The reviewer does NOT judge the built screens (it receives only the diff). Screen-level distinctiveness is judged ONLY by `browser-qa`'s visual loop, which runs on the rebuilt surface after the reviewer pass: enumerate the touched screens, inspect the rendered UI (desktop + mobile), and apply the distinctiveness bar (orchestrate SKILL.md Verify step 5) — a finding, minor at least, when screens carry no named direction, no applied theme/tokens, read as a default template, or are derivative (the design is based on a searched external reference); findings route to the capped 2-round fix loop (max 3 rounds total); if the app cannot run, record that as blocked with evidence instead of iterating.
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 - **6. Commit** — conventional commits (`feat:` / `fix:` / `refactor:` / …), one
   per logical chunk. → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature). (Orch-pipeline Phase 6 = Commit — not orch-build-mvp step 6, which is Verify, and not feature-expansion Phase 6, which feeds the final report; orch-build-mvp step 5 is Reconcile, which has no orch-pipeline phase of its own.)
 
@@ -95,7 +96,7 @@ Everything between the gates flows without stopping.
 | Security | `security-reviewer` | — |
 | MVP inner loop | `/gan-build "<brief>" --skip-planner` | drives `gan-generator` → `gan-evaluator`; tune `--max-iterations` / `--pass-threshold` |
 
-Match the language reviewer to the repo (see the repo's own `CLAUDE.md`).
+Match the language reviewer to the repo (see the repo's own `AGENTS.md`).
 
 ## Security-review trigger
 
@@ -117,6 +118,6 @@ The pipeline carries no hidden state — the planning docs *are* the handoff:
 - size tier was stated and matched the work
 - Gate 1 (plan) and Gate 2 (commit) were both honored (or auto-approved during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature)
 - `security-reviewer` ran iff a security trigger was touched
-- UI work (if any): the design package was named in the brief, the direction is recorded, and the distinctiveness bar passed or its findings were fixed within the caps (finding, minor at least, when screens carry no named direction, no applied theme/tokens, read as a default template, or are derivative — the design is based on a searched external reference)
+- UI work (if any): the design package was named in the brief, the direction is recorded, the design inventory was read before deciding (used vs considered-and-rejected recorded, INVENTORY_F23), and the distinctiveness bar passed or its findings were fixed within the caps (finding, minor at least, when screens carry no named direction, no applied theme/tokens, read as a default template, or are derivative — the design is based on a searched external reference)
 - commits are conventional and scoped to one logical change
 - new / changed behavior has tests; coverage ≥ 80% per `rules/common-testing.mdc`

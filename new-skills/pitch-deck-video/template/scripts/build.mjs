@@ -332,7 +332,7 @@ try {
   reconcileNarration();
 
   const s = Date.now();
-  run('npx', ['remotion@4.0.542', 'render', 'src/index.ts', 'Demo', 'out/demo.mp4',
+  run('npx', ['-p', '@remotion/cli@4.0.526', 'remotion', 'render', 'src/index.ts', 'Demo', 'out/demo.mp4',
     '--concurrency=8', '--jpeg-quality=92', '--crf=19', '--log=error']);
   lap('render', s);
 } finally {

@@ -2,7 +2,7 @@
 /**
  * Shared rendering helpers for the ECC usage bar statusline.
  *
- * Inspired by leeguooooo/claude-code-usage-bar (MIT). ECC re-implementation
+ * Inspired by an open-source usage-bar project (MIT). ECC re-implementation
  * with brand colors, hooks/plugin awareness, and no external dependencies.
  *
  * Colors use 256-color ANSI so macOS Terminal.app renders them correctly.
@@ -159,7 +159,7 @@ function buildUsageLine(rateLimits, cacheStats, { compact = false } = {}) {
  */
 function buildSessionLine(info) {
   const parts = [];
-  let model = `${C.amber}${G.star} ${info.model || 'Claude'}${C.reset}`;
+  let model = `${C.amber}${G.star} ${info.model || 'Cursor'}${C.reset}`;
   const badges = [];
   if (info.effort && info.effort !== 'high') badges.push(info.effort);
   if (info.fastMode) badges.push('fast');
@@ -238,20 +238,19 @@ function pluginEnablement(files) {
  * User and applicable project/local plugin metadata for the current Git root.
  * Project-local enablement overrides shared-project and selected user settings.
  * This display helper does not reproduce managed or per-session host policy.
- * @param {string} [claudeDir] selected profile root
+ * @param {string} [agentDataDir] selected profile root
  * @param {string} [workspace] current working directory
  * @returns {Array<{name: string, version: string}>}
  */
-function readInstalledPlugins(claudeDir, workspace) {
+function readInstalledPlugins(agentDataDir, workspace) {
   try {
-    const dir = claudeDir || process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+    const dir = agentDataDir || process.env.ECC_AGENT_DATA_HOME || path.join(os.homedir(), '.cursor', 'ecc');
     const installed = JSON.parse(
       fs.readFileSync(path.join(dir, 'plugins', 'installed_plugins.json'), 'utf8')
     );
     const project = pluginProjectRoot(workspace);
     const normalized = value => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
-    const enabled = pluginEnablement([path.join(dir, 'settings.json'),
-      path.join(project, '.claude', 'settings.json'), path.join(project, '.claude', 'settings.local.json')]);
+    const enabled = pluginEnablement([path.join(dir, 'settings.json')]);
     const ranks = { user: 0, project: 1, local: 2 };
     const applicable = entry => entry && typeof entry === 'object' &&
       ((!entry.scope || entry.scope === 'user') ||

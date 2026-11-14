@@ -11,8 +11,8 @@ const { getInstallTargetAdapter } = require('../install-targets/registry');
 /**
  * Upgrade reconciliation for excluded source paths (issue #3116).
  *
- * Adapters can declare `excludedSourcePaths` (today: `.agents` for the Claude
- * and Codex home targets). The exclusion stops new copy operations from being
+ * Adapters can declare `excludedSourcePaths` (today: `.agents` for the Cursor
+ * targets). The exclusion stops new copy operations from being
  * planned, but a home install created before the exclusion still has the
  * copied files on disk and the copy operations recorded in install-state, so
  * doctor keeps reporting drift and repair keeps restoring files the target

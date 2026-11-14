@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Claude Code-only: consolidates PostToolUse hooks into one synchronous and one asynchronous
+ * Upstream-only: consolidates PostToolUse hooks into one synchronous and one asynchronous
  * entrypoint while preserving each hook's ID, matcher, profile, and output.
  * Not wired in this Cursor plugin — it never runs (see skills/continuous-learning-v2/SKILL.md and commands/quality-gate.md).
  */
@@ -70,7 +70,7 @@ const ASYNC_HOOKS = [
 ];
 
 function getPluginRoot(env = process.env) {
-  return env.CLAUDE_PLUGIN_ROOT || env.ECC_PLUGIN_ROOT || path.resolve(__dirname, '..', '..');
+  return env.ECC_PLUGIN_ROOT || env.ECC_PLUGIN_ROOT || path.resolve(__dirname, '..', '..');
 }
 
 function matchesTool(matcher, toolName) {
@@ -275,7 +275,7 @@ function runHooks(raw, hooks, options = {}) {
   const merged = mergeHookStdout(outputs);
   if (merged.warning) stderr = appendLine(stderr, merged.warning);
   const mergedDecision = parseStructuredOutput(merged.stdout);
-  // Structured blocking decisions must reach Claude on a successful command
+  // Structured blocking decisions must reach Cursor on a successful command
   // hook exit. An unrelated sibling hook failure must not downgrade the block
   // into a generic non-blocking hook error.
   const finalExitCode = mergedDecision?.isBlocked ? 0 : exitCode;

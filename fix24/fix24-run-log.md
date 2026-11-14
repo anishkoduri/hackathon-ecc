@@ -1,0 +1,120 @@
+# fix24 run log
+
+## Errors (0)
+- none
+
+## Changes (114)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/motion-patterns/SKILL.md — '5. **Stagger interval must stay between `0.05s` and `0.10s`.** Below feels mecha' -> '5. **Stagger interval must stay between `0.05s` and `0.10s`.** Below feels mecha'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/motion-patterns/SKILL.md — '`motionTokens.duration.staggerRow` (0.03s — under the AB-03 conflict flag vs\nRul' -> '`motionTokens.duration.staggerRow` (0.03s — per-row settle steps under B3; Rule '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/motion-patterns/SKILL.md — 'exits at `motionTokens.exitFactor`\n(0.8× the enter — under the AB-03 conflict fl' -> 'exits at `motionTokens.exitFactor`\n(0.8× the enter — `motionTokens.exitFactor` ('
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/motion-foundations/SKILL.md — '    staggerRow: 0.03, // B3 (fix #22): list rows stagger by 30ms per row. CONFLI' -> '    staggerRow: 0.03, // B3 (fix #22): list rows stagger by 30ms per row. Adjudi'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/motion-foundations/SKILL.md — '  exitFactor: 0.8, // B15 (fix #22): exits run 20% shorter than their enter — ex' -> '  exitFactor: 0.8, // B15 (fix #22): exits run 20% shorter than their enter — ex'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/references/quick-reference.md — '- `exit-faster-than-enter` - Exit animations shorter than enter (~60–70% of ente' -> '- `exit-faster-than-enter` - Exit animations shorter than enter (~60–70% of ente'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/SKILL.md — 'Every component entry in `design-system/<project-slug>/MASTER.md` records its di' -> 'Every component entry in `design-system/<project-slug>/MASTER.md` records its di'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/SKILL.md — 'Motion is recorded in the decision record with its D19 reason (Motion dimension)' -> 'Motion is recorded in the decision record with its D19 reason (Motion dimension)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/less-flat-ui/SKILL.md — 'Record the treatment per surface in\n`docs/design-tokens.md` like every other tre' -> 'Record the treatment per surface in\n`docs/design-tokens.md` like every other tre'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/plankton-code-quality/SKILL.md — '```bash\n# Install core dependencies\nbrew install jaq ruff uv\n\n# Install Python l' -> 'Windows (PowerShell) first — the plugin runs on Windows:\n```powershell\n# Install'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/plankton-code-quality/SKILL.md — 'No install command, no plugin config. The hooks in `.ecc/settings.json` are pick' -> 'No install command, no plugin config. The hooks in `.ecc/settings.json` are pick'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/auto-update.md — '```bash\n# Preview the update without mutating anything' -> 'Windows (PowerShell):\n```powershell\n# Preview the update without mutating anythi'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ecc-recipes/SKILL.md — '```bash\nfor D in \\\n  "$HOME"/.cursor/plugins/local/hackathon-ecc/commands' -> 'Windows (PowerShell):\n```powershell\n$cmdDir = $null\nforeach ($D in @("$env:USERP'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-opensource-packager.md — 'After writing, make it executable: `chmod +x setup.sh`' -> 'After writing, make it executable: `chmod +x setup.sh` (macOS/Linux; on Windows '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-swift-reviewer.md — 'if command -v swiftlint >/dev/null 2>&1; then swiftlint lint --quiet; else echo ' -> 'if command -v swiftlint >/dev/null 2>&1; then swiftlint lint --quiet; else echo '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/demo.md — "When narration needs a key and none is set, the skill's narration-key prompt app" -> "When narration needs a key and none is set, the skill's narration-key prompt app"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/demo.md — 'If the dispatch says no key was received, use the key if present, else fall back' -> 'If the dispatch carries no key, check the environment once for `ELEVENLABS_API_K'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/orchestrate.md — '**Show the plan first** — your decomposition and the route each piece takes — th' -> '**Show the plan first** (after grill-me and the narration-key prompt on a first '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-build-mvp/SKILL.md — 'Do NOT re-prompt at `/demo` time: the single early prompt covers the run, and a ' -> 'Do NOT re-prompt at `/demo` time: the single early prompt covers the run, and a '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-build-mvp/SKILL.md — 'If the user asked for one, film the LOCAL app from the project dir after deploy ' -> 'If the user asked for one, film the LOCAL app from the project dir after deploy '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-build-mvp/SKILL.md — "(slug form only — never bracket syntax; select Grok 4.7 High in Cursor's model p" -> '(slug form only — never bracket syntax; see the picker note in orchestrate SKILL'
+- agent map: 69 ecc-* agents (name != filename)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/cpp-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/cpp-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/flutter-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/flutter-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/flutter-test.md — dual-cited 2 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/go-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/go-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/kotlin-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/kotlin-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/python-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/react-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/react-review.md — dual-cited 2 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/rust-build.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/rust-review.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/security-scan.md — dual-cited 1 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/vue-review.md — dual-cited 2 Agent path line(s)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/fastapi-review.md:7 — house form: 'Invoke the `fastapi-reviewer` agent for a focused FastAPI review.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/feature-dev.md:17 — house form: '- use `code-explorer` to analyze the relevant existing code'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/feature-dev.md:29 — house form: '- use `code-architect` to design the feature'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/feature-dev.md:41 — house form: '- use `code-reviewer` to review the implementation'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/gan-build.md:25 — house form: "1. Launch the `gan-planner` agent as a Cursor subagent with the user's brief, plus the design direct"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/hookify.md:18 — house form: '- Without arguments: use the `conversation-analyzer` agent to find:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/orch-refine-code.md:33 — house form: 'delegate to `refactor-cleaner`.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/react-review.md:7 — house form: 'This command invokes the **react-reviewer** agent for React-specific code review. For pull requests '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/react-review.md:28 — house form: 'For pure `.ts`/`.js` changes with no React imports, use `/code-review` (general) or invoke `typescri'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/react-review.md:39 — house form: 'On a TSX/JSX PR, invoke both `react-reviewer` and `typescript-reviewer`. Findings from each are non-'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/vue-review.md:7 — house form: 'This command invokes the **vue-reviewer** agent for Vue-specific code review. For pull requests touc'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/vue-review.md:29 — house form: 'For pure `.ts`/`.js` changes with no Vue imports, use `/code-review` (general) or invoke `typescript'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/vue-review.md:40 — house form: 'On a `.vue` / Vue-related PR, invoke both `vue-reviewer` and `typescript-reviewer`. Findings from ea'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/postgres-patterns/SKILL.md:10 — house form: 'Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` ag'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/story-lifecycle/SKILL.md:332 — house form: '5. **Tests first**: use `tdd-workflow` (or the `tdd-guide` agent) to turn the acceptance'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/story-lifecycle/SKILL.md:337 — house form: 'from project files; fall back to `code-reviewer`), then run `verification-before-completion`'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/brownfield-retrospective/SKILL.md:81 — house form: '1. Mine the behavioral spec: run `spec-miner` against the slice. Its Requirements (WHEN → THEN) and '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/brownfield-retrospective/SKILL.md:88 — house form: '4. Where behavior is opaque, use `code-explorer` to trace execution paths before guessing at intent.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/brownfield-retrospective/SKILL.md:118 — house form: '1. Run `architect` or `code-architect` over the `P0` and `P1` rows to produce `target-design.md`: ta'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-build-mvp/SKILL.md:70 — house form: '6. **Verify — orch-pipeline Phase 5 (Review) + expansion Phase 5.** `code-reviewer` (+ `security-rev'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-pipeline/SKILL.md:66 — house form: '- **2. Plan** — delegate to the `architect` agent (or `code-architect` for structural decisions). Ou'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-pipeline/SKILL.md:70 — house form: "red → green → refactor. Honor the operation's first-move rule. **Belief in the brief:** implementers"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-refine-code/SKILL.md:32 — house form: '2. For dead-code / duplication sweeps, delegate to the `refactor-cleaner` agent'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/opensource-pipeline/SKILL.md:59 — house form: 'Spawn the `opensource-forker` agent as a Cursor subagent with this prompt:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/opensource-pipeline/SKILL.md:99 — house form: 'Spawn the `opensource-sanitizer` agent as a Cursor subagent with this prompt:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/opensource-pipeline/SKILL.md:151 — house form: 'Spawn the `opensource-packager` agent as a Cursor subagent with this prompt:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:12 — house form: '**The skill is split across the first build — it is NO LONGER invoked whole at one step.** Phases 0–'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:48 — house form: '3. On an explicit ask after the first build: map what is actually built — entry points, data model, '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:136 — house form: 'Dispatch implementers per approved feature, following the execution pattern below. This is the only '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:159 — house form: '**Build breaks.** A build or type error during implementation goes to the `build-fix` command or the'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:191 — house form: '| Understanding the codebase before brainstorming | `code-explorer` (agent — spawn as a subagent), `'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:193 — house form: '| Build errors during implementation | `build-fix`, `build-error-resolver` (agent — spawn as a subag'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:194 — house form: '| Design questions on a feature | `architect` (agent — spawn as a subagent), `code-architect` (agent'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md:212 — house form: '- **Subagent-Driven Development** (`obra/superpowers`, MIT) — the task-loop mechanics used in Phase '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orchestrate/SKILL.md:96 — house form: '- **5a. Verify** — the Verification stage (expansion Phase 5 runs here: the expansion checks BY NAME'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orchestrate/SKILL.md:261 — house form: 'Verify step 2. **Not cheaply verifiable** (and below the step-3 line) → spawn a **blind `code-review'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orchestrate/SKILL.md:268 — house form: '**Verify step 4b. Adversarial audit (a distinct named step — after the reviewer pass, before deploy)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-code-review.mdc:45 — house form: '**STOP and use security-reviewer agent when:** — except during a hackathon first build after grill-m'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/react-native-testing.mdc:52 — house form: 'Use the `tdd-guide` agent proactively for new features: write a failing test that captures the behav'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/react-security.mdc:179 — house form: '- Use `security-reviewer` agent for comprehensive security audits across the codebase'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/react-security.mdc:180 — house form: '- Use `react-reviewer` agent for React-specific patterns and the above rules in active code review'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| architect | Implementation planning | Complex features, refactoring |\n| archit' -> '| architect (`agents/ecc-architect.md`) | Implementation planning + system desig'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| tdd-guide | Test-driven development | New features, bug fixes |' -> '| tdd-guide (`agents/ecc-tdd-guide.md`) | Test-driven development | New features'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| code-reviewer | Code review | After writing code |' -> '| code-reviewer (`agents/ecc-code-reviewer.md`) | Code review | After writing co'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| security-reviewer | Security analysis | Before commits |' -> '| security-reviewer (`agents/ecc-security-reviewer.md`) | Security analysis | Be'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| build-error-resolver | Fix build errors | When build fails |' -> '| build-error-resolver (`agents/ecc-build-error-resolver.md`) | Fix build errors'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| e2e-runner | E2E testing | Critical user flows |' -> '| e2e-runner (`agents/ecc-e2e-runner.md`) | E2E testing | Critical user flows |'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| refactor-cleaner | Dead code cleanup | Code maintenance |' -> '| refactor-cleaner (`agents/ecc-refactor-cleaner.md`) | Dead code cleanup | Code'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '| doc-updater | Documentation | Updating docs |' -> '| doc-updater (`agents/ecc-doc-updater.md`) | Documentation | Updating docs |'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '1. Complex feature requests — Use **architect** agent, but only when the work sp' -> '1. Complex feature requests — Use **architect** agent (`agents/ecc-architect.md`'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '2. Code just written/modified - Use **code-reviewer** agent' -> '2. Code just written/modified - Use **code-reviewer** agent (`agents/ecc-code-re'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '3. Bug fix or new feature - Use **tdd-guide** agent' -> '3. Bug fix or new feature - Use **tdd-guide** agent (`agents/ecc-tdd-guide.md`)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '4. Architectural decision — Use **architect** agent, but only when the work span' -> '4. Architectural decision — Use **architect** agent (`agents/ecc-architect.md`),'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/common-agents.mdc — '## Parallel Task Execution' -> '## If a named agent does not resolve (fix #24)\n\nCursor may resolve agents by fro'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/SKILL.md — 'Spawn a Cursor subagent (general-purpose) with the actual JSON emitted by Phase ' -> 'Spawn a Cursor subagent (general subagent) with the actual JSON emitted by Phase'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/SKILL.md — 'Launch a general-purpose Agent with the following prompt:' -> 'Launch a general subagent with the following prompt:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/gan-build.md — 'INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction t' -> 'dispatch to the design skill for that surface — `design-taste-frontend` for a la'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/gan-design.md — 'INVOKE the design-lead (model `grok-4.7-high`) first to generate the direction t' -> 'dispatch to the design skill for that surface — `design-taste-frontend` for a la'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — '|   * agents/ecc-refactor-cleaner.md           |' -> '|   * `refactor-cleaner` (`agents/ecc-refactor-cleaner.md`) |'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — "the trio identical to the previous build's trio with no recorded reuse reason" -> "the trio (`TRIO_F23`) identical to the previous build's trio with no recorded re"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — 'Full checklist (candidate evidence): `polish-pass` reference/alignment.md (`ALIG' -> 'Full checklist (candidate evidence): `polish-pass` reference/alignment.md (`ALIG'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/block-no-verify.js — 'function shellRole(words, budget, shell) {' -> '// --- PowerShell / cmd wrappers (fix #24, C-1) --------------------------------'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/block-no-verify.js — "const SHELLS = new Set(['sh', 'bash', 'dash', 'zsh', 'ksh']);" -> "const SHELLS = new Set(['sh', 'bash', 'dash', 'zsh', 'ksh']); // POSIX shells on"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/block-no-verify.js — '  if (SHELLS.has(name)) return shellRole(words, budget, name);' -> '  if (SHELLS.has(name)) return shellRole(words, budget, name);\n  // fix #24 (C-1'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/auto-tmux-dev.js — ' * Auto-Tmux Dev Hook — Upstream-only (not wired in this Cursor plugin — Cursor ' -> ' * Auto-Tmux Dev Hook — Upstream-only (not wired in this Cursor plugin — Cursor '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/desktop-notify.js — ' * Desktop Notification Hook (Stop) — Upstream-only (not wired in this Cursor pl' -> ' * Desktop Notification Hook (Stop) — Upstream-only (not wired in this Cursor pl'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "  const commandParity = safeRead(rootDir, '.opencode/commands/harness-audit.md')" -> "  // fix #24 (D-8): '.opencode/commands/harness-audit.md' is an upstream-only\n  "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      description: 'Harness-audit command parity exists between primary and Open" -> "      description: 'Harness-audit command parity exists between primary and Open"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      fix: 'Sync commands/harness-audit.md and .opencode/commands/harness-audit." -> "      fix: 'Upstream-only path; does not ship in this Cursor plugin — ignore thi"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/angular-developer/references/mcp.md — '### Gemini CLI\n\nCreate `.gemini/settings.json` in the project root:' -> '### Gemini CLI\n\n> Not a Cursor path: the Gemini CLI is a separate Google tool, n'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — '2. Or test it locally: copy this `hackathon-ecc` directory to\n   `~/.cursor/plug' -> '2. Or test it locally: clone the repo directly into `~/.cursor/plugins/local/hac'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — '  while building. With the 25 hackathon additions below, the plugin ships\n  166 ' -> '  while building. With the hackathon additions below, the plugin ships\n  166 ski'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — 'installation is manual with no official Cursor Marketplace listing, updates requ' -> 'installation is manual with no official Cursor Marketplace listing, updates foll'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — '- **Before the first build — Grok 4.7 High in the model picker:** the plugin pin' -> '- **Before the first build — Grok 4.7 High in the model picker:** select Grok 4.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — '## Rebuild' -> '## Updating\n\nThis is the single authoritative update path — every other mention '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/SKILL.md — '1. **New project/page or system-wide visual direction** (except a full landing/c' -> '1. **New project/page or system-wide visual direction** (except a full landing/c'

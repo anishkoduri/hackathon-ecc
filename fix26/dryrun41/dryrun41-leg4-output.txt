@@ -1,0 +1,39 @@
+PASS L4-1a picker verbatim once in orchestrate -- orchestrate SKILL.md count=1 (step 4, :85)
+PASS L4-1b picker pointers elsewhere -- orch pointers=3; README:68 pointer present; orch-build-mvp pointer present
+PASS L4-2a dual-cited agent path lines in commands/ == 19 -- count=19
+PASS L4-2b plan.md:199 house form, not doubled -- house form present once
+PASS L4-2c no path-only Agent lines left in commands/ -- path-only lines=0
+PASS L4-3 fallback paragraph in common-agents.mdc -- heading + fallback line present
+PASS L4-4a /demo never automatic (orchestrate O4 + hackathon-mode H2) -- O4 + H2 tokens present
+PASS L4-4b /demo explicit invocation only (step 6 O9 + final report) -- O9 token + explicit-only wording present
+PASS L4-4c /demo not filmed in orch-build-mvp / orch-change-feature -- B2S1 + B3S1 tokens present
+PASS L4-4d narration-key prompt ONLY when a demo video was asked for -- guard in orchestrate step 0, hackathon-mode §7, orch-build-mvp B2S7
+PASS L4-4e first-build order deploy -> commit -> README, no /demo in it -- order lines present without /demo
+PASS L4-5a resume guard step 0 (narration-key, no re-grill) -- orchestrate :58 resume guard + 'do NOT re-grill'
+PASS L4-5b resume guard step 1 (scope) -- orchestrate :60
+PASS L4-5c resume guard step 2 (expansion) -- orchestrate :61
+PASS L4-5d grill-me handoff line (After Grilling) -- grill-me SKILL.md 'After Grilling' section
+PASS L4-6a Taste step 4a reads inventory FIRST -- Taste SKILL.md step 4a
+PASS L4-6b ui-ux-pro-max Query Contract points at inventory -- ui-ux-pro-max SKILL.md:91
+PASS L4-7a FILM_F1/FILM_F5/FILM_F6 present -- pitch-deck-video SKILL.md:241,:404,:405
+PASS L4-7b no bare film (F1)/(F5)/(F6) left in pitch-deck-video -- bare pointers gone
+PASS L4-8a orchestrate step 6: readme-writer reads URL from the ledger -- orchestrate SKILL.md:97
+PASS L4-8b readme-writer takes deployed URL + video path from ledger -- readme-writer SKILL.md:95
+PASS L4-9a tts.mjs Windows PowerShell pip form (comment) -- tts.mjs:134-135 comment (pinned by fix #26 §1)
+PASS L4-9b tts.mjs Windows PowerShell pip form (error string) -- tts.mjs:180 error string
+PASS L4-9c tts.mjs USERPROFILE fallback for piper models dir -- tts.mjs dataDir uses HOME ?? USERPROFILE
+PASS L4-10 BLOCKED: powershell -Command git commit --no-verify -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git commit. Git hooks must not be bypassed.
+PASS L4-10 BLOCKED: powershell -c git commit --no-verify -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git commit. Git hooks must not be bypassed.
+PASS L4-10 BLOCKED: pwsh -Command git push --no-verify -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git push. Git hooks must not be bypassed.
+PASS L4-10 BLOCKED: cmd /c git commit --no-verify -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git commit. Git hooks must not be bypassed.
+PASS L4-10 BLOCKED: cmd /c git commit -n (short flag) -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git commit. Git hooks must not be bypassed.
+PASS L4-10 BLOCKED: powershell -Command git commit --no-veri (prefix) -- exit=2 stderr=BLOCKED: --no-verify flag is not allowed with git commit. Git hooks must not be bypassed.
+PASS L4-10 ALLOWED: powershell -Command clean git commit -- exit=0 stderr=
+PASS L4-10 ALLOWED: powershell -Command npm test -- exit=0 stderr=
+PASS L4-10 ALLOWED: cmd /c clean git push -- exit=0 stderr=
+PASS L4-10 ALLOWED: cmd /c npm run build -- exit=0 stderr=
+PASS L4-10 ALLOWED: plain clean git commit -- exit=0 stderr=
+PASS L4-10 GAP (documented): -EncodedCommand base64 NOT blocked -- exit=0 (expected 0 = not blocked; scanner cannot read base64)
+PASS L4-10 sanity: plain git commit --no-verify BLOCKED -- exit=2
+
+37/37 Leg 4 checks met

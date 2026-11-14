@@ -1,5 +1,5 @@
 {
-  "//": "Merge the `scripts` block below into your package.json. These wrap the most common Supabase loops so you (and Claude Code) can run short, memorable commands.",
+  "//": "Merge the `scripts` block below into your package.json. These wrap the most common Supabase loops so you (and Cursor) can run short, memorable commands.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

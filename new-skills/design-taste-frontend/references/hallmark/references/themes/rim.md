@@ -24,8 +24,8 @@ An instrument at night: warm black paper, warm off-white ink, Switzer at a mediu
   --color-ink: oklch(94% 0.010 80); --color-ink-2: oklch(84% 0.011 80); --color-muted: oklch(68% 0.012 80); --color-muted-2: oklch(50% 0.010 80);
   --color-rule: oklch(25% 0.010 78); --color-rule-2: oklch(16% 0.009 78);
   --color-accent: oklch(72% 0.17 45); --color-accent-ink: oklch(10% 0.02 45); --color-accent-2: oklch(74% 0.12 250); --color-focus: oklch(78% 0.15 45);
-  --font-display: "Switzer", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Switzer"; --font-body: var(--font-display);
+  --font-outlier: "Geist Mono";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.04em; --display-weight: 500;
 }

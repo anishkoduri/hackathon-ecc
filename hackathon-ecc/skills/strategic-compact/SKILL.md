@@ -1,6 +1,6 @@
 ---
 name: strategic-compact
-description: Suggests manual context compaction at logical intervals to preserve context through task phases rather than arbitrary auto-compaction. Use when a session is approaching a context limit and a task phase is a natural place to compact. (Compaction advice that applies in Cursor; originated in Claude Code; the hook example below is in Cursor `hooks.json` form)
+description: Suggests manual context compaction at logical intervals to preserve context through task phases rather than arbitrary auto-compaction. Use when a session is approaching a context limit and a task phase is a natural place to compact. (Compaction advice that applies in Cursor; originated in Cursor; the hook example below is in Cursor `hooks.json` form)
 metadata:
   origin: ECC
 ---
@@ -40,7 +40,7 @@ Tool count alone is a weak proxy for window pressure: a few large file reads or 
 
 ## Hook Setup
 
-**Installed as a plugin?** No setup is needed. Do not copy the block below into your `hooks/hooks.json` — `~/.claude/scripts/` does not exist on plugin installs, and duplicating a plugin hook causes double execution.
+**Installed as a plugin?** No setup is needed. Do not copy the block below into your `hooks/hooks.json` — plugin scripts live under the plugin root, and duplicating a plugin hook causes double execution.
 
 **If installed manually from the ECC repo** (not as this plugin), add the Cursor `preCompact` entry to your `hooks/hooks.json` — the same pattern this plugin already wires (`hooks/hooks.json` → `hooks/pre-compact.js`):
 
@@ -65,8 +65,8 @@ Environment variables:
 - `COMPACT_CONTEXT_THRESHOLD` — Context tokens before the context-size suggestion (default: 160000 on a 200k window, 250000 on a 1M window, capped at 80% of a valid native compaction budget when earlier). An explicit positive threshold overrides that default cap; `0` disables the context signal.
 - `COMPACT_CONTEXT_INTERVAL` — Additional context tokens before the suggestion repeats (default: 60000)
 - `COMPACT_STATE_TTL_DAYS` — Days before stale per-session state files in the temp dir are swept (default: 14)
-- `ECC_CONTEXT_WINDOW_TOKENS` — Explicit context-window size, in tokens, overriding auto-detection. Set this for large-window models whose reported id lacks a `[1m]` marker (e.g. 400k Opus 4.x, or a new 1M-window model family) so the threshold scales to the real window instead of defaulting to 200k and overstating context usage.
-- `CLAUDE_CODE_AUTO_COMPACT_WINDOW` — Claude Code's native auto-compact trigger, which may be smaller than the model's context window. For context-window resolution, ECC uses it only as a last-resort fallback, after an explicit ECC override, a `[1m]` model marker, a known large-window model family, and inference from observed tokens above 200k. It is not an exact model-capacity declaration.
+- `ECC_CONTEXT_WINDOW_TOKENS` — Explicit context-window size, in tokens, overriding auto-detection. Set this for large-window models whose reported id lacks a `[1m]` marker (e.g. 500k Grok 4.7 High, or a new 1M-window model family) so the threshold scales to the real window instead of defaulting to 200k and overstating context usage.
+- `ECC_CONTEXT_WINDOW_TOKENS` — an explicit override for the context window, used when the host's native auto-compact trigger does not match the model's capacity. For context-window resolution, ECC consults it first, then a `[1m]` model marker, then inference from observed tokens above 200k. The transcript-context model-family table was removed in fix #16 — no model name is consulted.
 
 > Window precedence is: `ECC_CONTEXT_WINDOW_TOKENS`, then the `[1m]` marker, a known large-window model family, observed tokens above 200k, the native auto-compact fallback, and finally the inferred 200k default. Set `ECC_CONTEXT_WINDOW_TOKENS` when you know the actual window and automatic detection lacks that information; do not treat the native compact trigger as proof of model capacity.
 
@@ -91,19 +91,17 @@ Understanding what persists helps you compact with confidence:
 
 | Persists | Lost |
 |----------|------|
-| CLAUDE.md instructions | Intermediate reasoning and analysis |
+| AGENTS.md instructions | Intermediate reasoning and analysis |
 | Files on disk | File contents you previously read |
-| Memory files (`~/.claude/memory/`) | Multi-step conversation context |
+| Memory files (the agent's memory directory) | Multi-step conversation context |
 | Git state (commits, branches) | Tool call history and counts |
 | The task list — **only if you have the todo tools** (see below) | Nuanced user preferences stated verbally |
 
 > ### Don't rely on the task list surviving — it may not exist
 >
-> Claude Code **2.1.233 removed the todo/task tools by default** on Opus 4.8, Sonnet 5,
-> Fable 5, Mythos 5 and newer models (`TodoWrite`, `TaskCreate/Get/Update/List`).
-> `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` brings them back, but that is a per-machine
-> environment setting — **it does not travel with this skill**, so you cannot assume the
-> reader has it.
+> Cursor **2.1.233 removed the todo/task tools by default** on Grok 4.7 High, Grok 4.6 High Fast,
+> current models and newer (`TodoWrite`, `TaskCreate/Get/Update/List`).
+> The tools cannot be re-enabled from this skill — **they do not travel with it**, so you cannot assume the reader has them.
 >
 > This matters because "my todo list survives compaction" is a reason people compact
 > *instead of* writing state down. If the tools are absent there is no list to survive,
@@ -133,15 +131,15 @@ Instead of loading full skill content at session start, use a trigger table that
 
 ### Context Composition Awareness
 Monitor what's consuming your context window:
-- **CLAUDE.md files** — Always loaded, keep lean
+- **AGENTS.md files** — Always loaded, keep lean
 - **Loaded skills** — Each skill adds 1-5K tokens
 - **Conversation history** — Grows with each exchange
 - **Tool results** — File reads, search results add bulk
 
 ### Duplicate Instruction Detection
 Common sources of duplicate context:
-- Same rules in both `~/.claude/rules/` and project `.claude/rules/`
-- Skills that repeat CLAUDE.md instructions
+- Same rules in both `~/.cursor/rules/` and project `.ecc/rules/`
+- Skills that repeat AGENTS.md instructions
 - Multiple skills covering overlapping domains
 
 ### Context Optimization Tools

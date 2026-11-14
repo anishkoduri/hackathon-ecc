@@ -226,7 +226,10 @@
               "minItems": 1,
               "items": {
                 "type": "object",
-                "required": ["id", "hooks"],
+                "required": [
+                  "id",
+                  "hooks"
+                ],
                 "properties": {
                   "id": {
                     "type": "string",
@@ -236,51 +239,8 @@
               }
             }
           }
-        },
-        "allOf": [
-          {
-            "if": {
-              "properties": {
-                "kind": { "const": "update-claude-settings" }
-              }
-            },
-            "then": {
-              "required": ["managedHooks"],
-              "properties": {
-                "moduleId": { "const": "hooks-runtime" },
-                "sourceRelativePath": { "const": "hooks/hooks.json" }
-              }
-            }
-          }
-        ]
-      }
-    }
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "operations": {
-            "contains": {
-              "type": "object",
-              "properties": {
-                "kind": { "const": "update-claude-settings" }
-              },
-              "required": ["kind"]
-            }
-          }
-        }
-      },
-      "then": {
-        "properties": {
-          "target": {
-            "properties": {
-              "target": { "enum": ["claude", "claude-project"] }
-            },
-            "required": ["target"]
-          }
         }
       }
     }
-  ]
+  }
 }

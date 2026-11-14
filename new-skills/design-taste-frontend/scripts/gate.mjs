@@ -8,7 +8,7 @@
         (page, url, root, kind, category, primary) and keeps its rounds; --new starts a new build anyway
     node <skill>/scripts/gate.mjs [page.html | url] [--root ..] [--kind ..] [--category ..] [--primary ..]
         the manual gate: run the checks, print the open FAILs (a page or flag given here is stored for the hook)
-    node <skill>/scripts/gate.mjs --hook claude|codex|antigravity   the same as an agent's Stop hook (stdin: the hook JSON)
+    node <skill>/scripts/gate.mjs --hook cursor   the same as an agent's Stop hook (stdin: the hook JSON)
          [--quick] [--profile <chrome dir>]
     node <skill>/scripts/gate.mjs --done "<what the user said>"
         only when the user tells the agent to stop or to ship the page as it is: closes the build with their words
@@ -68,8 +68,8 @@
   Exit 0 PASS, OFF or DONE, 1 FAIL or OPEN, 2 ERROR, 3 SETUP.
   --quick is a look between rounds: the checker at 1440 and 390 (and the 320 pass), the layout check at 1440, not a round, never closes the build (GATE: QUICK <n>).
 
-  Hook mode blocks with exit 0 and JSON on stdout: {"decision":"block","reason":...} for claude and codex,
-  {"decision":"continue","reason":...} for antigravity; it allows by printing nothing. It never traps an agent:
+  Hook mode blocks with exit 0 and JSON on stdout: {"decision":"block","reason":...} for cursor;
+  it allows by printing nothing. It never traps an agent:
   - every block is counted in .taste-skill/gate-blocks.json, which --start never clears; past rounds + 4 blocks
     for one build (the blocks before the first run by hand have as many of their own), or 30 in 6 hours in the
     folder, every stop is allowed;
@@ -108,8 +108,8 @@ const isUrl = s => typeof s === 'string' && /^https?:\/\//i.test(s);
 const isLocalUrl = s => { try { const h = new URL(s).hostname.toLowerCase(); return /^(localhost|127\.0\.0\.1|\[::1\])$/.test(h) || /\.(localhost|test)$/.test(h); } catch { return false; } };
 const NOT_LOCAL = 'the gate checks a local page or dev server only (localhost, 127.0.0.1, [::1], *.localhost, *.test)';
 const HOOK = opt('hook', null);
-const MODES = { claude: 'block', codex: 'block', antigravity: 'continue' };
-if (HOOK !== null && !MODES[HOOK]) { console.error('gate: --hook takes claude, codex or antigravity'); process.exit(HOOK === true ? 2 : 0); }
+const MODES = { cursor: 'block' };
+if (HOOK !== null && !MODES[HOOK]) { console.error('gate: --hook takes cursor'); process.exit(HOOK === true ? 2 : 0); }
 const QUICK = has('quick'), START = has('start');
 const T0 = Date.now(), BUDGET = 570000; // 9.5 min: under the 10 min a hook may take
 const MAX_WAIVERS = 5, TOP = 8, IDLE = 2, EXTRA = 4, RECENT = 30, DAY = 864e5;

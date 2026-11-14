@@ -1,0 +1,79 @@
+BANNED composer-2\.5: 0
+BANNED claude: 34
+  scripts/hooks/hookify-runtime.js:285: const rulesDir = path.join(path.resolve(projectRoot), '.claude');
+  scripts/hooks/hookify-runtime.js:291: return { rules, diagnostics: [diagnostic('.claude', 'rule directory must be a real directory')] };
+  scripts/hooks/hookify-runtime.js:296: return { rules, diagnostics: [diagnostic('.claude', error.message)] };
+  scripts/hooks/hookify-runtime.js:303: !excludedPaths.has(normalizeTrackedPath(path.join('.claude', entry.name)))
+  scripts/hooks/hookify-runtime.js:307: '.claude',
+  scripts/hooks/hookify-runtime.js:312: diagnostics.push(diagnostic('.claude', 'only the first ' + MAX_RULES + ' Hookify rules are loaded'));
+  scripts/hooks/hookify-runtime.js:374: diagnostic('.claude', 'could not verify whether local rules are tracked; rules disabled'),
+  scripts/lib/agent-tool-map.js:67: CLAUDE_MODEL_TIERS,
+  scripts/lib/context-profile-commands.js:106: ...(native.target === 'claude' ? { claudeConfigDir: native.claudeConfigDir, claudePath: native.claudePath, pluginDir: native.pluginDir }
+  scripts/lib/harness-adapter-compliance.js:58: id: 'claude-code',
+  scripts/lib/harness-adapter-compliance.js:72: '`./install.sh --profile minimal --target claude`',
+  scripts/lib/harness-adapter-compliance.js:83: '.claude-plugin/plugin.json',
+  scripts/lib/harness-adapter-compliance.js:85: 'scripts/lib/install-targets/claude-home.js',
+  scripts/lib/harness-adapter-compliance.js:150: 'canonical ECC agents (agents/) portable via scripts/agent-convert.js (not shipped in this plugin) (claude -> pi)',
+  scripts/lib/harness-adapter-compliance.js:281: 'command hooks through the first-party @deepseek-ai/dsh-hooks-claude-code bridge (23 commands on 5 of 7 bridged events)',
+  scripts/lib/harness-adapter-compliance.js:293: 'mount a bare - insert: entry for @deepseek-ai/dsh-hooks-claude-code in ~/.dsh/profiles/<profile>/cordis.patch.yml',
+  scripts/lib/harness-capabilities.js:33: id: 'claude',
+  scripts/lib/harness-capabilities.js:35: targetIds: ['claude', 'claude-project'],
+  scripts/lib/harness-capabilities.js:40: destination: 'Selected Cursor plugin scope: ~/.claude or ./.claude',
+  scripts/lib/harness-capabilities.js:42: scope('user', 'claude', '~/.claude'),
+  scripts/lib/harness-capabilities.js:43: scope('project', 'claude-project', './.claude'),
+  scripts/lib/harness-capabilities.js:44: scope('local', 'claude-project', './.claude'),
+  scripts/lib/harness-capabilities.js:51: aliases: ['claude-code'],
+  scripts/lib/install-lifecycle.js:257: if (operation.kind === 'update-claude-settings') {
+  scripts/lib/install-targets/helpers.js:5: CLAUDE_HOOKS_CONFIG_PATH,
+  scripts/lib/install-targets/helpers.js:6: getClaudeSettingsPath,
+  scripts/lib/install-targets/helpers.js:7: } = require('../install/claude-settings');
+  scripts/lib/install/apply.js:142: assertSafeClaudeSkillOperation(plan, operation);
+  scripts/lib/install/apply.js:170: assertSafeClaudeSkillOperation(plan, operation);
+  scripts/lib/install/apply.js:705: assertSafeClaudeSkillOperation(appliedPlan, operation);
+  scripts/lib/install/apply.js:711: assertSafeClaudeSkillOperation(appliedPlan, operation);
+  scripts/lib/install/apply.js:771: assertSafeClaudeSkillOperation(appliedPlan, { destinationPath });
+  scripts/lib/install/runtime.js:44: claudeRulesDir: options.claudeRulesDir,
+  scripts/lib/install/runtime.js:57: claudeRulesDir: options.claudeRulesDir,
+BANNED codex: 15
+  scripts/lib/context-profile-commands.js:107: : { codexHome: native.codexHome, codexPath: native.codexPath }) } : null,
+  scripts/lib/harness-adapter-compliance.js:89: id: 'codex',
+  scripts/lib/harness-adapter-compliance.js:90: harness: 'Codex',
+  scripts/lib/harness-adapter-compliance.js:94: 'Codex plugin metadata',
+  scripts/lib/harness-adapter-compliance.js:101: '`./install.sh --profile minimal --target codex`',
+  scripts/lib/harness-adapter-compliance.js:105: risk_notes: ['Treat hooks as policy text unless a native Codex hook surface exists.'],
+  scripts/lib/harness-adapter-compliance.js:109: '.codex-plugin/plugin.json',
+  scripts/lib/harness-adapter-compliance.js:111: 'scripts/lib/install-targets/codex-home.js',
+  scripts/lib/harness-capabilities.js:54: id: 'codex',
+  scripts/lib/harness-capabilities.js:55: label: 'Codex',
+  scripts/lib/harness-capabilities.js:56: targetIds: ['codex'],
+  scripts/lib/harness-capabilities.js:61: destination: '~/.codex through the Codex native plugin lifecycle',
+  scripts/lib/harness-capabilities.js:62: scopes: [scope('native', 'codex', '~/.codex')],
+  scripts/lib/harness-capabilities.js:66: 'ECC hooks use Codex native plugin discovery and remain subject to Codex review and trust.'
+  scripts/lib/harness-capabilities.js:68: aliases: ['openai-codex'],
+BANNED anthropic: 0
+OPUS (list individually; may false-positive): 0
+GEMINI/GPT- in model-pin contexts: 0
+JS SYNTAX FAILURES: 3
+  scripts/lib/context-profile-commands.js: /home/hatch/workspace/fix16-dryrun-wave2/scripts/lib/context-profile-commands.js:82
+  }
+  ^
+
+SyntaxError: Unexpected token '}'
+    at wrapSafe (node:internal/modules/cjs/loader:1861:18)
+    at checkSy
+  scripts/lib/install-lifecycle.js: /home/hatch/workspace/fix16-dryrun-wave2/scripts/lib/install-lifecycle.js:1193
+        && !writtenPaths.some(writtenPath => path.relative(writtenPath, operation.destinationPath) === '')) {
+        ^^
+
+  scripts/lib/install/apply.js: /home/hatch/workspace/fix16-dryrun-wave2/scripts/lib/install/apply.js:243
+) {
+^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (node:internal/modules/cjs/loader:1861:18)
+    at checkSyntax (node:i
+JSON FAILURES: 0
+INSTALL REGISTRY SMOKE: rc=1 stdout='' stderr="node:internal/modules/cjs/loader:1568\n  throw err;\n  ^\n\nError: Cannot find module '../install/claude-settings'\nRequire stack:\n- /home/hatch/workspace/fix16-dryrun-wave2/scripts/lib/install-targets/helpers.js\n- /home/hatch/workspace/fix16-dryrun-wave2/scripts/lib/install-targets/cursor-project.js\n- /"
+commands/gan-build.md: grok-4.7-high x2, claude-opus-5 x0, composer-2.5 x0
+commands/gan-design.md: grok-4.7-high x3, claude-opus-5 x0, composer-2.5 x0
+TOTAL BANNED-TERM HITS: 49

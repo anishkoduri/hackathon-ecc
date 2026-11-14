@@ -25,8 +25,8 @@ A print shop's material: a warm off-white sheet, warm black ink, Bowlby One SC c
   --color-rule: oklch(89.7% 0.02 80); --color-white: oklch(99.5% 0.003 82);
   --color-accent: oklch(56% 0.225 2); --color-accent-deep: oklch(49% 0.205 2); --color-accent-2: oklch(87.6% 0.179 119); --color-slot: oklch(95% 0.021 355);
   --color-accent-ink: oklch(99.5% 0.003 82); --color-focus: oklch(56% 0.225 2);
-  --font-display: "Bowlby One SC", "Arial Black", sans-serif; --font-body: "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bowlby One SC", "Arial Black"; --font-body: "Sofia Sans";
+  --font-outlier: "Sofia Sans";
   --radius-card: 18px; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: 5px 6px 0 var(--color-ink); --shadow-press: 1px 1px 0 var(--color-ink);
   --tracking-display: 0.005em; --display-weight: 400;
@@ -71,7 +71,7 @@ Two colourways, stated in the stamp (`sticker: sheet`).
 
 ## Motion
 
-Sticker physics: a hover lifts a clickable raised surface 2px and turns it a degree; a press pushes it onto its shadow. `--dur-micro` on `--ease-out`, nothing on scroll.
+Sticker physics: a hover lifts a clickable raised surface 2px and turns it a degree; a press pushes it onto its shadow. `--dur-micro` on `--ease-out`, nothing on scroll, except the scoped exception in 'Scoped exceptions' below (scroll rise-and-settle entrances as sticker motion).
 
 ## Voice
 
@@ -84,6 +84,11 @@ Cheerful and exact: the price, the quantity, the size, the ship day. It sounds l
 - Never pink text on the paper; pink is a fill with white on it.
 - Never a drawn sticker, mascot or doodle; the die-cut edges a real surface, a fact or a photograph, never a shape drawn to stand for a design.
 - Never a photograph that only stands near the subject (a bottle, a stapler, a pencil pot); without the product's own pictures, the fills carry the page.
+
+## Scoped exceptions (decided, not drift)
+
+- **Hand-drawn ink marks (fix #17, exception A).** A hand-drawn ink scribble underline, doodle trail, or drawn seal/emblem (e.g. a Taco Compass) is permitted as a one-off ink-on-paper element in theme colours — it is ink on the theme's paper, not a mascot or a drawn-sticker character. The 'Never a drawn sticker, mascot or doodle' do-not stays intact for everything else. Added at Anish's direction in the Campus Eats cold-start render, Nov 11, 2026.
+- **Scroll rise-and-settle entrances (fix #17, exception B).** Content sections may enter on scroll with a staggered rise-and-settle entrance (with the 1500ms fail-safe, fix #17 M2) as sticker motion. The 'nothing on scroll' motion rule stays intact beyond that motion. Added at Anish's direction in the Campus Eats cold-start render, Nov 11, 2026.
 
 ## Build hint
 

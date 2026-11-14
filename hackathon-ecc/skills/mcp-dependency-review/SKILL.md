@@ -157,7 +157,7 @@ Next: pin the exact version the team reviews and update it deliberately.
 
 ### Expanding scope silently
 
-**Wrong:** a repo review automatically scans user-level Claude, Cursor, or VS Code configuration.
+**Wrong:** a repo review automatically scans user-level Cursor, Cursor, or VS Code configuration.
 
 **Better:** remain workspace-scoped unless machine-wide review is explicitly requested.
 

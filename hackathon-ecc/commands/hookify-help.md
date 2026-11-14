@@ -1,12 +1,12 @@
 ---
-description: Get help with the hookify system (Claude Code only — no Cursor equivalent in this plugin)
+description: Get help with the hookify system (Upstream only — no Cursor equivalent in this plugin)
 ---
 
 Display comprehensive hookify documentation.
 
 ## Hook System Overview
 
-Hookify creates rule files that integrate with Claude Code's hook system to prevent unwanted behaviors.
+Hookify creates rule files that integrate with Cursor's hook system to prevent unwanted behaviors.
 ECC's built-in runtime loads these rules automatically while plugin hooks are
 enabled; installing a separate Hookify plugin is not required.
 
@@ -14,13 +14,13 @@ enabled; installing a separate Hookify plugin is not required.
 
 - `bash`: triggers on Bash tool use and matches command patterns
 - `file`: triggers on Write/Edit tool use and matches file paths
-- `stop`: triggers after each Claude response
+- `stop`: triggers after each Cursor response
 - `prompt`: triggers on user message submission and matches input patterns
 - `all`: triggers on all events
 
 ### Rule File Format
 
-Files are stored as `.claude/hookify.{name}.local.md`:
+Files are stored as `.ecc/hookify.{name}.local.md`:
 
 ```yaml
 ---
@@ -53,7 +53,7 @@ Supports multiple lines.
 
 ### Action Behavior
 
-- `warn` adds the rule message to Claude's context and allows processing to continue
+- `warn` adds the rule message to Cursor's context and allows processing to continue
 - `block` denies matching shell/file actions before execution
 - `block` on prompt, post-tool, or stop events uses that event's structured block decision
 - stop rules are skipped when `stop_hook_active` is already true to prevent loops

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Claude Code-only: PreToolUse bash-dispatch entry point (runPreBash).
+ * Upstream-only: PreToolUse bash-dispatch entry point (runPreBash).
  * Not wired in this Cursor plugin — it never runs (Cursor's shell path dispatches block-no-verify.js and pre-bash-dev-server-block.js directly via hooks/before-shell-execution.js).
  */
 'use strict';

@@ -25,7 +25,7 @@ A mountain morning in print: snow-white paper, cold near-black ink, Barlow Conde
   --color-rule: oklch(88% 0.01 260);
   --color-accent: oklch(52% 0.25 265); --color-accent-deep: oklch(40% 0.2 266); --color-accent-ink: oklch(98.5% 0.004 260); --color-focus: oklch(58% 0.22 28);
   --color-field: var(--color-accent);
-  --font-display: "Barlow Condensed", ui-sans-serif, sans-serif; --font-body: "Barlow", ui-sans-serif, sans-serif; --font-outlier: var(--font-display);
+  --font-display: "Barlow Condensed"; --font-body: "Barlow"; --font-outlier: var(--font-display);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: none;
   --tracking-display: -0.005em; --display-weight: 800;

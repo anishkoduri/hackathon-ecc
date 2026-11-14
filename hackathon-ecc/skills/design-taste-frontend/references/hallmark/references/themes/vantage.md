@@ -26,7 +26,7 @@ Reality capture at night: the thing itself, a site, a ridge, an object, rendered
   --color-accent: oklch(89% 0.19 126); --color-accent-hi: oklch(93% 0.17 126); --color-accent-ink: oklch(19% 0.04 126); --color-focus: oklch(89% 0.19 126);
   --point-lo: oklch(42% 0.04 245); --point-mid: oklch(70% 0.04 232); --point-hi: oklch(96% 0.02 215);
   --color-slot: oklch(21% 0.016 235);
-  --font-display: "Geologica", ui-sans-serif, system-ui, sans-serif; --font-body: "Geologica", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geologica"; --font-body: "Geologica";
   --radius-card: 4px; --radius-pill: 999px; --rule-hair: 1px; --tick: 10px;
   --shadow-card: none;
   --tracking-display: -0.035em; --display-weight: 300;

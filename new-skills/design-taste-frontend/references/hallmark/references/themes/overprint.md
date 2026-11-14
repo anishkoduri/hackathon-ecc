@@ -27,8 +27,8 @@ A two-colour screenprint on cheap stock: grey newsprint, near-black ink, wide he
   --color-accent-2: oklch(71% 0.19 50); --color-accent-2-ink: oklch(17% 0.008 60);
   --color-mix: oklch(35.5% 0.121 142);
   --blend: multiply; --texture-opacity: 0.06;
-  --font-display: "Anybody", ui-sans-serif, sans-serif; --font-body: "Archivo", ui-sans-serif, sans-serif;
-  --font-outlier: "Archivo Narrow", ui-sans-serif, sans-serif;
+  --font-display: "Anybody"; --font-body: "Archivo";
+  --font-outlier: "Archivo Narrow";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 4px;
   --shadow-card: none;
   --tracking-display: -0.01em; --display-weight: 900; --display-stretch: 140%;

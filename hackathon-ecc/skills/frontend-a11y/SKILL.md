@@ -12,6 +12,7 @@ Practical accessibility patterns for React and Next.js. Covers the issues most c
 ## When to Activate
 
 - Building or reviewing form components (`<input>`, `<select>`, `<textarea>`)
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 - Creating interactive elements (modals, dropdowns, tooltips, tabs)
 - Using `<div>` or `<span>` with `onClick`
 - Adding `aria-*` attributes to any element

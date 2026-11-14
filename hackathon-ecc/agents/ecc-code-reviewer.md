@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -301,7 +301,7 @@ Do not withhold approval to appear rigorous. If the diff is clean, approve it.
 
 ## Project-Specific Guidelines
 
-When available, also check project-specific conventions from `CLAUDE.md` or project rules:
+When available, also check project-specific conventions from `AGENTS.md` or project rules:
 
 - File size limits (e.g., 200-400 lines typical, 800-line soft ceiling — include a reason for a deliberate exception)
 - Emoji policy (many projects prohibit emojis in code)

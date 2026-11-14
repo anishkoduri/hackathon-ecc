@@ -24,8 +24,8 @@ A weaving studio speaking quietly: ecru paper, Caslon cut for display with a boo
   --color-ink: oklch(21% 0.012 60); --color-ink-2: oklch(31% 0.012 60); --color-muted: oklch(46% 0.014 62);
   --color-rule: oklch(83% 0.022 84); --color-rule-ink: oklch(21% 0.012 60);
   --color-accent: oklch(34% 0.115 267); --color-accent-2: oklch(43% 0.125 267); --color-accent-ink: oklch(95.5% 0.014 85); --color-focus: oklch(43% 0.15 267);
-  --font-display: "Libre Caslon Display", "Libre Caslon Text", ui-serif, Georgia, serif; --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "DM Mono", ui-monospace, monospace;
+  --font-display: "Libre Caslon Display", "Libre Caslon Text", Georgia; --font-body: "Hanken Grotesk";
+  --font-outlier: "DM Mono";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-ink: 2px;
   --shadow-card: none;
   --tracking-display: -0.01em; --display-weight: 400;

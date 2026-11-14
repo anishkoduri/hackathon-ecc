@@ -1,0 +1,74 @@
+agent models pinned to Grok IDs: 69
+hooks.json rewritten for plugin layout
+error: The following untracked working tree files would be overwritten by checkout:
+	.agents/plugins/marketplace.json
+	.claude-plugin/marketplace.json
+	.claude-plugin/plugin.json
+	.codex/README.md
+	.codex/agents/default.toml
+	.codex/agents/explorer.toml
+	.codex/agents/researcher.toml
+	.codex/agents/reviewer.toml
+	.codex/agents/tester.toml
+	.codex/agents/worker.toml
+	.codex/ensure_model_policy.py
+	.codex/model-policy.json
+	.codex/model-policy.md
+	.github/copilot-instructions.md
+	.github/pull_request_template.md
+	.github/workflows/skill-guardrails.yml
+	.gitignore
+	.skills-engine/AGENTS-INTEGRATION.md
+	.skills-engine/engine-manifest.yaml
+	00-meta-initialization/README.md
+	00-meta-initialization/SKILL.md
+	00-meta-initialization/new-project/SKILL.md
+	00-meta-initialization/new-project/examples/education-lms/02-requirements-engineering/srs/3.2-functional-requirements.md
+	00-meta-initialization/new-project/examples/education-lms/03-design-documentation/03-api-specification/claims-api.md
+	00-meta-initialization/new-project/examples/education-lms/03-design-documentation/04-database-design/schema.md
+	00-meta-initialization/new-project/examples/education-lms/03-design-documentation/05-ux-specification/ui-spec.md
+	00-meta-initialization/new-project/examples/education-lms/03-design-documentation/adr/ADR-001-use-postgres.md
+	00-meta-initialization/new-project/examples/education-lms/03-design-documentation/threat-model.md
+	00-meta-initialization/new-project/examples/education-lms/04-development/coding-standards.md
+	00-meta-initialization/new-project/examples/education-lms/04-development/env-setup.md
+	00-meta-initialization/new-project/examples/education-lms/05-testing-documentation/29119-deterministic-checks.md
+	00-meta-initialization/new-project/examples/education-lms/05-testing-documentation/coverage-matrix.md
+	00-meta-initialization/new-project/examples/education-lms/05-testing-documentation/test-completion-report.md
+	00-meta-initialization/new-project/examples/education-lms/05-testing-documentation/test-plan/tc.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/deployment-guide.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/go-live-readiness.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/incident-response/playbook.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/infrastructure.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/monitoring.md
+	00-meta-initialization/new-project/examples/education-lms/06-deployment-operations/runbook.md
+	00-meta-initialization/new-project/examples/education-lms/07-agile-artifacts/definition-of-done.md
+	00-meta-initialization/new-project/examples/education-lms/07-agile-artifacts/definition-of-ready.md
+	00-meta-initialization/new-project/examples/education-lms/07-agile-artifacts/retrospective.md
+	00-meta-initialization/new-project/examples/education-lms/07-agile-artifacts/sprint-plan.md
+	00-meta-initialization/new-project/examples/education-lms/07-agile-artifacts/velocity.md
+	00-meta-initialization/new-project/examples/education-lms/08-end-user-documentation/faq.md
+	00-meta-initialization/new-project/examples/education-lms/08-end-user-documentation/release-notes.md
+	00-meta-initialization/new-project/examples/education-lms/08-end-user-documentation/user-manual.md
+	00-meta-initialization/new-project/examples/education-lms/09-governance-compliance/03-compliance.md
+	00-meta-initialization/new-project/examples/education-lms/09-governance-compliance/audit-report.md
+	00-meta-initialization/new-project/examples/education-lms/09-governance-compliance/risk-register.md
+	00-meta-initialization/new-project/examples/education-lms/CONTRIBUTING.md
+	00-meta-initialization/new-project/examples/education-lms/README.md
+	00-meta-initialization/new-project/examples/education-lms/_context/domain.md
+	00-meta-initialization/new-project/examples/education-lms/_context/features.md
+	00-meta-initialization/new-project/examples/education-lms/_c
+error: The following untracked working tree files would be removed by checkout:
+	auto-agents/EVIDENCE.md
+	auto-agents/PLAN-TEMPLATE.md
+	auto-agents/PLAN.md
+	auto-agents/README.md
+	auto-agents/config.json
+	auto-agents/driver.py
+	auto-agents/manifest.json
+	auto-agents/propagate.py
+	auto-agents/release.py
+	auto-agents/tests/test_driver.py
+	auto-agents/tests/test_upgrade.py
+	auto-agents/upgrade.py
+Please move or remove them before you switch branches.
+Aborting

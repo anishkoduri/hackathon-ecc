@@ -78,14 +78,14 @@ Write everything to `baseline-audit.md`. Findings that get fixed during this pha
 
 Work backwards from the present state to the decisions that produced it.
 
-1. Mine the behavioral spec: run `spec-miner` against the slice. Its Requirements (WHEN → THEN) and Invariants become `reconstructed-spec.md` — the baseline truth for Phase 5 tests.
+1. Mine the behavioral spec: run `spec-miner` agent (`agents/ecc-spec-miner.md`) against the slice. Its Requirements (WHEN → THEN) and Invariants become `reconstructed-spec.md` — the baseline truth for Phase 5 tests.
 2. Git archaeology on the perimeter:
    - `git log --oneline -- <slice>` for directory history; use `--follow` only with a single file path — age, authors, cadence
    - Largest and most reverted commits — where the design changed under pressure
    - Churn hotspots — files changed far more often than neighbors
    - Dead ends — branches or scaffolding that never shipped
 3. Decision inventory: list the significant decisions frozen into the code (stack and framework choices, data model, boundaries, error strategy, state management). Check each against `docs/adr/`, README, and comments. Every decision with no written record is itself a pre-existing thinking gap — record it in Phase 3, do not silently backfill it here.
-4. Where behavior is opaque, use `code-explorer` to trace execution paths before guessing at intent.
+4. Where behavior is opaque, use `code-explorer` agent (`agents/ecc-code-explorer.md`) to trace execution paths before guessing at intent.
 
 ### Phase 3 — Gap Analysis (Four Axes)
 
@@ -115,7 +115,7 @@ Register format (the table is the skill's durable output):
 
 Turn the register into a sequenced plan. Follow the project's existing task and approval authority. Keep the register as audit evidence linked to that system; do not create competing canonical task state. Confirm scope and obtain project-required approval before a rewrite, technology replacement, migration, or other material change.
 
-1. Run `architect` or `code-architect` over the `P0` and `P1` rows to produce `target-design.md`: target shape for the slice, the fix sequence, and an explicit "what does not change" list to protect working behavior.
+1. Run `architect` agent (`agents/ecc-architect.md`) or `code-architect` agent (`agents/ecc-code-architect.md`) over the `P0` and `P1` rows to produce `target-design.md`: target shape for the slice, the fix sequence, and an explicit "what does not change" list to protect working behavior.
 2. Backfill retro-ADRs for every undocumented decision from Phase 2. Mark them as reconstructed (`status: proposed (reconstructed)`, date of the retro, note the original decision predates the record). Separate observed history from inferred intent, and have the project owner confirm a decision before marking it accepted. Never present a backfilled ADR as if it were written at decision time.
 3. Triage every register row into one of: `fix-forward` (repair in place), `rewrite` (replace the slice), `leave-documented` (wont-fix). A `wont-fix` must record its reason in the register — a wont-fix with a reason closes the thinking gap; a silent one reopens it.
 4. Sequence the backlog: `P0` first, then interleave quick wins with larger repairs to keep momentum.

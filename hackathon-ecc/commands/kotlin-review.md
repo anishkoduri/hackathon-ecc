@@ -136,5 +136,5 @@ Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 
 ## Related
 
-- Agent: `agents/ecc-kotlin-reviewer.md`
+- Agent: `kotlin-reviewer` (`agents/ecc-kotlin-reviewer.md`)
 - Skills: `skills/kotlin-patterns/`, `skills/kotlin-testing/`

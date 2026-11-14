@@ -1,8 +1,8 @@
 ---
-description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions. Use to generate a new hook rule file from conversation analysis or a described behavior; the hookify-rules skill covers hookify rule syntax and patterns for authoring or editing rules directly. (Claude Code only — no Cursor equivalent in this plugin)
+description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions. Use to generate a new hook rule file from conversation analysis or a described behavior; the hookify-rules skill covers hookify rule syntax and patterns for authoring or editing rules directly. (Upstream only — no Cursor equivalent in this plugin)
 ---
 
-Create hook rules to prevent unwanted Claude Code behaviors by analyzing conversation patterns or explicit user instructions.
+Create hook rules to prevent unwanted Cursor behaviors by analyzing conversation patterns or explicit user instructions.
 
 ## Usage
 
@@ -15,7 +15,7 @@ If no arguments are provided, analyze the current conversation to find behaviors
 ### Step 1: Gather Behavior Info
 
 - With arguments: parse the user's description of the unwanted behavior
-- Without arguments: use the `conversation-analyzer` agent to find:
+- Without arguments: use the `conversation-analyzer` agent (`agents/ecc-conversation-analyzer.md`) to find:
   - explicit corrections
   - frustrated reactions to repeated mistakes
   - reverted changes
@@ -32,7 +32,7 @@ Show the user:
 
 ### Step 3: Generate Rule Files
 
-For each approved rule, create a file at `.claude/hookify.{name}.local.md`:
+For each approved rule, create a file at `.ecc/hookify.{name}.local.md`:
 
 ```yaml
 ---

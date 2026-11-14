@@ -1,0 +1,25 @@
+rendering 12 stills…
+npm error could not determine executable to run
+npm error A complete log of this run can be found in: /home/hatch/.npm/_logs/2026-11-13T01_57_44_985Z-debug-0.log
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npx @remotion/cli@4.0.526 still src/index.ts Demo /home/hatch/workspace/hackathon-plugin/fix22/dryrun37-rerun/demo-sample-video/out/qa/00111_problem.png --frame=111 --log=error
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at checkExecSyncError (node:child_process:943:11)
+    at execFileSync (node:child_process:979:15)
+    at file:///home/hatch/workspace/hackathon-plugin/fix22/dryrun37-rerun/demo-sample-video/scripts/qa.mjs:42:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 30598,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v24.22.1

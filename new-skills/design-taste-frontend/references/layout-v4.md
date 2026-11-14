@@ -249,9 +249,9 @@ once on load like every hero (`motion.md`, The hero's entrance); no moment in th
   `editorial` hero needs a face with a weight or width axis: deal with `--axis`. Every pairing a
   kind can be dealt, with its exact Google Fonts link: `start.mjs types --page <kind>`.
   `library/type.json` is the one source of every face, weight, tracking and `--ly-scale`: keep the
-  `:root` block as start.mjs prints it. (`assets/layout/fonts.html` reads type.json and shows every
+  `:root` block as start.mjs prints it, except the font delivery: the printed Google Fonts link is the generation source only — instance the dealt faces to static files per fix #19 F2 (Taste step 4a) and ship those files with `@font-face` + preloads, never a CDN link as the delivery. (`assets/layout/fonts.html` reads type.json and shows every
   pairing; a hero demo's face is a specimen, not a source.) Load from Google
-  Fonts with `display=swap`; a fallback face never shows (`font-load` warns a family that
+  Fonts with `display=swap` only as the generation source (fix #19 F2): the link requests static instances, and the build instances the dealt faces to static files and ships those files — a CDN link is never the shipped delivery. A fallback face never shows (`font-load` warns a family that
   never loaded).
 - One family, or a display face plus a text face with fixed jobs; never three; at most four font
   files. Never Inter, Roboto, Open Sans, Lato, Montserrat, Poppins, Space Grotesk, Plus Jakarta Sans

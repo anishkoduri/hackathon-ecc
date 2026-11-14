@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Git push reminder — Claude Code-only PreToolUse hook (not wired in this Cursor plugin — Cursor has no PreToolUse event).
+ * Git push reminder — Upstream-only PreToolUse hook (not wired in this Cursor plugin — Cursor has no PreToolUse event).
  */
 'use strict';
 

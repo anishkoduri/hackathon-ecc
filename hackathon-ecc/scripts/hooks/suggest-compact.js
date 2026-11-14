@@ -41,8 +41,8 @@ const {
   formatWindowLabel
 } = require('../lib/transcript-context');
 
-const COUNTER_FILE_PREFIX = 'claude-tool-count-';
-const CONTEXT_BUCKET_FILE_PREFIX = 'claude-context-bucket-';
+const COUNTER_FILE_PREFIX = 'ecc-tool-count-';
+const CONTEXT_BUCKET_FILE_PREFIX = 'ecc-context-bucket-';
 const STATE_FILE_PREFIXES = [COUNTER_FILE_PREFIX, CONTEXT_BUCKET_FILE_PREFIX];
 const DEFAULT_COMPACT_STATE_TTL_DAYS = 14;
 
@@ -56,8 +56,8 @@ function getCounterRetentionDays() {
 /**
  * Sweep stale per-session state files from the temp dir.
  *
- * Each session writes `claude-tool-count-<sessionId>` (and, with the context
- * signal, `claude-context-bucket-<sessionId>`) into the OS temp dir; nothing
+ * Each session writes `ecc-tool-count-<sessionId>` (and, with the context
+ * signal, `ecc-context-bucket-<sessionId>`) into the OS temp dir; nothing
  * else removes them. Without a sweep these files accumulate one-per-session
  * forever. This helper removes state files whose mtime is older than
  * `retentionDays`, while preserving the active session's files (which are
@@ -199,7 +199,7 @@ function buildContextSuggestion(transcriptPath, bucketFile, env) {
 }
 
 async function main() {
-  // Claude Code passes hook input via stdin JSON; session_id is the
+  // Cursor passes hook input via stdin JSON; session_id is the
   // canonical field (legacy env var, then 'default', as fallbacks) and
   // transcript_path points at the session transcript JSONL used by the
   // context-size signal.
@@ -212,7 +212,7 @@ async function main() {
 
   const rawSessionId = (input && typeof input.session_id === 'string' && input.session_id)
     ? input.session_id
-    : (process.env.CLAUDE_SESSION_ID || 'default');
+    : (process.env.ECC_SESSION_ID || 'default');
   const sessionId = rawSessionId.replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
   const transcriptPath = (input && typeof input.transcript_path === 'string') ? input.transcript_path : '';
 
@@ -248,7 +248,7 @@ async function main() {
     messages.push(`[StrategicCompact] ${count} tool calls - good checkpoint for /compact if context is stale`);
   }
 
-  // log() writes to stderr (debug log). Per the Claude Code hooks guide,
+  // log() writes to stderr (debug log). Per the Cursor hooks guide,
   // non-blocking PreToolUse stderr (exit 0) is only written to the debug log;
   // it does not reach the model. To inject a user-facing suggestion without
   // blocking the tool call, emit structured JSON to stdout with

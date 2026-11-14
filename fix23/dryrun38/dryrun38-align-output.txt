@@ -1,0 +1,30 @@
+measurements: 52
+widths: [390, 768, 900, 1440]
+states per width: ['branches', 'detail', 'home', 'home-bottom', 'offer', 'offer-accepted', 'post', 'post-done', 'trip', 'trip-delivered', 'trip-wrongcode', 'trips', 'you']
+bleed declared in design-tokens.md: False
+panel-top stagger declared in design-tokens.md: False
+PASS 6a-overflow-doc -- docOverflowX == 0 in 52/52 measurements
+PASS 6a-overflow-text -- leaf text scrollWidth > clientWidth + 1 in 0 measurements
+PASS 6b-center-phone -- phone viewportCenterOffset in [[0]] (max |offset| 0)
+PASS 6c-nav-gaps -- adjacent tab gaps equal +/-2px in 52/52 measurements
+PASS 6c-nav-labels -- label center == tab center +/-2px for every tab
+PASS 6c-nav-bar-centered -- tabbar centered in phone frame +/-2px in 52/52
+PASS 6d-grid-children -- full-width children share one left/right edge +/-2px; narrower children left-aligned or centered, in 52/52
+PASS 6d-grid-feedcards -- feed cards share one left and one right edge per width
+FLAG 6e-clip-beyond-frame -- elements beyond the phone frame in 8 measurements: ['iris-disc']; declared intentional bleed in decision record: False
+PASS 6f-labels-svg -- route-map + branch-strip SVG labels: 0 overlaps, 0 out-of-bounds in 52/52 measurements
+PASS 6f-labels-stamps -- stamp center offset on parent in [[0]] (n=12)
+PASS 6f-status-insets -- statusbar time-left inset == icons-right inset +/-2px (timeLeft/iconsRight symmetric)
+PASS 6g-actions-codeboxes -- code-box group offset on panel: [0] (n=8)
+PASS 6h-panels-gutters -- desktop side-panel gutters symmetric +/-2px (44/44) in 13/13
+FLAG 6h-panels-tops -- desktop side-panel top deltas: [26]; stagger recorded in decision record: False
+PASS cover-matrix -- required matrix 3 widths x 13 states = 39 cells; missing: none
+PASS cover-screenshots -- screenshots present for every measured cell
+bonus widths measured (beyond the required 3): [768]
+
+NOTES:
+ - 6e: beyond-frame classes ['iris-disc'] (max extent [('1440-trip', [{'cls': 'iris-disc', 'tag': 'DIV', 'left': 445, 'right': 995}])]) -- passes ONLY if declared as intentional bleed; decision record does not declare it
+ - 6f-status-centers: harness records tops only (timeTop/iconsTop pairs [(16, 21), (45, 50), (53, 58)]); vertical-CENTER comparison needs element heights -- see the separate probe
+ - 6h: panel top delta 26px at 1440 (left top 232 vs right top 206) with no recorded stagger -- the desk is align-items:center, so the delta is the height difference of vertically-centered panels, not a top-alignment defect; the record does not state it
+
+2 FLAG(s): ['6e-clip-beyond-frame', '6h-panels-tops']

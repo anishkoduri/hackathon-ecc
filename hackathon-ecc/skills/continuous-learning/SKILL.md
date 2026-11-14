@@ -1,6 +1,6 @@
 ---
 name: continuous-learning
-description: "[DEPRECATED - Claude Code only, use continuous-learning-v2] Legacy v1 stop-hook skill extractor. v2 is a strict superset with instinct-based, project-scoped, hook-reliable learning. Do not invoke v1: when continuous learning, session learning, or pattern extraction is requested, route to continuous-learning-v2 instead."
+description: "[DEPRECATED - Cursor only, use continuous-learning-v2] Legacy v1 stop-hook skill extractor. v2 is a strict superset with instinct-based, project-scoped, hook-reliable learning. Do not invoke v1: when continuous learning, session learning, or pattern extraction is requested, route to continuous-learning-v2 instead."
 metadata:
   origin: ECC
 ---
@@ -15,13 +15,13 @@ metadata:
 
 ## Original v1 Documentation (archival)
 
-Automatically evaluates Claude Code sessions on end to extract reusable patterns that can be saved as learned skills.
+Automatically evaluates Cursor sessions on end to extract reusable patterns that can be saved as learned skills.
 
 ## When to Activate
 
-- Setting up automatic pattern extraction from Claude Code sessions
+- Setting up automatic pattern extraction from Cursor sessions
 - Configuring the Stop hook for session evaluation
-- Reviewing or curating learned skills in `~/.claude/skills/learned/`
+- Reviewing or curating learned skills in the agent's local learned-skills directory
 - Adjusting extraction thresholds or pattern categories
 - Comparing v1 (this) vs v2 (instinct-based) approaches
 
@@ -35,7 +35,7 @@ This skill runs as a **Stop hook** at the end of each session:
 
 1. **Session Evaluation**: Checks if session has enough messages (default: 10+)
 2. **Pattern Detection**: Identifies extractable patterns from the session
-3. **Skill Extraction**: Saves useful patterns to `~/.claude/skills/learned/`
+3. **Skill Extraction**: Saves useful patterns to the agent's local learned-skills directory
 
 ## Configuration
 
@@ -46,7 +46,7 @@ Edit `config.json` to customize:
   "min_session_length": 10,
   "extraction_threshold": "medium",
   "auto_approve": false,
-  "learned_skills_path": "~/.claude/skills/learned/",
+  "learned_skills_path": "~/.cursor/ecc/skills/learned/",
   "patterns_to_detect": [
     "error_resolution",
     "user_corrections",
@@ -74,7 +74,7 @@ Edit `config.json` to customize:
 
 ## Hook Setup
 
-Add to your `~/.claude/settings.json`:
+The plugin registers this hook itself via `hooks/hooks.json`; for a manual install, add to your hook config:
 
 ```json
 {
@@ -83,7 +83,7 @@ Add to your `~/.claude/settings.json`:
       "matcher": "*",
       "hooks": [{
         "type": "command",
-        "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"
+        "command": "$ECC_PLUGIN_ROOT/skills/continuous-learning/evaluate-session.sh"
       }]
     }]
   }
@@ -112,7 +112,7 @@ Homunculus v2 takes a more sophisticated approach:
 | Feature | Our Approach | Homunculus v2 |
 |---------|--------------|---------------|
 | Observation | Stop hook (end of session) | PreToolUse/PostToolUse hooks (100% reliable) |
-| Analysis | Main context | Background agent (Haiku) |
+| Analysis | Main context | Background agent (Grok 4.6 High Fast) |
 | Granularity | Full skills | Atomic "instincts" |
 | Confidence | None | 0.3-0.9 weighted |
 | Evolution | Direct to skill | Instincts → cluster → skill/command/agent |
@@ -124,7 +124,7 @@ Homunculus v2 takes a more sophisticated approach:
 ### Potential v2 Enhancements
 
 1. **Instinct-based learning** - Smaller, atomic behaviors with confidence scoring
-2. **Background observer** - Haiku agent analyzing in parallel
+2. **Background observer** - Grok 4.6 High Fast agent analyzing in parallel
 3. **Confidence decay** - Instincts lose confidence if contradicted
 4. **Domain tagging** - code-style, testing, git, debugging, etc.
 5. **Evolution path** - Cluster related instincts into skills/commands

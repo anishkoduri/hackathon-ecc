@@ -187,9 +187,9 @@ Ask final clarifying questions:
 
 ## Phase 7: GENERATE - Write PRD
 
-**Output path**: `.claude/PRPs/prds/{kebab-case-name}.prd.md`
+**Output path**: `.ecc/PRPs/prds/{kebab-case-name}.prd.md`
 
-Create directory if needed: `mkdir -p .claude/PRPs/prds`
+Create directory if needed: `mkdir -p .ecc/PRPs/prds`
 
 ### PRD Template
 
@@ -356,7 +356,7 @@ After generating, report:
 ```markdown
 ## PRD Created
 
-**File**: `.claude/PRPs/prds/{name}.prd.md`
+**File**: `.ecc/PRPs/prds/{name}.prd.md`
 
 ### Summary
 
@@ -389,7 +389,7 @@ After generating, report:
 
 ### To Start Implementation
 
-Run: `/prp-plan .claude/PRPs/prds/{name}.prd.md`
+Run: `/prp-plan .ecc/PRPs/prds/{name}.prd.md`
 
 This will automatically select the next pending phase and create an implementation plan.
 ```
@@ -424,7 +424,7 @@ This will automatically select the next pending phase and create an implementati
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────┐
-│  GENERATE: Write PRD to .claude/PRPs/prds/              │
+│  GENERATE: Write PRD to .ecc/PRPs/prds/              │
 └─────────────────────────────────────────────────────────┘
 ```
 

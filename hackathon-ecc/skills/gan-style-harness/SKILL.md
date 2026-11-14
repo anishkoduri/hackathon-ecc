@@ -1,13 +1,13 @@
 ---
 name: gan-style-harness
-description: "GAN-inspired Generator-Evaluator agent harness for building high-quality applications autonomously. Based on Anthropic's March 2026 harness design paper. Use when a feature should be built autonomously through generator and evaluator iteration until it clears a quality bar. (The upstream `claude -p` invocation path is Claude Code only and does not run in Cursor; in this plugin the harness loop runs in Cursor through `/gan-build` + `/gan-design` and the `ecc-gan-*` agents as Cursor subagents — the skill contributes the harness design, prompts, and rubric, never the CLI commands.)"
+description: "GAN-inspired Generator-Evaluator agent harness for building high-quality applications autonomously. Based on the upstream multi-agent harness design paper (March 2026). Use when a feature should be built autonomously through generator and evaluator iteration until it clears a quality bar. (In this plugin the harness loop runs in Cursor through `/gan-build` + `/gan-design` and the `ecc-gan-*` agents as Cursor subagents — the skill contributes the harness design, prompts, and rubric, never the CLI commands.)"
 metadata:
   origin: ECC-community
 ---
 
 # GAN-Style Harness Skill
 
-> Inspired by [Anthropic's Harness Design for Long-Running Application Development](https://www.anthropic.com/engineering/harness-design-long-running-apps) (March 24, 2026)
+> Inspired by the upstream multi-agent harness design paper (March 24, 2026)
 
 A multi-agent harness that separates **generation** from **evaluation**, creating an adversarial feedback loop that drives quality far beyond what a single agent can achieve.
 
@@ -27,7 +27,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 
 ## When NOT to Use
 
-- Quick single-file fixes (Claude Code only — use standard `claude -p` there; in this plugin use the Cursor agent loop, never `claude -p`)
+- Quick single-file fixes (use the Cursor agent loop, never a CLI subprocess)
 - Tasks with tight budget constraints (<$10)
 - Simple refactoring (use de-sloppify pattern instead)
 - Tasks that are already well-specified with tests (use TDD workflow)
@@ -37,7 +37,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 ```
                     ┌─────────────┐
                     │   PLANNER   │
-                    │  (Sonnet)   │
+                    │  (Grok 4.6 High Fast)   │
                     └──────┬──────┘
                            │ Product Spec
                            │ (features, sprints, design direction)
@@ -49,14 +49,14 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
               │                        │
               │  ┌──────────┐          │
               │  │GENERATOR │--build-->│──┐
-              │  │ (Sonnet) │          │  │
+              │  │ (Grok 4.6 High Fast) │          │  │
               │  └────▲─────┘          │  │
               │       │                │  │ live app
               │    feedback             │  │
               │       │                │  │
               │  ┌────┴─────┐          │  │
               │  │EVALUATOR │<-test----│──┘
-              │  │ (Sonnet) │          │
+              │  │ (Grok 4.6 High Fast) │          │
               │  │+Playwright│         │
               │  └──────────┘          │
               │                        │
@@ -76,7 +76,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Is deliberately **ambitious** — conservative planning leads to underwhelming results
 - Produces evaluation criteria that the Evaluator will use later
 
-**Model:** Sonnet by default; raise via `GAN_PLANNER_MODEL=opus` for deeper spec expansion
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_PLANNER_MODEL=grok-4.7-high` for deeper spec expansion
 
 ### 2. Generator Agent
 
@@ -89,7 +89,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Manages git for version control between iterations
 - Reads Evaluator feedback and incorporates it in next iteration
 
-**Model:** Sonnet by default; raise via `GAN_GENERATOR_MODEL=opus` for maximum coding capability
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_GENERATOR_MODEL=grok-4.7-high` for maximum coding capability
 
 ### 3. Evaluator Agent
 
@@ -106,7 +106,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Returns structured feedback with scores and specific issues
 - Is engineered to be **ruthlessly strict** — never praises mediocre work
 
-**Model:** Sonnet by default; raise via `GAN_EVALUATOR_MODEL=opus` for stronger judgment + tool use
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_EVALUATOR_MODEL=grok-4.7-high` for stronger judgment + tool use
 
 ## Evaluation Criteria
 
@@ -116,6 +116,7 @@ The default four criteria, each scored 1-10:
 ## Evaluation Rubric
 
 **Screen distinctiveness is NOT scored here.** Whether a named direction is recorded AND visibly applied on the rendered screens is judged ONLY by `browser-qa` in the visual loop (orch-build-mvp step 6) — never by this evaluator. The Design Quality and Originality rows below score the recorded direction and its code-level application only (direction recorded in `docs/design-tokens.md`; tokens, type, and spacing trace to it in the code). A screen that reads as a default template is a browser-qa finding, not a rubric deduction — do not raise or lower a score for screen distinctiveness.
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 
 ### Design Quality (weight: 0.3)
 - 1-3: No named direction recorded, or tokens, type, and spacing in the code do not trace to any recorded direction
@@ -163,67 +164,6 @@ The default four criteria, each scored 1-10:
 /gan-design "Create a landing page for a crypto portfolio tracker"
 ```
 
-### Via Shell Script
-
-```bash
-# Basic usage
-./scripts/gan-harness.sh "Build a music streaming dashboard"
-
-# With options
-GAN_MAX_ITERATIONS=10 \
-GAN_PASS_THRESHOLD=7.5 \
-GAN_EVAL_CRITERIA="functionality,performance,security" \
-./scripts/gan-harness.sh "Build a REST API for task management"
-```
-
-### Via Claude Code (Manual — Claude Code only, never executed in this plugin)
-
-> In this plugin these `claude -p` commands are NOT executed — the loop runs in Cursor via `/gan-build` (planner/generator/evaluator as Cursor subagents). The rubric and prompts above are the operative parts; this section documents the upstream invocation path only.
-
-```bash
-# Step 1: Plan
-# Claude Code only — never executed in this plugin; upstream documentation only.
-claude -p --model sonnet "You are a Product Planner. Read PLANNER_PROMPT.md. Expand this brief into a full product spec: 'Build a Kanban board app'. Write spec to spec.md"
-
-# Step 2: Generate (iteration 1)
-# Claude Code only — never executed in this plugin; upstream documentation only.
-claude -p --model sonnet "You are a Generator. Read spec.md. Implement Sprint 1. Start the dev server on port 3000."
-
-# Step 3: Evaluate (iteration 1)
-# Claude Code only — never executed in this plugin; upstream documentation only.
-claude -p --model sonnet --allowedTools "Read,Bash,mcp__playwright__*" "You are an Evaluator. Read EVALUATOR_PROMPT.md. Test the live app at http://localhost:3000. Score against the rubric. Write feedback to feedback-001.md"
-
-# Step 4: Generate (iteration 2 — reads feedback)
-# Claude Code only — never executed in this plugin; upstream documentation only.
-claude -p --model sonnet "You are a Generator. Read spec.md and feedback-001.md. Address all issues. Improve the scores."
-
-# Repeat steps 3-4 until pass threshold met
-```
-
-## Evolution Across Model Capabilities
-
-The harness should simplify as models improve. Following Anthropic's evolution:
-
-### Stage 1 — Weaker Models (Sonnet-class)
-- Full sprint decomposition required
-- Context resets between sprints (avoid context anxiety)
-- 2-agent minimum: Initializer + Coding Agent
-- Heavy scaffolding compensates for model limitations
-
-### Stage 2 — Capable Models (Opus 4.5-class)
-- Full 3-agent harness: Planner + Generator + Evaluator
-- Sprint contracts before each implementation phase
-- 10-sprint decomposition for complex apps
-- Context resets still useful but less critical
-
-### Stage 3 — Frontier Models (Opus 4.6-class)
-- Simplified harness: single planning pass, continuous generation
-- Evaluation reduced to single end-pass (model is smarter)
-- No sprint structure needed
-- Automatic compaction handles context growth
-
-> **Key principle:** Every harness component encodes an assumption about what the model can't do alone. When models improve, re-test those assumptions. Strip away what's no longer needed.
-
 ## Configuration
 
 ### Environment Variables
@@ -232,9 +172,9 @@ The harness should simplify as models improve. Following Anthropic's evolution:
 |----------|---------|-------------|
 | `GAN_MAX_ITERATIONS` | `15` | Maximum generator-evaluator cycles |
 | `GAN_PASS_THRESHOLD` | `7.0` | Weighted score to pass (1-10) |
-| `GAN_PLANNER_MODEL` | `sonnet` | Model for planning agent |
-| `GAN_GENERATOR_MODEL` | `sonnet` | Model for generator agent |
-| `GAN_EVALUATOR_MODEL` | `sonnet` | Model for evaluator agent |
+| `GAN_PLANNER_MODEL` | `cursor-grok-4.6-high-fast` | Model for planning agent |
+| `GAN_GENERATOR_MODEL` | `cursor-grok-4.6-high-fast` | Model for generator agent |
+| `GAN_EVALUATOR_MODEL` | `cursor-grok-4.6-high-fast` | Model for evaluator agent |
 | `GAN_EVAL_CRITERIA` | `design,originality,craft,functionality` | Comma-separated criteria |
 | `GAN_DEV_SERVER_PORT` | `3000` | Port for the live app |
 | `GAN_DEV_SERVER_CMD` | `npm run dev` | Command to start dev server |
@@ -262,11 +202,11 @@ The harness should simplify as models improve. Following Anthropic's evolution:
 
 5. **Evaluator praising its own fixes** — Never let the evaluator suggest fixes and then evaluate those fixes. The evaluator only critiques; the generator fixes.
 
-6. **Context exhaustion** — For long sessions, use Claude Agent SDK's automatic compaction or reset context between major phases.
+6. **Context exhaustion** — For long sessions, use Cursor Agent SDK's automatic compaction or reset context between major phases.
 
 ## Results: What to Expect
 
-Based on Anthropic's published results:
+Based on the upstream harness paper's published results:
 
 | Metric | Solo Agent | GAN Harness | Improvement |
 |--------|-----------|-------------|-------------|
@@ -280,7 +220,7 @@ Based on Anthropic's published results:
 
 ## References
 
-- [Anthropic: Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps) — Original paper by Prithvi Rajasekaran
-- [Epsilla: The GAN-Style Agent Loop](https://www.epsilla.com/blogs/anthropic-harness-engineering-multi-agent-gan-architecture) — Architecture deconstruction
+- Harness Design for Long-Running Apps (upstream multi-agent harness design paper) — Original paper by Prithvi Rajasekaran
+- Epsilla: The GAN-Style Agent Loop — Architecture deconstruction
 - [Martin Fowler: Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) — Broader industry context
 - [OpenAI: Harness Engineering](https://openai.com/index/harness-engineering/) — OpenAI's parallel work

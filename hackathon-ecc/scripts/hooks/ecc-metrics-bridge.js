@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ECC Metrics Bridge — Claude Code-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event)
+ * ECC Metrics Bridge — Upstream-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event)
  *
  * Maintains a running session aggregate in /tmp/ecc-metrics-{session}.json.
  * This bridge file is read by ecc-statusline.js and ecc-context-monitor.js,
@@ -18,7 +18,7 @@ const {
   readSessionCostSnapshot,
   warnSessionCostSnapshotFailure
 } = require('../lib/session-cost-snapshot');
-const { getClaudeDir } = require('../lib/utils');
+const { getAgentDataHome } = require('../lib/utils');
 
 const MAX_STDIN = 1024 * 1024;
 const MAX_FILES_TRACKED = 200;
@@ -147,7 +147,7 @@ function writeCostWarningIfChanged(kind, costsPath, signature, message) {
 function readSessionCost(sessionId) {
   let costsPath = path.join('metrics', 'costs.jsonl');
   try {
-    const metricsDir = path.join(getClaudeDir(), 'metrics');
+    const metricsDir = path.join(getAgentDataHome(), 'metrics');
     costsPath = path.join(metricsDir, 'costs.jsonl');
     const snapshotResult = readSessionCostSnapshot(metricsDir, sessionId);
     if (snapshotResult.malformed > 0) {
@@ -205,7 +205,7 @@ function run(rawInput) {
     const toolName = String(input.tool_name || '');
     const toolInput = input.tool_input || {};
 
-    const sessionId = sanitizeSessionId(input.session_id) || sanitizeSessionId(process.env.ECC_SESSION_ID) || sanitizeSessionId(process.env.CLAUDE_SESSION_ID);
+    const sessionId = sanitizeSessionId(input.session_id) || sanitizeSessionId(process.env.ECC_SESSION_ID) || sanitizeSessionId(process.env.ECC_SESSION_ID);
 
     if (!sessionId) return rawInput;
 

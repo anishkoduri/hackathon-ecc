@@ -14,7 +14,7 @@ import { randomBytes } from 'crypto';
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 
-export const CK_HOME          = resolve(homedir(), '.claude', 'ck');
+export const CK_HOME          = resolve(homedir(), '.cursor', 'ecc', 'ck');
 export const CONTEXTS_DIR     = resolve(CK_HOME, 'contexts');
 export const PROJECTS_FILE    = resolve(CK_HOME, 'projects.json');
 export const CURRENT_SESSION  = resolve(CK_HOME, 'current-session.json');
@@ -184,14 +184,14 @@ export function gitSummary(projectPath, sinceDate) {
 // ─── Native memory path encoding ──────────────────────────────────────────────
 
 export function encodeProjectPath(absolutePath) {
-  // Same rule as Claude Code: every non-alphanumeric character becomes '-'.
+  // Same rule as Cursor: every non-alphanumeric character becomes '-'.
   // "/Users/sree/dev/my app" -> "-Users-sree-dev-my-app"
   return absolutePath.replace(/[^A-Za-z0-9]/g, '-');
 }
 
 export function nativeMemoryDir(absolutePath) {
   const encoded = encodeProjectPath(absolutePath);
-  return resolve(homedir(), '.claude', 'projects', encoded, 'memory');
+  return resolve(homedir(), '.cursor', 'ecc', 'projects', encoded, 'memory');
 }
 
 // ─── Rendering ────────────────────────────────────────────────────────────────

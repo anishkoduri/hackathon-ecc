@@ -35,10 +35,10 @@ If this skill is installed as part of the Cursor plugin rather than under
 `~/.cursor/skills/`, use the equivalent path under the plugin install
 (`skills/rules-distill/scripts/scan-skills.sh` relative to the plugin root).
 
-Claude Code (this skill also works there):
+Cursor (this skill also works there):
 
 ```bash
-bash ~/.claude/skills/rules-distill/scripts/scan-skills.sh
+bash "$ECC_PLUGIN_ROOT/skills/rules-distill/scripts/scan-skills.sh"
 ```
 
 #### 1b. Collect rules index
@@ -49,10 +49,10 @@ Cursor:
 bash ~/.cursor/skills/rules-distill/scripts/scan-rules.sh
 ```
 
-Claude Code:
+Cursor:
 
 ```bash
-bash ~/.claude/skills/rules-distill/scripts/scan-rules.sh
+bash "$ECC_PLUGIN_ROOT/skills/rules-distill/scripts/scan-rules.sh"
 ```
 
 #### 1c. Present to user
@@ -82,7 +82,7 @@ After all batches complete, merge candidates across batches:
 
 #### Subagent Prompt
 
-Launch a general-purpose Agent with the following prompt:
+Launch a general subagent with the following prompt:
 
 ````
 You are an analyst who cross-reads skills to extract principles that should be promoted to rules.

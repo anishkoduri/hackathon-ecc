@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * InsAIts Security Monitor — Claude Code-only wrapper for run-with-flags compatibility (not wired in this Cursor plugin — Cursor has no hook events that invoke it).
+ * InsAIts Security Monitor — Upstream-only wrapper for run-with-flags compatibility (not wired in this Cursor plugin — Cursor has no hook events that invoke it).
  *
  * This thin wrapper receives stdin from the hooks infrastructure and
  * delegates to the Python-based insaits-security-monitor.py script.

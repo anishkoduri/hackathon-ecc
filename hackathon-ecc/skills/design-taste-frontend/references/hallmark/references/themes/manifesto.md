@@ -25,7 +25,7 @@ A declaration printed on a dark sheet: a warm near-black ground, warm off-white 
   --color-rule: oklch(31% 0.014 60);
   --color-accent: oklch(56% 0.228 28); --color-accent-deep: oklch(49% 0.2 28); --color-accent-text: oklch(64% 0.22 28); --color-accent-ink: oklch(98.5% 0.004 90);
   --color-focus: oklch(64% 0.22 28);
-  --font-display: "Anton", "Impact", sans-serif; --font-body: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", "Impact"; --font-body: "Public Sans";
   --font-outlier: var(--font-body);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 4px; --shadow-card: none;
   --tracking-display: 0.004em; --display-weight: 400; --lh-tight: 0.9; --text-display: clamp(4.5rem, 12vw, 13rem);

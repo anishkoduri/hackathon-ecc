@@ -160,5 +160,5 @@ The agent will stop and report if:
 
 ## Related
 
-- Agent: `agents/ecc-dart-build-resolver.md`
+- Agent: `dart-build-resolver` (`agents/ecc-dart-build-resolver.md`)
 - Skill: `skills/flutter-dart-code-review/`

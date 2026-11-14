@@ -70,7 +70,7 @@ function prepareStaleOperationsReconciliation(plan, migration) {
     ...(plan.operations || []),
     ...(plan.statePreview.operations || []),
   ]);
-  // Claude flat-skill migration deliberately keeps nested legacy copies that
+  // Cursor flat-skill migration deliberately keeps nested legacy copies that
   // conflict with user-owned flat skills; those records are not stale.
   const retainedLegacyDestinations = destinationKeys(migration.retainedLegacyOperations);
   const skipHookRuntime = hooksDeclined(plan);

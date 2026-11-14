@@ -5,7 +5,7 @@
  * then delegates to the hook scripts in hooks/*.js.
  * Required by all 15 hook scripts in hooks/ (each does require('./adapter'));
  * hooks/hooks.json registers those scripts as Cursor hooks, so this file
- * is live infrastructure — not a Claude Code-only or unwired script.
+ * is live infrastructure — not an unwired script.
  */
 
 const { spawnSync } = require('child_process');
@@ -109,7 +109,7 @@ function fallbackHookEnabled(hookId, allowedProfiles) {
     && allowedProfiles.includes(profile);
 }
 
-function transformToClaude(cursorInput, overrides = {}) {
+function transformToHookPayload(cursorInput, overrides = {}) {
   const cursorSessionId = cursorInput.conversation_id || cursorInput.session_id || '';
   return {
     tool_input: {
@@ -197,7 +197,7 @@ function runExistingHook(scriptName, stdinData, options = {}) {
         ...process.env,
         ...(options.env || {}),
         ...(cursorSessionId
-          ? { CLAUDE_SESSION_ID: String(cursorSessionId) }
+          ? { ECC_SESSION_ID: String(cursorSessionId) }
           : {}),
       },
       timeout: options.timeout || 15000,
@@ -245,7 +245,7 @@ module.exports = {
   resolveRuntimePath,
   loadRuntimeModule,
   fallbackHookEnabled,
-  transformToClaude,
+  transformToHookPayload,
   normalizeSessionStartOutput,
   mergeSessionStartOutputs,
   createStopFormatTypecheckOptions,

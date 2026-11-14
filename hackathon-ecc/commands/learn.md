@@ -1,5 +1,5 @@
 ---
-description: Extract reusable patterns from the current session and save them as candidate skills or guidance. Use to review a session on demand and persist an approved skill file; continuous-learning-v2 is a separate, configurable Stop/PreToolUse/PostToolUse hook-observation and instinct-evolution system (PreToolUse/PostToolUse observation is Claude Code-only — in Cursor only the Stop hook runs — and the background observer is disabled by default) and is not an automatic equivalent of this command.
+description: Extract reusable patterns from the current session and save them as candidate skills or guidance. Use to review a session on demand and persist an approved skill file; continuous-learning-v2 is a separate, configurable Stop/PreToolUse/PostToolUse hook-observation and instinct-evolution system (PreToolUse/PostToolUse observation is upstream-only — in Cursor only the Stop hook runs — and the background observer is disabled by default) and is not an automatic equivalent of this command.
 ---
 
 # /learn - Extract Reusable Patterns
@@ -94,9 +94,9 @@ metadata:
    explicit approval, then write and rerun validation. Do not report success
    until every check passes.
 
-The directory form and frontmatter matter because Claude Code discovers
+The directory form and frontmatter matter because Cursor discovers
 personal skills from `<name>/SKILL.md`; a flat `skills/learned/<name>.md` file
-is not a skill entrypoint. The trigger-first description helps Claude decide
+is not a skill entrypoint. The trigger-first description helps Cursor decide
 when to load the skill automatically.
 
 ## Notes

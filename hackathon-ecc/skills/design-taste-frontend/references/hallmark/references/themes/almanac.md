@@ -25,9 +25,9 @@ The register of a reference book: cool slate stock, blue-black ink, Hanken Grote
   --color-rule: oklch(73% 0.013 240); --color-rule-2: oklch(32% 0.018 240);
   --color-accent: oklch(45% 0.180 350); --color-accent-2: oklch(37% 0.160 350); --color-accent-ink: oklch(97% 0.006 245); --color-focus: oklch(46% 0.190 350);
   --color-sheet: oklch(93.5% 0.008 245);
-  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Newsreader", ui-serif, Georgia, serif;
-  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Hanken Grotesk";
+  --font-body: "Newsreader", Georgia;
+  --font-outlier: "IBM Plex Mono";
   --radius-card: 0; --radius-pill: 2px; --rule-hair: 1px; --rule-bar: 2px; --shadow-card: none;
   --tracking-display: -0.02em; --display-weight: 600;
 }

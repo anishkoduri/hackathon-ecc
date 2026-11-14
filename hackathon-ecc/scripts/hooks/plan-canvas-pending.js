@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Plan Canvas undelivered-feedback guard (Stop) — Claude Code-only (not wired in this Cursor plugin — Cursor has no Stop hook event)
+ * Plan Canvas undelivered-feedback guard (Stop) — Upstream-only (not wired in this Cursor plugin — Cursor has no Stop hook event)
  *
  * Cross-platform (Windows, macOS, Linux)
  *
@@ -44,17 +44,17 @@ function validSessionKey(key) {
   return typeof key === 'string' && SESSION_KEY_PATTERN.test(key);
 }
 
-// Resolve the Claude profile directory the same way everywhere.
+// Resolve the Cursor profile directory the same way everywhere.
 //
 // Duplicated rather than imported on purpose: hooks ship in managed installs
 // that carry top-level `scripts/` without `scripts/lib/` (see #3259), so a
 // require into lib/ would make the hook unloadable there. `~` is expanded the
 // way `scripts/lib/agent-data-home.js` expands it, so a profile written as
-// `~/.claude-work` resolves to one place rather than two.
-function claudeConfigDir() {
-  const configured = process.env.CLAUDE_CONFIG_DIR;
+// `~/some-dir` resolves to one place rather than two.
+function agentDataHome() {
+  const configured = process.env.ECC_AGENT_DATA_HOME;
   const trimmed = configured ? String(configured).trim() : '';
-  if (!trimmed) return path.join(os.homedir(), '.claude');
+  if (!trimmed) return path.join(os.homedir(), '.cursor', 'ecc');
   if (trimmed.startsWith('~')) {
     const remainder = trimmed.slice(1).replace(/^[/\\]+/, '');
     return remainder ? path.join(os.homedir(), remainder) : os.homedir();
@@ -65,7 +65,7 @@ function claudeConfigDir() {
 function stateDir() {
   const override = process.env.ECC_PLAN_CANVAS_STATE_DIR;
   if (override && override.trim()) return path.resolve(override.trim());
-  return path.join(claudeConfigDir(), 'plan-canvas');
+  return path.join(agentDataHome(), 'plan-canvas');
 }
 
 function readState() {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Hook-enabled check — Claude Code-only helper (not wired in this Cursor plugin — invoked only from Claude Code hook configurations).
+ * Hook-enabled check — Upstream-only helper (not wired in this Cursor plugin — invoked only from upstream hook configurations).
  */
 'use strict';
 

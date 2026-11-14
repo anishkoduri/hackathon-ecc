@@ -3,14 +3,14 @@
  * ck — Context Keeper v2
  * session-start.mjs — inject compact project context on session start.
  *
- * Injects ~100 tokens (not ~2,500 like v1).
- * SKILL.md is injected separately (still small at ~50 lines).
+ * Injects ~1k tokens per session (not ~2,500 like v1): the full SKILL.md
+ * (~170 lines) plus the compact summary below.
  *
  * Features:
  * - Compact 5-line summary for registered projects
  * - Unsaved session detection → "Last session wasn't saved. Run /ck:save."
  * - Git activity since last session
- * - Goal mismatch detection vs CLAUDE.md
+ * - Goal mismatch detection vs AGENTS.md
  * - Mini portfolio for unregistered directories
  */
 
@@ -20,10 +20,10 @@ import { homedir } from 'os';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
-const CK_HOME         = resolve(homedir(), '.claude', 'ck');
+const CK_HOME         = resolve(homedir(), '.cursor', 'ecc', 'ck');
 const PROJECTS_FILE   = resolve(CK_HOME, 'projects.json');
 const CURRENT_SESSION = resolve(CK_HOME, 'current-session.json');
-// Resolve SKILL.md next to this hook, so plugin installs work as well as ~/.claude/skills/ck.
+// Resolve SKILL.md next to this hook, so plugin installs work as well as ~/.cursor/skills/ck.
 const SKILL_DIR       = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SKILL_FILE      = resolve(SKILL_DIR, 'SKILL.md');
 
@@ -62,8 +62,8 @@ function gitLogSince(projectPath, sinceDate) {
   } catch { return null; }
 }
 
-function extractClaudeMdGoal(projectPath) {
-  const p = resolve(projectPath, 'CLAUDE.md');
+function extractAgentsMdGoal(projectPath) {
+  const p = resolve(projectPath, 'AGENTS.md');
   if (!existsSync(p)) return null;
   try {
     const md = readFileSync(p, 'utf8');
@@ -87,13 +87,13 @@ function main() {
   const cwd = process.env.PWD || process.cwd();
   const sessionId = readSessionId();
 
-  // Load skill (always inject — now only ~50 lines)
-  // The host does not expand ${CLAUDE_SKILL_DIR} in hook output, so fill it in here.
+  // Load skill (always inject the full SKILL.md, ~170 lines, ~1k tokens/session)
+  // The host does not expand ${ECC_PLUGIN_ROOT}/skills/ck in hook output, so fill it in here.
   // SKILL.md uses it inside double-quoted bash, so escape the characters bash
   // still interprets there; the callback keeps `$&` etc. in the path literal.
   const shellSkillDir = SKILL_DIR.replace(/[\\$`"]/g, '\\$&');
   const skill = existsSync(SKILL_FILE)
-    ? readFileSync(SKILL_FILE, 'utf8').replaceAll('${CLAUDE_SKILL_DIR}', () => shellSkillDir)
+    ? readFileSync(SKILL_FILE, 'utf8').replaceAll('${ECC_PLUGIN_ROOT}/skills/ck', () => shellSkillDir)
     : '';
 
   const projects = readJson(PROJECTS_FILE) || {};
@@ -148,10 +148,10 @@ function main() {
       if (gitLine) summaryLines.push(`Git: ${gitLine}`);
 
       // ── Goal mismatch detection ───────────────────────────────────────────
-      const claudeMdGoal = extractClaudeMdGoal(cwd);
-      if (claudeMdGoal && context.goal &&
-          claudeMdGoal.toLowerCase().trim() !== context.goal.toLowerCase().trim()) {
-        summaryLines.push(`WARNING Goal mismatch — ck: "${context.goal.slice(0, 40)}" · CLAUDE.md: "${claudeMdGoal.slice(0, 40)}"`);
+      const agentsMdGoal = extractAgentsMdGoal(cwd);
+      if (agentsMdGoal && context.goal &&
+          agentsMdGoal.toLowerCase().trim() !== context.goal.toLowerCase().trim()) {
+        summaryLines.push(`WARNING Goal mismatch — ck: "${context.goal.slice(0, 40)}" · AGENTS.md: "${agentsMdGoal.slice(0, 40)}"`);
         summaryLines.push(`   Run /ck:save with updated goal to sync`);
       }
 
@@ -162,7 +162,7 @@ function main() {
         summaryLines.join('\n'),
       ].join('\n'));
 
-      // Instruct Claude to display compact briefing at session start
+      // Instruct Cursor to display compact briefing at session start
       parts.push([
         `---`,
         `## ck: SESSION START`,

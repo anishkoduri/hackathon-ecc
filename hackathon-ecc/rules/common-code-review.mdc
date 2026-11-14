@@ -42,7 +42,7 @@ Before marking code complete:
 
 ## Security Review Triggers
 
-**STOP and use security-reviewer agent when:** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you invoke `security-reviewer` and proceed without waiting for a human decision; record any unresolved security concern in the final report.
+**STOP and use security-reviewer agent when:** — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you invoke `security-reviewer` agent (`agents/ecc-security-reviewer.md`) and proceed without waiting for a human decision; record any unresolved security concern in the final report.
 
 - Authentication or authorization code
 - User input handling

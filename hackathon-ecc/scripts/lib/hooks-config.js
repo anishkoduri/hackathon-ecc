@@ -3,7 +3,7 @@
 /**
  * Read hooks/hooks.json together with its sibling hooks/hooks.metadata.json.
  *
- * Claude Code validates a plugin's hooks.json against its own schema and warns
+ * Cursor validates a plugin's hooks.json against its own schema and warns
  * about every key it does not recognise, so ECC's stable matcher ids and
  * human-readable descriptions cannot live in that file. They are kept in a
  * sidecar keyed by event name and aligned with hooks.json entry order, and

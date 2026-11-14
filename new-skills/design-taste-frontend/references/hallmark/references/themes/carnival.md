@@ -24,7 +24,7 @@ A loud, screen-printed register: tinted paper, deep warm ink, Big Shoulders Disp
   --color-ink: oklch(18% 0.080 20); --color-ink-2: oklch(28% 0.060 25); --color-muted: oklch(42% 0.050 30);
   --color-rule: oklch(40% 0.21 25); --color-accent: oklch(86% 0.18 95); --color-accent-2: oklch(40% 0.21 25);
   --color-accent-ink: oklch(18% 0.080 20); --color-focus: oklch(40% 0.21 25);
-  --font-display: "Big Shoulders Display", Impact, sans-serif; --font-body: "Golos Text", system-ui, sans-serif;
+  --font-display: "Big Shoulders Display", Impact; --font-body: "Golos Text";
   --font-outlier: var(--font-body);
   --radius-card: 2px; --radius-pill: 2px; --rule-hair: 1px; --rule-bar: 2px; --shadow-card: 4px 4px 0 var(--color-ink);
   --tracking-display: 0.015em; --display-weight: 800;
@@ -64,6 +64,7 @@ One dial, the drop, stated in the stamp (`carnival: diner-sign`); its second acc
 - **Rows** ruled with `--rule-bar` in the second accent: a question or a name in capitals at item-title size on the left, the answer in Golos at lead size on the right; a picked row inverts to ink with paper type.
 - **Statements** on the second accent under paper type, the line at poster size across ten columns, one action beside it.
 - **Forms** as a well on the hard shadow: options as ruled rows that invert when chosen, a live total in the capitals.
+- **Disco logos (TRENDS_F22 E4):** the wordmark set in the theme's own competing colour fields with hard light, as the theme's own loud register, never a copied logo. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

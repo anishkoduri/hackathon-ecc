@@ -1,28 +1,20 @@
 #!/usr/bin/env node
 /**
- * PreCompact Hook - Save LLM-generated summary before context compaction
+ * PreCompact Hook - Log the compaction event before context compaction.
  *
  * Cross-platform (Windows, macOS, Linux)
  *
- * Runs before Claude compacts context. Generates a rich LLM summary of the
- * current session and writes it to the active session .tmp file so that the
- * next session start gets a high-quality summary even after lossy compaction.
- *
- * Falls back to a plain log entry when transcript_path is unavailable or the
- * LLM call fails.
+ * Runs before the agent compacts context. Logs the compaction event to the
+ * active session .tmp file. (The LLM-generated summary that used to be
+ * written here was removed in fix #16: it needed a CLI subprocess and has no
+ * Cursor equivalent.)
  */
 
 const path = require('path');
 const fs = require('fs');
 const { getSessionsDir, getDateTimeString, getTimeString, findFiles, ensureDir, appendFile, readFile, writeFile, getProjectName, log } = require('../lib/utils');
-const { generateSessionSummary } = require('../lib/llm-summary');
 
-const SUMMARY_START_MARKER = '<!-- ECC:SUMMARY:START -->';
-const SUMMARY_END_MARKER = '<!-- ECC:SUMMARY:END -->';
 
-function escapeRegExp(value) {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 /**
  * Canonicalize a path (resolve symlinks); fall back to the input on failure.
@@ -151,27 +143,8 @@ async function main() {
     process.exit(0);
   }
 
-  // Generate LLM summary right before compaction — most critical timing
-  log('[PreCompact] Generating LLM summary before compaction...');
-  const llmSummary = generateSessionSummary(transcriptPath);
-
-  if (!llmSummary) {
-    appendFile(activeSession, `\n---\n**[Compaction occurred at ${timeStr}]** - Context was summarized\n`);
-    log('[PreCompact] LLM summary unavailable; logged compaction event only');
-    process.exit(0);
-  }
-
-  const existing = readFile(activeSession);
-  if (existing && existing.includes(SUMMARY_START_MARKER) && existing.includes(SUMMARY_END_MARKER)) {
-    const newBlock = `${SUMMARY_START_MARKER}\n${llmSummary}\n<!-- LLM_SUMMARY:pre-compact:${timeStr} -->\n${SUMMARY_END_MARKER}`;
-    const updated = existing.replace(new RegExp(`${escapeRegExp(SUMMARY_START_MARKER)}[\\s\\S]*?${escapeRegExp(SUMMARY_END_MARKER)}`), () => newBlock);
-    writeFile(activeSession, updated);
-    log('[PreCompact] LLM summary written to session file before compaction');
-  } else {
-    appendFile(activeSession, `\n---\n**[Compaction at ${timeStr}]**\n\n${llmSummary}\n`);
-    log('[PreCompact] LLM summary appended (no summary markers found)');
-  }
-
+  appendFile(activeSession, `\n---\n**[Compaction occurred at ${timeStr}]** - Context was summarized\n`);
+  log('[PreCompact] Compaction event logged (no LLM summary since fix #16)');
   process.exit(0);
 }
 

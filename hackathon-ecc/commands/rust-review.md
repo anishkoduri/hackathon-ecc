@@ -138,5 +138,5 @@ Recommendation: Block merge until CRITICAL issue is fixed
 
 ## Related
 
-- Agent: `agents/ecc-rust-reviewer.md`
+- Agent: `rust-reviewer` (`agents/ecc-rust-reviewer.md`)
 - Skills: `skills/rust-patterns/`, `skills/rust-testing/`

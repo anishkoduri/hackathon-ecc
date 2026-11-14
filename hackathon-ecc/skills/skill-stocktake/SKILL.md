@@ -1,6 +1,6 @@
 ---
 name: skill-stocktake
-description: "Use when auditing Claude skills and commands for quality. Supports Quick Scan (changed skills only) and Full Stocktake modes with sequential subagent batch evaluation."
+description: "Use when auditing Cursor skills and commands for quality. Supports Quick Scan (changed skills only) and Full Stocktake modes with sequential subagent batch evaluation."
 metadata:
   origin: ECC
 ---
@@ -124,7 +124,7 @@ Usage counts come from an optional observations JSONL file (set its path with `S
 
 ### Phase 2 — Quality Evaluation
 
-Spawn a Cursor subagent (general-purpose) with the actual JSON emitted by Phase 1 and the checklist below. Copy the inventory values into the prompt itself; shell variables do not carry over into subagent calls. Include the full inventory for overlap checks and explicitly identify the paths in the current batch to evaluate. Do not send literal inventory or checklist placeholders.
+Spawn a Cursor subagent (general subagent) with the actual JSON emitted by Phase 1 and the checklist below. Copy the inventory values into the prompt itself; shell variables do not carry over into subagent calls. Include the full inventory for overlap checks and explicitly identify the paths in the current batch to evaluate. Do not send literal inventory or checklist placeholders.
 
 The subagent reads each assigned skill, applies the checklist, and returns a JSON object with a `skills` map keyed by the inventory path. Each entry includes its `path`, scanned `mtime`, `verdict`, and self-contained `reason`. Use the same path keys across all batches so merging results cannot overwrite a different skill with the same name.
 
@@ -159,7 +159,7 @@ Each skill is evaluated against this checklist:
 
 ```
 - [ ] Content overlap with other skills checked
-- [ ] Overlap with MEMORY.md / CLAUDE.md checked
+- [ ] Overlap with MEMORY.md / AGENTS.md checked
 - [ ] Freshness of technical references verified (use WebSearch if tool names / CLI flags / APIs are present)
 - [ ] Usage frequency considered when measured; missing observations marked unmeasured, not treated as zero
 ```
@@ -177,7 +177,7 @@ Verdict criteria:
 Evaluation is **holistic AI judgment** — not a numeric rubric. Guiding dimensions:
 - **Actionability**: code examples, commands, or steps that let you act immediately
 - **Scope fit**: name, trigger, and content are aligned; not too broad or narrow
-- **Uniqueness**: value not replaceable by MEMORY.md / CLAUDE.md / another skill
+- **Uniqueness**: value not replaceable by MEMORY.md / AGENTS.md / another skill
 - **Currency**: technical references work in the current environment
 
 **Reason quality requirements** — the `reason` field must be self-contained and decision-enabling:

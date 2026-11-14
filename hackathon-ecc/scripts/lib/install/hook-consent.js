@@ -206,8 +206,7 @@ function isOpenCodeHookActivationOperation(operation = {}) {
 
 function isHookRuntimeOperation(operation = {}) {
   if (
-    operation.kind === 'update-claude-settings'
-    || operation.moduleId === HOOK_RUNTIME_MODULE_ID
+    operation.moduleId === HOOK_RUNTIME_MODULE_ID
   ) {
     return true;
   }

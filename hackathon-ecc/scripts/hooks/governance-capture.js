@@ -2,7 +2,7 @@
 /**
  * Governance Event Capture Hook
  *
- * Claude Code-only PreToolUse/PostToolUse hook (not wired in this Cursor plugin) that detects governance-relevant events
+ * Upstream-only PreToolUse/PostToolUse hook (not wired in this Cursor plugin) that detects governance-relevant events
  * and writes them to the governance_events table in the state store.
  *
  * Captured event types:
@@ -296,7 +296,7 @@ function run(rawInput, options = {}) {
   }
 
   const sessionId = process.env.ECC_SESSION_ID || null;
-  const hookPhase = process.env.CLAUDE_HOOK_EVENT_NAME || 'unknown';
+  const hookPhase = process.env.ECC_HOOK_EVENT_NAME || 'unknown';
 
   if (options.truncated) {
     emitGovernanceEvent({

@@ -1,26 +1,26 @@
 ---
 name: plankton-code-quality
-description: "Write-time code quality enforcement using Plankton — auto-formatting, linting, and Claude-powered fixes on every file edit via hooks. Use when setting up write-time formatting, linting, or auto-fix hooks on file edits. (Claude Code only — uses PostToolUse hooks and spawns `claude -p` subprocesses; no Cursor equivalent)"
+description: "Write-time code quality enforcement using Plankton — auto-formatting, linting, and violation reporting on every file edit via hooks. Use when setting up write-time formatting, linting, or violation-report hooks on file edits. (Upstream only — uses PostToolUse hooks, which Cursor does not have; the auto-fix subprocess was removed in fix #16, so Plankton reports violations instead of auto-fixing)"
 metadata:
   origin: community
 ---
 
 # Plankton Code Quality Skill
 
-Integration reference for Plankton (credit: @alxfazio), a write-time code quality enforcement system for Claude Code. Plankton runs formatters and linters on every file edit via PostToolUse hooks, then spawns Claude subprocesses to fix violations the agent didn't catch.
+Integration reference for Plankton (credit: @alxfazio), a write-time code quality enforcement system for Cursor. Plankton runs formatters and linters on every file edit via PostToolUse hooks, then spawns Cursor subprocesses to fix violations the agent didn't catch.
 
 ## When to Use
 
 - You want automatic formatting and linting on every file edit (not just at commit time)
 - You need defense against agents modifying linter configs to pass instead of fixing code
-- You want tiered model routing for fixes (Haiku for simple style, Sonnet for logic, Opus for types)
+- You want tiered model routing for fixes (Grok 4.6 High Fast for simple style, Grok 4.6 High Fast for logic, Grok 4.7 High for types)
 - You work with multiple languages (Python, TypeScript, Shell, YAML, JSON, TOML, Markdown, Dockerfile)
 
 ## How It Works
 
 ### Three-Phase Architecture
 
-Every time Claude Code edits or writes a file, Plankton's `multi_linter.sh` PostToolUse hook runs:
+Every time Cursor edits or writes a file, Plankton's `multi_linter.sh` PostToolUse hook runs:
 
 ```
 Phase 1: Auto-Format (Silent)
@@ -33,12 +33,12 @@ Phase 2: Collect Violations (JSON)
 ├─ Returns structured JSON: {line, column, code, message, linter}
 └─ Still no output to main agent
 
-Phase 3: Delegate + Verify
-├─ Spawns claude -p subprocess with violations JSON
+Phase 3: Report + Verify
+├─ Reports violations JSON (no auto-fix subprocess since fix #16)
 ├─ Routes to model tier based on violation complexity:
-│   ├─ Haiku: formatting, imports, style (E/W/F codes) — 120s timeout
-│   ├─ Sonnet: complexity, refactoring (C901, PLR codes, oxlint complexity) — 300s timeout
-│   └─ Opus: type system, deep reasoning (unresolved-attribute) — 600s timeout
+│   ├─ Grok 4.6 High Fast: formatting, imports, style (E/W/F codes) — 120s timeout
+│   ├─ Grok 4.6 High Fast: complexity, refactoring (C901, PLR codes, oxlint complexity) — 300s timeout
+│   └─ Grok 4.7 High: type system, deep reasoning (unresolved-attribute) — 600s timeout
 ├─ Re-runs Phase 1+2 to verify fixes
 └─ Exit 0 if clean, Exit 2 if violations remain (reported to main agent)
 ```
@@ -75,6 +75,19 @@ A PreToolUse hook on Bash blocks legacy package managers:
 
 > **Note:** Plankton requires manual installation from its repository. Review the code before installing.
 
+Windows (PowerShell) first — the plugin runs on Windows:
+```powershell
+# Install core dependencies (uv and ruff are pip-installable; jaq is a Rust tool)
+py -m pip install uv==0.13.8 ruff==0.17.5
+cargo install jaq  # needs Rust; or download the jaq release binary from GitHub
+
+# Install Python linters
+uv sync --all-extras
+
+# Hooks activate automatically via the plugin — no start command needed
+```
+
+macOS/Linux (bash):
 ```bash
 # Install core dependencies
 brew install jaq ruff uv
@@ -82,18 +95,17 @@ brew install jaq ruff uv
 # Install Python linters
 uv sync --all-extras
 
-# Start Claude Code — hooks activate automatically
-claude
+# Hooks activate automatically via the plugin — no start command needed
 ```
 
-No install command, no plugin config. The hooks in `.claude/settings.json` are picked up automatically when you run Claude Code in the Plankton directory.
+No install command, no plugin config. The hooks in `.ecc/settings.json` are picked up automatically when you run Cursor in the Plankton directory — whether Cursor reads `.ecc/settings.json` is decided by the live smoke test (LIVE_SMOKE_TEST.md §15), not asserted here (fix #24 D-9).
 
 ### Per-Project Integration
 
 To use Plankton hooks in your own project:
 
-1. Copy `.claude/hooks/` directory to your project
-2. Copy `.claude/settings.json` hook configuration
+1. Copy `.ecc/hooks/` directory to your project
+2. Copy `.ecc/settings.json` hook configuration
 3. Copy linter config files (`.ruff.toml`, `biome.json`, etc.)
 4. Install the linters for your languages
 
@@ -116,12 +128,12 @@ To use Plankton hooks in your own project:
 
 | Concern | ECC | Plankton |
 |---------|-----|----------|
-| Code quality enforcement | PostToolUse hooks (Prettier, tsc) — Claude Code only; in Cursor, post-edit formatting via after-file-edit / stop hooks | PostToolUse hooks (20+ linters + subprocess fixes) |
+| Code quality enforcement | PostToolUse hooks (Prettier, tsc) — upstream only; in Cursor, post-edit formatting via after-file-edit / stop hooks | PostToolUse hooks (20+ linters + subprocess fixes) |
 | Security scanning | AgentShield, security-reviewer agent | Bandit (Python), Semgrep (TypeScript) (END-ONLY tools — run at the very end of the project) |
 | Config protection | — | PreToolUse blocks + Stop hook detection |
 | Package manager | Detection + setup | Enforcement (blocks legacy PMs) |
 | CI integration | — | Pre-commit hooks for git |
-| Model routing | Manual (`/model opus`) | Automatic (violation complexity → tier) |
+| Model routing | Manual (`/model grok-4.7-high`) | Automatic (violation complexity → tier) |
 
 ### Recommended Combination
 
@@ -139,7 +151,7 @@ If running both ECC and Plankton hooks:
 
 ## Configuration Reference
 
-Plankton's `.claude/hooks/config.json` controls all behavior:
+Plankton's `.ecc/hooks/config.json` controls all behavior:
 
 ```json
 {
@@ -164,9 +176,8 @@ Plankton's `.claude/hooks/config.json` controls all behavior:
   },
   "subprocess": {
     "tiers": {
-      "haiku":  { "timeout": 120, "max_turns": 10 },
-      "sonnet": { "timeout": 300, "max_turns": 10 },
-      "opus":   { "timeout": 600, "max_turns": 15 }
+      "cursor-grok-4.6-high-fast": { "timeout": 300, "max_turns": 10 },
+      "grok-4.7-high":   { "timeout": 600, "max_turns": 15 }
     },
     "volume_threshold": 5
   }
@@ -243,7 +254,7 @@ Track:
 ## Gabe's addition: oxlint complexity + ratchet ceiling (JS/TS)
 
 Closes the JS/TS gap in the model-routing table above. Python complexity (ruff C901,
-PLR) already routes to Sonnet. JS/TS had no equivalent rule turned on by default.
+PLR) already routes to Grok 4.6 High Fast. JS/TS had no equivalent rule turned on by default.
 
 ### Turn on oxlint's `complexity` rule when using it
 
@@ -281,7 +292,7 @@ Add oxlint `complexity` violations to the same row as the existing Python entry 
 Phase 3 subprocess table:
 
 ```
-├─ Sonnet: complexity, refactoring (C901, PLR codes, oxlint complexity), 300s timeout
+├─ Grok 4.6 High Fast: complexity, refactoring (C901, PLR codes, oxlint complexity), 300s timeout
 ```
 
 Same tier as Python's C901/PLR. A complexity violation is a refactoring job either way,

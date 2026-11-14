@@ -426,7 +426,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install ruff black mypy pytest pytest-django pytest-cov bandit safety pip-audit
+          pip install ruff==0.17.5 black==26.10.1 mypy==2.4.1 pytest==9.2.0 pytest-django==4.14.0 pytest-cov==7.1.0 bandit==1.9.4 safety==3.8.1 pip-audit==2.10.1
 
       - name: Code quality checks
         run: |

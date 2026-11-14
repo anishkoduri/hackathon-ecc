@@ -1,0 +1,4 @@
+[1113/021638.477140:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote
+[1113/021638.477683:WARNING:content/common/zygote/zygote_communication_linux.cc:303] Socket closed prematurely.
+[1113/021638.491306:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote
+[1113/021638.491388:WARNING:content/common/zygote/zygote_communication_linux.cc:303] Socket closed prematurely.

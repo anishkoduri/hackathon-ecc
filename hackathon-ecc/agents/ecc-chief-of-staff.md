@@ -1,7 +1,7 @@
 ---
 name: chief-of-staff
 description: Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and follows a post-send follow-through checklist. Use when managing multi-channel communication workflows.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline

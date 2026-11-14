@@ -85,21 +85,6 @@ This will:
 - Tighten wildcard permissions to scoped alternatives
 - Never modify manual-only suggestions
 
-### Opus 4.6 Deep Analysis
-
-Run the adversarial three-agent pipeline for deeper analysis:
-
-```bash
-# Requires ANTHROPIC_API_KEY
-export ANTHROPIC_API_KEY=your-key
-npx ecc-agentshield scan --opus --stream
-```
-
-This runs:
-1. **Attacker (Red Team)** — finds attack vectors
-2. **Defender (Blue Team)** — recommends hardening
-3. **Auditor (Final Verdict)** — synthesizes both perspectives
-
 ### Initialize Secure Config
 
 Scaffold a new secure `.cursor/` configuration from scratch:

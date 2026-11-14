@@ -9,19 +9,7 @@
         "rules"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "copilot",
-        "antigravity",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -36,20 +24,7 @@
         "agents"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -62,29 +37,13 @@
       "description": "Core slash-command library and command docs.",
       "paths": [
         "commands",
-        "scripts/astra-review.js",
         "scripts/harness-audit.js",
         "scripts/skills-health.js",
         "scripts/lib/skill-evolution",
-        "scripts/lib/astra-review",
-        "scripts/ci/validate-skill-host-compat.js",
         "scripts/ci/validate-skills.js"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "copilot",
-        "antigravity",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [
         "shared-script-utils"
@@ -103,11 +62,7 @@
         "scripts/lib"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "opencode",
-        "codebuddy"
+        "cursor"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -124,22 +79,7 @@
         "scripts/lib/package-manager.js"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "copilot",
-        "antigravity",
-        "codex",
-        "gemini",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [
         "shared-script-utils"
@@ -227,17 +167,7 @@
         "skills/vite-patterns"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "rules-core",
@@ -269,17 +199,7 @@
         "skills/redis-patterns"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "platform-configs"
@@ -296,22 +216,7 @@
         "skills/unified-memory"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "gemini",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [
         "platform-configs"
@@ -332,7 +237,6 @@
         "skills/continuous-learning",
         "skills/continuous-learning-v2",
         "skills/council",
-        "skills/council-multi-model",
         "skills/dev-team",
         "skills/e2e-testing",
         "skills/error-handling",
@@ -340,7 +244,6 @@
         "skills/iterative-retrieval",
         "skills/plankton-code-quality",
         "skills/production-audit",
-        "skills/skill-comply",
         "skills/skill-scout",
         "skills/skill-stocktake",
         "skills/story-lifecycle",
@@ -356,7 +259,6 @@
         "skills/click-path-audit",
         "skills/codebase-onboarding",
         "skills/codehealth-mcp",
-        "skills/config-gc",
         "skills/context-budget",
         "skills/delivery-gate",
         "skills/ecc-recipes",
@@ -373,21 +275,7 @@
         "skills/conventional-commit-review"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [
         "skill-unified-memory"
@@ -406,17 +294,7 @@
         "skills/security-scan"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "workflow-quality"
@@ -433,17 +311,7 @@
         "skills/documentation-lookup"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "platform-configs"
@@ -464,17 +332,7 @@
         "skills/market-research"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "platform-configs"
@@ -492,10 +350,7 @@
         "scripts/lib/tmux-worktree-orchestrator.js"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "codex",
-        "opencode"
+        "cursor"
       ],
       "dependencies": [
         "commands-core",
@@ -523,17 +378,7 @@
         "skills/orch-refine-code"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed"
+        "cursor"
       ],
       "dependencies": [
         "platform-configs"
@@ -574,21 +419,7 @@
         "skills/verification-before-completion"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "antigravity",
-        "codex",
-        "copilot",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal"
+        "cursor"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -605,22 +436,7 @@
         "scripts/lib/path-safety.js"
       ],
       "targets": [
-        "claude",
-        "claude-project",
-        "cursor",
-        "copilot",
-        "antigravity",
-        "opencode",
-        "codebuddy",
-        "joycode",
-        "qwen",
-        "zed",
-        "hermes",
-        "openclaw",
-        "kimi",
-        "adal",
-        "codex",
-        "gemini"
+        "cursor"
       ],
       "dependencies": [],
       "defaultInstall": false,

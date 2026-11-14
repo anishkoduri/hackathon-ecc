@@ -1,0 +1,7 @@
+# --- fix #25: build-time patches (§1 wires, §2 inventory, §4 S1/benchmark) ---
+# fix25/fix25.py patches the built tree in place, same pattern as fix24/fix24.py:
+# §1 wires ck (session-start.js runs skills/ck/hooks/session-start.mjs) and
+# /prp-commit via conventional-commit-review; §2 closes the orch-* inventory
+# bypass; §4(a) S1 header 80 -> 89 styles; §4(d) browser-qa beat-v5 line;
+# loop-status dangling references removed. Runs after fix24, before STEP 5;
+# exits non-zero on anchor errors; run log in fix25/fix25-patch-log.md.

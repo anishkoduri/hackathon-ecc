@@ -76,6 +76,7 @@ DANGEROUS RESETS (actions that clear state they don't own):
 ### Step 2: Audit Each Touchpoint
 
 For each button/toggle/form submit in the target area:
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 
 ```
 TOUCHPOINT: [Button label] in [Component:line]

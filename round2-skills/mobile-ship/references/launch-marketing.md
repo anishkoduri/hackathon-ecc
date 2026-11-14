@@ -4,7 +4,7 @@ Learned launching VocabAura (October 2026): a solo, iOS-first, one-time-purchase
 
 ## Promo videos built from code (no editor, £0)
 
-- **Tooling:** Claude Motion (the code-built video artifact type) was a Team/Enterprise beta in October 2026. If it isn't listed in the Artifact types, build the same thing with **Remotion**. It's free for individuals and companies of up to three people.
+- **Tooling:** Cursor Motion (the code-built video artifact type) was a Team/Enterprise beta in October 2026. If it isn't listed in the Artifact types, build the same thing with **Remotion**. It's free for individuals and companies of up to three people.
 - **Content:** use the app's own store screenshots inside a CSS phone frame. Don't use Apple's device art, and every shot then shows the real product.
 - **Setup:**
   - one `Promo` component with `cut` (`full` 30 s, `short` 15 s, `bumper` 6 s or less) and `layout` (portrait 1080×1920, landscape 1920×1080, square 1080×1080) props;
@@ -12,7 +12,7 @@ Learned launching VocabAura (October 2026): a solo, iOS-first, one-time-purchase
   - `render.mjs` loops over them with `--codec=h264 --crf=18`.
 - **Bumpers:** render **177 frames, not 180**. AAC padding makes a 180-frame file 6.06 s long, and bumpers must be 6 s or less. Check with `ffprobe`.
 - **Licences:**
-  - Fonts: Google Fonts under the OFL, via `@remotion/google-fonts`.
+  - Fonts: Google Fonts under the OFL, self-hosted as vendored woff2 via `@remotion/fonts` + `staticFile` (the pitch-deck-video template pattern).
   - Music: synthesise an original loop (numpy, a few chords, arpeggio, soft kick) so there are no licences.
   - No macOS `say` voiceover: system voices aren't licensed for commercial use.
   - Design for muted viewing.

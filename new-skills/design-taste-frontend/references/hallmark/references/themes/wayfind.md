@@ -24,7 +24,7 @@ Public signage set as a page: cool grey paper, blue-black ink, every glyph in Ch
   --color-ink: oklch(16% 0.014 262); --color-ink-2: oklch(29% 0.014 262); --color-muted: oklch(47% 0.016 260);
   --color-rule: oklch(80% 0.011 250); --color-ink-rule: oklch(34% 0.014 262);
   --color-accent: oklch(51% 0.22 264); --color-accent-2: oklch(81% 0.16 82); --color-accent-ink: oklch(99.5% 0.003 250); --color-focus: oklch(51% 0.22 264);
-  --font-display: "Chivo Mono", ui-monospace, monospace; --font-body: var(--font-display); --font-outlier: var(--font-body);
+  --font-display: "Chivo Mono"; --font-body: var(--font-display); --font-outlier: var(--font-body);
   --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: 0 24px 40px -24px oklch(8% 0.01 260 / 0.6);
   --tracking-display: -0.03em; --display-weight: 800;
@@ -61,6 +61,7 @@ Three colourways, set once per page and stated in the stamp (`wayfind: platform`
 - **A route as Steps:** the way out as three or four plates in a row, each a 2px bordered square holding one instruction (carriage, stairs, exit) and its figure, joined by a 2px ink rule like a corridor sign.
 - **Status as Rows:** each line or service a full-width row, its swatch, its name in 800, its ends in 400, its state at the right edge; one cobalt live dot on the row that just changed.
 - **A figure as a sign:** one number in 800 at display size inside a bordered plate, its unit beside it, and a station picker of square cells joined edge to edge that changes it.
+- **Pulsing live dots (TRENDS_F22 E13):** the cobalt live dot blinks once when a row changes and then rests, marking a real live state with a recorded theme reason. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

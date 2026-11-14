@@ -82,7 +82,7 @@ Execution discipline (each learned the hard way):
 | Metro/prebuild/hermes crash, weird stack | Wrong Node — re-export the LTS PATH. |
 | Hangs at `Computing project fingerprint` | `EAS_SKIP_AUTO_FINGERPRINT=1` was missing. Kill (`pkill -f "eas-cli build"`), re-run with it. |
 | `expo doctor` version-mismatch warnings mid-build | Non-fatal; the build continues. Align versions later with `npx expo install --check`. |
-| fastlane Ruby errors (ancient system Ruby) | Rare; `brew install ruby` and retry. |
+| fastlane Ruby errors (ancient system Ruby) | Rare; macOS only — `brew install ruby` and retry (no Windows equivalent; Homebrew is macOS/Linux). |
 | `simctl`/`xcrun` commands hang forever after an Xcode update | The `simctl` wrapper runs `xcodebuild -runFirstLaunch`, which waits for the user's admin password (new CoreSimulator). The human must open Xcode once and install components. Workaround meanwhile: `export DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer` (or any Xcode whose CoreSimulator is current). |
 | Newer Xcode: `IPHONEOS_DEPLOYMENT_TARGET is set to 9.0/12.0 … supported range is 15.0…` in Pods | Old pods declare ancient targets. Local test builds: pass `IPHONEOS_DEPLOYMENT_TARGET=15.1` on the xcodebuild line; durable fix: a Podfile post_install hook (expo-build-properties / config plugin) raising pod targets. |
 | `expo run:ios`: "Can't determine id of Simulator app" | Expo resolves Simulator.app via `xcode-select`, ignoring DEVELOPER_DIR. Build with `xcodebuild -workspace ios/X.xcworkspace -scheme X -configuration Release -sdk iphonesimulator -destination id=<UDID>` and `xcrun simctl install/launch` instead. |

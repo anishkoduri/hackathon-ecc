@@ -1,6 +1,6 @@
 ---
 name: unified-memory
-description: Share durable, inspectable context and handoffs between Claude, Codex, Hermes, Cursor, OpenCode, and other agents through the local ECC Memory Vault. Use when an agent must save work state, transfer context, resume another agent's task, or search shared project knowledge.
+description: Share durable, inspectable context and handoffs between Cursor agents through the local ECC Memory Vault. Use when an agent must save work state, transfer context, resume another agent's task, or search shared project knowledge.
 metadata:
   origin: ECC
 ---
@@ -14,7 +14,7 @@ harness-specific transcripts or inboxes.
 ## Runtime Prerequisite
 
 This skill is guidance, not the Memory Vault executable. Skill-only, minimal,
-manual, and Claude plugin installs do not create the required commands on
+manual, and Cursor plugin installs do not create the required commands on
 `PATH`. Install the `ecc-universal` npm runtime separately before using the CLI
 or MCP examples:
 
@@ -31,7 +31,7 @@ In an `ecc-universal` checkout, the CLI may instead be run as
 ## When To Use
 
 - Save durable context that another agent or later session will need.
-- Hand work from Claude to Codex, Hermes to Claude, or any other harness pair.
+- Hand work between Cursor agents in the same project.
 - Resume a task and search for prior decisions, facts, lessons, or handoffs.
 - Diagnose malformed memories, broken links, duplicate IDs, or skipped
   symbolic links.
@@ -62,7 +62,7 @@ exists with unexpected content.
 Search for an existing memory before creating another copy:
 
 ```bash
-ecc memory search "authentication migration" --target-harness codex
+ecc memory search "authentication migration" --target-harness cursor
 ecc memory read <memory-id>
 ```
 
@@ -112,7 +112,7 @@ printf '%s\n' 'The migration tests pass; rollout is still pending.' |
   ecc memory save \
     --title "Authentication migration status" \
     --kind context \
-    --source-harness codex \
+    --source-harness cursor \
     --target all \
     --tag auth \
     --stdin
@@ -129,8 +129,8 @@ Write a handoff when another harness should continue the task:
 
 ```bash
 ecc memory handoff \
-  --from codex \
-  --target claude \
+  --from cursor \
+  --target cursor \
   --title "Finish authentication rollout" \
   --body-file handoff.md
 ```
@@ -177,7 +177,7 @@ The `ecc-memory-vault` MCP server entry is not shipped in this plugin's `mcp.jso
 is:
 
 ```text
-ECC_MEMORY_HARNESS=codex ecc-memory-mcp
+ECC_MEMORY_HARNESS=cursor ecc-memory-mcp
 ```
 
 The MCP process binds writes and target filtering to

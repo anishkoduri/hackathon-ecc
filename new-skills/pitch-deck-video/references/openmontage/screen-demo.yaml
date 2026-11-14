@@ -1,6 +1,7 @@
 # Source: OpenMontage (https://github.com/calesthio/OpenMontage), pipeline_defs/screen-demo.yaml
 # License: GNU Affero General Public License v3.0 - see LICENSE in this directory.
 # Copied verbatim into hackathon-ecc pitch-deck-video (opt-in mode), 2026-11-10.
+# Fix #24 note: SYNTHETIC mode is inoperable in-plugin — the synthetic-screen-recording skill does not ship; the mode must not be selected (use REAL CAPTURE).
 name: screen-demo
 version: "2.1"
 description: >
@@ -32,6 +33,7 @@ production_modes:
       - Real app UIs (Figma, Photoshop, web apps with live state)
       - Demos that depend on unpredictable live behavior
       - User explicitly asked for a recording of their own screen
+  # Fix #24: inoperable in-plugin — the synthetic-screen-recording skill does not ship; do not select this mode.
   - name: synthetic_terminal
     description: "Remotion TerminalScene — synthesized terminal animation"
     required_tools: [video_compose]  # Remotion path

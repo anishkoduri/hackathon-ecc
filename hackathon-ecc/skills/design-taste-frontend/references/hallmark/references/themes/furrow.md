@@ -26,8 +26,8 @@ A working records voice drawn on the land itself: warm manila paper, near-black 
   --color-green: oklch(48% 0.11 150); --color-green-soft: oklch(92% 0.04 150);
   --color-contour: oklch(62% 0.07 58); --color-water: oklch(60% 0.05 232); --color-hedge: oklch(50% 0.1 150);
   --color-grid: oklch(90% 0.014 85); --color-grid-strong: oklch(85% 0.018 85); --color-sheet: oklch(99.3% 0.004 85);
-  --font-display: "Red Hat Display", "Red Hat Text", ui-sans-serif, sans-serif; --font-body: "Red Hat Text", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Red Hat Mono", ui-monospace, monospace;
+  --font-display: "Red Hat Display", "Red Hat Text"; --font-body: "Red Hat Text";
+  --font-outlier: "Red Hat Mono";
   --radius-card: 10px; --radius-entry: 14px; --radius-pill: 6px; --rule-hair: 1px;
   --shadow-card: 0 1px 2px oklch(18% 0.006 60 / 0.08), 0 14px 28px -16px oklch(18% 0.006 60 / 0.28);
   --shadow-lift: 0 1px 1px oklch(18% 0.006 60 / 0.1), 0 2px 4px -1px oklch(18% 0.006 60 / 0.1), 0 24px 44px -20px oklch(18% 0.006 60 / 0.42);

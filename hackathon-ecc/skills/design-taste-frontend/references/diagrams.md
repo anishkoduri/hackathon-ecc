@@ -9,6 +9,7 @@ kinds it suits (`types`: software, tech, gaming, product, service); `demo.html` 
 
 - A diagram, when the point is how things connect: the tools it reads from, one input split into
   parallel jobs, many sources into one place, two systems in sync, steps in order, regions.
+- **The diagram shows THIS build's mechanism (fix #23 §5, FUNC-DIAG_F23).** The nodes, labels, and figures are the build's own pipeline, data, and stack — the product's own names, real figures, real tools. A preset is a layout, never the content: a preset layout relabelled with generic words ("Input", "Process", "Output", "AI engine") does not satisfy the functionality requirement (FUNC_F23). The diagram sits where the user sees it early (hero surface or first screen after it), theme-matched, and its `alt` in the spec says what the mechanism does.
 - A UI fragment (`assets/ui`), when the point is what the user sees or does: a drafted reply, a
   calendar, a dashboard. Never a diagram of a screen.
 - One diagram a section, two a page at most (tech; a product or service page one, held still). A

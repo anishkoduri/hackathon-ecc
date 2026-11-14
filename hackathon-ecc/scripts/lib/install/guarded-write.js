@@ -3,7 +3,17 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const { sameFileIdentity } = require('./claude-settings-lock');
+// fix #16 (D10): the file-identity check lived in the deleted
+// file-lock module; it is a generic dev+ino comparison.
+function sameFileIdentity(left, right) {
+  if (left.ino !== right.ino) {
+    return false;
+  }
+  if (process.platform === 'win32' && (!left.dev || !right.dev)) {
+    return true;
+  }
+  return left.dev === right.dev;
+}
 
 function snapshotExpectedContent(expectedContent) {
   if (expectedContent === undefined) return undefined;

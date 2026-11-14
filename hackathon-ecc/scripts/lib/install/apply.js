@@ -4,10 +4,6 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const {
-  hasExplicitCommitAttributionPreference,
-  withCommitAttributionDisabled,
-} = require('../claude-commit-attribution');
 const { readInstallState, writeInstallState } = require('../install-state');
 const {
   assertHookConsentReady,
@@ -20,33 +16,26 @@ const {
   planMaterializesHookRuntime,
   shouldDisableOpenCodeHooks,
 } = require('./hook-consent');
-const {
-  getClaudeSettingsPath,
-  mergeManagedHooks,
-  readSettings,
-  runWithSettingsLock,
-  uninstallManagedHooks,
-  updateSettingsAtomic,
-  validateManagedHooks,
-  validateRecordedManagedHooks,
-} = require('./claude-settings');
 const { filterMcpConfig, parseDisabledMcpServers } = require('../mcp-config');
 const { assertWithinTrustedRoot } = require('../path-safety');
-const {
-  assertSafeClaudeSkillOperation,
-  prepareClaudeSkillMigration,
-  removeLegacyClaudeSkillFiles,
-} = require('./claude-skill-migration');
-const { cleanupLegacyAntigravityInstall } = require('./antigravity-legacy-migration');
 const {
   assertNoNewUserOwnedFile,
   prepareUserOwnedFileGuard,
   preserveUnwrittenFiles,
 } = require('./ownership-guard');
-const { cleanupLegacyOpencodeInstall, getLegacyLocationForPlan, inspectLegacyOpencodeState,
-  verifyManagedLegacyFile } = require('./opencode-legacy-migration');
+// fix #16 (D10): the OpenCode legacy-migration module is removed
+// (Cursor-only). These stubs return exactly what it returned for a
+// non-OpenCode plan: no legacy location exists, legacy state is
+// absent, legacy cleanup finds nothing.
+function getLegacyLocationForPlan() { return null; }
+function inspectLegacyOpencodeState() {
+  return { status: 'absent', state: null, error: null };
+}
+function verifyManagedLegacyFile() { return { skipped: true }; }
+function cleanupLegacyOpencodeInstall() {
+  return { detected: false, complete: false, removedPaths: [], retainedPaths: [], warnings: [] };
+}
 const { writeFileNoFollow } = require('./guarded-write');
-const { withOpenCodeInstallLocks } = require('./opencode-install-lock');
 const {
   completeExcludedPathsReconciliation,
   prepareExcludedPathsReconciliation,
@@ -59,7 +48,43 @@ const {
 } = require('./stale-operations-reconciliation');
 const { buildInstallIndex, rewriteRelativeLinks } = require('./link-rewrite');
 const { transformInstallContent } = require('./content-transform');
-const { assertScriptBoundary, isScriptBoundary } = require('./opencode-script-boundary');
+
+function uniqueOperations(operations) {
+  const byDestination = new Map();
+  for (const operation of operations) {
+    byDestination.set(comparablePath(operation.destinationPath), operation);
+  }
+  return [...byDestination.values()];
+}
+
+// fix #16 (D13): the legacy Cursor-skill migration is gone. The install
+// proceeds with the plan's own operations and no legacy skill moves.
+// Shape mirrors the upstream disabled migration (enabled: false, plan
+// operations applied, previous install-state operations retained in
+// the final state so selective reinstalls keep earlier modules).
+function createDisabledMigration(plan) {
+  const previousState = fs.existsSync(plan.installStatePath)
+    ? readInstallState(plan.installStatePath)
+    : null;
+  const finalState = {
+    ...plan.statePreview,
+    operations: uniqueOperations([
+      ...((previousState && previousState.operations) || []),
+      ...((plan.statePreview && plan.statePreview.operations) || []),
+    ]).map(operation => ({ ...operation })),
+  };
+  return {
+    enabled: false,
+    appliedOperations: [...plan.operations],
+    skippedOperations: [],
+    warnings: [],
+    bridgeState: finalState,
+    finalState,
+    legacyOperationsToRemove: [],
+    retainedLegacyOperations: [],
+    requiresBridgeState: plan.operations.length > 0,
+  };
+}
 
 function isMarkdownPath(filePath) {
   return /\.(md|mdx|markdown)$/i.test(String(filePath || ''));
@@ -114,7 +139,6 @@ function readOptionalJsonObject(filePath, label) {
 
 function readInstalledFileNoFollow(plan, operation) {
   assertSafeInstallOperation(plan, operation);
-  assertSafeClaudeSkillOperation(plan, operation);
   const flags = fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0);
   let descriptor;
   try {
@@ -142,7 +166,6 @@ function readInstalledFileNoFollow(plan, operation) {
     // Revalidate the full path after opening. The descriptor pins the file so
     // the digest and metadata refer to the same object.
     assertSafeInstallOperation(plan, operation);
-    assertSafeClaudeSkillOperation(plan, operation);
     return fs.readFileSync(descriptor);
   } finally {
     fs.closeSync(descriptor);
@@ -215,44 +238,6 @@ function formatJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function shouldSetClaudeCommitAttributionPreference(plan) {
-  if (!plan?.adapter || !['claude', 'claude-project'].includes(plan.adapter.target)) {
-    return false;
-  }
-
-  return plan.operations.some(operation => {
-    if (typeof operation?.destinationPath !== 'string') {
-      return false;
-    }
-    const relativePath = path.relative(plan.targetRoot, operation.destinationPath);
-    return relativePath && !relativePath.startsWith(`docs${path.sep}`) && relativePath !== 'docs';
-  });
-}
-
-function writeClaudeCommitAttributionPreference(settingsPath, options = {}) {
-  let settings;
-  try {
-    settings = readSettings(settingsPath);
-  } catch (_error) {
-    // Unreadable or malformed settings belong to the user; leave them untouched.
-    return false;
-  }
-
-  if (hasExplicitCommitAttributionPreference(settings)) {
-    return false;
-  }
-
-  let changed = false;
-  updateSettingsAtomic(settingsPath, latestSettings => {
-    if (hasExplicitCommitAttributionPreference(latestSettings)) {
-      return { settings: latestSettings };
-    }
-    changed = true;
-    return { settings: withCommitAttributionDisabled(latestSettings) };
-  }, options);
-  return changed;
-}
-
 function isMcpConfigPath(filePath) {
   const basename = path.basename(String(filePath || ''));
   return basename === '.mcp.json' || basename === 'mcp.json';
@@ -323,20 +308,11 @@ function readPreviousInstallState(plan) {
   return readInstallState(plan.installStatePath);
 }
 
+// fix #16 (D10): the scripts/package.json CommonJS boundary check is
+// a no-op — the boundary copy is produced only by the deleted
+// OpenCode/Cursor adapters, never by the Cursor adapter.
 function assertOpenCodeScriptBoundary(plan, writtenDestinations = new Set()) {
-  if (!plan.operations.some(operation => isScriptBoundary(operation, plan.targetRoot))) return;
-  assertSafeInstallOperation(plan, { destinationPath: plan.installStatePath });
-  assertScriptBoundary(plan, {
-    readFile: destinationPath => readInstalledFileNoFollow(plan, { destinationPath }),
-    previousOperations: readPreviousInstallState(plan)?.operations || [],
-    writtenDestinations,
-    expectedContent(operation) {
-      if (!operation || operation.kind !== 'copy-file') return null;
-      const source = fs.readFileSync(operation.sourcePath);
-      return operation.contentTransform
-        ? Buffer.from(transformInstallContent(operation, source.toString('utf8'))) : source;
-    },
-  });
+  return;
 }
 
 function comparablePath(filePath) {
@@ -595,169 +571,37 @@ function inspectLegacyOpenCodeDeactivation(plan) {
   return { plan: legacyPlan, operations: inspection.state.operations.filter(operation => operation.ownership === 'managed') };
 }
 
+// fix #16 (D10): OpenCode installs are gone; the lease check is a
+// no-op (kept as an exported no-op because install-lifecycle still
+// calls it on the repair path).
 function assertOpenCodeLeaseCoverage(plan, lease) {
-  if (plan.adapter?.target !== 'opencode') return;
-  // Reuse checks opaque ownership without acquiring extra roots out of order.
-  withOpenCodeInstallLocks(getOpenCodeInstallRoots(plan), () => {}, lease);
+  return;
 }
 
-function findPreviousManagedHooks(previousState, plan, operation) {
-  if (
-    !previousState
-    || previousState.target.id !== plan.adapter.id
-    || comparablePath(previousState.target.root) !== comparablePath(plan.targetRoot)
-    || comparablePath(previousState.target.installStatePath) !== comparablePath(plan.installStatePath)
-  ) {
-    return null;
-  }
-
-  const previousOperation = (previousState.operations || []).find(candidate => (
-    candidate.kind === operation.kind
-    && comparablePath(candidate.destinationPath) === comparablePath(operation.destinationPath)
-  ));
-  if (!previousOperation || !previousOperation.managedHooks) {
-    return null;
-  }
-
-  return validateRecordedManagedHooks(
-    previousOperation.managedHooks,
-    'previous managed hooks'
-  );
-}
-
-function preflightClaudeSettingsOperations(plan) {
-  const settingsOperations = plan.operations.filter(operation => (
-    operation.kind === 'update-claude-settings'
-    || operation.kind === 'remove-claude-settings-hooks'
-  ));
-  if (settingsOperations.length === 0) {
-    return new Map();
-  }
-
-  const previousState = readPreviousInstallState(plan);
-  return new Map(settingsOperations.map(operation => {
-    assertSafeInstallOperation(plan, operation);
-    const managedHooks = validateManagedHooks(operation.managedHooks);
-    const settings = readSettings(operation.destinationPath);
-    const previousManagedHooks = findPreviousManagedHooks(previousState, plan, operation);
-    if (operation.kind === 'remove-claude-settings-hooks') {
-      const removal = uninstallManagedHooks(settings, managedHooks);
-      if (removal.retained.length > 0) {
-        throw new Error(
-          `Refusing to disable modified Claude hooks in ${operation.destinationPath}; `
-          + 'run the ECC uninstaller to review retained entries.'
-        );
-      }
-    } else {
-      mergeManagedHooks(settings, managedHooks, { previousManagedHooks });
-    }
-    return [operation, { managedHooks, previousManagedHooks }];
-  }));
-}
-
+// fix #16 (D10/D12): hook-consent migration is a passthrough. The
+// OpenCode bridge-state branch and the declined-consent
+// settings-hooks removal both targeted host
+// settings files Cursor installs never produce; Cursor hooks live
+// in the plugin's hooks.json, not in a settings file.
 function prepareHookConsentMigration(plan, migration) {
-  if (shouldDisableOpenCodeHooks(plan) && migration.requiresBridgeState) {
-    const previousState = readPreviousInstallState(plan);
-    if (previousState) {
-      const previousConsent = getRecordedHookConsent(previousState);
-      return {
-        ...migration,
-        // A checkpoint is not a completed consent transition. On failure,
-        // retain the previous decision until every activation is inactive.
-        bridgeState: {
-          ...migration.bridgeState,
-          request: { ...migration.bridgeState.request, hookConsent: previousConsent },
-          resolution: {
-            ...migration.bridgeState.resolution,
-            selectedModules: previousConsent === 'enabled'
-              ? [...new Set([...migration.bridgeState.resolution.selectedModules, 'hooks-runtime'])]
-              : migration.bridgeState.resolution.selectedModules,
-          },
-        },
-      };
-    }
-  }
-  if (plan.hookConsent !== 'declined') {
-    return migration;
-  }
-  const previousState = readPreviousInstallState(plan);
-  if (!previousState) {
-    return migration;
-  }
-
-  const removals = (previousState.operations || [])
-    .filter(operation => operation.kind === 'update-claude-settings')
-    .map(operation => ({
-      ...operation,
-      kind: 'remove-claude-settings-hooks',
-      strategy: 'remove-hook-ids',
-      scaffoldOnly: false,
-    }));
-  if (removals.length === 0) {
-    return migration;
-  }
-  const removalDestinations = new Set(removals.map(operation => comparablePath(
-    operation.destinationPath
-  )));
-  return {
-    ...migration,
-    // Disable hooks only after every ordinary install operation succeeds so a
-    // partial reinstall cannot silently revoke working hooks before failing.
-    appliedOperations: [...migration.appliedOperations, ...removals],
-    finalState: {
-      ...migration.finalState,
-      operations: migration.finalState.operations.filter(operation => !(
-        operation.kind === 'update-claude-settings'
-        && removalDestinations.has(comparablePath(operation.destinationPath))
-      )),
-    },
-    bridgeState: {
-      ...migration.bridgeState,
-      request: {
-        ...migration.bridgeState.request,
-        hookConsent: 'enabled',
-      },
-      resolution: {
-        ...migration.bridgeState.resolution,
-        selectedModules: [...new Set([
-          ...migration.bridgeState.resolution.selectedModules,
-          'hooks-runtime',
-        ])],
-      },
-    },
-    requiresBridgeState: true,
-  };
-}
-
-function preflightQwenAgentOperations(plan) {
-  for (const operation of plan.operations || []) {
-    if (operation.kind === 'copy-file' && operation.contentTransform === 'qwen-agent-frontmatter') {
-      assertSafeInstallOperation(plan, operation);
-      if (!fs.lstatSync(operation.sourcePath).isFile()) {
-        throw new Error('Refusing Qwen agent adaptation from a non-regular source file');
-      }
-      transformInstallContent(operation, fs.readFileSync(operation.sourcePath, 'utf8'));
-    }
-  }
+  return migration;
 }
 
 function previewInstallPlan(rawPlan) {
   const plan = withMcpMergeExclusions(rawPlan, parseDisabledMcpServers(process.env.ECC_DISABLED_MCPS));
-  preflightQwenAgentOperations(plan);
   assertOpenCodeScriptBoundary(plan);
   assertOpenCodeHookDeactivationReady(plan);
   const migration = prepareStaleOperationsReconciliation(
     plan,
     prepareHookConsentMigration(
       plan,
-      prepareUserOwnedFileGuard(plan, prepareClaudeSkillMigration(plan))
+      prepareUserOwnedFileGuard(plan, createDisabledMigration(plan))
     )
   );
   const appliedPlan = {
     ...plan,
     operations: migration.appliedOperations,
   };
-  preflightClaudeSettingsOperations(appliedPlan);
   const hookConsentWarnings = planMaterializesHookRuntime(plan) && plan.hookConsent !== 'enabled'
     ? ['Applying this plan requires an explicit hook decision: --enable-hooks or --no-hooks.']
     : [];
@@ -781,34 +625,12 @@ function applyInstallPlan(plan, dependencies = {}) {
   assertHookConsentReady(plan);
   // Reject conflicts before locks can create any target directories/files.
   assertOpenCodeScriptBoundary(plan);
-  if (plan.adapter?.target === 'opencode') {
-    assertSafeInstallOperation(plan, { destinationPath: plan.installStatePath });
-    return withOpenCodeInstallLocks(
-      getOpenCodeInstallRoots(plan),
-      lease => applyInstallPlanLocked(plan, { ...dependencies, opencodeLease: lease }, false),
-      dependencies.opencodeLease
-    );
-  }
-  const isClaudeManualTarget = plan.adapter
-    && (plan.adapter.target === 'claude' || plan.adapter.target === 'claude-project');
-  const settingsPathToLock = isClaudeManualTarget
-    ? getClaudeSettingsPath(plan.targetRoot)
-    : null;
-  if (settingsPathToLock) {
-    assertSafeInstallOperation(plan, { destinationPath: settingsPathToLock });
-  }
-  return settingsPathToLock
-    ? runWithSettingsLock(
-      settingsPathToLock,
-      () => applyInstallPlanLocked(plan, dependencies, true)
-    )
-    : applyInstallPlanLocked(plan, dependencies, false);
+  return applyInstallPlanLocked(plan, dependencies, false);
 }
 
 function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = false) {
   const disabledServers = parseDisabledMcpServers(process.env.ECC_DISABLED_MCPS);
   const plan = withMcpMergeExclusions(rawPlan, disabledServers);
-  preflightQwenAgentOperations(plan);
   const persistInstallState = dependencies.writeInstallState || writeInstallState;
   const beforeInstallStateRead = dependencies.beforeInstallStateRead;
   const beforeOperationWrite = dependencies.beforeOperationWrite;
@@ -826,7 +648,7 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
       plan,
       prepareHookConsentMigration(
         plan,
-        prepareUserOwnedFileGuard(plan, prepareClaudeSkillMigration(plan))
+        prepareUserOwnedFileGuard(plan, createDisabledMigration(plan))
       )
     )
   );
@@ -834,12 +656,9 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
     ...plan,
     operations: migration.appliedOperations,
   };
-  const preparedClaudeSettings = preflightClaudeSettingsOperations(appliedPlan);
   const linkIndex = buildLinkIndexForPlan(appliedPlan);
-  const hasLegacyMigration = migration.legacyOperationsToRemove.length > 0;
-  const hookRemovalCount = appliedPlan.operations.filter(operation => (
-    operation.kind === 'remove-claude-settings-hooks'
-  )).length;
+  // fix #16 (D12): settings-hook removal is gone; this stays zero.
+  const hookRemovalCount = 0;
   let completedHookRemovalCount = 0;
   const writtenDestinations = new Set();
     if (migration.requiresBridgeState) {
@@ -857,13 +676,11 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
     try {
       for (const operation of appliedPlan.operations) {
       assertSafeInstallOperation(appliedPlan, operation);
-      assertSafeClaudeSkillOperation(appliedPlan, operation);
       fs.mkdirSync(path.dirname(operation.destinationPath), { recursive: true });
       // Recheck directories that were absent during the first validation. This
       // narrows the symlink-swap window around mkdirSync, but path checks cannot
       // eliminate a later TOCTOU race before the file write.
       assertSafeInstallOperation(appliedPlan, operation);
-      assertSafeClaudeSkillOperation(appliedPlan, operation);
       if (typeof beforeOperationWrite === 'function') {
         beforeOperationWrite({ plan: appliedPlan, operation });
       }
@@ -873,42 +690,6 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
       }
       assertOpenCodeActivationUnchanged(appliedPlan, operation, activationSnapshot);
 
-      if (
-        operation.kind === 'update-claude-settings'
-        || operation.kind === 'remove-claude-settings-hooks'
-      ) {
-        // Re-read at the write boundary so unrelated settings added after
-        // planning are preserved. A same-ID change still fails closed.
-        const prepared = preparedClaudeSettings.get(operation);
-        assertSafeInstallOperation(appliedPlan, operation);
-        updateSettingsAtomic(operation.destinationPath, latestSettings => {
-          const merged = operation.kind === 'remove-claude-settings-hooks'
-            ? uninstallManagedHooks(latestSettings, prepared.managedHooks)
-            : mergeManagedHooks(latestSettings, prepared.managedHooks, {
-              previousManagedHooks: prepared.previousManagedHooks,
-            });
-          if (
-            operation.kind === 'remove-claude-settings-hooks'
-            && merged.retained.length > 0
-          ) {
-            throw new Error(
-              `Refusing to disable modified Claude hooks in ${operation.destinationPath}; `
-              + 'run the ECC uninstaller to review retained entries.'
-            );
-          }
-          return merged;
-        }, {
-          lockHeld: settingsLockHeld,
-          beforeCommit() {
-            assertSafeInstallOperation(appliedPlan, operation);
-          },
-        });
-        writtenDestinations.add(operation.destinationPath);
-        if (operation.kind === 'remove-claude-settings-hooks') {
-          completedHookRemovalCount += 1;
-        }
-        continue;
-      }
 
       if (operation.kind === 'merge-json') {
         const payload = cloneJsonValue(operation.mergePayload);
@@ -959,7 +740,6 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
             action: 'install OpenCode activation',
             validateDestination(destinationPath) {
               assertSafeInstallOperation(appliedPlan, { destinationPath });
-              assertSafeClaudeSkillOperation(appliedPlan, { destinationPath });
               return destinationPath;
             },
           });
@@ -974,16 +754,7 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
       writtenDestinations.add(operation.destinationPath);
       }
 
-      if (hasLegacyMigration) {
-        removeLegacyClaudeSkillFiles(migration, plan.targetRoot);
-      }
 
-      if (shouldSetClaudeCommitAttributionPreference(appliedPlan)) {
-        writeClaudeCommitAttributionPreference(
-          getClaudeSettingsPath(plan.targetRoot),
-          { lockHeld: settingsLockHeld }
-        );
-      }
 
       // Preserve main's activation safety gate before publishing ownership.
       assertOpenCodeHookDeactivationReady(plan, { requireInactive: true });
@@ -1030,20 +801,8 @@ function applyInstallPlanLocked(rawPlan, dependencies = {}, settingsLockHeld = f
       }
       throw error;
     }
+    // fix #16 (D10): legacy Antigravity cleanup removed with the adapter.
     let antigravityMigrationWarnings = [];
-  try {
-    const antigravityMigration = cleanupLegacyAntigravityInstall(appliedPlan);
-    if (antigravityMigration.detected && !antigravityMigration.complete) {
-      antigravityMigrationWarnings = [
-        'Legacy Antigravity migration is incomplete. ECC preserved modified, unverifiable, or unmanaged content under .agent; review and move anything you want to keep, then rerun the Antigravity install.',
-        ...(Array.isArray(antigravityMigration.warnings) ? antigravityMigration.warnings : []),
-      ];
-    }
-  } catch (error) {
-    antigravityMigrationWarnings = [
-      `Legacy Antigravity cleanup did not finish: ${error.message}. Content under .agent was preserved; remove it manually or rerun the Antigravity install.`,
-    ];
-  }
 
   assertOpenCodeLeaseCoverage(appliedPlan, dependencies.opencodeLease);
   // Recheck removable bytes after canonical writes, before legacy cleanup.
@@ -1124,5 +883,6 @@ module.exports = {
   getOpenCodeInstallRoots,
   assertSafeInstallOperation,
   prepareHookConsentMigration,
+  createDisabledMigration,
   previewInstallPlan,
 };

@@ -1,0 +1,79 @@
+FAIL build.sh is 24,079 lines, md5 f19483f50e89998f8b9dc052ed5d5fae (post-fix25)
+PASS diff vs build.sh.before-fix23 is additions only (+314/-0)
+PASS fix25 run log: 17 changes, fix25 OK (run 5)
+PASS counts 166/72/123/87/15 (unchanged -- no new skill/command/trigger)
+PASS trigger keys still 64 (no new trigger from this fix)
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast absent (Grok pins only)
+PASS Grok pins: grok-4.7-high x54, cursor-grok-4.6-high-fast x103 (occurrences)
+PASS call map present in the built tree (skills/orchestrate/references/call-map.md)
+PASS call-map counts table agrees with the tree (166/72/123/87/15/64)
+PASS call map: uncalled 52 elements (24 skills / 21 agents / 7 commands)
+PASS call map: second-order orphans 13 (8 skills / 4 agents / 1 command)
+PASS call-map-data.json counts agree (166/72/123/87/15/64)
+PASS call-map-data.json: uncalled 24/21/7, orphans 8/4/1
+PASS every dormant name (52 uncalled + 13 orphans) carries a reason in wiring-list.md
+PASS wire W1: ck called via hooks/session-start.js (spawns session-start.mjs)
+PASS wire W1: ck SKILL.md carries the already-wired note
+PASS wire W2: conventional-commit-review via /prp-commit Phase 3 + orchestrate step 6
+PASS wire W3: ecc-recipes lookup in orchestrate (RECIPES_F25)
+PASS wire W4: /test-coverage in orchestrate Verify step 1 (TESTCOV_F25, Steps 1-2)
+PASS §2 inventory close: INVENTORY_F23 x1 in all six orch-* files
+PASS §2 no off-skill improvisation path (no judgment phrases in orchestrate/Taste/polish-pass)
+PASS §2 recorded-gap fallback present (binding routes through a named skill)
+PASS frozen D19_RULE byte-identical in orchestrate + Taste
+PASS frozen D19_ROUTING byte-identical in orchestrate (routing :163)
+PASS frozen D19_REVIEWER byte-identical in orchestrate
+PASS frozen POLISH_F19 byte-identical in polish-pass
+PASS D19 lead sentence still exactly 1x in orchestrate
+PASS S1: ui-ux-pro-max header '89 searchable styles (51 active)' at :3 and :8
+PASS S1: '80 searchable' occurrences 0 in ui-ux-pro-max
+PASS S1: inventory line agrees (89 rows, header 89, csv is source)
+PASS template fonts: exactly 3 woff2 files in the built template public/fonts/
+PASS template fonts: woff2 sizes match the vendored files (34704 / 21032 / 30376)
+PASS fonts.ts uses @remotion/fonts loadFont + staticFile (3 vendored URLs)
+PASS package.json has @remotion/fonts and NO @remotion/google-fonts dependency
+PASS exactly 1 '@remotion/google-fonts' string in the built tree: fonts.ts:2 provenance comment
+PASS launch-marketing.md:15 prescribes the self-hosted template fonts
+PASS design-benchmark-v5.md present in the built tree (178 lines)
+PASS benchmark v5 figures: 61 literal / 60 stricter, kind split (counts table)
+PASS benchmark: iris-opens dealt but unapplied (SPEC §4(d) discrepancy resolved)
+PASS benchmark thresholds in orchestrate bar paragraph + step 5a
+PASS benchmark thresholds in polish-pass (non-negotiable 5 + variety pointer)
+PASS benchmark live verdict in browser-qa (:83 + :115 output-format line)
+PASS benchmark pointer at the Taste deal point
+PASS TECHDEPTH_F25 in hackathon-scope (3) / orchestrate (3) / feature-expansion (2)
+PASS TECHDEPTH: Technical-substance section in hackathon-scope (architecture/algorithm/budget/3+ edge cases)
+PASS TECHDEPTH: no-silent-rescope with cut lines (scope + orchestrate + expansion)
+PASS TECHDEPTH: trap-row qualifier at hackathon-scope :90
+PASS ADAPT_F25 in grill-me step 2 + orchestrate (specified-ness postures)
+PASS REASON_F25: three-part block in grill-me step 5 + orchestrate :149 + 5a + :266
+PASS step-2 reviewer sentence at orchestrate :266 (REASON_F25 backing check)
+PASS :149 claim now has both named checkers real (step-2 reviewer :266 + 5a :96)
+PASS CREATIVE_F25 substance-creativity in feature-expansion (Lens B / UI-only slate / balance)
+PASS loop-status: 0 hits in the built tree (references removed, option (b))
+PASS loop-status: command count still 87 (no new command file shipped)
+PASS loop-status: epic-unblock.md ends at step 4, no alias section
+PASS loop-status: ecc-recipes loop-* row no longer names a monitor command
+PASS FILM_F1/F5/F6 x1 each in pitch-deck-video (unchanged from fix #24)
+PASS /demo gates intact: never automatic, callable only, not part of the first-build order
+PASS deferred six still end-of-project only
+PASS THE CORE + 'more, not bolder' stand in orchestrate
+PASS _F25 token census in the built tree: RECIPES 1, TESTCOV 1, PLATFORM 2, BENCHMARK 10, TECHDEPTH 8, ADAPT 2, REASON 6, CREATIVE 3
+PASS _F23 census post-fix25: INVENTORY 11/11, AMBITION 7/8, MOTION 9/12, TYPEAUDIT 15/19, TRIO 4/4
+PASS _F23 census post-fix25: HERO-BQA 4/4, FUNC-BQA 4/4, FUNC-UIPRO 2/2, ALIGN 18/24, MEMORABLE 5/6, COVER 7/7, BLOCK 6/6, 24 files
+PASS fix15 verifier: only expected fails, tail is 42/44 checks pass (expected 42/44 checks pass)
+PASS fix17 verifier: only expected fails, tail is 58/60 checks pass (expected 58/60 checks pass)
+PASS fix18 verifier: only expected fails, tail is 69/72 checks pass (expected 69/72 checks pass)
+PASS fix19 verifier: only expected fails, tail is 71/76 checks pass (expected 71/76 checks pass)
+PASS fix20 verifier: only expected fails, tail is 164/169 checks pass (expected 164/169 checks pass)
+PASS fix21 verifier: only expected fails, tail is 96/102 checks pass (expected 96/102 checks pass)
+PASS fix22 verifier: only expected fails, tail is 366/369 checks pass (expected 366/369 checks pass)
+PASS fix23 verifier: only expected fails, tail is excluding the manifest check, which is owed: 194/211 checks pass (expected excluding the manifest check, which is owed: 194/211 checks pass)
+   fix24 unexpected FAILs: ['FAIL E-5 pitch-deck-video venv Windows form']
+FAIL fix24 verifier: only expected fails, tail is excluding the manifest check, which is owed: 97/104 checks pass (expected excluding the manifest check, which is owed: 98/104 checks pass)
+PASS verify13h: exactly 6/97 fail (2 B2 + M3 :61, :62, :70, :71; F-04 checks :57, :63, :66 pass)
+FAIL fix25/MANIFEST.md exists and records build.sh lines + md5 (OWED -- fails until the manifest worker writes it)
+
+72/75 checks pass
+excluding the manifest check, which is owed: 72/74 checks pass

@@ -202,7 +202,7 @@ The reviewer checks for:
 
 ## Related
 
-- Agent: `agents/ecc-python-reviewer.md`
+- Agent: `python-reviewer` (`agents/ecc-python-reviewer.md`)
 - Skills: `skills/python-patterns/`, `skills/python-testing/`
 
 ## Common Fixes

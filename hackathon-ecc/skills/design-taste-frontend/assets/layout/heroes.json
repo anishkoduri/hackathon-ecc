@@ -633,7 +633,7 @@
   {
    "id": "statement",
    "name": "Quiet statement over a ground",
-   "from": "Anthropic, Stripe Press, Mercury, private banks and advisers",
+   "from": "Stripe Press, Mercury, private banks and advisers",
    "demo": "hero-statement.html",
    "job": "One calm sentence at 56px over a ground that fills the hero, the buttons, then four facts docked under a hairline. For a company whose product is trust or a service, when there is no strong picture. The ground carries the look: a dark horizon with a lit rim, a grainy field in the lit tone, a halo, dusk or (software) liquid.",
    "types": {

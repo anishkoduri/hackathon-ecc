@@ -30,7 +30,7 @@ White plaster in strong sun, with light doing the decorating: a net of water cau
   --edge-light: inset 0 1px 0 oklch(100% 0 0 / 0.9), inset 0 0 0 1px oklch(100% 0 0 / 0.55);
   --shadow-card: 18px 28px 48px -26px oklch(52% 0.09 220 / 0.38), 2px 3px 6px -2px oklch(40% 0.05 230 / 0.12);
   --shadow-cast: 28px 40px 70px -30px oklch(60% 0.11 212 / 0.45);
-  --font-display: "Funnel Display", ui-sans-serif, system-ui, sans-serif; --font-body: "Funnel Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Funnel Display"; --font-body: "Funnel Sans";
   --radius-card: 22px; --radius-inner: 12px; --radius-pill: 999px; --rule-hair: 1px;
   --tracking-display: -0.032em; --display-weight: 400;
 }

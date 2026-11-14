@@ -1,0 +1,12 @@
+.....                                                                    [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+
+Name              Stmts   Miss  Cover
+-------------------------------------
+src/__init__.py       0      0   100%
+src/calc.py          22      7    68%
+-------------------------------------
+TOTAL                22      7    68%
+Coverage JSON written to file coverage.json
+5 passed in 0.13s

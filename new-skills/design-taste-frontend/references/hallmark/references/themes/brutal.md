@@ -24,7 +24,7 @@ A raw, engineered sheet: near-white poster stock, near-black ink that arrives as
   --color-ink: oklch(10% 0.006 95); --color-ink-2: oklch(16% 0.006 95); --color-muted: oklch(40% 0.008 95);
   --color-rule: oklch(10% 0.006 95);
   --color-accent: oklch(90% 0.19 105); --color-accent-ink: oklch(10% 0.006 95); --color-focus: oklch(48% 0.1 110);
-  --font-display: "Libre Franklin", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
+  --font-display: "Libre Franklin"; --font-body: var(--font-display);
   --font-outlier: var(--font-display);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 3px; --shadow-card: none;
   --tracking-display: -0.03em; --display-weight: 900;

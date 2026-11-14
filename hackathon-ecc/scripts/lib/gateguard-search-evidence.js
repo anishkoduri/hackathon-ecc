@@ -114,7 +114,7 @@ function containsWord(text, word) {
 }
 
 function dirContext(targetPath, data) {
-  const base = (data && typeof data.cwd === 'string' && data.cwd) || process.env.CLAUDE_PROJECT_DIR || process.cwd();
+  const base = (data && typeof data.cwd === 'string' && data.cwd) || process.env.CURSOR_PROJECT_DIR || process.cwd();
   const isWin = WINDOWS_PATH_PATTERN.test(base) || WINDOWS_PATH_PATTERN.test(targetPath);
   const paths = isWin ? path.win32 : path.posix;
   if (!paths.isAbsolute(base)) return null;

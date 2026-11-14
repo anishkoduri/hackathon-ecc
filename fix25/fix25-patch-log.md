@@ -1,0 +1,23 @@
+# fix25 run log
+
+## Errors (0)
+- none
+
+## Changes (17)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/SKILL.md — 'Searchable local data: 80 searchable styles (51 active)' -> 'Searchable local data: 89 searchable styles (51 active)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ui-ux-pro-max/SKILL.md — 'Searchable local UI/UX guidance: 80 searchable styles (51 active)' -> 'Searchable local UI/UX guidance: 89 searchable styles (51 active)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/hooks/session-start.js — "} = require('./adapter');" -> "} = require('./adapter');\nconst { spawnSync } = require('child_process');\nconst "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/hooks/session-start.js — '  process.stdout.write(JSON.stringify(mergeSessionStartOutputs(outputs)));' -> "  // fix #25 §1: ck (Context Keeper) SessionStart brief — the ck skill's\n  // Se"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/SKILL.md — 'Use `$HOME`, not `~`: the shell does not expand `~` inside double quotes. If ck ' -> 'Use `$HOME`, not `~`: the shell does not expand `~` inside double quotes. If ck '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/prp-commit.md — 'Craft a single-line commit message in imperative mood:' -> 'Craft a single-line commit message in imperative mood:\n\n> Draft the message with'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-add-feature/SKILL.md — 'run the applicable package components before the change lands.' -> 'run the applicable package components before the change lands. Read the design i'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-change-feature/SKILL.md — 'run the applicable package components before the change lands.' -> 'run the applicable package components before the change lands. Read the design i'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-fix-defect/SKILL.md — 'run the applicable package components before the change lands.' -> 'run the applicable package components before the change lands. Read the design i'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-refine-code/SKILL.md — 'run the applicable package components before the change lands.' -> 'run the applicable package components before the change lands. Read the design i'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-build-mvp/SKILL.md — 'Every slice that touches a UI surface names its design components in its brief a' -> 'Every slice that touches a UI surface names its design components in its brief a'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orch-pipeline/SKILL.md — '- UI work (if any): the design package was named in the brief, the direction is ' -> '- UI work (if any): the design package was named in the brief, the direction is '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — "This verdict is `browser-qa`'s alone: no other step judges memorability." -> "This verdict is `browser-qa`'s alone: no other step judges memorability.\n**Beat-"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — '- [✓/✗] Memorability (MEMORABLE_F23): dynamic + over the top + wow / striking / ' -> '- [✓/✗] Memorability (MEMORABLE_F23): dynamic + over the top + wow / striking / '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/epic-unblock.md — '4. Updates labels, comments, and local snapshots.\n\nCompatibility aliases:\n\n- `/l' -> '4. Updates labels, comments, and local snapshots.\n'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ecc-recipes/SKILL.md — '| `loop-*` | managed autonomous loop and monitor | `loop-start <pattern>` then w' -> '| `loop-*` | managed autonomous loop | `loop-start <pattern>` |'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ecc-recipes/SKILL.md — '`loop-start rfc-dag --mode safe` then monitor `loop-status`; STOP when all units' -> '`loop-start rfc-dag --mode safe`; STOP when all units'

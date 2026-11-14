@@ -209,7 +209,7 @@ on screen. Fix the app error before chasing the shot.
 ## Environment
 
 - `scripts/tts.mjs`'s voice chain is ElevenLabs (`ELEVENLABS_API_KEY` from
-  the environment only) → local Piper (`pip install piper-tts`, then
+  the environment only) → local Piper (`pip install piper-tts==1.8.0`, then
   download a voice model; default `en_US-lessac-medium`) → macOS `say`.
   The default provider is `elevenlabs` with Piper as the no-key fallback,
   so on Windows the path is ElevenLabs or Piper — `say` does not exist
@@ -229,4 +229,5 @@ on screen. Fix the app error before chasing the shot.
   Every action here uses the first *visible* match instead; do the same in any
   probe script you write, or you will chase selectors that are plainly on screen.
 - yt-dlp is not usually installed. A venv works:
-  `python3 -m venv .tools && .tools/bin/pip install yt-dlp`.
+  `python3 -m venv .tools && .tools/bin/pip install yt-dlp==2026.10.26`.
+  Windows (PowerShell): `python -m venv .tools; .\.tools\Scripts\pip install yt-dlp==2026.10.26`.

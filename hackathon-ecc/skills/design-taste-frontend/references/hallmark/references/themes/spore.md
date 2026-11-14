@@ -24,8 +24,8 @@ A cellar at night: coffee-ground black warmed toward brown, a warm grain on its 
   --color-ink: oklch(93% 0.022 85); --color-ink-2: oklch(84% 0.022 78); --color-muted: oklch(67% 0.02 70);
   --color-rule: oklch(31% 0.016 60);
   --color-accent: oklch(77% 0.09 30); --color-accent-2: oklch(86% 0.06 30); --color-accent-ink: oklch(15% 0.012 60); --color-focus: oklch(86% 0.06 30);
-  --font-display: "Young Serif", Georgia, serif; --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Young Serif", Georgia; --font-body: "Instrument Sans";
+  --font-outlier: "Instrument Sans";
   --radius-card: 14px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 16px 40px oklch(8% 0.01 60 / 0.4);
   --tracking-display: -0.012em;
@@ -62,6 +62,7 @@ One dial, the colourway, stated in the stamp (`spore: cellar`).
 - **The week as a timetable:** Rows of day names in Young Serif at `--text-title`, the hours beside them, closed days dropped to muted, tonight's row lifted to paper-3 with its pink chip; a head block on columns 1 to 4 beside them.
 - **A list or price list:** ruled rows with the name in Young Serif, the second name in italic, the price flush right in pink; set three or five columns deep and it reads as the shelf.
 - **A grained band that holds a form:** paper-3 with the speck grain, the price large in pink beside square fields and the pink pill; or a statement in Young Serif at `--text-display` across ten columns.
+- **One italic word (TRENDS_F22 E10):** the italic second name is this theme's own outlier and the only italic on the page, with a recorded theme reason. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

@@ -25,8 +25,8 @@ A design school's printed prospectus: a warm putty ground, near-black ink, heavy
   --color-rule: oklch(58% 0.022 72);
   --color-accent: oklch(46% 0.2 264); --color-accent-2: oklch(58% 0.205 33); --color-accent-2-deep: oklch(50% 0.19 31); --color-accent-3: oklch(85% 0.165 92);
   --color-accent-ink: oklch(96% 0.012 82); --color-focus: oklch(46% 0.2 264);
-  --font-display: "Jost", "Futura", sans-serif; --font-body: "Karla", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Jost", "Futura"; --font-body: "Karla";
+  --font-outlier: "JetBrains Mono";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 2px; --rule-box: 3px;
   --shadow-card: none;
   --tracking-display: -0.005em; --display-weight: 700;

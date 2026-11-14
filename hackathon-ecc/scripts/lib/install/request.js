@@ -3,7 +3,7 @@
 const { validateInstallModuleIds, LOCALE_ALIAS_TO_COMPONENT_ID, listSupportedLocales } = require('../install-manifests');
 const { resolveHookConsentFlags } = require('./hook-consent');
 
-const LEGACY_INSTALL_TARGETS = ['claude', 'claude-project', 'cursor', 'antigravity'];
+const LEGACY_INSTALL_TARGETS = ['cursor'];
 const LOCALE_COMPONENT_IDS = new Set(Object.values(LOCALE_ALIAS_TO_COMPONENT_ID));
 
 function dedupeStrings(values) {
@@ -103,8 +103,8 @@ function normalizeInstallRequest(options = {}) {
     ? options.config
     : null;
   const profileId = options.profileId || config?.profileId || null;
-  const target = options.target || config?.target || 'claude';
-  const supportsLocale = target === 'claude' || target === 'claude-project';
+  const target = options.target || config?.target || 'cursor';
+  const supportsLocale = target === 'cursor';
   const moduleIds = validateInstallModuleIds(
     dedupeStrings([...(config?.moduleIds || []), ...(options.moduleIds || [])])
   );
@@ -116,7 +116,7 @@ function normalizeInstallRequest(options = {}) {
     );
   }
   if (locale && !supportsLocale) {
-    throw new Error('--locale can only be used with --target claude or --target claude-project');
+    throw new Error('--locale can only be used with --target cursor');
   }
   const requestedIncludeComponentIds = dedupeStrings([
     ...(config?.includeComponentIds || []),

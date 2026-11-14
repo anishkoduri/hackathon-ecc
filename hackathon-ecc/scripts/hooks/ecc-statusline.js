@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * ECC Statusline — Claude Code-only statusLine command (not wired in this Cursor plugin — registered in settings.json, reads stdin from the Claude Code runtime)
+ * ECC Statusline — Upstream-only statusLine command (not wired in this Cursor plugin — registered in upstream settings.json, reads stdin from the host runtime)
  *
  * Displays: model | task | $cost Nt Nf Nm | dir ██░░ N%
  *
  * Registered in settings.json under "statusLine", not in hooks.json.
- * Reads bridge file from ecc-metrics-bridge.js and stdin from Claude Code runtime.
+ * Reads bridge file from ecc-metrics-bridge.js and stdin from Cursor runtime.
  */
 
 'use strict';
@@ -37,7 +37,7 @@ function formatDuration(isoTimestamp) {
 
 /**
  * Build context progress bar with ANSI colors.
- * @param {number} remaining - Raw remaining percentage from Claude Code
+ * @param {number} remaining - Raw remaining percentage from Cursor
  * @returns {string} Colored bar string
  */
 function buildContextBar(remaining, glyphs) {
@@ -66,8 +66,8 @@ function readCurrentTask(sessionId) {
     const safeSessionId = sanitizeSessionId(sessionId);
     if (!safeSessionId) return '';
 
-    const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
-    const todosDir = path.join(claudeDir, 'todos');
+    const agentDataDir = process.env.ECC_AGENT_DATA_HOME || path.join(os.homedir(), '.cursor', 'ecc');
+    const todosDir = path.join(agentDataDir, 'todos');
     if (!fs.existsSync(todosDir)) return '';
 
     const files = fs
@@ -107,7 +107,7 @@ function sessionDurationMs(cost, bridge) {
 }
 
 /**
- * Assemble statusline output lines from Claude Code stdin data.
+ * Assemble statusline output lines from Cursor stdin data.
  * @param {object} data - Parsed statusLine stdin JSON
  * @param {object|null} bridge - Session bridge metrics or null
  * @param {string} task - Current in-progress task
@@ -120,7 +120,7 @@ function buildUsageLines(data, bridge, task) {
   const dirname = path.basename(data.workspace?.current_dir || process.cwd());
 
   if (process.env.ECC_STATUSLINE_COMPACT === '1') {
-    const segments = [`\x1b[2m${data.model?.display_name || 'Claude'}\x1b[0m`];
+    const segments = [`\x1b[2m${data.model?.display_name || 'Cursor'}\x1b[0m`];
     if (task) segments.push(`\x1b[1;97m${task}\x1b[0m`);
     const usage = render.buildUsageLine(data.rate_limits, null, { compact: true });
     if (usage) segments.push(usage);
@@ -171,7 +171,7 @@ function runStatusline() {
     clearTimeout(stdinTimeout);
     try {
       const data = JSON.parse(input);
-      const model = data.model?.display_name || 'Claude';
+      const model = data.model?.display_name || 'Cursor';
       const dir = data.workspace?.current_dir || process.cwd();
       const session = data.session_id || '';
       const remaining = data.context_window?.remaining_percentage;

@@ -769,23 +769,6 @@
    "tone": "ink"
   },
   {
-   "id": "anthropic",
-   "name": "Anthropic",
-   "icon": "logos:anthropic-icon",
-   "tags": [
-    "ai"
-   ],
-   "tone": "ink"
-  },
-  {
-   "id": "claude",
-   "name": "Claude",
-   "icon": "logos:claude-icon",
-   "tags": [
-    "ai"
-   ]
-  },
-  {
    "id": "mistral",
    "name": "Mistral AI",
    "icon": "logos:mistral-ai-icon",
@@ -1370,28 +1353,9 @@
    "tone": "ink"
   },
   {
-   "id": "claude-code",
-   "name": "Claude Code",
-   "icon": "logos:claude-code",
-   "tags": [
-    "ai",
-    "llm"
-   ]
-  },
-  {
    "id": "github-copilot",
    "name": "GitHub Copilot",
    "icon": "logos:github-copilot",
-   "tags": [
-    "ai",
-    "llm"
-   ],
-   "tone": "ink"
-  },
-  {
-   "id": "codex",
-   "name": "Codex",
-   "icon": "logos:codex",
    "tags": [
     "ai",
     "llm"
@@ -7961,18 +7925,6 @@
    256,
    259.528
   ],
-  "logos:anthropic-icon": [
-   0,
-   0,
-   256,
-   175.78
-  ],
-  "logos:claude-icon": [
-   0,
-   0,
-   256,
-   256.194
-  ],
   "logos:mistral-ai-icon": [
    0,
    0,
@@ -8345,23 +8297,11 @@
    256,
    245.764
   ],
-  "logos:claude-code": [
-   0,
-   0.333,
-   256,
-   160
-  ],
   "logos:github-copilot": [
    0,
    0,
    256,
    208
-  ],
-  "logos:codex": [
-   0,
-   0,
-   256,
-   255.999
   ],
   "logos:cursor-icon": [
    0,

@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { commandExists, getClaudeDir, getHomeDir, readFile, writeFile } = require('./utils');
+const { commandExists, getAgentDataHome, getHomeDir, readFile, writeFile } = require('./utils');
 
 // Package manager definitions
 const PACKAGE_MANAGERS = {
@@ -59,10 +59,10 @@ const PACKAGE_MANAGERS = {
 // Priority order for detection
 const DETECTION_PRIORITY = ['pnpm', 'bun', 'yarn', 'npm'];
 
-// Config file path (host-aware agent data home: ~/.cursor/ecc in Cursor,
-// ~/.claude in Claude Code — see scripts/lib/agent-data-home.js)
+// Config file path (host-aware agent data home: ~/.cursor/ecc —
+// see scripts/lib/agent-data-home.js)
 function getConfigPath() {
-  return path.join(getClaudeDir(), 'package-manager.json');
+  return path.join(getAgentDataHome(), 'package-manager.json');
 }
 
 // Explicit per-host global config paths. The host-aware path above is the
@@ -72,21 +72,15 @@ function getCursorGlobalConfigPath() {
   return path.join(getHomeDir(), '.cursor', 'package-manager.json');
 }
 
-function getClaudeGlobalConfigPath() {
-  return path.join(getHomeDir(), '.claude', 'package-manager.json');
-}
-
 /**
  * Load saved package manager configuration.
  * Tries the host-aware config path first, then the explicit Cursor
- * (~/.cursor/package-manager.json) and Claude Code
- * (~/.claude/package-manager.json) global paths.
+ * (~/.cursor/package-manager.json) global path.
  */
 function loadConfig() {
   const configPaths = [
     getConfigPath(),
     getCursorGlobalConfigPath(),
-    getClaudeGlobalConfigPath()
   ];
 
   for (const configPath of configPaths) {
@@ -172,14 +166,12 @@ function getAvailablePackageManagers() {
  * Get the package manager to use for current project
  *
  * Detection priority:
- * 1. Environment variable CURSOR_PACKAGE_MANAGER (Cursor) or
- *    CLAUDE_PACKAGE_MANAGER (Claude Code)
- * 2. Project-specific config (.cursor/package-manager.json, then
- *    .claude/package-manager.json)
+ * 1. Environment variable CURSOR_PACKAGE_MANAGER
+ * 2. Project-specific config (.cursor/package-manager.json)
  * 3. package.json packageManager field
  * 4. Lock file detection
  * 5. Global user preference (host-aware config path, then
- *    ~/.cursor/package-manager.json, then ~/.claude/package-manager.json)
+ *    ~/.cursor/package-manager.json)
  * 6. Default to npm (no child processes spawned)
  *
  * @param {object} options - Options
@@ -189,8 +181,8 @@ function getAvailablePackageManagers() {
 function getPackageManager(options = {}) {
   const { projectDir = process.cwd() } = options;
 
-  // 1. Check environment variable (Cursor first, then Claude Code)
-  const envPm = process.env.CURSOR_PACKAGE_MANAGER || process.env.CLAUDE_PACKAGE_MANAGER;
+  // 1. Check environment variable
+  const envPm = process.env.CURSOR_PACKAGE_MANAGER;
   if (envPm && PACKAGE_MANAGERS[envPm]) {
     return {
       name: envPm,
@@ -199,8 +191,8 @@ function getPackageManager(options = {}) {
     };
   }
 
-  // 2. Check project-specific config (.cursor first, then .claude)
-  for (const configDir of ['.cursor', '.claude']) {
+  // 2. Check project-specific config (.cursor)
+  for (const configDir of ['.cursor']) {
     const projectConfigPath = path.join(projectDir, configDir, 'package-manager.json');
     const projectConfig = readFile(projectConfigPath);
     if (projectConfig) {
@@ -265,10 +257,9 @@ function getPackageManager(options = {}) {
 
 /**
  * Set user's preferred package manager (global). Saved to the host-aware
- * config path (getConfigPath): ~/.cursor/ecc/package-manager.json in Cursor,
- * ~/.claude/package-manager.json in Claude Code. A preference saved at
- * ~/.cursor/package-manager.json or ~/.claude/package-manager.json is still
- * honoured on read (see loadConfig).
+ * config path (getConfigPath): ~/.cursor/ecc/package-manager.json. A
+ * preference saved at ~/.cursor/package-manager.json is still honoured
+ * on read (see loadConfig).
  */
 function setPreferredPackageManager(pmName) {
   if (!PACKAGE_MANAGERS[pmName]) {
@@ -290,9 +281,7 @@ function setPreferredPackageManager(pmName) {
 
 /**
  * Set project's preferred package manager.
- * Saved to .cursor/package-manager.json (Cursor, this plugin's host). An
- * existing .claude/package-manager.json is still honoured on read as a
- * fallback for Claude Code installs (see getPackageManager step 2).
+ * Saved to .cursor/package-manager.json (Cursor, this plugin's host).
  */
 function setProjectPackageManager(pmName, projectDir = process.cwd()) {
   if (!PACKAGE_MANAGERS[pmName]) {
@@ -376,7 +365,7 @@ function getExecCommand(binary, args = '', options = {}) {
 
 /**
  * Interactive prompt for package manager selection
- * Returns a message for Claude to show to user
+ * Returns a message for Cursor to show to user
  *
  * NOTE: Does NOT spawn child processes to check availability.
  * Lists all supported PMs and shows how to configure preference.
@@ -385,8 +374,8 @@ function getSelectionPrompt() {
   let message = '[PackageManager] No package manager preference detected.\n';
   message += 'Supported package managers: ' + Object.keys(PACKAGE_MANAGERS).join(', ') + '\n';
   message += '\nTo set your preferred package manager:\n';
-  message += '  - Global: Set CURSOR_PACKAGE_MANAGER (Cursor) or CLAUDE_PACKAGE_MANAGER (Claude Code) environment variable\n';
-  message += '  - Or add to ~/.cursor/package-manager.json or ~/.claude/package-manager.json: {"packageManager": "pnpm"}\n';
+  message += '  - Global: Set CURSOR_PACKAGE_MANAGER environment variable\n';
+  message += '  - Or add to ~/.cursor/package-manager.json: {"packageManager": "pnpm"}\n';
   message += '  - Or add to package.json: {"packageManager": "pnpm@8"}\n';
   message += '  - Or add a lock file to your project (e.g., pnpm-lock.yaml)\n';
 

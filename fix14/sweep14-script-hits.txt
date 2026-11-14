@@ -1,0 +1,114 @@
+./skills/skill-comply/scripts/grader.py:138:    # Steps already graded, pass or fail. `resolved` alone cannot tell "failed" from
+./skills/agent-self-evaluation/scripts/evaluate.py:349:    # Verdict
+./skills/agent-self-evaluation/scripts/evaluate.py:352:        verdict = f"Redo with specific fixes. Weakest axis: {min(scores, key=lambda s: s.score).name} ({min_score}/5)."
+./skills/agent-self-evaluation/scripts/evaluate.py:355:        verdict = f"Fix {'/'.join(weak)} issues, then deliver."
+./skills/agent-self-evaluation/scripts/evaluate.py:357:        verdict = "Deliver as-is. No changes needed."
+./skills/agent-self-evaluation/scripts/evaluate.py:359:        verdict = "Deliver as-is. Minor improvements noted above."
+./skills/agent-self-evaluation/scripts/evaluate.py:360:    lines.append(f"VERDICT: {verdict}")
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs:2:/* sloplint: Hallmark's mechanical gate checker (static/code-level checks on source only). Zero dependencies, Node 18+. Gate ids and tiers: references/gates.md. Its FAIL/REFLEX/WARN grades are static-check grades, not pass/fail verdicts on rendered screens — screen distinctiveness is judged only by `browser-qa` in the visual loop. */
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs:978:    const verdict = guard ? guard(ctx) : true;
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs:979:    if (verdict !== true) { rejectAt(c, `guard: ${verdict}`); continue; }
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs:2961:// Gate 38iii is a static/code-level check on the source (an accented word inside a heading); its FAIL/REFLEX grade is not a pass/fail verdict on a rendered screen — that verdict is `browser-qa`'s alone.
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint-render.mjs:2:/* sloplint-render: Hallmark's render-tier gate checker (rendered-page checks in a real browser). Its FAIL/REFLEX/WARN grades are render-check grades, not pass/fail verdicts on rendered screens — screen distinctiveness is judged only by `browser-qa` in the visual loop. Template gates (80, 81, 82, 83, 85) never issue REFLEX verdicts here: on landing pages they emit NOTE candidate evidence for `browser-qa`; on app screens they are skipped (mirroring sloplint.mjs APP_SKIP). */
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint-render.mjs:741:  // Template gates (80, 81, 82, 83, 85) never issue REFLEX verdicts here: they
+./skills/design-taste-frontend/references/hallmark/scripts/sloplint-render.mjs:742:  // are candidate evidence for browser-qa, not a verdict. On app screens they
+./skills/design-taste-frontend/scripts/consistency.mjs:694:const flatVerdict = (st, kind) => (st.distinct >= 6 ? (st.detail < SMOOTH_MAX ? 'WARN' : 'PASS') : st.dominant >= 0.998 || ((kind === 'canvas' || kind === 'mount') && st.dominant >= 0.98) ? 'FAIL' : 'WARN');
+./skills/design-taste-frontend/scripts/consistency.mjs:1061:    for (const r of res) if (r.c.unmounted && r.c.unmounted.length && flatVerdict(r.st, r.c.kind) === 'PASS') r.unmounted = true;
+./skills/design-taste-frontend/scripts/consistency.mjs:1062:    const bad = res.filter((r) => r.unmounted || flatVerdict(r.st, r.c.kind) !== 'PASS');
+./skills/design-taste-frontend/scripts/consistency.mjs:1073:      const verdict = flatVerdict(st, c.kind);
+./skills/design-taste-frontend/scripts/consistency.mjs:1075:      const sev = verdict === 'FAIL' && why ? 'WARN' : verdict;
+./skills/design-taste-frontend/scripts/consistency.mjs:1079:        : verdict === 'FAIL' ? `the ${c.what} shows nothing at ${ctx.width}px: ${seen}, an empty ground or frame where the visual should be${why ? `; ${why}` : ''}`
+./skills/design-taste-frontend/scripts/consistency.mjs:1347:// Motion does not change the verdict (the words are the fault wherever they move to), so nothing is downgraded.
+./skills/design-taste-frontend/scripts/consistency.mjs:1873:  // the harness (CK-04): no verdict when the page is not W wide (a page with no viewport meta tag lays out 980px wide
+./skills/design-taste-frontend/scripts/consistency.mjs:1999:  const test = (tid, verdict, offenders) => {
+./skills/design-taste-frontend/scripts/consistency.mjs:2001:    return { id: tid, verdict, offenders: o.slice(0, 25), more: Math.max(0, o.length - 25) };
+./skills/design-taste-frontend/scripts/consistency.mjs:2095:  if (!S.length) return { harness, status: { rowItems: {}, splitCols: {} }, tests: RULES.filter((r) => !opt.only || opt.only.includes(r)).map((rule) => ({ rule, id: 'T0', verdict: 'FAIL', more: 0, offenders: [{ sel: 'body', text: '', doc: null, moving: null, msg: 'no sections found: nothing in <main>, or at the top of the page, to measure' }] })) };
+./skills/design-taste-frontend/scripts/consistency.mjs:2338:    try { for (const t of fn()) tests.push(Object.assign({ rule: rid }, t)); } catch (e) { tests.push({ rule: rid, id: 'error', verdict: 'ERROR', msg: 'checker error: ' + (e && e.message), offenders: [], more: 0 }); }
+./skills/design-taste-frontend/scripts/consistency.mjs:2586:      let verdict = maxOther <= 8 ? 'PASS' : maxOther <= 24 ? 'WARN' : 'FAIL';
+./skills/design-taste-frontend/scripts/consistency.mjs:2589:      if (headIn.length) { verdict = 'FAIL'; why.push(`the heading of section ${headIn[0].z + 1} whole`); }
+./skills/design-taste-frontend/scripts/consistency.mjs:2590:      if (contShow.length >= 2) { verdict = 'FAIL'; why.push(`the content of ${contShow.length} sections, over 24px each`); }
+./skills/design-taste-frontend/scripts/consistency.mjs:2591:      if (verdict === 'WARN') nWarn++;
+./skills/design-taste-frontend/scripts/consistency.mjs:2592:      if (verdict === 'FAIL') nFail++;
+./skills/design-taste-frontend/scripts/consistency.mjs:2593:      if (verdict === 'PASS') continue;
+./skills/design-taste-frontend/scripts/consistency.mjs:2597:      vOff.push(off(headIn.length ? headIn[0].el : S[who].el, red, `the screen at scroll ${v.y}px (${v.kinds[0]}) shows ${why.join(' and ')} beside section ${owner + 1}: a screen shows one section (another may peek 8px, 24px WARN)`, { sev: verdict, d: maxOther, at: v.y, ref: mine ? [box(mine)] : [], name: `scroll ${v.y}px` }));
+./skills/design-taste-frontend/scripts/consistency.mjs:3125:    if (t.verdict === 'PASS' || t.verdict === 'ERROR') continue;
+./skills/design-taste-frontend/scripts/consistency.mjs:3130:      let sev = o.sev || t.verdict, msg = o.msg;
+./skills/design-taste-frontend/scripts/consistency.mjs:3258:    if (!t || t.verdict === 'ERROR') { ctx.errors.push(`rhythm SR-2 ${tid}: not read after the answers and tabs were opened${t ? ` (${t.msg})` : ''}`); continue; }
+./skills/design-taste-frontend/scripts/consistency.mjs:3269:  tests.push({ rule: 'SR-2', id: 'T-height-change', verdict: diffs.length ? 'FAIL' : 'PASS', offenders: diffs, more: Math.max(0, info.changeCount - info.changes.length) });
+./skills/design-taste-frontend/scripts/consistency.mjs:3332:    for (const t of res.tests) if (t.verdict === 'ERROR') { ctx.errors.push(`rhythm ${t.rule}: ${t.msg}`); broken.push(CHECK_OF[t.rule]); }
+./skills/design-taste-frontend/scripts/consistency.mjs:3342:    if (!ctx.quick && !ctx.flags['no-rhythm-expand'] && h.expandables && h.sections.length && res.tests.some((t) => t.rule === 'SR-2' && t.verdict !== 'ERROR')) {
+./skills/design-taste-frontend/scripts/consistency.mjs:3471://   - the verdict is what that screen shows of the other sections, under the header: one's heading, text or picture
+./skills/design-taste-frontend/scripts/consistency.mjs:10326:      // effect-kind's kindFrom judges it: effects-fit and photo-print read this one verdict
+./skills/design-taste-frontend/scripts/consistency.mjs:11128:      // a product with a technical subject is tech (TECH, the one verdict effect-kind's kindFrom gives too): no effects-fit
+./skills/design-taste-frontend/scripts/gate.mjs:789:// ---------------------------------------------------------------- the verdict
+./skills/design-taste-frontend/scripts/perf.mjs:15:  and caps the timing verdicts at WARN. --json writes the result to the file named and nothing else.
+./skills/design-taste-frontend/scripts/perf.mjs:22:  the shaders on the CPU: the timing verdicts come from loads where every WebGL piece shows its still fallback, which
+./skills/design-taste-frontend/scripts/perf.mjs:241:// timing rows from several runs: the median per run-set, the spread printed, verdict capped at WARN on a busy host
+./skills/design-taste-frontend/scripts/perf.mjs:257:  const rows = [], add = (name, value, verdict, note = '') => rows.push({ name, value, verdict, note });
+./skills/design-taste-frontend/scripts/perf.mjs:259:  add('host CPU load (before/after)', load + ' %', busy ? 'WARN' : 'PASS', busy ? 'busy host: timing verdicts capped at WARN, rerun when idle' : '');
+./skills/design-taste-frontend/scripts/perf.mjs:309:    add('  info: one load with WebGL on the CPU', bt + ' ms', 'INFO', `${t.length} long tasks; SwiftShader runs shaders on the CPU, not a verdict, and shader compile on a real GPU is not measured`);
+./skills/design-taste-frontend/scripts/perf.mjs:350:      if (x.verdict === 'FAIL') fails++;
+./skills/design-taste-frontend/scripts/perf.mjs:351:      if (x.verdict === 'WARN') warns++;
+./skills/design-taste-frontend/scripts/perf.mjs:352:      console.log(`  ${x.verdict.padEnd(4)}  ${x.name.padEnd(42)} ${String(x.value).padEnd(14)} ${x.note}`);
+./skills/design-taste-frontend/scripts/perf.mjs:433:  if (load > 50) { h.verdict = 'WARN'; h.note = 'busy host: timing verdicts capped at WARN, rerun when idle'; r.rows.forEach(x => { if (x.verdict === 'FAIL' && /^(long tasks|blocking time|FCP|LCP)/.test(x.name)) x.verdict = 'WARN'; }); }
+./skills/design-taste-frontend/scripts/photos.mjs:945:    const verdict = total > PAGE_KIB.fail ? 'FAIL: perf.mjs fails a page whose images pass ' + n(PAGE_KIB.fail) + ' KiB; drop a photograph or its largest file'
+./skills/design-taste-frontend/scripts/photos.mjs:947:    console.log('\npage images at 1440 (the file each of the ' + wt.length + ' photograph' + (wt.length === 1 ? '' : 's') + ' in this folder loads, the hero at 2x): about ' + n(total) + ' KiB of ' + n(PAGE_KIB.fail) + ' - ' + verdict);
+./skills/polish-pass/scripts/detect.mjs:4:// Findings are evidence to verify in context, not verdicts.
+./scripts/astra-review.js:4: * independent review and print a structured verdict.
+./scripts/astra-review.js:17: *                            (an --output verdict, a {findings} object, or an array);
+./scripts/astra-review.js:24: *   --output <file>          also write the JSON verdict to <file>
+./scripts/astra-review.js:38:const { buildPrompt, effectiveVerdict, formatReport } = require('./lib/astra-review/prompt');
+./scripts/astra-review.js:228:  const verdict = effectiveVerdict(result);
+./scripts/astra-review.js:229:  const payload = { model: options.model, scope: scopeLabel, files: changes.files, verdict, review: result };
+./scripts/astra-review.js:236:  return verdict === 'PASS' ? EXIT_PASS : EXIT_FAIL;
+./scripts/hooks/gateguard-fact-force.js:124:// the verdict instead of the command position, so dd moved to isDestructiveDd()
+./scripts/hooks/gateguard-fact-force.js:1084: * Token-based rather than a regex arm because the verdict has to depend on
+./scripts/hooks/plan-canvas-pending.js:187:  if (item.kind === 'verdict') {
+./scripts/hooks/plan-canvas-pending.js:188:    const label = item.verdict === 'approve' ? 'APPROVED the plan' : 'REQUESTED CHANGES';
+./scripts/lib/agent-proximity/index.js:132:      const verdict = advise(a, b, graph, options);
+./scripts/lib/agent-proximity/index.js:136:        risk: verdict.risk,
+./scripts/lib/agent-proximity/index.js:137:        distance: verdict.distance,
+./scripts/lib/agent-proximity/index.js:138:        level: verdict.level,
+./scripts/lib/agent-proximity/index.js:139:        channels: verdict.channels
+./scripts/lib/agent-proximity/index.js:141:      if (verdict.level !== 'clear') {
+./scripts/lib/agent-proximity/index.js:142:        advisories.push({ a: a.agentId, b: b.agentId, ...verdict });
+./scripts/lib/astra-review/codex.js:3: * in a read-only sandbox and return the parsed structured verdict. The fix
+./scripts/lib/astra-review/prompt.js:2: * Astra review: reviewer prompt, strict output schema, verdict parsing,
+./scripts/lib/astra-review/prompt.js:10:const VERDICTS = Object.freeze(['PASS', 'FAIL']);
+./scripts/lib/astra-review/prompt.js:27:    verdict: { type: 'string', enum: [...VERDICTS] },
+./scripts/lib/astra-review/prompt.js:36:          result: { type: 'string', enum: [...VERDICTS] },
+./scripts/lib/astra-review/prompt.js:59:  required: ['verdict', 'summary', 'checks', 'findings'],
+./scripts/lib/astra-review/prompt.js:74:      `Recover every omitted section with these read-only commands before returning a verdict: ${input.recovery || 'read the listed files'}.`,
+./scripts/lib/astra-review/prompt.js:86:    'Rubric (every criterion must be judged PASS or FAIL with an objective reason):',
+./scripts/lib/astra-review/prompt.js:94:    '- Set verdict to FAIL if any CRITICAL or HIGH finding exists, otherwise PASS.',
+./scripts/lib/astra-review/prompt.js:128:  if (!VERDICTS.includes(check.result)) throw new Error(`check[${index}] result must be PASS or FAIL`);
+./scripts/lib/astra-review/prompt.js:171: * @returns {{verdict: string, summary: string, checks: object[], findings: object[]}}
+./scripts/lib/astra-review/prompt.js:183:  if (!VERDICTS.includes(parsed.verdict)) throw new Error('review verdict must be PASS or FAIL');
+./scripts/lib/astra-review/prompt.js:188:    verdict: parsed.verdict,
+./scripts/lib/astra-review/prompt.js:205:function effectiveVerdict(review) {
+./scripts/lib/astra-review/prompt.js:207:  return review.verdict === 'FAIL' || hasBlocking ? 'FAIL' : 'PASS';
+./scripts/lib/astra-review/prompt.js:235:    `Verdict: **${effectiveVerdict(review)}** (${counts.join(', ')})`,
+./scripts/lib/astra-review/prompt.js:261:  effectiveVerdict,
+./scripts/lib/eval-harness/envelope.js:61:  verdict: 'string',
+./scripts/lib/eval-harness/receipt.js:53:    gate_verdict: options.gate_receipt ? options.gate_receipt.verdict || null : null,
+./scripts/lib/plan-canvas/sessions.js:16:const FEEDBACK_KINDS = new Set(['chat', 'annotation', 'verdict']);
+./scripts/lib/plan-canvas/sessions.js:17:const VERDICTS = new Set(['approve', 'request-changes']);
+./scripts/lib/plan-canvas/sessions.js:78:  if (kind === 'verdict') {
+./scripts/lib/plan-canvas/sessions.js:79:    if (!VERDICTS.has(raw.verdict)) return null;
+./scripts/lib/plan-canvas/sessions.js:80:    item.verdict = raw.verdict;
+./scripts/lib/plan-canvas/sessions.js:268:  if (item.kind === 'verdict') {
+./scripts/lib/plan-canvas/sessions.js:269:    const label = item.verdict === 'approve' ? 'Approved the plan' : 'Requested changes';
+./scripts/lib/plan-canvas/ui.js:128:  .verdict{display:flex;gap:8px;padding:0 14px 12px;border-bottom:1px solid var(--border)}
+./scripts/lib/plan-canvas/ui.js:129:  .verdict button{flex:1;height:30px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .12s}
+./scripts/lib/plan-canvas/ui.js:130:  .verdict .approve{border:1px solid var(--green);background:var(--green-glow);color:var(--green)}
+./scripts/lib/plan-canvas/ui.js:131:  .verdict .approve:hover{background:var(--green);color:#fff}
+./scripts/lib/plan-canvas/ui.js:132:  .verdict .changes{border:1px solid var(--orange);background:var(--orange-glow);color:var(--orange)}
+./scripts/lib/plan-canvas/ui.js:133:  .verdict .changes:hover{background:var(--orange);color:#fff}
+./scripts/lib/plan-canvas/ui.js:141:  .msg.kind-verdict{border-left:2px solid var(--green)}
+./scripts/lib/plan-canvas/ui.js:164:  .pill.kind-verdict{border-left-color:var(--green)}
+./scripts/lib/plan-canvas/ui.js:287:      txt.textContent = item.kind === 'verdict' ? (item.verdict === 'approve' ? 'Approve plan' : 'Request changes') + (item.text ? ': ' + item.text : '') : item.text;
+./scripts/lib/plan-canvas/ui.js:408:  $('approve').addEventListener('click', () => send([{ kind: 'verdict', verdict: 'approve' }]));
+./scripts/lib/plan-canvas/ui.js:409:  $('changes').addEventListener('click', () => send([{ kind: 'verdict', verdict: 'request-changes' }]));
+./scripts/lib/plan-canvas/ui.js:509:    <h2>Plan verdict</h2>
+./scripts/lib/plan-canvas/ui.js:510:    <div class="verdict">
+./schemas/capsule-envelope.schema.json:71:        "verdict": { "type": "string" },

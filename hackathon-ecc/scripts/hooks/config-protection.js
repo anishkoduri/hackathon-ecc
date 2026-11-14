@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Config Protection Hook — Claude Code-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
+ * Config Protection Hook — Upstream-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
  *
  * Blocks modifications to linter/formatter config files.
  * Agents frequently modify these to make checks pass instead of fixing

@@ -1,0 +1,294 @@
+PASS A1 Squash & stretch in motion-foundations Principles
+PASS A2 Anticipation wind-up in motion-foundations Principles
+PASS A3 Staging the focus in motion-foundations Principles
+PASS A4 Pose to pose in motion-foundations Principles
+PASS A5 Follow through in motion-foundations Principles
+PASS A6 Slow in & slow out in motion-foundations Principles
+PASS A7 Moving in arcs in motion-foundations Principles
+PASS A8 Secondary action in motion-foundations Principles
+PASS A9 Snappy timing in motion-foundations Principles
+PASS A10 Exaggerated feedback in motion-foundations Principles
+PASS A11 Solid drawing in 3D in motion-foundations Principles
+PASS A12 Overall appeal in motion-foundations Principles
+PASS PRINCIPLES_F22 token in motion-foundations + build.sh
+PASS A13 Fitts's law in motion-foundations Decision Guidance
+PASS A14 Bigger hit areas in motion-foundations Decision Guidance
+PASS A15 Hick's law in motion-foundations Decision Guidance
+PASS A16 Miller's law in motion-foundations Decision Guidance
+PASS A17 Doherty threshold in motion-foundations Decision Guidance
+PASS A18 Postel's law in motion-foundations Decision Guidance
+PASS A19 Jakob's law in motion-foundations Decision Guidance
+PASS A20 Frequency of use in motion-foundations Decision Guidance
+PASS LAWS_F22 token in motion-foundations + build.sh
+PASS A14 names the 44x44px hit-area floor (no size-rule duplication)
+PASS AB-11 pointer in make-interfaces-feel-better
+PASS AB-12 pointer in ui-ux-pro-max
+PASS B2 token: dropdown 0.2s in motionTokens
+PASS B2 token comment names the 150-250ms band
+PASS B3 token: staggerRow 0.03s in motionTokens
+PASS B3 conflict flag carried (30ms vs Rule 5 floor)
+PASS B1 token: smooth annotated as the ease-out curve
+PASS B9 token: inOut ease-in-out curve in motionTokens
+PASS B10 token: popover 0.95, separate from press
+PASS B5 token: stretch 1.12 (12%) in motionTokens
+PASS B15 token: exitFactor 0.8 in motionTokens
+PASS B15 conflict flag carried (0.8x vs quick-reference 60-70%)
+PASS B4 observation NOT resolved by editing scale.press (still 0.95)
+PASS B-rule 11 Enter from the trigger in motion-patterns Rules
+PASS B-rule 12 Exit to the trigger in motion-patterns Rules
+PASS B-rule 13 No bounce on everyday UI in motion-patterns Rules
+PASS B-rule 14 Don't tween while held in motion-patterns Rules
+PASS B-rule 15 Exits run 20% shorter than their enter in motion-patterns Rules
+PASS B-rule 16 Overlap old & new states in motion-patterns Rules
+PASS B-rule 17 Pulse to confirm success in motion-patterns Rules
+PASS B-rule 18 Reuse the same layoutId in motion-patterns Rules
+PASS B-rule 19 Move along arcs in motion-patterns Rules
+PASS B16 scope boundary stated (in-container swaps only; Rule 3 pages)
+PASS AB-06 Dropdown example (B2) in motion-patterns
+PASS AB-06 B6 stagger-as-details-settle note in motion-patterns
+PASS AB-07 Popover example (B10/B11/B12) in motion-patterns
+PASS AB-08 B20 note on the shared-element example in motion-patterns
+PASS B-rule 9 Overlap old & new states in multi-step sequences in motion-advanced Rules
+PASS B-rule 10 Masks for reveals & colour in motion-advanced Rules
+PASS B-rule 11 Rubber band past bounds in motion-advanced Rules
+PASS AB-10 example ### Mask reveal (fix #22 B17) in motion-advanced
+PASS AB-10 example ### Stretching knob (fix #22 B5) in motion-advanced
+PASS AB-10 example ### Overlapping state change (fix #22 B16) in motion-advanced
+PASS B4 already-covered: press scale 0.97 polish default intact
+PASS B18 already-covered: icon-swap cross-fade rule intact
+PASS AB-05 names B18 as already covered (no duplicate rule)
+PASS ANIM tokens/rules/advanced content in build.sh (fix22 block)
+PASS C1 Tags & pills named in the slop checklist
+PASS C2 Excessive italics named in the slop checklist
+PASS C3 Instrument Serif named in the slop checklist
+PASS C4 Negative kerning named in the slop checklist
+PASS C5 Over-the-top detailed UI named in the slop checklist
+PASS C6 Overusing dividers named in the slop checklist
+PASS C7 Color shades & opacities named in the slop checklist
+PASS C8 Containers with borders named in the slop checklist
+PASS C9 Overly detailed diagrams named in the slop checklist
+PASS C10 Verbose, redundant text named in the slop checklist
+PASS C11 Code breadcrumbs named in the slop checklist
+PASS C12 Section numbering named in the slop checklist
+PASS C13 Eyebrows named in the slop checklist
+PASS C14 Dithering named in the slop checklist
+PASS C15 ASCII images named in the slop checklist
+PASS C16 Squircles named in the slop checklist
+PASS C17 Excessive mono fonts named in the slop checklist
+PASS C18 ALL CAPS subtitles named in the slop checklist
+PASS C19 Gradient backgrounds named in the slop checklist
+PASS C20 Periods in titles named in the slop checklist
+PASS SLOP_F22 anchor in the slop checklist + polish-pass wiring
+PASS slop checks are FLAGS, not bans (flag-vs-justified + clearance)
+PASS slop checklist is static candidate evidence, never a verdict
+PASS staged slop source is copied by build.sh (STEP 2 round2-skills copy)
+PASS D1 Delete filler badges named in the unslop fixes
+PASS D2 Drop redundant labels named in the unslop fixes
+PASS D3 Unitalicize random words named in the unslop fixes
+PASS D4 Mono only where needed named in the unslop fixes
+PASS D5 Use a design system named in the unslop fixes
+PASS D6 Show the actual product named in the unslop fixes
+PASS D7 Enlarge the main feature named in the unslop fixes
+PASS D8 Group with spacing named in the unslop fixes
+PASS D9 Make headlines specific named in the unslop fixes
+PASS D10 Emphasize the CTA named in the unslop fixes
+PASS D11 Add an accent colour named in the unslop fixes
+PASS D12 Keep icons consistent named in the unslop fixes
+PASS D13 Remove embellishments named in the unslop fixes
+PASS D14 Inner radius = outer – padding named in the unslop fixes
+PASS D15 Improve text contrast named in the unslop fixes
+PASS D16 Wrap headlines properly named in the unslop fixes
+PASS D17 Align by eye, not pixels named in the unslop fixes
+PASS D18 Use tabular nums named in the unslop fixes
+PASS D19 Add loading states named in the unslop fixes
+PASS D20 Animate useful feedback named in the unslop fixes
+PASS UNSLOP_F22 anchor in the unslop fixes + polish-pass wiring
+PASS D19 loading-state RULE is new (every async action gets one)
+PASS CD pointer headline-specific in ui-ux-pro-max quick-reference
+PASS CD pointer cta-emphasis in ui-ux-pro-max quick-reference
+PASS CD pointer color-contrast-polish in ui-ux-pro-max quick-reference
+PASS CD pointer headline-wrap-polish in ui-ux-pro-max quick-reference
+PASS CD pointer tabular-polish in ui-ux-pro-max quick-reference
+PASS CD pointer spacing-group-polish in ui-ux-pro-max quick-reference
+PASS CD-P7a D20 pointer in motion-patterns Button feedback
+PASS CD-P7b D20 pointer in motion-foundations tokens table
+PASS E1 Dithering named in the trends menu
+PASS E2 ASCII over video named in the trends menu
+PASS E3 Infinite canvases named in the trends menu
+PASS E4 Disco logos named in the trends menu
+PASS E5 Renaissance branding named in the trends menu
+PASS E6 Monet backgrounds named in the trends menu
+PASS E7 Dark gradient heroes named in the trends menu
+PASS E8 Pixel loaders named in the trends menu
+PASS E9 Instrument Serif named in the trends menu
+PASS E10 One italic word named in the trends menu
+PASS E11 Cream backgrounds named in the trends menu
+PASS E12 All-caps eyebrows named in the trends menu
+PASS E13 Pulsing live dots named in the trends menu
+PASS E14 Sparkle icons named in the trends menu
+PASS E15 Liquid Glass named in the trends menu
+PASS E16 Three icon cards named in the trends menu
+PASS E17 Decorative flowcharts named in the trends menu
+PASS E18 Endless marquees named in the trends menu
+PASS E19 Squircles named in the trends menu
+PASS E20 Pretext text wrapping named in the trends menu
+PASS every trend entry states opt-in + theme-matched (20/20)
+PASS trends intro names the overlapping slop pairs
+PASS trends intro states the theme-match precondition
+PASS TRENDS_F22 appears 23x in Taste SKILL.md (menu + pointers)
+PASS 16 Hallmark Range lines carry TRENDS_F22 (15 theme files)
+PASS E6 points at less-flat-ui #21, does not duplicate the treatment
+PASS E12 has no theme-file line (validator forbids eyebrows) — menu only
+PASS F1 Felt texture present in built less-flat-ui
+PASS F2 Fluted glass present in built less-flat-ui
+PASS F3 Thermal gradients present in built less-flat-ui
+PASS F4 Water ripples present in built less-flat-ui
+PASS F5 Speckled graphite present in built less-flat-ui
+PASS F6 Single-hue landscapes present in built less-flat-ui
+PASS F7 Blueprint grids present in built less-flat-ui
+PASS F8 Halftone present in built less-flat-ui
+PASS F9 Grainy gradients present in built less-flat-ui
+PASS F10 Grass texture present in built less-flat-ui
+PASS F11 Dithered images present in built less-flat-ui
+PASS F12 Paper texture present in built less-flat-ui
+PASS F13 Contour lines present in built less-flat-ui
+PASS F14 Cloud sky present in built less-flat-ui
+PASS F15 Pixel mosaics present in built less-flat-ui
+PASS F16 Lens distortion present in built less-flat-ui
+PASS F17 Stippled gradients present in built less-flat-ui
+PASS F18 Square-dot grids present in built less-flat-ui
+PASS F19 Blurred photos present in built less-flat-ui
+PASS F20 Iridescent shapes present in built less-flat-ui
+PASS F21 Impressionist paintings present in built less-flat-ui
+PASS F22 ASCII and pixels present in built less-flat-ui
+PASS F23 Soft shadow present in built less-flat-ui
+PASS less-flat-ui states 23 treatments (no stale count of 22)
+PASS G1 Kerning defined in the glossary
+PASS G2 Optical centre defined in the glossary
+PASS G3 Tabular numbers defined in the glossary
+PASS G4 Layout shift defined in the glossary
+PASS G5 Tracking defined in the glossary
+PASS G6 Optimistic update defined in the glossary
+PASS G7 x-height defined in the glossary
+PASS G8 Touch target defined in the glossary
+PASS G9 Leading defined in the glossary
+PASS G10 Origin-aware animation defined in the glossary
+PASS G11 OKLCH defined in the glossary
+PASS G12 Widow defined in the glossary
+PASS G13 Safe area defined in the glossary
+PASS G14 Stagger defined in the glossary
+PASS G15 Line length defined in the glossary
+PASS G16 Affordance defined in the glossary
+PASS G17 Combobox defined in the glossary
+PASS G18 Interruptible animation defined in the glossary
+PASS G19 Progressive disclosure defined in the glossary
+PASS G20 Shared element transition defined in the glossary
+PASS GLOSSARY_F22 anchor in the glossary + staged source copied by build.sh
+PASS G-P1 pointer line in ui-ux-pro-max (16 terms)
+PASS G-P2 pointer line in motion-foundations (G18)
+PASS G-P3 pointer line in motion-patterns (G10/G14/G20)
+PASS G8 fix: no 40x40px wording remains in the glossary
+PASS G8 fix: 44x44px floor (W2-C4) named in the owning column + dedupe note
+PASS G8 definition still 44x44px minimum (untouched)
+PASS H1 concept named in ui-ux-pro-max (AB-13, ACCENT_F22)
+PASS H1 accent-sprawl check in polish-pass slop checklist
+PASS H1 sprawl flag is slop-adjacent, cleared by D19 + theme-fit
+PASS H2 named in orchestrate design-package step (ACCENTUATION_F22)
+PASS H2 hierarchy rules in ui-ux-pro-max (AB-14, ACCENTUATION_F22)
+PASS H2 hierarchy check in polish-pass slop checklist
+PASS H2 means cross-referenced, not duplicated (F5, F6, dealt moments, H1)
+PASS Mobbin research step in orchestrate design-package step (MOBBIN_RESEARCH_F22)
+PASS Mobbin record requirement: decision record notes categories consulted
+PASS Mobbin no-copy boundary in orchestrate (never a Mobbin URL as source)
+PASS Mobbin pattern reference in Taste (MOBBIN_PATTERN_F22)
+PASS Mobbin pattern reference in ui-ux-pro-max (MOBBIN_PATTERN_F22)
+PASS Mobbin no-copy boundary in Taste + ui-ux-pro-max
+PASS Mobbin QA convention check in polish-pass (MOBBIN_QA_F22)
+PASS Mobbin QA gap is candidate evidence, never a verdict
+PASS Mobbin free-tier-only + never-blocked in all four touchpoints
+PASS Mobbin pattern token in build.sh (fix22 block)
+PASS directive requirement in orchestrate implementer briefs (DIRECTIVES_F22)
+PASS directive requirement in Taste step 4a frozen system (DIRECTIVES_F22)
+PASS Hallmark theme-deal output recorded as directives (Taste step 4a)
+PASS directive requirement in ui-ux-pro-max component specs (DIRECTIVES_F22)
+PASS directive requirement in GAN planner (DIRECTIVES_F22)
+PASS directive requirement in GAN generator (DIRECTIVES_F22)
+PASS directive requirement in GAN evaluator feedback (DIRECTIVES_F22)
+PASS directive requirement in polish-pass fix directives (DIRECTIVES_F22)
+PASS directives: prose-only FAILS the handoff check (orchestrate + Taste)
+PASS directives: implementers surface ambiguity as a recorded gap
+PASS Lenis smooth-scroll rule in motion-foundations (LENIS_F22)
+PASS Lenis pin lenis@1.3.27 + MIT in motion-foundations
+PASS Lenis never on Taste landing pages (standing rule kept)
+PASS Scroll routing through Lenis + ScrollTrigger in motion-patterns
+PASS ScrollTrigger referenced in motion-patterns prose (SCROLLTRIGGER_F22)
+PASS GSAP --domain gsap integration intact in ui-ux-pro-max
+PASS GSAP extension: ScrollTrigger named in skill prose (LIB-04)
+PASS GSAP pin gsap@3.15.1 in ui-ux-pro-max + motion-patterns
+PASS GSAP license is GreenSock Standard 'no charge', NOT MIT
+PASS Group B numbers travel through GSAP tweens (LIB-04)
+PASS Vanta in Taste step 2 (VANTA_F22) with three@0.134.0 pair
+PASS Vanta in ui-ux-pro-max app surfaces (VANTA_F22)
+PASS Vanta reduced-motion + mobile-fallback + scrim constraints stated
+PASS Vanta scoped three pin: general pin does not apply to Vanta scenes
+PASS React Bits in motion-patterns (REACTBITS_F22), React/Next only
+PASS React Bits pinned commit + MIT + Commons Clause in motion-patterns
+PASS React Bits scope pointer in ui-ux-pro-max (REACTBITS_F22)
+PASS libraries: unpinned 'latest' FAILS the pin check
+PASS library tokens in build.sh (fix22 block)
+PASS Bang anti-slide checks in pitch-deck-video (BANG_ANTISLIDE_F22)
+PASS Bang anti-slide: one continuous world, not slides with fades
+PASS Bang anti-slide: no text under 30px on a 1080-wide stage
+PASS Bang anti-slide: at most two text levels per frame
+PASS Bang one-world / camera / persistent-subject architecture (BANG_ONEWORLD_F22)
+PASS Bang style-direction menu, 10, menu-not-defaults (BANG_STYLES_F22)
+PASS Bang opener concepts, 19 (BANG_OPENERS_F22)
+PASS Bang kinetic typography as directives (BANG_KINETIC_F22)
+PASS Bang explainer styles, 6 (BANG_EXPLAINER_F22)
+PASS Bang pin SHA recorded in pitch-deck-video
+PASS Bang pin SHA recorded in build.sh (BANG_PIN)
+PASS Bang pin SHA recorded in fix22/bang-report.md
+PASS Bang MIT license recorded in pitch-deck-video
+PASS Bang GSAP converged on 3.15.1 (plugin pin, not 3.12.5)
+PASS Bang's reference versions recorded as Bang's only (3.12.5 / 0.161.0)
+PASS Bang three.js scoped pins recorded (Vanta 0.134.0, general 0.185.1)
+PASS Bang staleness + language notes in fix22/bang-report.md
+PASS Bang /demo still films the real app (boundary intact)
+PASS Bang: no second toolchain (Remotion + OpenMontage only)
+PASS GSAP 3.12.2 absent from the built tree (threejs.csv pin fixed)
+PASS threejs.csv row 35 GSAP CDN pin is 3.15.1
+PASS threejs.csv keeps the general three@0.185.1 pin (Vanta scoping intact)
+PASS disposition-E.md:122 scrub: no literal banned-term pattern in the file
+PASS dedupe pair recorded in the glossary: G20 = B20 (reuse `layoutId`)
+PASS dedupe pair recorded in the glossary: G14 = B3/B6 (stagger)
+PASS dedupe pair recorded in the glossary: G3 = D18 (tabular numbers)
+PASS dedupe pair recorded in the glossary: G8 = A14 (bigger hit areas)
+PASS dedupe pair recorded in the glossary: G10 = B11/B12 (enter/exit from the trigger)
+PASS dedupe pair recorded in the glossary: G18 ~ B14 (don't tween while held)
+PASS dedupe: B20 primary home is the motion-patterns shared-element example
+PASS dedupe: stagger primary home is the motion-patterns example + 30ms token
+PASS dedupe: tabular numbers primary home is ui-ux-pro-max type rules
+PASS dedupe: origin-aware primary home is motion-patterns (B11/B12)
+PASS dedupe: A10/B8/D20 one family cross-referenced both ways
+PASS counts 166/72/123/87/15 (unchanged — glossary/slop/unslop are reference files, not skills)
+PASS trigger keys still 64 (no new trigger from this fix)
+PASS every trigger key still resolves to a real skill dir
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS build.sh contains the fix22 block marker
+PASS build.sh contains the BANG_PIN record
+PASS build.sh still contains the fix21 block marker
+PASS build.sh still contains the fix20 block marker
+PASS build.sh still contains the fix19 block marker
+PASS build.sh still contains the fix17 block marker
+PASS build.sh still contains the fix15 block marker
+PASS build.sh has MORE lines than post-fix21 (23,647)
+   NOTE: fix22/MANIFEST.md not yet written by the coordinator; measured build.sh lines=23732, md5=891fca7b5f34aa74db95cb04501345a0
+PASS build.sh lines + md5 measured for the coordinator's MANIFEST (lines=23732, md5=891fca7b5f34aa74db95cb04501345a0)
+PASS fix15 verifier still passes except the stale post-fix21 build.sh fingerprint (43/44 checks pass)
+PASS fix17 verifier still passes except the stale post-fix21 build.sh fingerprint (59/60 checks pass)
+PASS fix18 verifier still passes except the stale post-fix21 build.sh fingerprint (69/72 checks pass)
+PASS fix19 verifier still passes except the stale post-fix21 build.sh fingerprint (72/76 checks pass)
+PASS fix20 verifier still passes except the stale post-fix21 build.sh fingerprint (164/169 checks pass)
+PASS fix21 verifier still passes except the stale post-fix21 build.sh fingerprint (96/102 checks pass)
+
+291/291 checks pass

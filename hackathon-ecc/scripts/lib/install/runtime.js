@@ -41,7 +41,7 @@ function createRawInstallPlan(request, options = {}) {
       projectRoot: options.projectRoot,
       homeDir: options.homeDir,
       env: resolveInvocationEnvironment(options),
-      claudeRulesDir: options.claudeRulesDir,
+      cursorRulesDir: options.cursorRulesDir,
       sourceRoot: options.sourceRoot,
       exemptValidationCodes: options.exemptValidationCodes || [],
     });
@@ -54,7 +54,7 @@ function createRawInstallPlan(request, options = {}) {
       projectRoot: options.projectRoot,
       homeDir: options.homeDir,
       env: resolveInvocationEnvironment(options),
-      claudeRulesDir: options.claudeRulesDir,
+      cursorRulesDir: options.cursorRulesDir,
       sourceRoot: options.sourceRoot,
     });
   }

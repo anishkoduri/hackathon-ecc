@@ -13,7 +13,7 @@ alwaysApply: true
 
 Types: feat, fix, refactor, docs, test, chore, perf, ci
 
-Note: this paragraph describes Claude Code installs and does not apply to this Cursor plugin install — Cursor commit attribution follows the project's Cursor/git configuration.
+Note: this paragraph describes Cursor installs and does not apply to this Cursor plugin install — Cursor commit attribution follows the project's Cursor/git configuration.
 
 ## Pull Request Workflow
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Doc file warning hook (PreToolUse - Write) — Claude Code-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
+ * Doc file warning hook (PreToolUse - Write) — Upstream-only (not wired in this Cursor plugin — Cursor has no PreToolUse event)
  *
  * Uses a denylist approach: only warn on known ad-hoc documentation
  * filenames (NOTES, TODO, SCRATCH, etc.) outside structured directories.
@@ -22,7 +22,7 @@ const MAX_DIRECT_STDIN_BYTES = 16 * 1024 * 1024;
 const ADHOC_FILENAMES = /^(NOTES|TODO|SCRATCH|TEMP|DRAFT|BRAINSTORM|SPIKE|DEBUG|WIP)\.(md|txt)$/;
 
 // Structured directories where even ad-hoc names are intentional
-const STRUCTURED_DIRS = /(^|\/)(docs|\.claude|\.github|commands|skills|benchmarks|templates|\.history|memory)\//;
+const STRUCTURED_DIRS = /(^|\/)(docs|\.cursor|\.github|commands|skills|benchmarks|templates|\.history|memory)\//;
 
 function isSuspiciousDocPath(filePath) {
   const normalized = filePath.replace(/\\/g, '/');
@@ -61,7 +61,7 @@ function run(inputOrRaw, _options = {}) {
       additionalContext: [
         '[Hook] WARNING: Ad-hoc documentation filename detected',
         `[Hook] File: ${filePath}`,
-        '[Hook] Consider using a structured path (e.g. docs/, .claude/, skills/, .github/, benchmarks/, templates/)',
+        '[Hook] Consider using a structured path (e.g. docs/, .ecc/, skills/, .github/, benchmarks/, templates/)',
       ],
     };
   }

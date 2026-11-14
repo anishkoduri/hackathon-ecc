@@ -27,8 +27,8 @@ A site-office voice: warm grey concrete for paper, near-black ink, Oswald 700 ca
   --color-accent: oklch(66% 0.21 38); --color-accent-ink: oklch(18% 0.005 270); --color-focus: oklch(42% 0.15 38);
   --color-accent-deep: oklch(48% 0.17 38);
   --texture-opacity: 0.05;
-  --font-display: "Oswald", ui-sans-serif, sans-serif; --font-body: "Archivo", ui-sans-serif, sans-serif;
-  --font-outlier: "Archivo Narrow", ui-sans-serif, sans-serif;
+  --font-display: "Oswald"; --font-body: "Archivo";
+  --font-outlier: "Archivo Narrow";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --rule-bar: 3px;
   --shadow-card: 6px 6px 0 var(--color-ink);
   --tracking-display: -0.005em; --display-weight: 700;

@@ -1,12 +1,12 @@
 ---
-description: List all configured hookify rules (Claude Code only — no Cursor equivalent in this plugin)
+description: List all configured hookify rules (Upstream only — no Cursor equivalent in this plugin)
 ---
 
 Find and display all hookify rules in a formatted table.
 
 ## Steps
 
-1. Find all `.claude/hookify.*.local.md` files
+1. Find all `.ecc/hookify.*.local.md` files
 2. Read each file's frontmatter:
    - `name`
    - `enabled`

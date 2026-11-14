@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build-complete notifier — Claude Code-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
+ * Build-complete notifier — Upstream-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
  */
 'use strict';
 

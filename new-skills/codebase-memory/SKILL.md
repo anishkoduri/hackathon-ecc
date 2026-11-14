@@ -191,7 +191,9 @@ appear, check the MCP entry points at the binary on your PATH.
 - `query_graph` is read-only: writes, `MERGE`, and `CALL` fail with an
   `unsupported …` error rather than returning empty results.
 - Indexes live in SQLite under `~/.cache/codebase-memory-mcp/` (or
-  `$CBM_CACHE_DIR`). To reset: `rm -rf ~/.cache/codebase-memory-mcp/`.
+  `$CBM_CACHE_DIR`; Windows: `$env:CBM_CACHE_DIR`). To reset — macOS/Linux:
+  `rm -rf ~/.cache/codebase-memory-mcp/`; Windows (PowerShell):
+  `Remove-Item -Recurse -Force "$env:USERPROFILE\.cache\codebase-memory-mcp"`.
 - Cursor gets no CBM hooks: the installer withholds them because session
   injection races and `readonly` blocks MCP. Skills and the read-only
   Scout/Verify/Auditor agent profiles are the durable surfaces.

@@ -1,5 +1,5 @@
 ---
-description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code. Use for a single-model inline or PRD-driven implementation plan; for a dual-model (Codex/Antigravity) plan use /multi-plan.
+description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code. Use for a single-model inline or PRD-driven implementation plan; for a second deep-reasoner verification pass, dispatch a fresh deep-reasoner subagent.
 argument-hint: "[feature description | path/to/*.prd.md]"
 ---
 
@@ -41,12 +41,12 @@ The assistant will:
 
 | Input | Mode | Behavior |
 |---|---|---|
-| `path/to/name.prd.md` | PRD artifact mode | Read the PRD, pick the next pending delivery milestone or implementation phase, and write `.claude/plans/{name}.plan.md` |
+| `path/to/name.prd.md` | PRD artifact mode | Read the PRD, pick the next pending delivery milestone or implementation phase, and write `.ecc/plans/{name}.plan.md` |
 | Any other markdown path | Reference mode | Read the file as context and produce an inline plan |
 | Free-form text | Conversational mode | Produce an inline plan |
 | Empty input | Clarification mode | Ask what should be planned |
 
-In PRD artifact mode, create `.claude/plans/` if needed. If the PRD contains a `Delivery Milestones` table, update only the selected row from `pending` to `in-progress` and set its `Plan` cell to the generated plan path. If the PRD uses the legacy `.claude/PRPs/prds/` format with `Implementation Phases`, read it without migrating paths.
+In PRD artifact mode, create `.ecc/plans/` if needed. If the PRD contains a `Delivery Milestones` table, update only the selected row from `pending` to `in-progress` and set its `Plan` cell to the generated plan path. If the PRD uses the legacy `.ecc/PRPs/prds/` format with `Implementation Phases`, read it without migrating paths.
 
 ## Pattern Grounding
 
@@ -64,7 +64,7 @@ If no similar code exists, state that explicitly. Do not invent a pattern.
 
 ## PRD Artifact Output
 
-When called with a `.prd.md` file, write the plan to `.claude/plans/{kebab-case-name}.plan.md` using this structure:
+When called with a `.prd.md` file, write the plan to `.ecc/plans/{kebab-case-name}.plan.md` using this structure:
 
 ````markdown
 # Plan: {Feature Name}
@@ -187,9 +187,9 @@ After planning:
 - Use `/code-review` to review completed implementation
 - Use `/pr` or `/prp-pr` to open a pull request
 
-> **Need requirements first?** Use `/plan-prd` for a lean PRD at `.claude/prds/{name}.prd.md`.
+> **Need requirements first?** Use `/plan-prd` for a lean PRD at `.ecc/prds/{name}.prd.md`.
 >
-> **Need the legacy PRP flow?** Use `/prp-plan` for deep PRP planning with `.claude/PRPs/` artifacts. Use `/prp-implement` to execute those plans with rigorous validation loops.
+> **Need the legacy PRP flow?** Use `/prp-plan` for deep PRP planning with `.ecc/PRPs/` artifacts. Use `/prp-implement` to execute those plans with rigorous validation loops.
 
 ## Optional Planner Agent
 

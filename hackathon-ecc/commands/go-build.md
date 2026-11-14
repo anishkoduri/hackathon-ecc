@@ -179,5 +179,5 @@ The agent will stop and report if:
 
 ## Related
 
-- Agent: `agents/ecc-go-build-resolver.md`
+- Agent: `go-build-resolver` (`agents/ecc-go-build-resolver.md`)
 - Skill: `skills/golang-patterns/`

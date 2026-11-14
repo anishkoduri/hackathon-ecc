@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Claude Code-only PostToolUse hook: TypeScript check after editing .ts/.tsx files (not wired in this Cursor plugin — Cursor has no PostToolUse event)
+ * Upstream-only PostToolUse hook: TypeScript check after editing .ts/.tsx files (not wired in this Cursor plugin — Cursor has no PostToolUse event)
  *
  * Cross-platform (Windows, macOS, Linux)
  *
- * Runs after Edit tool use on TypeScript files in Claude Code. Walks up from the file's
+ * Runs after Edit tool use on TypeScript files in Cursor. Walks up from the file's
  * directory to find the nearest tsconfig.json, then runs tsc --noEmit
  * and reports only errors related to the edited file.
  */

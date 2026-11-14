@@ -74,7 +74,7 @@ function normalizeRemoteUrl(remoteUrl) {
 }
 
 function resolveProjectRoot(cwd = process.cwd()) {
-  const envRoot = process.env.CLAUDE_PROJECT_DIR;
+  const envRoot = process.env.CURSOR_PROJECT_DIR;
   if (envRoot && fs.existsSync(envRoot)) {
     return path.resolve(envRoot);
   }
@@ -213,17 +213,17 @@ function getSessionLeaseDir(context) {
   return path.join(context.projectDir, '.observer-sessions');
 }
 
-function resolveSessionId(rawSessionId = process.env.CLAUDE_SESSION_ID) {
+function resolveSessionId(rawSessionId = process.env.ECC_SESSION_ID) {
   return sanitizeSessionId(rawSessionId || '') || '';
 }
 
-function getSessionLeaseFile(context, rawSessionId = process.env.CLAUDE_SESSION_ID) {
+function getSessionLeaseFile(context, rawSessionId = process.env.ECC_SESSION_ID) {
   const sessionId = resolveSessionId(rawSessionId);
   if (!sessionId) return '';
   return path.join(getSessionLeaseDir(context), `${sessionId}.json`);
 }
 
-function writeSessionLease(context, rawSessionId = process.env.CLAUDE_SESSION_ID, extra = {}) {
+function writeSessionLease(context, rawSessionId = process.env.ECC_SESSION_ID, extra = {}) {
   const leaseFile = getSessionLeaseFile(context, rawSessionId);
   if (!leaseFile) return '';
 
@@ -239,7 +239,7 @@ function writeSessionLease(context, rawSessionId = process.env.CLAUDE_SESSION_ID
   return leaseFile;
 }
 
-function removeSessionLease(context, rawSessionId = process.env.CLAUDE_SESSION_ID) {
+function removeSessionLease(context, rawSessionId = process.env.ECC_SESSION_ID) {
   const leaseFile = getSessionLeaseFile(context, rawSessionId);
   if (!leaseFile) return false;
   try {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Claude Code-only: PostToolUse bash-dispatch entry point (runPostBash).
+ * Upstream-only: PostToolUse bash-dispatch entry point (runPostBash).
  * Not wired in this Cursor plugin — it never runs (its only reference is the ASYNC_HOOKS list in the likewise unwired scripts/hooks/posttooluse-dispatcher.js).
  */
 'use strict';

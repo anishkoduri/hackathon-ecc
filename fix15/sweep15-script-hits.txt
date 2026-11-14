@@ -1,0 +1,58 @@
+./scripts/astra-review.js:4: * independent review and print a structured verdict.
+./scripts/astra-review.js:17: *                            (an --output verdict, a {findings} object, or an array);
+./scripts/astra-review.js:24: *   --output <file>          also write the JSON verdict to <file>
+./scripts/astra-review.js:38:const { buildPrompt, effectiveVerdict, formatReport } = require('./lib/astra-review/prompt');
+./scripts/astra-review.js:228:  const verdict = effectiveVerdict(result);
+./scripts/astra-review.js:229:  const payload = { model: options.model, scope: scopeLabel, files: changes.files, verdict, review: result };
+./scripts/astra-review.js:236:  return verdict === 'PASS' ? EXIT_PASS : EXIT_FAIL;
+./scripts/hooks/gateguard-fact-force.js:124:// the verdict instead of the command position, so dd moved to isDestructiveDd()
+./scripts/hooks/gateguard-fact-force.js:1084: * Token-based rather than a regex arm because the verdict has to depend on
+./scripts/hooks/plan-canvas-pending.js:187:  if (item.kind === 'verdict') {
+./scripts/hooks/plan-canvas-pending.js:188:    const label = item.verdict === 'approve' ? 'APPROVED the plan' : 'REQUESTED CHANGES';
+./scripts/lib/agent-proximity/index.js:132:      const verdict = advise(a, b, graph, options);
+./scripts/lib/agent-proximity/index.js:136:        risk: verdict.risk,
+./scripts/lib/agent-proximity/index.js:137:        distance: verdict.distance,
+./scripts/lib/agent-proximity/index.js:138:        level: verdict.level,
+./scripts/lib/agent-proximity/index.js:139:        channels: verdict.channels
+./scripts/lib/agent-proximity/index.js:141:      if (verdict.level !== 'clear') {
+./scripts/lib/agent-proximity/index.js:142:        advisories.push({ a: a.agentId, b: b.agentId, ...verdict });
+./scripts/lib/astra-review/codex.js:3: * in a read-only sandbox and return the parsed structured verdict. The fix
+./scripts/lib/astra-review/prompt.js:2: * Astra review: reviewer prompt, strict output schema, verdict parsing,
+./scripts/lib/astra-review/prompt.js:10:const VERDICTS = Object.freeze(['PASS', 'FAIL']);
+./scripts/lib/astra-review/prompt.js:27:    verdict: { type: 'string', enum: [...VERDICTS] },
+./scripts/lib/astra-review/prompt.js:36:          result: { type: 'string', enum: [...VERDICTS] },
+./scripts/lib/astra-review/prompt.js:59:  required: ['verdict', 'summary', 'checks', 'findings'],
+./scripts/lib/astra-review/prompt.js:74:      `Recover every omitted section with these read-only commands before returning a verdict: ${input.recovery || 'read the listed files'}.`,
+./scripts/lib/astra-review/prompt.js:86:    'Rubric (every criterion must be judged PASS or FAIL with an objective reason):',
+./scripts/lib/astra-review/prompt.js:94:    '- Set verdict to FAIL if any CRITICAL or HIGH finding exists, otherwise PASS.',
+./scripts/lib/astra-review/prompt.js:128:  if (!VERDICTS.includes(check.result)) throw new Error(`check[${index}] result must be PASS or FAIL`);
+./scripts/lib/astra-review/prompt.js:171: * @returns {{verdict: string, summary: string, checks: object[], findings: object[]}}
+./scripts/lib/astra-review/prompt.js:183:  if (!VERDICTS.includes(parsed.verdict)) throw new Error('review verdict must be PASS or FAIL');
+./scripts/lib/astra-review/prompt.js:188:    verdict: parsed.verdict,
+./scripts/lib/astra-review/prompt.js:205:function effectiveVerdict(review) {
+./scripts/lib/astra-review/prompt.js:207:  return review.verdict === 'FAIL' || hasBlocking ? 'FAIL' : 'PASS';
+./scripts/lib/astra-review/prompt.js:235:    `Verdict: **${effectiveVerdict(review)}** (${counts.join(', ')})`,
+./scripts/lib/astra-review/prompt.js:261:  effectiveVerdict,
+./scripts/lib/eval-harness/envelope.js:61:  verdict: 'string',
+./scripts/lib/eval-harness/receipt.js:53:    gate_verdict: options.gate_receipt ? options.gate_receipt.verdict || null : null,
+./scripts/lib/plan-canvas/sessions.js:16:const FEEDBACK_KINDS = new Set(['chat', 'annotation', 'verdict']);
+./scripts/lib/plan-canvas/sessions.js:17:const VERDICTS = new Set(['approve', 'request-changes']);
+./scripts/lib/plan-canvas/sessions.js:78:  if (kind === 'verdict') {
+./scripts/lib/plan-canvas/sessions.js:79:    if (!VERDICTS.has(raw.verdict)) return null;
+./scripts/lib/plan-canvas/sessions.js:80:    item.verdict = raw.verdict;
+./scripts/lib/plan-canvas/sessions.js:268:  if (item.kind === 'verdict') {
+./scripts/lib/plan-canvas/sessions.js:269:    const label = item.verdict === 'approve' ? 'Approved the plan' : 'Requested changes';
+./scripts/lib/plan-canvas/ui.js:128:  .verdict{display:flex;gap:8px;padding:0 14px 12px;border-bottom:1px solid var(--border)}
+./scripts/lib/plan-canvas/ui.js:129:  .verdict button{flex:1;height:30px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .12s}
+./scripts/lib/plan-canvas/ui.js:130:  .verdict .approve{border:1px solid var(--green);background:var(--green-glow);color:var(--green)}
+./scripts/lib/plan-canvas/ui.js:131:  .verdict .approve:hover{background:var(--green);color:#fff}
+./scripts/lib/plan-canvas/ui.js:132:  .verdict .changes{border:1px solid var(--orange);background:var(--orange-glow);color:var(--orange)}
+./scripts/lib/plan-canvas/ui.js:133:  .verdict .changes:hover{background:var(--orange);color:#fff}
+./scripts/lib/plan-canvas/ui.js:141:  .msg.kind-verdict{border-left:2px solid var(--green)}
+./scripts/lib/plan-canvas/ui.js:164:  .pill.kind-verdict{border-left-color:var(--green)}
+./scripts/lib/plan-canvas/ui.js:287:      txt.textContent = item.kind === 'verdict' ? (item.verdict === 'approve' ? 'Approve plan' : 'Request changes') + (item.text ? ': ' + item.text : '') : item.text;
+./scripts/lib/plan-canvas/ui.js:408:  $('approve').addEventListener('click', () => send([{ kind: 'verdict', verdict: 'approve' }]));
+./scripts/lib/plan-canvas/ui.js:409:  $('changes').addEventListener('click', () => send([{ kind: 'verdict', verdict: 'request-changes' }]));
+./scripts/lib/plan-canvas/ui.js:509:    <h2>Plan verdict</h2>
+./scripts/lib/plan-canvas/ui.js:510:    <div class="verdict">
+./schemas/capsule-envelope.schema.json:71:        "verdict": { "type": "string" },

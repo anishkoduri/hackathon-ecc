@@ -10,39 +10,15 @@ const { readInstallState, validateInstallState } = require('./install-state');
 const { assertWithinTrustedRoot } = require('./path-safety');
 const { createInstallPlanFromRequest } = require('./install/runtime');
 const { assertNoNewUserOwnedFile, prepareUserOwnedFileGuard } = require('./install/ownership-guard');
-const { withOpenCodeInstallLocks } = require('./install/opencode-install-lock');
-const { isCodexUserConfig } = require('./install/codex-user-config');
 const {
   getRecordedHookConsent,
   withHookConsent,
 } = require('./install/hook-consent');
-const {
-  prepareClaudeSkillMigration,
-} = require('./install/claude-skill-migration');
-const {
-  getLegacyAntigravityLocation,
-  inspectLegacyAntigravityState,
-} = require('./install/antigravity-legacy-migration');
-const {
-  getLegacyOpencodeLocation,
-  inspectLegacyOpencodeState,
-} = require('./install/opencode-legacy-migration');
-const {
-  acquireSettingsLock,
-  getClaudeSettingsPath,
-  inspectManagedHooks,
-  materializeManagedHooks,
-  repairManagedHooks,
-  uninstallManagedHooks,
-  updateSettingsAtomic,
-  validateManagedHooks,
-} = require('./install/claude-settings');
 const { transformInstallContent } = require('./install/content-transform');
 const { buildInstallIndex, rewriteRelativeLinks } = require('./install/link-rewrite');
 const { getInstallTargetAdapter, listInstallTargetAdapters } = require('./install-targets/registry');
 const { resolveInvocationEnvironment } = require('./invocation-environment');
 const {
-  assertClaudeSettingsDestination,
   cleanupEmptyParentDirs,
   copyContainedFile,
   getContainedExistingPath,
@@ -278,23 +254,6 @@ function getExpectedCopyFileContent(operation, content, linkIndex) {
 
 function hydrateRecordedOperations(repoRoot, operations, trustedRoot) {
   return operations.map(operation => {
-    if (operation.kind === 'update-claude-settings') {
-      const sourcePath = resolveOperationSourcePath(repoRoot, operation);
-      if (!sourcePath || !fs.existsSync(sourcePath)) {
-        throw new Error(
-          `Missing source file for repair: ${sourcePath || operation.sourceRelativePath}`
-        );
-      }
-      return {
-        ...operation,
-        sourcePath,
-        previousManagedHooks: operation.managedHooks,
-        managedHooks: materializeManagedHooks(
-          readHooksConfigNoFollow(sourcePath),
-          trustedRoot
-        ),
-      };
-    }
 
     if (operation.kind !== 'copy-file') {
       return { ...operation };
@@ -374,35 +333,6 @@ function repairMergeJson(operation, trustedRoot) {
   return operation.destinationPath;
 }
 
-function repairClaudeSettings(operation, trustedRoot, options) {
-  assertClaudeSettingsDestination(operation, trustedRoot, options.target);
-  const managedHooks = validateManagedHooks(operation.managedHooks);
-  const previousManagedHooks = operation.previousManagedHooks
-    ? validateManagedHooks(operation.previousManagedHooks, 'previous managed hooks')
-    : null;
-  const existingDestination = getContainedExistingPath(
-    operation.destinationPath,
-    trustedRoot,
-    'repair'
-  );
-  const settingsPath = existingDestination
-    ? getManagedDestination(existingDestination, trustedRoot, 'repair').managedPath
-    : prepareContainedWriteDestination(operation.destinationPath, trustedRoot, 'repair');
-  updateSettingsAtomic(
-    settingsPath,
-    currentSettings => repairManagedHooks(currentSettings, managedHooks, {
-      previousManagedHooks,
-    }),
-    {
-      lockHeld: options.settingsLockHeld,
-      beforeCommit() {
-        getManagedDestination(settingsPath, trustedRoot, 'repair');
-      },
-    }
-  );
-  return operation.destinationPath;
-}
-
 function repairRemove(operation, trustedRoot) {
   const removedPath = removeContainedPath(
     operation.destinationPath,
@@ -436,8 +366,7 @@ function executeRepairOperation(repoRoot, operation, trustedRoot, options = {}) 
       return repairRenderTemplate(operation, trustedRoot);
     case 'merge-json':
       return repairMergeJson(operation, trustedRoot);
-    case 'update-claude-settings':
-      return repairClaudeSettings(operation, trustedRoot, resolved);
+
     case 'remove':
       return repairRemove(operation, trustedRoot);
     default:
@@ -568,40 +497,6 @@ function uninstallMergeJson(operation, trustedRoot) {
   return uninstallNoop();
 }
 
-function uninstallClaudeSettings(operation, trustedRoot, options) {
-  assertClaudeSettingsDestination(operation, trustedRoot, options.target);
-  const existingDestination = getContainedExistingPath(
-    operation.destinationPath,
-    trustedRoot,
-    'uninstall'
-  );
-  if (!existingDestination) return uninstallNoop();
-
-  const settingsPath = getManagedDestination(
-    existingDestination,
-    trustedRoot,
-    'uninstall'
-  ).managedPath;
-  const uninstalled = updateSettingsAtomic(
-    settingsPath,
-    currentSettings => uninstallManagedHooks(currentSettings, operation.managedHooks),
-    {
-      lockHeld: Boolean(options.settingsLockHeld),
-      beforeCommit() {
-        getManagedDestination(settingsPath, trustedRoot, 'uninstall');
-      },
-    }
-  );
-
-  return {
-    removedPaths: [],
-    cleanupTargets: [],
-    retainedPaths: uninstalled.retained.length > 0
-      ? [operation.destinationPath]
-      : []
-  };
-}
-
 function uninstallRemoveOperation(operation, trustedRoot) {
   return restorePreviousContent(operation, trustedRoot) || uninstallNoop();
 }
@@ -615,8 +510,7 @@ function executeUninstallOperation(operation, trustedRoot, options = {}) {
       return uninstallRenderTemplate(operation, trustedRoot);
     case 'merge-json':
       return uninstallMergeJson(operation, trustedRoot);
-    case 'update-claude-settings':
-      return uninstallClaudeSettings(operation, trustedRoot, options);
+
     case 'remove':
       return uninstallRemoveOperation(operation, trustedRoot);
     default:
@@ -707,37 +601,6 @@ function inspectMergeJsonOperation(operation, inspectedPath) {
   return inspectionResult('ok', operation, destinationPath);
 }
 
-function inspectClaudeSettingsOperation(operation, inspectedPath, trustedRoot, target) {
-  const { destinationPath } = operation;
-  try {
-    assertClaudeSettingsDestination(operation, trustedRoot, target);
-  } catch (_error) {
-    return inspectionResult('unsafe-destination', operation, destinationPath, {
-      reason: 'non-canonical-claude-settings'
-    });
-  }
-  let managedHooks;
-  try {
-    managedHooks = validateManagedHooks(operation.managedHooks);
-  } catch (_error) {
-    return inspectionResult('unverified', operation, destinationPath);
-  }
-
-  try {
-    const inspection = inspectManagedHooks(
-      readJsonNoFollow(inspectedPath),
-      managedHooks
-    );
-    return inspectionResult(inspection.status, operation, destinationPath, {
-      managedHookInspection: inspection
-    });
-  } catch (error) {
-    return inspectionResult('invalid-settings', operation, destinationPath, {
-      error: `Failed to inspect Claude settings at ${destinationPath}: ${error.message}`
-    });
-  }
-}
-
 function inspectManagedOperation(repoRoot, trustedRoot, operation, linkIndex = null, target = null) {
   const destinationPath = operation.destinationPath;
   if (!destinationPath) {
@@ -789,8 +652,7 @@ function inspectManagedOperation(repoRoot, trustedRoot, operation, linkIndex = n
       return inspectRenderTemplateOperation(operation, inspectedPath);
     case 'merge-json':
       return inspectMergeJsonOperation(operation, inspectedPath);
-    case 'update-claude-settings':
-      return inspectClaudeSettingsOperation(operation, inspectedPath, trustedRoot, target);
+
     default:
       return inspectionResult('unverified', operation, destinationPath);
   }
@@ -963,76 +825,7 @@ function discoverInstalledStates(options = {}) {
   return targets.flatMap(target => {
     const adapter = getInstallTargetAdapter(target);
     const canonicalRecord = buildDiscoveryRecord(adapter, context);
-    if (adapter.target === 'opencode') {
-      const legacyLocation = getLegacyOpencodeLocation(context.homeDir);
-      const legacyInspection = inspectLegacyOpencodeState(legacyLocation);
-      if (
-        path.resolve(legacyLocation.installStatePath) === path.resolve(canonicalRecord.installStatePath)
-        || legacyInspection.status === 'absent'
-        || legacyInspection.status === 'invalid'
-      ) {
-        return [canonicalRecord];
-      }
-      if (legacyInspection.status === 'unreadable') {
-        return [canonicalRecord, {
-          adapter: {
-            id: adapter.id,
-            target: adapter.target,
-            kind: adapter.kind,
-          },
-          targetRoot: legacyLocation.targetRoot,
-          installStatePath: legacyLocation.installStatePath,
-          exists: true,
-          state: null,
-          error: legacyInspection.error,
-          legacy: true,
-          legacyLayout: 'opencode',
-        }];
-      }
-      return [
-        canonicalRecord,
-        buildDiscoveryRecord(adapter, context, legacyLocation, legacyInspection.state),
-      ];
-    }
-
-    if (adapter.target !== 'antigravity') {
-      return [canonicalRecord];
-    }
-
-    const legacyLocation = {
-      ...getLegacyAntigravityLocation(context.projectRoot),
-      legacyLayout: 'antigravity',
-    };
-    const legacyInspection = inspectLegacyAntigravityState(legacyLocation);
-    if (
-      path.resolve(legacyLocation.installStatePath) === path.resolve(canonicalRecord.installStatePath)
-      || legacyInspection.status === 'absent'
-      || legacyInspection.status === 'invalid'
-    ) {
-      return [canonicalRecord];
-    }
-
-    if (legacyInspection.status === 'unreadable') {
-      return [canonicalRecord, {
-        adapter: {
-          id: adapter.id,
-          target: adapter.target,
-          kind: adapter.kind,
-        },
-        targetRoot: legacyLocation.targetRoot,
-        installStatePath: legacyLocation.installStatePath,
-        exists: true,
-        state: null,
-          error: legacyInspection.error,
-          legacy: true,
-          legacyLayout: 'antigravity',
-      }];
-    }
-
-    return [
-      canonicalRecord,
-      buildDiscoveryRecord(adapter, context, legacyLocation, legacyInspection.state),
-    ];
+    return [canonicalRecord];
   });
 }
 
@@ -1146,16 +939,6 @@ function collectOperationHealthIssues(record, context, state, issues) {
     );
   }
 
-  if (operationHealth.invalidSettings.length > 0) {
-    issues.push(
-      buildIssue(
-        'error',
-        'invalid-claude-settings',
-        operationHealth.invalidSettings[0].error,
-        { paths: destinationPaths(operationHealth.invalidSettings) }
-      )
-    );
-  }
 
   if (operationHealth.missing.length > 0) {
     issues.push(
@@ -1388,9 +1171,8 @@ function writeRefreshedInstallState(record, statePreview, writtenPaths = []) {
       // Refreshing a ledger is not a file write. Keep the last installed digest
       // for untouched shared configs and OpenCode activations so a concurrent
       // user edit is never claimed, even by a partial repair checkpoint.
-      if ((isCodexUserConfig(record, operation)
-        || (record.adapter.target === 'opencode'
-          && require('./install/apply').getOpenCodeActivationKind(record, operation)))
+      if ((record.adapter.target === 'opencode'
+          && require('./install/apply').getOpenCodeActivationKind(record, operation))
         && !writtenPaths.some(writtenPath => path.relative(writtenPath, operation.destinationPath) === '')) {
         const previousOperation = (record.state.operations || []).find(previous => (
           previous.destinationPath
@@ -1430,15 +1212,13 @@ function prepareRepairMigration(plan, record) {
     installStatePath: record.installStatePath,
     statePreview: buildAdapterDerivedStatePreview(plan.statePreview, record),
   };
-  const initialMigration = prepareClaudeSkillMigration(trustedPlan);
+  const initialMigration = require('./install/apply').createDisabledMigration(trustedPlan);
   // Repair normalizes recorded target metadata to the adapter-derived roots.
   // Preserve its recorded operations as the ownership evidence.
   const guardedMigration = prepareUserOwnedFileGuard(
     trustedPlan, initialMigration, buildAdapterDerivedStatePreview(record.state, record)
   );
-  const migration = trustedPlan.target === 'opencode'
-    ? require('./install/apply').prepareHookConsentMigration(trustedPlan, guardedMigration)
-    : guardedMigration;
+  const migration = guardedMigration;
   return {
     migration,
     plan: {
@@ -1515,13 +1295,10 @@ function repairErrorResult(record, error) {
 }
 
 function acquireRepairSettingsLock(record, options) {
-  const settingsPathToLock = !options.dryRun
-    && getManagedOperations(record.state || {}).some(
-      operation => operation.kind === 'update-claude-settings'
-    )
-    ? getClaudeSettingsPath(record.targetRoot)
-    : null;
-  return settingsPathToLock ? acquireSettingsLock(settingsPathToLock) : null;
+  // fix #16 (D10/D12): the Cursor settings lock only existed for
+  // host settings-update operations, which Cursor installs never
+  // produce.
+  return null;
 }
 
 // Returns an error result when the OpenCode build fails, otherwise null.
@@ -1631,13 +1408,6 @@ function collectRepairOperations(operationHealth, desiredPlan) {
   return [
     ...operationHealth.missing.map(entry => ({ ...entry.operation })),
     ...operationHealth.drifted.map(entry => ({ ...entry.operation })),
-    ...desiredPlan.operations
-      .filter(operation => (
-        operation.kind === 'update-claude-settings'
-        && operation.previousManagedHooks
-        && !isDeepStrictEqual(operation.previousManagedHooks, operation.managedHooks)
-      ))
-      .map(operation => ({ ...operation })),
   ].filter((operation, index, items) => items.findIndex(candidate => (
     candidate.kind === operation.kind
     && candidate.destinationPath === operation.destinationPath
@@ -1671,7 +1441,7 @@ function removeLegacyMigrationPaths(record, migration, repairedPaths) {
     const removedPath = removeContainedPath(
       operation.destinationPath,
       record.targetRoot,
-      'migrate managed Claude skill',
+      'migrate managed Cursor skill',
       { force: true }
     );
     if (removedPath) {
@@ -1797,7 +1567,7 @@ function repairManagedRecord(repair, build) {
 
 // Repair one discovered record. `repair` carries the record, lifecycle
 // context, caller options, the OpenCode build runner, an optional OpenCode
-// lease, and whether the Claude settings lock is already held.
+// lease, and whether the Cursor settings lock is already held.
 function runRecordRepair(repair) {
   const { record, context, options } = repair;
   const needsOpencodeBuild = record.adapter.target === 'opencode'
@@ -1864,33 +1634,9 @@ function repairInstalledStates(options = {}) {
       }
     };
     if (record.adapter.target !== 'opencode' || options.dryRun) return performRepair();
-    let repairResult;
-    try {
-      const adapter = getInstallTargetAdapter('opencode');
-      const targetRoot = adapter.resolveRoot({
-        homeDir: context.homeDir, projectRoot: context.projectRoot,
-        repoRoot: context.projectRoot, env: context.env,
-      });
-      const { getOpenCodeInstallRoots, assertOpenCodeLeaseCoverage } = require('./install/apply');
-      const roots = getOpenCodeInstallRoots({ adapter, targetRoot, homeDir: context.homeDir });
-      return withOpenCodeInstallLocks(roots, lease => {
-        assertOpenCodeLeaseCoverage({ adapter, targetRoot, homeDir: context.homeDir }, lease);
-        // Discovery precedes acquisition. Never repair from that stale state.
-        record = buildDiscoveryRecord(adapter, context, record.legacyLayout === 'opencode'
-          ? getLegacyOpencodeLocation(context.homeDir) : null);
-        if (!record.exists || record.error) {
-          throw new Error(record.error || 'OpenCode install-state disappeared before repair.');
-        }
-        repairResult = performRepair(lease);
-        return repairResult;
-      });
-    } catch (error) {
-      if (repairResult?.status === 'error') {
-        return { ...repairResult, releaseError: error.message };
-      }
-      return { adapter: record.adapter, status: 'error', installStatePath: record.installStatePath,
-        repairedPaths: repairResult?.repairedPaths || [], plannedRepairs: [], error: error.message };
-    }
+    // fix #16 (D10): OpenCode repair is removed with the adapter; no
+    // Cursor-only discovery ever yields an OpenCode record.
+    return repairErrorResult(record, 'OpenCode repair is no longer supported (fix #16: Cursor-only).');
   });
 
   const summary = results.reduce(
@@ -1973,13 +1719,12 @@ function uninstallInstalledStates(options = {}) {
       const cleanupTargets = [];
       const retainedPaths = [];
       const operations = getManagedOperations(state);
-      if (operations.some(operation => operation.kind === 'update-claude-settings')) {
-        releaseSettingsLock = acquireSettingsLock(
-          getClaudeSettingsPath(record.targetRoot)
-        );
-      }
 
-      const { isScriptBoundary, retainScriptBoundary } = require('./install/opencode-script-boundary');
+      // fix #16 (D10): the scripts/package.json boundary copy is produced
+      // only by the deleted OpenCode/Cursor adapters, so no Cursor
+      // install ever contains a boundary operation.
+      const isScriptBoundary = () => false;
+      const retainScriptBoundary = () => false;
       // Remove owned script bodies first. Keep their CommonJS scope while any
       // retained or user-created JavaScript still relies on that boundary.
       const orderedOperations = [

@@ -14,13 +14,13 @@ supabase stop && supabase start   # the "turn it off and on again" reset
 ## Docker issues
 
 **`Cannot connect to the Docker daemon` / `docker: command not found`**
-Docker Desktop isn't running (or isn't installed). Launch it: `open -a Docker`, wait for the whale icon to stop animating, then retry. Install with `brew install --cask docker`.
+Docker Desktop isn't running (or isn't installed). Launch it — macOS: `open -a Docker`; Windows: launch Docker Desktop from the Start menu — wait for the whale icon to stop animating, then retry. Install — macOS: `brew install --cask docker`; Windows: download and install Docker Desktop from https://www.docker.com/products/docker-desktop.
 
 **`supabase start` hangs or times out on first run**
 It's pulling several GB of images. Give it time on first run; check progress with `docker ps`. If it stalls, ensure Docker Desktop has enough resources (Settings → Resources → at least 4 GB RAM, ideally 8) and a stable network.
 
 **Port already in use (`54321/54322/54323` bind error)**
-Another process (or a previous Supabase run) holds the port. `supabase stop`, or find it: `lsof -i :54322`. You can also change ports in `supabase/config.toml`.
+Another process (or a previous Supabase run) holds the port. `supabase stop`, or find it — macOS: `lsof -i :54322`; Windows (PowerShell): `Get-NetTCPConnection -LocalPort 54322`. You can also change ports in `supabase/config.toml`.
 
 **Apple Silicon image / platform warnings**
 Recent Supabase images are multi-arch; update the CLI to the pinned version (`npx supabase@3.1.0 --version`) and Docker Desktop. If a single image refuses to run, `supabase stop --no-backup` then `supabase start` to re-pull.

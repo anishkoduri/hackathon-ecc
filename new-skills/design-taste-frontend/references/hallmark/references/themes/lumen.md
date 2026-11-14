@@ -25,8 +25,8 @@ A night console with a literary voice: a violet-black ground, near-white ink, In
   --color-rule: oklch(27% 0.034 290); --color-rule-2: oklch(36% 0.04 292); --rule-blueprint: oklch(96% 0.01 300 / 0.05);
   --color-accent: oklch(80% 0.15 62); --color-accent-2: oklch(72% 0.15 12); --color-accent-ink: oklch(14% 0.028 290);
   --color-live: oklch(80% 0.13 155); --color-focus: oklch(80% 0.15 62);
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif; --font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Instrument Serif", Georgia; --font-body: "Geist";
+  --font-outlier: "Geist Mono";
   --radius-card: 10px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 28px 64px -30px oklch(4% 0.02 290 / 0.8);
   --tracking-display: -0.015em; --display-weight: 400;
@@ -57,6 +57,7 @@ A second drop, `day`: bone `oklch(97% 0.008 290)` under `oklch(18% 0.02 290)`, a
 - **The product's own surface:** a request beside its response in one well split by a hairline, lowercase tabs, the status beneath as Geist Mono readouts; or a console screen at full size with its live state in `--color-live`.
 - **A chart in a well:** over the blueprint grid, the variable in `--color-ink-2` at half strength, the one thing the product holds fixed as a brass line, the axis in mono.
 - **A figure or a rate card:** one measured value in Instrument Serif at display size with its unit in mono, or rates as hairline rows of tabular figures under a lowercase head.
+- **Instrument Serif (TRENDS_F22 E9):** the display face is this theme's own material, chosen through the skills with a recorded reason, never assumed because it is familiar. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

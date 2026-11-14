@@ -2,12 +2,12 @@
 'use strict';
 
 /**
- * Claude Code-only PostToolUse hook (not wired in this Cursor plugin): record Skill tool invocations for skill-health telemetry.
+ * Upstream-only PostToolUse hook (not wired in this Cursor plugin): record Skill tool invocations for skill-health telemetry.
  *
  * Wires the write side of the already-shipped JSONL tracker
  * (scripts/lib/skill-evolution/tracker.js). Before this hook,
  * recordSkillExecution() had zero production callers, so
- * ~/.claude/state/skill-runs.jsonl was never written and
+ * ~/.cursor/ecc/state/skill-runs.jsonl was never written and
  * `scripts/skills-health.js --dashboard` always reported 0 runs (#2463).
  *
  * Privacy: the dashboard aggregates skill/version/outcome only, so this hook
@@ -16,7 +16,7 @@
  * skill id is an identifier, not free text, so anything that does not look like
  * one is dropped rather than written through.
  *
- * Best-effort: never blocks tool execution. Under Claude Code it runs via the
+ * Best-effort: never blocks tool execution. Under Cursor it runs via the
  * PostToolUse dispatcher, which owns stdin, pass-through, and exit codes; under
  * OpenCode the ecc-hooks plugin calls run() directly with an equivalent payload.
  *
@@ -58,7 +58,7 @@ function firstIdentifier(maxLength, pattern, ...values) {
 }
 
 // Extract the skill identifier from the Skill tool input across the field
-// names Claude Code has used for it. The Skill tool is genuinely un-wired in
+// names Cursor has used for it. The Skill tool is genuinely un-wired in
 // this repo, so no single canonical field is guaranteed — probe the plausible
 // ones and bail (record nothing) if none is present.
 function extractSkillId(toolInput) {
@@ -108,7 +108,7 @@ const SKILL_TOOL_NAME = 'skill';
 /**
  * Report whether a hook payload describes a skill tool invocation.
  *
- * Claude Code names the tool `Skill`; OpenCode and other harnesses name it
+ * Cursor names the tool `Skill`; OpenCode and other harnesses name it
  * `skill`. Comparing the raw string meant a case difference silently disabled
  * the whole write side again — the hook ran, dropped every event, and the
  * dashboard kept reporting unmeasured skills with no hint why.
@@ -156,7 +156,7 @@ function buildRecord(payload) {
 /**
  * Record a skill invocation from a hook payload.
  *
- * Accepts the raw JSON string Claude Code's dispatcher reads from stdin, or an
+ * Accepts the raw JSON string Cursor's dispatcher reads from stdin, or an
  * already-parsed payload for in-process callers such as the OpenCode plugin.
  * Non-skill tools and unparsable input are ignored.
  *

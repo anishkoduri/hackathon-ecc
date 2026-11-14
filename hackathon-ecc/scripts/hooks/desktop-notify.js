@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /**
- * Desktop Notification Hook (Stop) — Claude Code-only (not wired in this Cursor plugin — Cursor has no Stop hook event)
+ * Desktop Notification Hook (Stop) — Upstream-only (not wired in this Cursor plugin — Cursor has no Stop hook event)
+ * fix #24: unwired in this plugin; the Windows branch needs the BurntToast module, which the plugin neither declares nor installs — on Windows this hook cannot notify without it.
  *
- * Sends a native desktop notification with the task summary when Claude
+ * Sends a native desktop notification with the task summary when Cursor
  * finishes responding.  Supports:
  *   - macOS: iTerm2 native escape sequence (preferred) or osascript (fallback)
  *   - WSL: PowerShell 7 or Windows PowerShell + BurntToast module
  *
  * On macOS under iTerm2, the notification is owned by iTerm2; clicking it
- * focuses the iTerm2 tab where Claude Code runs. Outside iTerm2, falls back
+ * focuses the iTerm2 tab where Cursor runs. Outside iTerm2, falls back
  * to osascript (notification owned by Script Editor; clicks launch it).
  *
  * On WSL, if BurntToast is not installed, logs a tip for installation.
@@ -23,7 +24,7 @@ const { spawnSync, execFileSync } = require('child_process');
 const fs = require('fs');
 const { isMacOS, log } = require('../lib/utils');
 
-const TITLE = 'Claude Code';
+const TITLE = 'Cursor';
 const MAX_BODY_LENGTH = 100;
 const MAX_TTY_LOOKUP_DEPTH = 30;
 const PS_TIMEOUT_MS = 2000;
@@ -108,7 +109,7 @@ function extractSummary(message) {
 /**
  * Walk up the process tree to find an ancestor attached to a real TTY.
  * Hook subprocesses are detached from a controlling terminal, but the parent
- * Claude Code process still owns the terminal emulator's tty (e.g. iTerm2 tab).
+ * Cursor process still owns the terminal emulator's tty (e.g. iTerm2 tab).
  * Returns absolute path like "/dev/ttys017", or null if none found.
  */
 function findTerminalTTY() {
@@ -158,7 +159,7 @@ function isUnderMultiplexer() {
  * Ghostty), and when not inside tmux/screen, prefers the native escape
  * sequence (ESC ] 9 ; <message> BEL) written to the parent terminal's tty.
  * This makes the terminal the notification owner, so clicking the
- * notification focuses the exact tab/window where Claude Code is running.
+ * notification focuses the exact tab/window where Cursor is running.
  * The default osascript path makes Script Editor the owner instead, which
  * causes clicks to launch Script Editor.
  *

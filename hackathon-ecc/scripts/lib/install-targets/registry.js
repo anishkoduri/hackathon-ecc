@@ -1,38 +1,10 @@
-const adalProject = require('./adal-project');
-const antigravityProject = require('./antigravity-project');
-const claudeHome = require('./claude-home');
-const claudeProject = require('./claude-project');
-const codebuddyProject = require('./codebuddy-project');
-const codexHome = require('./codex-home');
-const copilotProject = require('./copilot-project');
 const cursorProject = require('./cursor-project');
-const geminiProject = require('./gemini-project');
-const hermesHome = require('./hermes-home');
-const joycodeProject = require('./joycode-project');
-const kimiProject = require('./kimi-project');
-const openclawHome = require('./openclaw-home');
-const opencodeHome = require('./opencode-home');
-const qwenHome = require('./qwen-home');
-const zedProject = require('./zed-project');
 const { resolveInvocationEnvironment } = require('../invocation-environment');
 
+// fix #16 (D10): the installer is Cursor-only. All other host adapters were
+// deleted with their install-target files.
 const ADAPTERS = Object.freeze([
-  claudeHome,
-  claudeProject,
   cursorProject,
-  antigravityProject,
-  codexHome,
-  copilotProject,
-  geminiProject,
-  hermesHome,
-  opencodeHome,
-  openclawHome,
-  codebuddyProject,
-  joycodeProject,
-  kimiProject,
-  qwenHome,
-  zedProject,
-  adalProject,
 ]);
 
 function listInstallTargetAdapters() {

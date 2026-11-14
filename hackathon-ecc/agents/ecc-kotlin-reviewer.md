@@ -1,7 +1,7 @@
 ---
 name: kotlin-reviewer
 description: Kotlin and Android/KMP code reviewer. Reviews Kotlin code for idiomatic patterns, coroutine safety, Compose best practices, clean architecture violations, and common Android pitfalls.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -33,7 +33,7 @@ Run `git diff --staged` and `git diff` to see changes. If no diff, check `git lo
 
 Check for:
 - `build.gradle.kts` or `settings.gradle.kts` to understand module layout
-- `CLAUDE.md` for project-specific conventions
+- `AGENTS.md` for project-specific conventions
 - Whether this is Android-only, KMP, or Compose Multiplatform
 
 ### Step 2b: Security Review

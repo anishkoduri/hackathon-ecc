@@ -4,8 +4,8 @@
  *
  * Cross-platform (Windows, macOS, Linux)
  *
- * Runs when a new Claude session starts. Loads the most recent session
- * summary into Claude's context via stdout, and reports available
+ * Runs when a new Cursor session starts. Loads the most recent session
+ * summary into Cursor's context via stdout, and reports available
  * sessions and learned skills.
  */
 

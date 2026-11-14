@@ -1,0 +1,120 @@
+PASS demo-path:scripts/build.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:scripts/tts.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:scripts/record.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:scripts/frames.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:scripts/qa.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:scripts/music.mjs
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:src/timeline.ts
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:src/index.ts
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:src/Video.tsx
+     expected PASS, observed PASS -- pipeline file present in the video project copy
+PASS demo-path:build-order
+     expected PASS, observed PASS -- build.mjs runs tts -> record -> frames in that order (narration -> recording -> frames -> render)
+PASS demo-path:npm-all
+     expected PASS, observed PASS -- package.json 'all' runs node scripts/build.mjs
+PASS demo-local-only
+     expected PASS, observed PASS -- app.url is http://localhost:5180 (local dev server, no deployed URL)
+PASS demo-F1-coverage
+     expected PASS, observed PASS -- 6 features, all with a beat id present in shots.json; cuts recorded: 1
+PASS demo-F1-filmed
+     expected PASS, observed PASS -- every feature beat is kind=app (filmed footage, not a card)
+PASS demo-F2-stack
+     expected PASS, observed PASS -- arch code/llm nodes carry stack labels: ['static HTML — no runtime code']
+PASS demo-F2-gap
+     expected PASS, observed PASS -- sample app has no model calls and no framework; the arch beat says so (skill fallback: framework only + gap noted)
+PASS demo-F3-edge
+     expected PASS, observed PASS -- shots[2] is 'edge'; arc is problem, wow, edge, how, proof, close
+PASS demo-F4-theme-source
+     expected PASS, observed PASS -- theme.source recorded: sample-app/index.html + plan.html inline tokens (dry-run #37 fixture app: cream #f6f1e7, green #2e5d3a, orange accent #e07b39)
+PASS demo-F4-not-seed
+     expected PASS, observed PASS -- theme pulled from the app tokens (bg #f6f1e7, accent #e07b39), not the seed theme
+PASS demo-F4-vignette
+     expected PASS, observed PASS -- theme.vignette recorded: 0 (0 for this light app)
+PASS demo-F5-av-table
+     expected PASS, observed PASS -- qa.mjs prints the per-beat A/V table; kinetic type and camera moves are rows of their own (skill text)
+PASS demo-F5-bang-rows
+     expected PASS, observed PASS -- kinetic-type rows: 3, camera-move rows: 2 recorded in shots.json bang block
+PASS demo-F5-mix-gain
+     expected PASS, observed PASS -- music.gain.under = 0.14 (<= 0.20, so the bed does not bury the voice)
+PASS demo-F6-runtime
+     expected PASS, observed PASS -- total 84.1s from vo-durations.json (12 beats, LEAD 0.7 + sum(dur+gap) + TAIL 1.7) — under 2:10 (130s), within 2:30 absolute max
+PASS demo-voice-default
+     expected PASS, observed PASS -- default voice is ElevenLabs Rachel (21m00Tcm4TlvDq8ikWAM)
+PASS demo-voice-no-key-in-file
+     expected PASS, observed PASS -- no API key written into shots.json (provider name only)
+PASS demo-voice-fallback-chain
+     expected PASS, observed PASS -- fallback chain present in the skill (ElevenLabs -> Piper -> say, per line at runtime)
+PASS demo-budget-cap
+     expected PASS, observed PASS -- default cap $10 per video in the skill; this fixture used no paid provider ($0 spent: no key, no Piper, no Runway/Veo/HeyGen)
+PASS demo-budget-paid-approval
+     expected PASS, observed PASS -- first paid use needs approval even under the cap
+PASS demo-bang-antislide
+     expected PASS, observed PASS -- anti-slide checks present in pitch-deck-video
+PASS demo-bang-oneworld
+     expected PASS, observed PASS -- one-world architecture present in pitch-deck-video
+PASS demo-bang-style-menu
+     expected PASS, observed PASS -- style direction 'Editorial light' recorded with a theme reason
+PASS demo-bang-opener
+     expected PASS, observed PASS -- opener concept '5 — Journey inside the UI (camera travels through the app's own interface)' recorded with a theme reason
+PASS demo-bang-film-stays-film
+     expected PASS, observed PASS -- filmed How/features beats stay filmed; Bang governs the motion-graphics layer only
+PASS demo-bang-runtime
+     expected PASS, observed PASS -- Bang opener earns its seconds from the Wow budget, never extra runtime
+PASS demo-removal-orch-5d
+     expected PASS, observed PASS -- orchestrate step 5d: /demo NEVER dispatched; runs ONLY on explicit user invocation
+PASS demo-removal-orch-6
+     expected PASS, observed PASS -- orchestrate step 6 Order sentence: demo video never part of the build order
+PASS demo-removal-b2-step8
+     expected PASS, observed PASS -- orch-build-mvp step 8: /demo not filmed here; ONLY on explicit invocation
+PASS demo-removal-b3-step5
+     expected PASS, observed PASS -- orch-change-feature step 5: re-film ONLY on explicit user request, else flagged stale
+PASS demo-removal-hackmode
+     expected PASS, observed PASS -- hackathon-mode: first build does NOT film /demo automatically; /demo never part of the first-build sequence
+PASS demo-removal-cmd-intact
+     expected PASS, observed PASS -- commands/demo.md still dispatches to pitch-deck-video with /demo, /demo <path>, /demo --rebuild forms
+PASS demo-removal-pdv-untouched
+     expected PASS, observed PASS -- pitch-deck-video skill carries no DEMOGATE token and no 'never automatic' gate language — removal did not touch it
+PASS demo-removal-dispatch-env
+     expected PASS, observed PASS -- dispatch-prompt.md Environment field still carries the key only on a /demo dispatch
+PASS demo-removal-hackmode-22
+     expected PASS, observed PASS -- hackathon-mode line 22: end-of-project run is '(after deploy, commit, and README)' — no /demo filming in the §3 sequence: Security tests and audits run ONLY at the very end of the project or when the us
+PASS demo-removal-hackmode-s7
+     expected PASS, observed PASS -- hackathon-mode §7: narration-key prompt scheduled here but sent ONLY when the user asked for a demo video; never sent otherwise
+PASS demo-removal-orch-step0
+     expected PASS, observed PASS -- orchestrate step 0: narration-key prompt ONLY when the user asked for a demo video
+PASS demo-removal-b2s7
+     expected PASS, observed PASS -- orch-build-mvp narration-key paragraph (DEMOGATE_B2S7_F22): conditioned on a requested video; no prompt otherwise
+PASS demo-removal-b2-step8-handoff
+     expected PASS, observed PASS -- orch-build-mvp step 8 handoff re-pointed: no filming here; only a user-invoked /demo films, LOCAL app after deploy
+PASS demo-remotion-no-bare
+     expected PASS, observed PASS -- 0 occurrences of remotion@4.0.542 in the built tree
+PASS demo-remotion-no-bare-npx
+     expected PASS, observed PASS -- 0 bare `npx @remotion/cli@4.0.526` invocations in the built tree
+PASS demo-remotion-build
+     expected PASS, observed PASS -- build.mjs calls npx -p @remotion/cli@4.0.526 remotion render
+PASS demo-remotion-qa
+     expected PASS, observed PASS -- qa.mjs calls npx -p @remotion/cli@4.0.526 remotion still
+PASS demo-remotion-pin
+     expected PASS, observed PASS -- template package.json pins @remotion/cli at 4.0.526
+PASS demo-remotion-bin
+     expected PASS, observed PASS -- installed node_modules/@remotion/cli package.json carries a bin entry: {'remotion': 'remotion-cli.js', 'remotionb': 'remotionb-cli.js', 'remotiond': 'remotiond-cli.js'}
+PASS demo-remotion-qa-invocation
+     expected PASS, observed PASS -- live `node scripts/qa.mjs`: the -p invocation resolves past npx (no 'could not determine executable to run')
+FAIL demo-remotion-qa-live
+     expected PASS, observed FLAG/FAIL -- live `node scripts/qa.mjs` exits 0 with the -p form (exit=1)
+PASS demo-remotion-p-form-live
+     expected PASS, observed PASS -- live `npx -p @remotion/cli@4.0.526 remotion --help` resolves
+PASS demo-remotion-render-form-live
+     expected PASS, observed PASS -- live `npx -p @remotion/cli@4.0.526 remotion render --help` exits 0 (the build.mjs render form, exit=0)
+PASS demo-remotion-local-live
+     expected PASS, observed PASS -- live `npx --no-install remotion --help` resolves via the locally installed bin
+
+58/59 /demo contract checks met

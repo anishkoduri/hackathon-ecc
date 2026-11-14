@@ -1,7 +1,7 @@
 ---
 name: flutter-reviewer
 description: Flutter and Dart code reviewer. Reviews Flutter code for widget best practices, state management patterns, Dart idioms, performance pitfalls, accessibility, and clean architecture violations. Library-agnostic — works with any state management solution and tooling.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -34,7 +34,7 @@ Run `git diff --staged` and `git diff` to see changes. If no diff, check `git lo
 Check for:
 - `pubspec.yaml` — dependencies and project type
 - `analysis_options.yaml` — lint rules
-- `CLAUDE.md` — project-specific conventions
+- `AGENTS.md` — project-specific conventions
 - Whether this is a monorepo (melos) or single-package project
 - **Identify the state management approach** (BLoC, Riverpod, Provider, GetX, MobX, Signals, or built-in). Adapt review to the chosen solution's conventions.
 - **Identify the routing and DI approach** to avoid flagging idiomatic usage as violations

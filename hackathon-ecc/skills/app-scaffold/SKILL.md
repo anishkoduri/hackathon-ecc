@@ -1,11 +1,11 @@
 ---
 name: app-scaffold
-description: Bootstrap and manage a local-first Supabase backend with Docker for modern web app MVPs (React/Next.js + TypeScript + Tailwind). Use when setting up Supabase, scaffolding auth/database/storage, writing migrations or RLS policies, generating TypeScript types, seeding a local database, or deploying to hosted Supabase. Optimized for AI-assisted coding with Cursor or Claude Code on macOS.
+description: Bootstrap and manage a local-first Supabase backend with Docker for modern web app MVPs (React/Next.js + TypeScript + Tailwind). Use when setting up Supabase, scaffolding auth/database/storage, writing migrations or RLS policies, generating TypeScript types, seeding a local database, or deploying to hosted Supabase. Optimized for AI-assisted coding with Cursor or Cursor on macOS.
 ---
 
 # Create Supabase Setup
 
-A practical, production-oriented playbook for standing up a **local-first Supabase backend** with Docker and wiring it into a **Next.js + React + TypeScript + Tailwind** frontend. Built for MVP startups and AI-assisted development with Claude Code.
+A practical, production-oriented playbook for standing up a **local-first Supabase backend** with Docker and wiring it into a **Next.js + React + TypeScript + Tailwind** frontend. Built for MVP startups and AI-assisted development with Cursor.
 
 ## What this skill gives you
 
@@ -22,7 +22,7 @@ When a user asks to set up or extend a Supabase backend:
 2. **Run the Quick Start** below, copying templates from `templates/` and scripts from `scripts/` into the project.
 3. **Adapt templates** to the user's schema — don't paste them verbatim if the domain differs. Treat `schema.sql` / `seed.sql` as examples.
 4. **Pull in reference docs only when needed** (progressive disclosure):
-   - `reference/workflow.md` — recommended day-to-day developer workflow, migration strategy, Claude Code workflow, common beginner mistakes.
+   - `reference/workflow.md` — recommended day-to-day developer workflow, migration strategy, Cursor workflow, common beginner mistakes.
    - `reference/auth.md` — auth/session management, example auth flow, RLS-aware patterns.
    - `reference/deployment.md` — linking to hosted Supabase, pushing migrations, production notes, secrets.
    - `reference/best-practices.md` — architecture patterns, repo structure, naming conventions, performance, security, VS Code extensions.
@@ -34,7 +34,7 @@ Default to the **local Docker stack for development**; use **hosted Supabase for
 
 This skill is **project-agnostic** — nothing in it is tied to a specific app or domain.
 
-- **Reuse across projects:** copy this `app-scaffold/` folder into any project's `.cursor/skills/` (Cursor) or `.claude/skills/` (Claude Code), or drop it in `~/.cursor/skills/` or `~/.claude/skills/` to make it available in *every* project on your machine.
+- **Reuse across projects:** copy this `app-scaffold/` folder into any project's `.cursor/skills/` or `.ecc/skills/`, or drop it in `~/.cursor/skills/` to make it available in *every* project on your machine.
 - **The templates are starting points, not fixtures.** `schema.sql`, `seed.sql`, and the `migrations/` examples model a sample domain (`profiles` + `items` + `orders`) purely to demonstrate the patterns (ownership, RLS, triggers, joins). Replace the domain tables with the user's own; keep the `profiles` + trigger + RLS scaffolding, which applies to almost any app.
 - **The Next.js helpers (`templates/nextjs/`) are domain-free** and drop into any Next.js App Router project unchanged.
 
@@ -204,7 +204,7 @@ app-scaffold/
 │       ├── middleware.ts             ← session refresh middleware
 │       └── auth-actions.ts           ← example sign-up/in/out Server Actions
 └── reference/
-    ├── workflow.md                   ← dev loop, migration strategy, Claude workflow, mistakes
+    ├── workflow.md                   ← dev loop, migration strategy, Cursor workflow, mistakes
     ├── auth.md                       ← auth/session management + example flow
     ├── deployment.md                 ← hosted deploy, secrets, prod notes
     ├── best-practices.md             ← architecture, repo structure, naming, perf, security
@@ -235,4 +235,4 @@ supabase db push                # apply local migrations to the linked hosted DB
 
 ---
 
-Original by calvnguyen, used verbatim in hackathon-ecc as app-scaffold. One adaptation: the example domain was swapped from summer-camp rentals (campers/bookings) to a generic items/orders domain, per the user's direction; the prose is otherwise unchanged. Audit #10 QC fix: Cursor install paths added alongside the Claude Code paths (reuse instructions), and the frontmatter description now names Cursor as well as Claude Code.
+Original by calvnguyen, used verbatim in hackathon-ecc as app-scaffold. One adaptation: the example domain was swapped from summer-camp rentals (campers/bookings) to a generic items/orders domain, per the user's direction; the prose is otherwise unchanged. Audit #10 QC fix: Cursor install paths added alongside the Cursor paths (reuse instructions), and the frontmatter description now names Cursor as well as Cursor.

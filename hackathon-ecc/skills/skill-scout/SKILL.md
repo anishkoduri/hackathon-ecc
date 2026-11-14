@@ -48,15 +48,15 @@ find ~/.cursor/plugins/marketplaces -path '*/skills/*/SKILL.md' 2>/dev/null | gr
 # Also search this plugin's own shipped skills when working from the plugin checkout
 find skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
 
-# Claude Code (this skill also works there) — same searches under ~/.claude
-find ~/.claude/skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
-find ~/.claude/plugins/marketplaces -path '*/skills/*/SKILL.md' 2>/dev/null | grep -iE "keyword|synonym"
+# Cursor — same searches under ~/.cursor
+find ~/.cursor/skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
+find ~/.cursor/plugins/marketplaces -path '*/skills/*/SKILL.md' 2>/dev/null | grep -iE "keyword|synonym"
 ```
 
 Then search frontmatter descriptions:
 
 ```bash
-grep -RilE "keyword|synonym" ~/.cursor/skills ~/.cursor/plugins/marketplaces ~/.claude/skills ~/.claude/plugins/marketplaces 2>/dev/null
+grep -RilE "keyword|synonym" ~/.cursor/skills ~/.cursor/plugins/marketplaces 2>/dev/null
 ```
 
 ### Step 3 - Search Remote Sources
@@ -64,14 +64,14 @@ grep -RilE "keyword|synonym" ~/.cursor/skills ~/.cursor/plugins/marketplaces ~/.
 Use available GitHub and web search tools. Prefer concise queries:
 
 ```bash
-gh search repos "claude code skill keyword" --limit 10 --sort stars
+gh search repos "Cursor skill keyword" --limit 10 --sort stars
 gh search code "name: keyword" --filename SKILL.md --limit 10
 ```
 
 For web search, use at most three targeted queries such as:
 
 ```text
-"claude code skill" keyword
+"Cursor skill" keyword
 "SKILL.md" keyword
 "affaan-m/ECC" keyword
 ```

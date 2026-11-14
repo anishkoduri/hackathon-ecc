@@ -30,7 +30,7 @@ Start from the resolved target (URL, screenshot, file path, or feature name; see
 
 ## Step 2: Pick a capture tool (first available wins)
 
-1. **Browser tool in your harness**: Claude in Chrome, ChatGPT in Chrome / ChatGPT agent browser, `agent-browser`, Playwright MCP, Chrome DevTools MCP, or any equivalent. Search your tool list for "browser", "screenshot", "chrome", or "playwright".
+1. **Browser tool in your harness**: Cursor in Chrome, ChatGPT in Chrome / ChatGPT agent browser, `agent-browser`, Playwright MCP, Chrome DevTools MCP, or any equivalent. Search your tool list for "browser", "screenshot", "chrome", or "playwright".
 2. **Bundled script**:
    ```bash
    node <skill dir>/scripts/capture.mjs <url> --out .polish-pass/captures/<label>

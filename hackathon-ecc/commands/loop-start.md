@@ -1,5 +1,5 @@
 ---
-description: Prepare a managed autonomous loop pattern with safety defaults and explicit stop conditions, then print the commands to launch and monitor it. Use to set up sequential, continuous-pr, rfc-dag, or infinite loop patterns with safety gates before starting one. (Claude Code only — no Cursor equivalent in this plugin)
+description: Prepare a managed autonomous loop pattern with safety defaults and explicit stop conditions, then print the commands to launch and monitor it. Use to set up sequential, continuous-pr, rfc-dag, or infinite loop patterns with safety gates before starting one. (Upstream only — no Cursor equivalent in this plugin)
 ---
 
 # Loop Start Command
@@ -20,7 +20,7 @@ Start a managed autonomous loop pattern with safety defaults.
 1. Confirm repository state and branch strategy.
 2. Select loop pattern and model tier strategy.
 3. Enable required hooks/profile for the chosen mode.
-4. Create loop plan and write runbook under `.claude/plans/`.
+4. Create loop plan and write runbook under `.ecc/plans/`.
 5. Print commands to start and monitor the loop.
 
 ## Required Safety Checks

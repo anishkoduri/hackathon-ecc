@@ -128,5 +128,5 @@ Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 
 ## Related
 
-- Agent: `agents/ecc-cpp-reviewer.md`
+- Agent: `cpp-reviewer` (`agents/ecc-cpp-reviewer.md`)
 - Skills: `skills/cpp-coding-standards/`, `skills/cpp-testing/`

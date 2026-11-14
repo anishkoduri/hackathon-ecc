@@ -24,7 +24,7 @@ A cold, calm night instrument whose blue is the ground itself: deep midnight blu
   --color-ink: oklch(95% 0.016 250); --color-ink-2: oklch(88% 0.05 245); --color-muted: oklch(73% 0.04 256);
   --color-rule: oklch(29% 0.058 264); --color-rule-2: oklch(40% 0.06 262);
   --color-accent: oklch(80% 0.11 230); --color-accent-2: oklch(58% 0.1 236); --color-accent-ink: oklch(16% 0.05 264); --color-focus: oklch(84% 0.12 228);
-  --font-display: "Mona Sans", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display); --font-outlier: var(--font-display);
+  --font-display: "Mona Sans"; --font-body: var(--font-display); --font-outlier: var(--font-display);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px;
   --shadow-card: 0 24px 48px -24px oklch(6% 0.04 264 / 0.7);
   --tracking-display: -0.015em; --display-weight: 300; --display-stretch: 125%;

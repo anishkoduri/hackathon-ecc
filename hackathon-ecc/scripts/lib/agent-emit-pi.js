@@ -13,8 +13,8 @@
  *
  * v1 behavior:
  *   - The source model tier is preserved as a YAML comment
- *     (`# source model tier: opus`) rather than a `model:` field, because
- *     Claude tiers are not valid Pi model ids. Pi's default child model
+ *     (`# source model tier: grok-4.7-high`) rather than a `model:` field, because
+ *     Grok slugs are not valid Pi model ids. Pi's default child model
  *     applies; the tier is lossless in the IR and visible in the emitted file.
  *   - Unmapped tools (WebSearch, WebFetch, mcp__*) are never silently dropped;
  *     they surface in per-agent `warnings`.

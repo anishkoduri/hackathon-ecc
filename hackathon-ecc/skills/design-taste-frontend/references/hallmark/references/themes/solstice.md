@@ -25,8 +25,8 @@ An almanac's warmth: cream paper, warm brown ink, Yeseva One heads, Archivo for 
   --color-rule: oklch(84% 0.06 78);
   --color-accent: oklch(54% 0.20 24); --color-accent-ink: oklch(97% 0.02 85); --color-focus: oklch(54% 0.20 24);
   --color-gold: oklch(74% 0.14 75); --color-gold-2: oklch(84% 0.11 80); --color-slot: var(--color-gold);
-  --font-display: "Yeseva One", ui-serif, Georgia, serif; --font-body: "Archivo", ui-sans-serif, sans-serif;
-  --font-outlier: "Archivo Narrow", ui-sans-serif, sans-serif;
+  --font-display: "Yeseva One", Georgia; --font-body: "Archivo";
+  --font-outlier: "Archivo Narrow";
   --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 2px;
   --shadow-card: 10px 10px 0 var(--color-paper-3);
   --tracking-display: -0.005em; --display-weight: 400;

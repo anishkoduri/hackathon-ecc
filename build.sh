@@ -39,6 +39,11 @@ MARKETPLACE_PIN="f210c6d05b10a6a17c5cf67d7b7d13565d1f5dc9"
 CHWEZI_PIN="d7d85b6e2687cad33e0f3cc826ae835c423e83ae"
 FLECTO_PIN="3a0f7e52cdb53c52494c7c34235001a042dd9822"
 AGENTSKILLS_PIN="c13e8b35d44085accc7ec3b1b4410247d4969514"
+BANG_PIN="c1aa65e921c970d858705fcb4a53a8294d1a4131"
+# bangtutorial/bang-motion — MIT, no tags; SHA is the only pin available.
+# Record-only pin: the repo is NOT cloned at build time (no fetch_repo
+# call); Bang Motion's rules are ported into pitch-deck-video (fix #22
+# §12). The pin freezes the port's source so it stays auditable.
 
 # Check out the pinned commit in an existing clone (fetch it first if the
 # shallow clone does not contain it yet). Fails the build if the pin cannot
@@ -147,14 +152,14 @@ done
 # dropped eval-harness skill, and nothing else references the agent.
 # Drop it so it does not dangle.
 rm -f "$PLUGIN_DIR/agents/ecc-harness-optimizer.md"
-# Pin ECC agent models to Cursor IDs. The install ships bare Claude aliases
+# Pin ECC agent models to Grok IDs (fix #16). The install ships bare Claude aliases
 # (sonnet/opus/haiku), which are not Cursor model IDs. Map: sonnet ->
-# composer-2.5[fast=false], opus -> claude-opus-5[effort=high], haiku ->
-# composer-2.5.
+# cursor-grok-4.6-high-fast, opus -> grok-4.7-high, haiku ->
+# cursor-grok-4.6-high-fast.
 python3 - "$PLUGIN_DIR/agents" <<'PYEOF'
 import sys, os, re
 d = sys.argv[1]
-mapping = {"sonnet": "composer-2.5[fast=false]", "opus": "claude-opus-5[effort=high]", "haiku": "composer-2.5"}
+mapping = {"sonnet": "cursor-grok-4.6-high-fast", "opus": "grok-4.7-high", "haiku": "cursor-grok-4.6-high-fast"}
 n = 0
 for fn in os.listdir(d):
     if not fn.endswith(".md"):
@@ -166,7 +171,7 @@ for fn in os.listdir(d):
         txt = txt[:m.start()] + f"model: {mapping[m.group(1)]}" + txt[m.end():]
         open(p, "w", encoding="utf-8").write(txt)
         n += 1
-print(f"agent models pinned to Cursor IDs: {n}")
+print(f"agent models pinned to Grok IDs: {n}")
 PYEOF
 cp -r "$ECC_SRC/rules/." "$PLUGIN_DIR/rules/"
 cp -r "$ECC_SRC/commands/." "$PLUGIN_DIR/commands/"
@@ -207,7 +212,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # Audit #3 QC fixes live in these staged sources (copied verbatim below):
 # feature-expansion: :24 now routes a named feature to orch-add-feature,
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
-# only the opus bracket pin was removed; composer-2.5[fast=false] remains
+# only the opus bracket pin was removed; cursor-grok-4.6-high-fast remains
 # the fast-worker pin.
 for s in grill-me feature-expansion integration design-taste-frontend codebase-memory; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
@@ -4224,11 +4229,11 @@ Avoid last 20% of context window for:
 
 ## Model Selection Strategy
 
-**composer-2.5** (cheapest; scout/recon and lightweight work)
+**cursor-grok-4.6-high-fast** (cheapest; scout/recon and lightweight work)
 
-**composer-2.5[fast=false]** (standard agentic work; fast-worker)
+**cursor-grok-4.6-high-fast** (standard agentic work; fast-worker)
 
-**claude-opus-5** (deepest reasoning; deep-reasoner)
+**grok-4.7-high** (deepest reasoning; deep-reasoner)
 
 ## Context Window Management
 
@@ -4278,7 +4283,7 @@ If build fails:
 
 ## Extended Thinking
 
-Reasoning depth is controlled by the agent model pins in agents/ (notably claude-opus-5 for deep-reasoner). Do not use Claude Code effort controls (/effort, CLAUDE_CODE_EFFORT_LEVEL, MAX_THINKING_TOKENS) — they do not exist in Cursor.
+Reasoning depth is controlled by the agent model pins in agents/ (notably grok-4.7-high for deep-reasoner). Do not use effort controls — Grok takes per-vendor `reasoning_effort`, which Cursor does not expose in a pin.
 
 ## Build Troubleshooting
 
@@ -7807,14 +7812,14 @@ This command runs on **Opus** (`model: opus`). Opus orchestrates, verifies findi
    """---
 description: Send Claude-written code to GPT-6-Astra (ChatGPT, via Codex CLI) for an independent cross-provider review, then fix what it finds.
 argument-hint: "[--base <branch> | --commit <sha> | --files <paths> | --files-from-commit <sha>] [extra reviewer instructions]"
-model: claude-opus-5[effort=high]
+model: grok-4.7-high
 ---
 
 # Astra Review
 
 Cross-provider second opinion. Claude writes the code; GPT-6-Astra (OpenAI, running through the locally installed Codex CLI with your ChatGPT login) reviews it with no shared context. Claude then fixes what Astra finds and re-runs until Astra passes or the round limit is hit.
 
-This command runs on the **deep-reasoner** (`model: claude-opus-5[effort=high]`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
+This command runs on the **deep-reasoner** (`model: grok-4.7-high`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
 
 ## Purpose
 
@@ -10101,7 +10106,7 @@ audit2_patch(f"{base}/agents/ecc-a11y-architect.md", [
   ("""---
 name: a11y-architect
 description: Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms. Use PROACTIVELY when designing UI components, establishing design systems, or auditing code for inclusive user experiences.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Write, Edit, Grep, Glob
 ---
 
@@ -10112,7 +10117,7 @@ tools: Read, Write, Edit, Grep, Glob
    """---
 name: a11y-architect
 description: Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms. Use PROACTIVELY when designing UI components, establishing design systems, or auditing code for inclusive user experiences.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10125,7 +10130,7 @@ audit2_patch(f"{base}/agents/ecc-agent-evaluator.md", [
 name: agent-evaluator
 description: Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). Use after any non-trivial task when the user wants a quality assessment, or when the agent-self-evaluation skill is active. Produces structured scorecard with evidence and improvement suggestions.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10134,7 +10139,7 @@ model: composer-2.5[fast=false]
    """---
 name: agent-evaluator
 description: Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). Use after any non-trivial task when the user wants a quality assessment, or when the agent-self-evaluation skill is active. Produces structured scorecard with evidence and improvement suggestions.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10146,7 +10151,7 @@ audit2_patch(f"{base}/agents/ecc-architect.md", [
 name: architect
 description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
 tools: Read, Grep, Glob
-model: claude-opus-5[effort=high]
+model: grok-4.7-high
 ---
 
 ## Prompt Defense Baseline
@@ -10156,7 +10161,7 @@ model: claude-opus-5[effort=high]
    """---
 name: architect
 description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
-model: claude-opus-5
+model: grok-4.7-high
 ---
 
 ## Prompt Defense Baseline
@@ -10169,7 +10174,7 @@ audit2_patch(f"{base}/agents/ecc-bengali-reviewer.md", [
 name: bengali-reviewer
 description: Reviews code handling Bengali (Bangla) text for Unicode correctness, proper normalization, script-aware processing, and internationalization best practices. Use when code processes, displays, or stores Bengali text.
 tools: Read, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10178,7 +10183,7 @@ model: composer-2.5[fast=false]
    """---
 name: bengali-reviewer
 description: Reviews code handling Bengali (Bangla) text for Unicode correctness, proper normalization, script-aware processing, and internationalization best practices. Use when code processes, displays, or stores Bengali text.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10190,7 +10195,7 @@ audit2_patch(f"{base}/agents/ecc-build-error-resolver.md", [
 name: build-error-resolver
 description: Build and TypeScript error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10199,7 +10204,7 @@ model: composer-2.5[fast=false]
    """---
 name: build-error-resolver
 description: Build and TypeScript error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10211,7 +10216,7 @@ audit2_patch(f"{base}/agents/ecc-chief-of-staff.md", [
 name: chief-of-staff
 description: Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and enforces post-send follow-through via hooks. Use when managing multi-channel communication workflows.
 tools: Read, Grep, Glob, Bash, Edit, Write
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10220,7 +10225,7 @@ model: composer-2.5[fast=false]
    """---
 name: chief-of-staff
 description: Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and enforces post-send follow-through via hooks. Use when managing multi-channel communication workflows.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10231,7 +10236,7 @@ audit2_patch(f"{base}/agents/ecc-code-architect.md", [
   ("""---
 name: code-architect
 description: Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concrete files, interfaces, data flow, and build order.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -10242,7 +10247,7 @@ tools: Read, Grep, Glob, Bash
    """---
 name: code-architect
 description: Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concrete files, interfaces, data flow, and build order.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10254,7 +10259,7 @@ audit2_patch(f"{base}/agents/ecc-code-explorer.md", [
   ("""---
 name: code-explorer
 description: Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob
 ---
 
@@ -10265,7 +10270,7 @@ tools: Read, Grep, Glob
    """---
 name: code-explorer
 description: Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10278,7 +10283,7 @@ audit2_patch(f"{base}/agents/ecc-code-reviewer.md", [
 name: code-reviewer
 description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10287,7 +10292,7 @@ model: composer-2.5[fast=false]
    """---
 name: code-reviewer
 description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10298,7 +10303,7 @@ audit2_patch(f"{base}/agents/ecc-code-simplifier.md", [
   ("""---
 name: code-simplifier
 description: Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. Focus on recently modified code unless instructed otherwise.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
@@ -10309,7 +10314,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob
    """---
 name: code-simplifier
 description: Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. Focus on recently modified code unless instructed otherwise.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10321,7 +10326,7 @@ audit2_patch(f"{base}/agents/ecc-comment-analyzer.md", [
   ("""---
 name: comment-analyzer
 description: Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob
 ---
 
@@ -10332,7 +10337,7 @@ tools: Read, Grep, Glob
    """---
 name: comment-analyzer
 description: Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10345,7 +10350,7 @@ audit2_patch(f"{base}/agents/ecc-commit-reviewer.md", [
 name: commit-reviewer
 description: Reviews a staged diff and drafts a Conventional Commits-compliant message matching the repository's actual history norms. Use before committing, or when asked to write or check a commit message.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10354,7 +10359,7 @@ model: composer-2.5[fast=false]
    """---
 name: commit-reviewer
 description: Reviews a staged diff and drafts a Conventional Commits-compliant message matching the repository's actual history norms. Use before committing, or when asked to write or check a commit message.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10365,7 +10370,7 @@ audit2_patch(f"{base}/agents/ecc-conversation-analyzer.md", [
   ("""---
 name: conversation-analyzer
 description: Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Triggered by /hookify without arguments.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep
 ---
 
@@ -10376,7 +10381,7 @@ tools: Read, Grep
    """---
 name: conversation-analyzer
 description: Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Triggered by /hookify without arguments.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10389,7 +10394,7 @@ audit2_patch(f"{base}/agents/ecc-cpp-build-resolver.md", [
 name: cpp-build-resolver
 description: C++ build, CMake, and compilation error resolution specialist. Fixes build errors, linker issues, and template errors with minimal changes. Use when C++ builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10398,7 +10403,7 @@ model: composer-2.5[fast=false]
    """---
 name: cpp-build-resolver
 description: C++ build, CMake, and compilation error resolution specialist. Fixes build errors, linker issues, and template errors with minimal changes. Use when C++ builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10410,7 +10415,7 @@ audit2_patch(f"{base}/agents/ecc-cpp-reviewer.md", [
 name: cpp-reviewer
 description: Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance. Use for all C++ code changes. MUST BE USED for C++ projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10419,7 +10424,7 @@ model: composer-2.5[fast=false]
    """---
 name: cpp-reviewer
 description: Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance. Use for all C++ code changes. MUST BE USED for C++ projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10431,7 +10436,7 @@ audit2_patch(f"{base}/agents/ecc-csharp-reviewer.md", [
 name: csharp-reviewer
 description: Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance. Use for all C# code changes. MUST BE USED for C# projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10440,7 +10445,7 @@ model: composer-2.5[fast=false]
    """---
 name: csharp-reviewer
 description: Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance. Use for all C# code changes. MUST BE USED for C# projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10452,7 +10457,7 @@ audit2_patch(f"{base}/agents/ecc-dart-build-resolver.md", [
 name: dart-build-resolver
 description: Dart/Flutter build, analysis, and dependency error resolution specialist. Fixes `dart analyze` errors, Flutter compilation failures, pub dependency conflicts, and build_runner issues with minimal, surgical changes. Use when Dart/Flutter builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10461,7 +10466,7 @@ model: composer-2.5[fast=false]
    """---
 name: dart-build-resolver
 description: Dart/Flutter build, analysis, and dependency error resolution specialist. Fixes `dart analyze` errors, Flutter compilation failures, pub dependency conflicts, and build_runner issues with minimal, surgical changes. Use when Dart/Flutter builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10473,7 +10478,7 @@ audit2_patch(f"{base}/agents/ecc-database-reviewer.md", [
 name: database-reviewer
 description: PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10482,7 +10487,7 @@ model: composer-2.5[fast=false]
    """---
 name: database-reviewer
 description: PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10494,7 +10499,7 @@ audit2_patch(f"{base}/agents/ecc-django-build-resolver.md", [
 name: django-build-resolver
 description: Django/Python build, migration, and dependency error resolution specialist. Fixes pip/Poetry errors, migration conflicts, import errors, Django configuration issues, and collectstatic failures with minimal changes. Use when Django setup or startup fails.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10503,7 +10508,7 @@ model: composer-2.5[fast=false]
    """---
 name: django-build-resolver
 description: Django/Python build, migration, and dependency error resolution specialist. Fixes pip/Poetry errors, migration conflicts, import errors, Django configuration issues, and collectstatic failures with minimal changes. Use when Django setup or startup fails.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10515,7 +10520,7 @@ audit2_patch(f"{base}/agents/ecc-django-reviewer.md", [
 name: django-reviewer
 description: Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grade Django practices. Use for all Django code changes. MUST BE USED for Django projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10524,7 +10529,7 @@ model: composer-2.5[fast=false]
    """---
 name: django-reviewer
 description: Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grade Django practices. Use for all Django code changes. MUST BE USED for Django projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10536,7 +10541,7 @@ audit2_patch(f"{base}/agents/ecc-doc-updater.md", [
 name: doc-updater
 description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Generates docs/CODEMAPS/*, updates READMEs and guides. Backs the /update-codemaps and /update-docs commands.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10545,7 +10550,7 @@ model: composer-2.5
    """---
 name: doc-updater
 description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Generates docs/CODEMAPS/*, updates READMEs and guides. Backs the /update-codemaps and /update-docs commands.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10557,7 +10562,7 @@ audit2_patch(f"{base}/agents/ecc-docs-lookup.md", [
 name: docs-lookup
 description: When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentation and return answers with examples. Invoke for docs/API/setup questions.
 tools: Read, Grep, mcp__context7__resolve-library-id, mcp__context7__query-docs
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10566,7 +10571,7 @@ model: composer-2.5
    """---
 name: docs-lookup
 description: When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentation and return answers with examples. Invoke for docs/API/setup questions.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10578,7 +10583,7 @@ audit2_patch(f"{base}/agents/ecc-e2e-runner.md", [
 name: e2e-runner
 description: End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10587,7 +10592,7 @@ model: composer-2.5[fast=false]
    """---
 name: e2e-runner
 description: End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10599,7 +10604,7 @@ audit2_patch(f"{base}/agents/ecc-fastapi-reviewer.md", [
 name: fastapi-reviewer
 description: Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and production readiness.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10608,7 +10613,7 @@ model: composer-2.5[fast=false]
    """---
 name: fastapi-reviewer
 description: Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and production readiness.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10620,7 +10625,7 @@ audit2_patch(f"{base}/agents/ecc-flutter-reviewer.md", [
 name: flutter-reviewer
 description: Flutter and Dart code reviewer. Reviews Flutter code for widget best practices, state management patterns, Dart idioms, performance pitfalls, accessibility, and clean architecture violations. Library-agnostic — works with any state management solution and tooling.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10629,7 +10634,7 @@ model: composer-2.5[fast=false]
    """---
 name: flutter-reviewer
 description: Flutter and Dart code reviewer. Reviews Flutter code for widget best practices, state management patterns, Dart idioms, performance pitfalls, accessibility, and clean architecture violations. Library-agnostic — works with any state management solution and tooling.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10641,7 +10646,7 @@ audit2_patch(f"{base}/agents/ecc-fsharp-reviewer.md", [
 name: fsharp-reviewer
 description: Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance. Use for all F# code changes. MUST BE USED for F# projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10650,7 +10655,7 @@ model: composer-2.5[fast=false]
    """---
 name: fsharp-reviewer
 description: Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance. Use for all F# code changes. MUST BE USED for F# projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10662,7 +10667,7 @@ audit2_patch(f"{base}/agents/ecc-gan-evaluator.md", [
 name: gan-evaluator
 description: "GAN Harness — Evaluator agent. Tests the live running application via Playwright, scores against rubric, and provides actionable feedback to the Generator."
 tools: Read, Write, Bash, Grep, Glob, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_snapshot, mcp__playwright__browser_type, mcp__playwright__browser_fill_form, mcp__playwright__browser_resize, mcp__playwright__browser_press_key
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: red
 ---
 
@@ -10671,7 +10676,7 @@ color: red
    """---
 name: gan-evaluator
 description: "GAN Harness — Evaluator agent. Tests the live running application via Playwright, scores against rubric, and provides actionable feedback to the Generator."
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: red
 ---
 
@@ -10683,7 +10688,7 @@ audit2_patch(f"{base}/agents/ecc-gan-generator.md", [
 name: gan-generator
 description: "GAN Harness — Generator agent. Implements features according to the spec, reads evaluator feedback, and iterates until quality threshold is met."
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: green
 ---
 
@@ -10692,7 +10697,7 @@ color: green
    """---
 name: gan-generator
 description: "GAN Harness — Generator agent. Implements features according to the spec, reads evaluator feedback, and iterates until quality threshold is met."
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: green
 ---
 
@@ -10704,7 +10709,7 @@ audit2_patch(f"{base}/agents/ecc-gan-planner.md", [
 name: gan-planner
 description: "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, evaluation criteria, and design direction."
 tools: Read, Write, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: purple
 ---
 
@@ -10713,7 +10718,7 @@ color: purple
    """---
 name: gan-planner
 description: "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, evaluation criteria, and design direction."
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: purple
 ---
 
@@ -10725,7 +10730,7 @@ audit2_patch(f"{base}/agents/ecc-go-build-resolver.md", [
 name: go-build-resolver
 description: Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10734,7 +10739,7 @@ model: composer-2.5[fast=false]
    """---
 name: go-build-resolver
 description: Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10746,7 +10751,7 @@ audit2_patch(f"{base}/agents/ecc-go-reviewer.md", [
 name: go-reviewer
 description: Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance. Use for all Go code changes. MUST BE USED for Go projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10755,7 +10760,7 @@ model: composer-2.5[fast=false]
    """---
 name: go-reviewer
 description: Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance. Use for all Go code changes. MUST BE USED for Go projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10767,7 +10772,7 @@ audit2_patch(f"{base}/agents/ecc-harmonyos-app-resolver.md", [
 name: harmonyos-app-resolver
 description: HarmonyOS application development expert specializing in ArkTS and ArkUI. Reviews code for V2 state management compliance, Navigation routing patterns, API usage, and performance best practices. Use for HarmonyOS/OpenHarmony projects.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10776,7 +10781,7 @@ model: composer-2.5[fast=false]
    """---
 name: harmonyos-app-resolver
 description: HarmonyOS application development expert specializing in ArkTS and ArkUI. Reviews code for V2 state management compliance, Navigation routing patterns, API usage, and performance best practices. Use for HarmonyOS/OpenHarmony projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10788,7 +10793,7 @@ audit2_patch(f"{base}/agents/ecc-healthcare-reviewer.md", [
 name: healthcare-reviewer
 description: Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.
 tools: Read, Grep, Glob
-model: claude-opus-5[effort=high]
+model: grok-4.7-high
 ---
 
 ## Prompt Defense Baseline
@@ -10798,7 +10803,7 @@ model: claude-opus-5[effort=high]
    """---
 name: healthcare-reviewer
 description: Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.
-model: claude-opus-5
+model: grok-4.7-high
 ---
 
 ## Prompt Defense Baseline
@@ -10811,7 +10816,7 @@ audit2_patch(f"{base}/agents/ecc-homelab-architect.md", [
 name: homelab-architect
 description: Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollback guidance.
 tools: Read, Grep
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10820,7 +10825,7 @@ model: composer-2.5[fast=false]
    """---
 name: homelab-architect
 description: Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollback guidance.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10832,7 +10837,7 @@ audit2_patch(f"{base}/agents/ecc-java-build-resolver.md", [
 name: java-build-resolver
 description: Java/Maven/Gradle build, compilation, and dependency error resolution specialist. Automatically detects Spring Boot or Quarkus and applies framework-specific fixes. Fixes build errors, Java compiler errors, and Maven/Gradle issues with minimal changes. Use when Java builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10841,7 +10846,7 @@ model: composer-2.5[fast=false]
    """---
 name: java-build-resolver
 description: Java/Maven/Gradle build, compilation, and dependency error resolution specialist. Automatically detects Spring Boot or Quarkus and applies framework-specific fixes. Fixes build errors, Java compiler errors, and Maven/Gradle issues with minimal changes. Use when Java builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10853,7 +10858,7 @@ audit2_patch(f"{base}/agents/ecc-java-reviewer.md", [
 name: java-reviewer
 description: Expert Java code reviewer for Spring Boot and Quarkus projects. Automatically detects the framework and applies the appropriate review rules. Covers layered architecture, JPA/Panache, MongoDB, security, and concurrency. MUST BE USED for all Java code changes.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10862,7 +10867,7 @@ model: composer-2.5[fast=false]
    """---
 name: java-reviewer
 description: Expert Java code reviewer for Spring Boot and Quarkus projects. Automatically detects the framework and applies the appropriate review rules. Covers layered architecture, JPA/Panache, MongoDB, security, and concurrency. MUST BE USED for all Java code changes.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10874,7 +10879,7 @@ audit2_patch(f"{base}/agents/ecc-kotlin-build-resolver.md", [
 name: kotlin-build-resolver
 description: Kotlin/Gradle build, compilation, and dependency error resolution specialist. Fixes build errors, Kotlin compiler errors, and Gradle issues with minimal changes. Use when Kotlin builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10883,7 +10888,7 @@ model: composer-2.5[fast=false]
    """---
 name: kotlin-build-resolver
 description: Kotlin/Gradle build, compilation, and dependency error resolution specialist. Fixes build errors, Kotlin compiler errors, and Gradle issues with minimal changes. Use when Kotlin builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10895,7 +10900,7 @@ audit2_patch(f"{base}/agents/ecc-kotlin-reviewer.md", [
 name: kotlin-reviewer
 description: Kotlin and Android/KMP code reviewer. Reviews Kotlin code for idiomatic patterns, coroutine safety, Compose best practices, clean architecture violations, and common Android pitfalls.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10904,7 +10909,7 @@ model: composer-2.5[fast=false]
    """---
 name: kotlin-reviewer
 description: Kotlin and Android/KMP code reviewer. Reviews Kotlin code for idiomatic patterns, coroutine safety, Compose best practices, clean architecture violations, and common Android pitfalls.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10916,7 +10921,7 @@ audit2_patch(f"{base}/agents/ecc-loop-operator.md", [
 name: loop-operator
 description: Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.
 tools: Read, Grep, Glob, Bash, Edit
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: orange
 ---
 
@@ -10925,7 +10930,7 @@ color: orange
    """---
 name: loop-operator
 description: Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 color: orange
 ---
 
@@ -10937,7 +10942,7 @@ audit2_patch(f"{base}/agents/ecc-marketing-agent.md", [
 name: marketing-agent
 description: Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review. Covers landing pages, email sequences, social posts, ad copy, short-form video scripts, and content calendars. Use when the user wants to plan or execute a product launch or marketing campaign.
 tools: Read, Grep, Glob, WebSearch, WebFetch
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10946,7 +10951,7 @@ model: composer-2.5[fast=false]
    """---
 name: marketing-agent
 description: Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review. Covers landing pages, email sequences, social posts, ad copy, short-form video scripts, and content calendars. Use when the user wants to plan or execute a product launch or marketing campaign.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10958,7 +10963,7 @@ audit2_patch(f"{base}/agents/ecc-mle-reviewer.md", [
 name: mle-reviewer
 description: Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation, model serving, monitoring, and rollback. Use when ML, MLOps, model training, inference, feature store, or evaluation code changes.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10967,7 +10972,7 @@ model: composer-2.5[fast=false]
    """---
 name: mle-reviewer
 description: Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation, model serving, monitoring, and rollback. Use when ML, MLOps, model training, inference, feature store, or evaluation code changes.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10979,7 +10984,7 @@ audit2_patch(f"{base}/agents/ecc-network-architect.md", [
 name: network-architect
 description: Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, automation, and troubleshooting detail.
 tools: Read, Grep
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -10988,7 +10993,7 @@ model: composer-2.5[fast=false]
    """---
 name: network-architect
 description: Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, automation, and troubleshooting detail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11000,7 +11005,7 @@ audit2_patch(f"{base}/agents/ecc-network-config-reviewer.md", [
 name: network-config-reviewer
 description: Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.
 tools: Read, Grep
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11009,7 +11014,7 @@ model: composer-2.5[fast=false]
    """---
 name: network-config-reviewer
 description: Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11021,7 +11026,7 @@ audit2_patch(f"{base}/agents/ecc-network-troubleshooter.md", [
 name: network-troubleshooter
 description: Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root cause summary.
 tools: Read, Bash, Grep
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11030,7 +11035,7 @@ model: composer-2.5[fast=false]
    """---
 name: network-troubleshooter
 description: Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root cause summary.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11042,7 +11047,7 @@ audit2_patch(f"{base}/agents/ecc-opensource-forker.md", [
 name: opensource-forker
 description: Fork any project for open-sourcing. Copies files, strips secrets and credentials (20+ patterns), replaces internal references with placeholders, generates .env.example, and cleans git history. First stage of the opensource-pipeline skill.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11051,7 +11056,7 @@ model: composer-2.5
    """---
 name: opensource-forker
 description: Fork any project for open-sourcing. Copies files, strips secrets and credentials (20+ patterns), replaces internal references with placeholders, generates .env.example, and cleans git history. First stage of the opensource-pipeline skill.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11063,7 +11068,7 @@ audit2_patch(f"{base}/agents/ecc-opensource-packager.md", [
 name: opensource-packager
 description: Generate complete open-source packaging for a sanitized project. Produces CLAUDE.md, setup.sh, README.md, LICENSE, CONTRIBUTING.md, and GitHub issue templates. Makes any repo immediately usable with Claude Code. Third stage of the opensource-pipeline skill.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11072,7 +11077,7 @@ model: composer-2.5
    """---
 name: opensource-packager
 description: Generate complete open-source packaging for a sanitized project. Produces CLAUDE.md, setup.sh, README.md, LICENSE, CONTRIBUTING.md, and GitHub issue templates. Makes any repo immediately usable with Claude Code. Third stage of the opensource-pipeline skill.
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11084,7 +11089,7 @@ audit2_patch(f"{base}/agents/ecc-opensource-sanitizer.md", [
 name: opensource-sanitizer
 description: Verify an open-source fork is fully sanitized before release. Scans for leaked secrets, PII, internal references, and dangerous files using 20+ regex patterns. Generates a PASS/FAIL/PASS-WITH-WARNINGS report. Second stage of the opensource-pipeline skill. Use PROACTIVELY before any public release.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11093,7 +11098,7 @@ model: composer-2.5[fast=false]
    """---
 name: opensource-sanitizer
 description: Verify an open-source fork is fully sanitized before release. Scans for leaked secrets, PII, internal references, and dangerous files using 20+ regex patterns. Generates a PASS/FAIL/PASS-WITH-WARNINGS report. Second stage of the opensource-pipeline skill. Use PROACTIVELY before any public release.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11105,7 +11110,7 @@ audit2_patch(f"{base}/agents/ecc-performance-optimizer.md", [
 name: performance-optimizer
 description: Performance analysis and optimization specialist. Use PROACTIVELY for identifying bottlenecks, optimizing slow code, reducing bundle sizes, and improving runtime performance. Profiling, memory leaks, render optimization, and algorithmic improvements.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11114,7 +11119,7 @@ model: composer-2.5[fast=false]
    """---
 name: performance-optimizer
 description: Performance analysis and optimization specialist. Use PROACTIVELY for identifying bottlenecks, optimizing slow code, reducing bundle sizes, and improving runtime performance. Profiling, memory leaks, render optimization, and algorithmic improvements.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11126,7 +11131,7 @@ audit2_patch(f"{base}/agents/ecc-php-reviewer.md", [
 name: php-reviewer
 description: Expert PHP code reviewer specializing in PSR-12 compliance, PHP type system, Eloquent ORM patterns, security, and performance. Use for all PHP code changes. MUST BE USED for PHP projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11135,7 +11140,7 @@ model: composer-2.5[fast=false]
    """---
 name: php-reviewer
 description: Expert PHP code reviewer specializing in PSR-12 compliance, PHP type system, Eloquent ORM patterns, security, and performance. Use for all PHP code changes. MUST BE USED for PHP projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11146,7 +11151,7 @@ audit2_patch(f"{base}/agents/ecc-pr-test-analyzer.md", [
   ("""---
 name: pr-test-analyzer
 description: Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -11157,7 +11162,7 @@ tools: Read, Grep, Glob, Bash
    """---
 name: pr-test-analyzer
 description: Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11170,7 +11175,7 @@ audit2_patch(f"{base}/agents/ecc-python-reviewer.md", [
 name: python-reviewer
 description: Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11179,7 +11184,7 @@ model: composer-2.5[fast=false]
    """---
 name: python-reviewer
 description: Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11191,7 +11196,7 @@ audit2_patch(f"{base}/agents/ecc-pytorch-build-resolver.md", [
 name: pytorch-build-resolver
 description: PyTorch runtime, CUDA, and training error resolution specialist. Fixes tensor shape mismatches, device errors, gradient issues, DataLoader problems, and mixed precision failures with minimal changes. Use when PyTorch training or inference crashes.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11200,7 +11205,7 @@ model: composer-2.5[fast=false]
    """---
 name: pytorch-build-resolver
 description: PyTorch runtime, CUDA, and training error resolution specialist. Fixes tensor shape mismatches, device errors, gradient issues, DataLoader problems, and mixed precision failures with minimal changes. Use when PyTorch training or inference crashes.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11212,7 +11217,7 @@ audit2_patch(f"{base}/agents/ecc-rag-pipeline-reviewer.md", [
 name: rag-pipeline-reviewer
 description: Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage. Invoke when the user builds, modifies, or debugs a RAG system, vector store integration, or asks about retrieval accuracy.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11221,7 +11226,7 @@ model: composer-2.5[fast=false]
    """---
 name: rag-pipeline-reviewer
 description: Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage. Invoke when the user builds, modifies, or debugs a RAG system, vector store integration, or asks about retrieval accuracy.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11233,7 +11238,7 @@ audit2_patch(f"{base}/agents/ecc-react-build-resolver.md", [
 name: react-build-resolver
 description: Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun. Handles JSX/TSX compile errors, hydration mismatches, server/client component boundary failures, missing types, and bundler-specific configuration issues with minimal, surgical changes. MUST BE USED when a React build fails.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11242,7 +11247,7 @@ model: composer-2.5[fast=false]
    """---
 name: react-build-resolver
 description: Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun. Handles JSX/TSX compile errors, hydration mismatches, server/client component boundary failures, missing types, and bundler-specific configuration issues with minimal, surgical changes. MUST BE USED when a React build fails.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11254,7 +11259,7 @@ audit2_patch(f"{base}/agents/ecc-react-reviewer.md", [
 name: react-reviewer
 description: Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and React-specific security. Use for any change touching .tsx/.jsx files or React component logic. MUST BE USED for React projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11263,7 +11268,7 @@ model: composer-2.5[fast=false]
    """---
 name: react-reviewer
 description: Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and React-specific security. Use for any change touching .tsx/.jsx files or React component logic. MUST BE USED for React projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11275,7 +11280,7 @@ audit2_patch(f"{base}/agents/ecc-refactor-cleaner.md", [
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11284,7 +11289,7 @@ model: composer-2.5[fast=false]
    """---
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11296,7 +11301,7 @@ audit2_patch(f"{base}/agents/ecc-ruby-reviewer.md", [
 name: ruby-reviewer
 description: Expert Ruby and Rails code reviewer specializing in idiomatic Ruby, Active Record query safety, Rails security defaults, and RSpec/Minitest quality. Use for all Ruby code changes. MUST BE USED for Ruby and Rails projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11305,7 +11310,7 @@ model: composer-2.5[fast=false]
    """---
 name: ruby-reviewer
 description: Expert Ruby and Rails code reviewer specializing in idiomatic Ruby, Active Record query safety, Rails security defaults, and RSpec/Minitest quality. Use for all Ruby code changes. MUST BE USED for Ruby and Rails projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11317,7 +11322,7 @@ audit2_patch(f"{base}/agents/ecc-rust-build-resolver.md", [
 name: rust-build-resolver
 description: Rust build, compilation, and dependency error resolution specialist. Fixes cargo build errors, borrow checker issues, and Cargo.toml problems with minimal changes. Use when Rust builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11326,7 +11331,7 @@ model: composer-2.5[fast=false]
    """---
 name: rust-build-resolver
 description: Rust build, compilation, and dependency error resolution specialist. Fixes cargo build errors, borrow checker issues, and Cargo.toml problems with minimal changes. Use when Rust builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11338,7 +11343,7 @@ audit2_patch(f"{base}/agents/ecc-rust-reviewer.md", [
 name: rust-reviewer
 description: Expert Rust code reviewer specializing in ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns. Use for all Rust code changes. MUST BE USED for Rust projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11347,7 +11352,7 @@ model: composer-2.5[fast=false]
    """---
 name: rust-reviewer
 description: Expert Rust code reviewer specializing in ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns. Use for all Rust code changes. MUST BE USED for Rust projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11359,7 +11364,7 @@ audit2_patch(f"{base}/agents/ecc-security-reviewer.md", [
 name: security-reviewer
 description: Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11368,7 +11373,7 @@ model: composer-2.5[fast=false]
    """---
 name: security-reviewer
 description: Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11380,7 +11385,7 @@ audit2_patch(f"{base}/agents/ecc-seo-specialist.md", [
 name: seo-specialist
 description: SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping. Use for site audits, meta tag reviews, schema markup, sitemap and robots issues, and SEO remediation plans.
 tools: Read, Grep, Glob, WebSearch, WebFetch
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11389,7 +11394,7 @@ model: composer-2.5[fast=false]
    """---
 name: seo-specialist
 description: SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping. Use for site audits, meta tag reviews, schema markup, sitemap and robots issues, and SEO remediation plans.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11400,7 +11405,7 @@ audit2_patch(f"{base}/agents/ecc-silent-failure-hunter.md", [
   ("""---
 name: silent-failure-hunter
 description: Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -11411,7 +11416,7 @@ tools: Read, Grep, Glob, Bash
    """---
 name: silent-failure-hunter
 description: Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11423,7 +11428,7 @@ audit2_patch(f"{base}/agents/ecc-spec-miner.md", [
   ("""---
 name: spec-miner
 description: Extracts behavioral specs from existing codebases for OpenSpec. Produces flat Requirement and Invariant blocks with structured metadata (entities, enforced, id, test anchors). Outputs openspec/specs/<capability>/spec.md. Fully self-bootstrapping — no dependency on codebase-onboarding. Use when onboarding a brownfield project to spec-driven development.
-model: claude-opus-5[effort=high]
+model: grok-4.7-high
 tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -11434,7 +11439,7 @@ tools: Read, Grep, Glob, Bash, Write
    """---
 name: spec-miner
 description: Extracts behavioral specs from existing codebases for OpenSpec. Produces flat Requirement and Invariant blocks with structured metadata (entities, enforced, id, test anchors). Outputs openspec/specs/<capability>/spec.md. Fully self-bootstrapping — no dependency on codebase-onboarding. Use when onboarding a brownfield project to spec-driven development.
-model: claude-opus-5
+model: grok-4.7-high
 ---
 
 ## Tool guardrails
@@ -11447,7 +11452,7 @@ audit2_patch(f"{base}/agents/ecc-swift-build-resolver.md", [
 name: swift-build-resolver
 description: Swift/Xcode build, compilation, and dependency error resolution specialist. Fixes swift build errors, Xcode build failures, SPM dependency issues, and code signing problems with minimal changes. Use when Swift builds fail.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11456,7 +11461,7 @@ model: composer-2.5[fast=false]
    """---
 name: swift-build-resolver
 description: Swift/Xcode build, compilation, and dependency error resolution specialist. Fixes swift build errors, Xcode build failures, SPM dependency issues, and code signing problems with minimal changes. Use when Swift builds fail.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11468,7 +11473,7 @@ audit2_patch(f"{base}/agents/ecc-swift-reviewer.md", [
 name: swift-reviewer
 description: Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomatic patterns. Use for all Swift code changes. MUST BE USED for Swift projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11477,7 +11482,7 @@ model: composer-2.5[fast=false]
    """---
 name: swift-reviewer
 description: Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomatic patterns. Use for all Swift code changes. MUST BE USED for Swift projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11489,7 +11494,7 @@ audit2_patch(f"{base}/agents/ecc-tdd-guide.md", [
 name: tdd-guide
 description: Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.
 tools: Read, Write, Edit, Bash, Grep
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11498,7 +11503,7 @@ model: composer-2.5[fast=false]
    """---
 name: tdd-guide
 description: Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11509,7 +11514,7 @@ audit2_patch(f"{base}/agents/ecc-type-design-analyzer.md", [
   ("""---
 name: type-design-analyzer
 description: Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 tools: Read, Grep, Glob
 ---
 
@@ -11520,7 +11525,7 @@ tools: Read, Grep, Glob
    """---
 name: type-design-analyzer
 description: Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11533,7 +11538,7 @@ audit2_patch(f"{base}/agents/ecc-typescript-reviewer.md", [
 name: typescript-reviewer
 description: Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. Use for all TypeScript and JavaScript code changes. MUST BE USED for TypeScript/JavaScript projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11542,7 +11547,7 @@ model: composer-2.5[fast=false]
    """---
 name: typescript-reviewer
 description: Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. Use for all TypeScript and JavaScript code changes. MUST BE USED for TypeScript/JavaScript projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11554,7 +11559,7 @@ audit2_patch(f"{base}/agents/ecc-vue-reviewer.md", [
 name: vue-reviewer
 description: Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and Vue-specific performance. Use for any change touching .vue, .ts/.js files with Vue imports, or Vue ecosystem code (Pinia, Vue Router, Nuxt). MUST BE USED for Vue projects.
 tools: Read, Grep, Glob, Bash
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11563,7 +11568,7 @@ model: composer-2.5[fast=false]
    """---
 name: vue-reviewer
 description: Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and Vue-specific performance. Use for any change touching .vue, .ts/.js files with Vue imports, or Vue ecosystem code (Pinia, Vue Router, Nuxt). MUST BE USED for Vue projects.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -11574,14 +11579,14 @@ audit2_patch(f"{base}/commands/astra-review.md", [
   ("""---
 description: Send Claude-written code to GPT-6-Astra (ChatGPT, via Codex CLI) for an independent cross-provider review, then fix what it finds.
 argument-hint: "[--base <branch> | --commit <sha> | --files <paths> | --files-from-commit <sha>] [extra reviewer instructions]"
-model: claude-opus-5[effort=high]
+model: grok-4.7-high
 ---
 
 # Astra Review
 
 Cross-provider second opinion. Claude writes the code; GPT-6-Astra (OpenAI, running through the locally installed Codex CLI with your ChatGPT login) reviews it with no shared context. Claude then fixes what Astra finds and re-runs until Astra passes or the round limit is hit.
 
-This command runs on the **deep-reasoner** (`model: claude-opus-5[effort=high]`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
+This command runs on the **deep-reasoner** (`model: grok-4.7-high`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
 
 ## Purpose
 
@@ -11597,7 +11602,7 @@ argument-hint: "[--base <branch> | --commit <sha> | --files <paths> | --files-fr
 
 Cross-provider second opinion. Claude writes the code; GPT-6-Astra (OpenAI, running through the locally installed Codex CLI with your ChatGPT login) reviews it with no shared context. Claude then fixes what Astra finds and re-runs until Astra passes or the round limit is hit.
 
-This command runs on the **deep-reasoner** (`model: claude-opus-5`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
+This command runs on the **deep-reasoner** (`model: grok-4.7-high`). The deep-reasoner orchestrates, verifies findings, checks every diff, and runs the tests. Fixes are delegated to a **fast-worker** subagent; when the fast-worker has hit its usage limit, Astra applies the fixes instead (see Step 4).
 
 ## Purpose
 
@@ -13403,7 +13408,7 @@ audit3_patch(f"{base}/skills/hackathon-pitch/assets/pitch-script-template.md", [
   ("9. Why this stack, what did it let you ship faster?",
    "9. Why this stack, what did it let you build faster?"),
   ("- Video, 60 to 90 seconds, recorded after the final deploy: [path or link, not a local file only]",
-   "- Video (demo video, 1:30–1:50), recorded after the final deploy: [path or link, not a local file only]"),
+   "- Video (demo video, under 2:10), recorded after the final deploy: [path or link, not a local file only]"),
 ])
 audit3_patch(f"{base}/skills/hackathon-pitch/references/presentation-winning.md", [
   ("9. Why this stack — what did it let you ship faster?",
@@ -15394,10 +15399,10 @@ audit8_patch(f"{base}/commands/multi-plan.md", [
 4. **Explore (Cursor subagent)**: For deeper exploration, spawn a Cursor subagent to search across the codebase"""),
 ])
 
-# --- D3: instinct-cli.py generated agents emit model: composer-2.5 ---
+# --- D3: instinct-cli.py generated agents emit model: cursor-grok-4.6-high-fast ---
 audit8_patch(f"{base}/skills/continuous-learning-v2/scripts/instinct-cli.py", [
     (r'''        content += "model: sonnet\n---\n"''',
-     r'''        content += "model: composer-2.5\n---\n"'''),
+     r'''        content += "model: cursor-grok-4.6-high-fast\n---\n"'''),
 ])
 
 # --- D5: resolve-ecc-root.js — scan ~/.cursor/plugins in resolveEccRoot() ---
@@ -16148,7 +16153,7 @@ audit10_patch(f"{base}/agents/ecc-chief-of-staff.md", [
   (r'''---
 name: chief-of-staff
 description: Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and enforces post-send follow-through via hooks. Use when managing multi-channel communication workflows.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -16157,7 +16162,7 @@ model: composer-2.5[fast=false]
    r'''---
 name: chief-of-staff
 description: Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and follows a post-send follow-through checklist. Use when managing multi-channel communication workflows.
-model: composer-2.5[fast=false]
+model: cursor-grok-4.6-high-fast
 ---
 
 ## Prompt Defense Baseline
@@ -16277,7 +16282,7 @@ When available, also check project-specific conventions from `CLAUDE.md` or proj
 '''),
 ])
 
-# --- Fixer B (Cleanliness): frontmatter model sonnet is not a Cursor model; composer-2.5.
+# --- Fixer B (Cleanliness): frontmatter model sonnet is not a Cursor model; cursor-grok-4.6-high-fast.
 audit10_patch(f"{base}/commands/evolve.md", [
   (r'''
 ### Agent
@@ -16298,7 +16303,7 @@ evolved_from:
 ---
 name: debugger
 description: Systematic debugging agent
-model: composer-2.5
+model: cursor-grok-4.6-high-fast
 evolved_from:
   - debug-check-logs
   - debug-isolate
@@ -18293,7 +18298,7 @@ cat > "$PLUGIN_DIR/schemas/cursor-hooks.schema.json" <<'SCHEMA_EOF'
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "description": "Configuration for Cursor hooks, as shipped in hooks/hooks.json. Cursor format: camelCase event names as keys, each mapping to an array of items with a command, the event name, and an optional description. This is distinct from schemas/hooks.schema.json, which describes the Claude Code hooks format (PascalCase events, matcher entries with {type, command} items) and does not accept this file.",
+  "description": "Configuration for Cursor hooks, as shipped in hooks/hooks.json. Cursor format: camelCase event names as keys, each mapping to an array of items with a command, the event name, and an optional description. This is distinct from schemas/hooks.schema.json, which describes the legacy hooks format (PascalCase events, matcher entries with {type, command} items) and does not accept this file.",
   "properties": {
     "hooks": {
       "additionalProperties": {
@@ -18334,7 +18339,7 @@ every chat in that project uses it.
 
 - **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools, playwright, and codebase-memory MCP servers. ECC process applies in full: plan first, TDD, code review
   while building. With the 25 hackathon additions below, the plugin ships
-  169 skills, 72 agents, 123 rules, and 96 commands in total.
+  166 skills, 72 agents, 123 rules, and 87 commands in total.
   Install profiles: the `hackathon` module (those 25 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
 - **Grill-me first** — after your first hackathon project prompt, the
   plugin asks one question at a time until every decision is recorded, and
@@ -18357,15 +18362,15 @@ every chat in that project uses it.
 
 ## How this compares
 
-**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, codebase-memory MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 169 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
+**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, codebase-memory MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 166 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
 
-**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 169 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
+**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 166 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
 
-**vs plain Cursor:** The edge is structured process — 169 skills, 72 agents, 96 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates require rebuilding from `build.sh`, and 56 MB is loaded into a project that may only need a tenth of it.
+**vs plain Cursor:** The edge is structured process — 166 skills, 72 agents, 87 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates require rebuilding from `build.sh`, and 56 MB is loaded into a project that may only need a tenth of it.
 
-## Commands (highlights — 3 of 96)
+## Commands (highlights — 3 of 87)
 
-- `/demo` — generate a narrated 1:30–1:50 product demo video of the app
+- `/demo` — generate a narrated product demo video, under 2:10, of the app
   (films the real app with Playwright; rebuilds in ~2 minutes after a
   frontend change; opt-in montage and explainer modes via OpenMontage). `/demo <path>`, `/demo --rebuild`, `/demo --script`,
   `/demo --render`.
@@ -19912,7 +19917,7 @@ PYEOF
 # --- Batch E (dry-run fixes): orch GATE definitions, verification cap,
 # expansion + final-report steps, removal routing, STOP carve-outs ---
 # Upstream ECC files are copied fresh on every build, so these fixes live
-# here as a patch block placed LAST — just before STEP 5 — after the GATE
+# here as a patch block placed — just before STEP 5 — after the GATE
 # patch and the carve-out patch, whose old-strings contain the original
 # lines. Each substitution asserts exactly one match against the CURRENT
 # built text (i.e. after the GATE / carve-out patches, including the
@@ -20016,7 +20021,7 @@ PYEOF
 
 # --- Batch F (wave-2 fixes): standalone orch-build-mvp flow, removal
 # follow-through, council / classifier / pitch / debugging carve-outs ---
-# Same placement rule as Batch E: this block runs LAST, just before STEP 5,
+# Same placement rule as Batch E: this block runs before STEP 5,
 # after the GATE / carve-out / Batch E patches, whose old-strings contain the
 # original lines. Each substitution asserts exactly one match against the
 # CURRENT built text (i.e. after those patches). Never edit hackathon-ecc/
@@ -20076,12 +20081,12 @@ subs = [
    "and state the result in one line so the user\ncan override — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where no user is present and the classifier result stands:"),
   # Gap 39: hackathon-pitch :32 — reconcile to the pinned lengths. The
   # pitch storyboard is under 90s; the live demo storyboard is 2–4 min; the
-  # demo video is 1:30–1:50. The canonical statement lives in
+  # demo video is under 2:10 (hard rule; absolute max 2:30). The canonical statement lives in
   # hackathon-mode §6 and governs where another skill states a different
   # length.
   ("skills/hackathon-pitch/SKILL.md",
    "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked.",
-   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs."),
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (under 2:10, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is under 2:10 (hard rule; absolute max 2:30); the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs."),
   # Gap 42a: click-path-audit — the pinned debugging order: start with
   # symptom inspection; a button that does nothing goes to click-path-audit
   # next; everything else with an unknown root cause goes to
@@ -20123,16 +20128,16 @@ PYEOF
 
 # ============================================================================
 # --- Fix program #3 (Batches A/C/D): one build engine, expansion split, /demo fixes, debugging order, removal follow-through ---
-# Patch blocks run LAST, just before STEP 5, after the GATE / carve-out / Batch E / Batch F patches.
+# Patch blocks run before STEP 5, after the GATE / carve-out / Batch E / Batch F patches.
 # A-expansion-canonical.py is intentionally NOT applied: the ~line 694 patch new-string was corrected at the root to the canonical wording.
 # --- Batch A (Fix Batch A / fix program #3): ONE BUILD ENGINE + expansion split +
 # reconciliation step + final-report file, skills/orch-build-mvp/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F patches, whose old-strings the
 # substitutions below are anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20188,11 +20193,11 @@ PYEOF
 # --- Batch A (Fix Batch A / fix program #3): orch-pipeline Phase 0 ingests the
 # record/scope, skills/orch-pipeline/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F patches, whose old-strings the
 # substitution below is anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20215,11 +20220,11 @@ PYEOF
 # --- Batch A (Fix Batch A / fix program #3): commands/orch-build-mvp.md —
 # record/scope by default, never ask for a path; final report to file ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F patches, whose old-strings the
 # substitutions below are anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20248,7 +20253,7 @@ PYEOF
 # "Discuss with human partner before more fixes" line the same way Batch E
 # M18b carved the :85-87 STOP: pick the safe/reversible option, record it,
 # move on. Upstream ECC file — patch, do not edit a staged source.
-# Placement: LAST, after the Batch F block, just before STEP 5.
+# Placement: after the Batch F block, before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20274,7 +20279,7 @@ PYEOF
 # is backwards (browser-qa detects, systematic-debugging diagnoses).
 # "Ruling out" is symptom inspection, not running the skill.
 # Upstream ECC file — patch, do not edit a staged source.
-# Placement: LAST, after the Batch F block, just before STEP 5.
+# Placement: after the Batch F block, before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20314,7 +20319,7 @@ PYEOF
 # 24). The canonical order is stated identically to click-path-audit :205
 # and systematic-debugging (after their Batch C patches).
 # Upstream ECC file — patch, do not edit a staged source.
-# Placement: LAST, after the Batch F block, just before STEP 5.
+# Placement: after the Batch F block, before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20359,7 +20364,7 @@ PYEOF
 # "deployed-UI issues" to the canonical "deployed-UI failures" so the
 # order is stated identically in all three debugging skills.
 # Upstream ECC file — patch, do not edit a staged source.
-# Placement: LAST, after the Batch F block, just before STEP 5.
+# Placement: after the Batch F block, before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20393,7 +20398,7 @@ PYEOF
 # build is recorded as blocked in the final report instead of stopping the
 # run. (The :45 STOP line itself was already carved by Batch E M18c.)
 # Upstream ECC rule — patch, do not edit a staged source.
-# Placement: LAST, after the Batch F block, just before STEP 5.
+# Placement: after the Batch F block, before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20419,11 +20424,11 @@ PYEOF
 # FIRST, then re-films with /demo --rebuild; /demo vs /demo --rebuild
 # behaviour documented, skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20453,11 +20458,11 @@ PYEOF
 # --- Batch D (Fix Batch D / fix program #3): removal re-deploy mechanism is
 # push to main (git-linked deploy fires), skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20486,11 +20491,11 @@ PYEOF
 # database; never delete an applied migration; shared tables,
 # skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20517,11 +20522,11 @@ PYEOF
 # --- Batch D (Fix Batch D / fix program #3): removal step 5 updates
 # docs/scope.md, README, and Devpost, skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20549,11 +20554,11 @@ PYEOF
 # feature-to-files inventory in docs/final-report.md,
 # skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20580,12 +20585,12 @@ PYEOF
 # "orchestrate routes, /orch-change-feature owns" — in the orch-change-feature
 # frontmatter, skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text — the Batch E B19 wording). Never edit hackathon-ecc/
 # directly. Each substitution asserts exactly one match. The coordinator
-# inserts this block last, just before STEP 5. YAML care: no unquoted ": "
+# inserts this block before STEP 5. YAML care: no unquoted ": "
 # in the description.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20613,11 +20618,11 @@ PYEOF
 # verification step explicit (grep identifiers; inventory is the file list),
 # skills/orch-change-feature/SKILL.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20643,11 +20648,11 @@ PYEOF
 # invocation with a removal request follows the removal procedure,
 # commands/orch-change-feature.md ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE patch, the
+# patch block placed — just before STEP 5 — after the GATE patch, the
 # carve-out patch, and the Batch E / Batch F / Batch A–C patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text). Never edit hackathon-ecc/ directly. Each substitution
-# asserts exactly one match. The coordinator inserts this block last, just
+# asserts exactly one match. The coordinator inserts this block
 # before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20674,12 +20679,12 @@ PYEOF
 # --- Fix program #4, Batch A: orch-build-mvp — ONE ENGINE PER RUN + phase
 # mapping (no step-1 redo) + record/scope-default input + 9-step rewrite ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# patch block placed in build.sh, before STEP 5, after the GATE /
 # carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/orch-build-mvp/SKILL.md).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The patch agent inserts this block last, just before STEP 5.
+# match. The patch agent inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20774,12 +20779,12 @@ PYEOF
 # --- Fix program #4, Batch A: commands/orch-build-mvp.md — rewrite to match
 # the skill's 9 steps + record/scope-default input ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# patch block placed in build.sh, before STEP 5, after the GATE /
 # carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/commands/orch-build-mvp.md).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The patch agent inserts this block last, just before STEP 5.
+# match. The patch agent inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20849,12 +20854,12 @@ PYEOF
 # --- Fix program #4, Batch A: orch-pipeline — one-engine rule + Phase 4
 # implementer belief + numbering disambiguation ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after the GATE /
+# patch block placed in build.sh, before STEP 5, after the GATE /
 # carve-out / Batch E / Batch F / Fix-program-#3 Batch A patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/orch-pipeline/SKILL.md).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The patch agent inserts this block last, just before STEP 5.
+# match. The patch agent inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20905,7 +20910,7 @@ PYEOF
 # one-prompt removal of a first-build feature, do NOT ask — proceed on the
 # decision record + scope (or the raw prompt with a stated assumption if
 # neither exists). Same placement rule as the GATE / Batch F blocks: this block
-# runs LAST, just before STEP 5, after all earlier patches. Each substitution
+# runs before STEP 5, after all earlier patches. Each substitution
 # asserts exactly one match against the CURRENT built text.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -20935,13 +20940,13 @@ PYEOF
 
 # Batch E (fix program #4): ui-ux-pro-max — captivating bar for dashboard/app surfaces.
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST — just before STEP 5 — after the GATE / carve-out /
+# patch block placed — just before STEP 5 — after the GATE / carve-out /
 # Batch E / Batch F / fix-program-#3 patches, whose old-strings the
 # substitution below is anchored on (i.e. against the CURRENT built text:
 # the post-audit9a "When to Apply" paragraph, including its "Do NOT use it
 # for a full company or landing-page build" sentence).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20967,15 +20972,17 @@ PYEOF
 # Batch E (fix program #4): less-flat-ui — texture in service of the wow moment.
 # Source is NOT staged in hackathon-plugin: build.sh line 223 copies it fresh
 # from ~/workspace/cursor-skills/less-flat-ui/ (the global Cursor skill) on
-# every build, so this fix lives here as a patch block placed LAST — just
-# before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
-# fix-program-#3 patches. The substitution below is anchored on the CURRENT
+# every build, so this fix lives here as a patch block in the fix #4 era
+# position — after the GATE / carve-out / Batch E / Batch F /
+# fix-program-#3 patches. (Fix-up Nov 12: it is NOT last — fix15/17/19/20,
+# weave20, fixup20, and fixup20b blocks run after it, before STEP 5.) The substitution below is anchored on the CURRENT
 # built text (identical to ~/workspace/cursor-skills/less-flat-ui/SKILL.md;
-# no build.sh patch touches skills/less-flat-ui/SKILL.md).
+# THREE other build.sh patches touch skills/less-flat-ui/SKILL.md (W2-G9,
+# W2-C1, weave20 A10) plus this block itself).
 # Never edit hackathon-ecc/ directly, and do not edit the global
 # ~/workspace/cursor-skills/less-flat-ui/ copy (it is shared outside this
-# plugin). The substitution asserts exactly one match. The coordinator
-# inserts this block last, just before STEP 5.
+# plugin). The substitution asserts exactly one match.
+# (Fix-up Nov 12: this block does not sit last; later fix blocks run after it.)
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -20999,7 +21006,7 @@ PYEOF
 
 # --- Fix program #4, Batch F: removal delivery + failure branches (orch-change-feature) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# patch block to be placed in build.sh, before STEP 5, after the
 # GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/orch-change-feature/SKILL.md).
@@ -21058,7 +21065,7 @@ PYEOF
 
 # --- Fix program #4, Batch F: removal procedure pointer (commands/orch-change-feature.md) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# patch block to be placed in build.sh, before STEP 5, after the
 # GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
 # old-strings the substitution below is anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/commands/orch-change-feature.md).
@@ -21085,7 +21092,7 @@ PYEOF
 
 # --- Fix program #4, Batch F: re-uploaded video link (skills/devpost-autofiller/SKILL.md) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# patch block to be placed in build.sh, before STEP 5, after the
 # GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/devpost-autofiller/SKILL.md).
@@ -21119,7 +21126,7 @@ PYEOF
 
 # --- Fix program #4, Batch F: pitch refresh on removal (skills/hackathon-pitch/SKILL.md) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after the
+# patch block to be placed in build.sh, before STEP 5, after the
 # GATE / carve-out / Batch E / Batch F / fix-program-#3 patches, whose
 # old-strings the substitution below is anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/hackathon-pitch/SKILL.md —
@@ -21135,8 +21142,8 @@ import os, sys
 base = sys.argv[1]
 subs = [
   ("skills/hackathon-pitch/SKILL.md",
-   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs.",
-   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (1:30–1:50, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is 1:30–1:50; the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs. After a feature removal (`orch-change-feature` step 5), refresh the pitch narrative, scripts, and this storyboard so nothing promises the removed feature: cut its beats, re-cut the scripts to their word targets, and re-mark the wow moment on what remains."),
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (under 2:10, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is under 2:10 (hard rule; absolute max 2:30); the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs.",
+   "3. **The demo storyboard.** Golden path only: one user, one task, under 90 seconds, narrated click by click, with the \"wow moment\" marked. This is the pitch storyboard (under 90s) — not the live demo storyboard (2–4 min) and not the demo video (under 2:10, pitch-deck-video / /demo). Demo lengths are canonical in hackathon-mode §6: the live demo storyboard is 2–4 min; the demo video is under 2:10 (hard rule; absolute max 2:30); the pitch storyboard is under 90s. Where another skill states a different length, the hackathon-mode statement governs. After a feature removal (`orch-change-feature` step 5), refresh the pitch narrative, scripts, and this storyboard so nothing promises the removed feature: cut its beats, re-cut the scripts to their word targets, and re-mark the wow moment on what remains."),
 ]
 for rel, old, new in subs:
     p = os.path.join(base, rel)
@@ -21151,11 +21158,11 @@ PYEOF
 # surfaces.
 # Upstream ECC file (cloned fresh from github.com/nextlevelbuilder/
 # ui-ux-pro-max-skill on every build) — this fix lives here as a patch
-# block placed LAST — just before STEP 5 — after the GATE / carve-out /
+# block placed — just before STEP 5 — after the GATE / carve-out /
 # Batch E / Batch F / fix-program-#3 patches, whose old-strings the
 # substitution below is anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 #
 # What it adds, and what it deliberately does NOT duplicate:
 # - Step 2 already generates a design system via --design-system (SKILL.md
@@ -21201,12 +21208,12 @@ PYEOF
 # procedure (run the app, inspect the ACTUAL rendered interface, top-5
 # problems, fix, re-inspect).
 # Upstream ECC file, copied fresh from the ECC Developer install on every
-# build — this fix lives here as a patch block placed LAST — just before
+# build — this fix lives here as a patch block placed — just before
 # STEP 5 — after the GATE / carve-out / Batch E / Batch F / fix-program-#3
 # patches, whose old-strings the substitution below is anchored on (i.e.
 # against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 #
 # What it adds, and what it deliberately does NOT duplicate:
 # - Phase 3 (:58-65) already screenshots key pages at 3 breakpoints and
@@ -21257,12 +21264,12 @@ PYEOF
 # Master prompt (fix program #4): ecc-code-reviewer — adversarial audit
 # stance + CONFIRMED-vs-SUSPECTED distinction.
 # Upstream ECC file (agents copied fresh from the ECC Developer install on
-# every build) — this fix lives here as a patch block placed LAST — just
+# every build) — this fix lives here as a patch block placed — just
 # before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
 # fix-program-#3 patches, whose old-strings the substitution below is
 # anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 #
 # Target note: the task named skills/code-reviewer/SKILL.md, but no such
 # skill exists in the plugin — code review lives in the AGENT
@@ -21318,12 +21325,12 @@ PYEOF
 # step 9 (design/engineering decisions, tests and visual checks actually
 # performed, highest-value next improvements).
 # orch-build-mvp has NO staged source: its content is created and patched
-# inside build.sh only — this fix lives here as a patch block placed LAST —
+# inside build.sh only — this fix lives here as a patch block placed —
 # just before STEP 5 — after the GATE / carve-out / Batch E / Batch F /
 # fix-program-#3 patches and the fix4 Batch A block, whose old-strings the
 # substitution below is anchored on (i.e. against the CURRENT built text).
 # Never edit hackathon-ecc/ directly. The substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 #
 # What it adds, and what it deliberately does NOT duplicate:
 # - Step 6 already has `code-reviewer` (+ `security-reviewer` on any
@@ -21369,7 +21376,7 @@ PYEOF
 # --- Fix program #5, Batch 2: orch-change-feature — removal re-upload /
 # redeploy conditionality, blocked-branch routing, step-3 cap ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after all
+# patch block to be placed in build.sh, before STEP 5, after all
 # prior patches, whose old-strings the substitutions below are anchored on
 # (i.e. against the CURRENT built text in
 # hackathon-ecc/skills/orch-change-feature/SKILL.md).
@@ -21444,7 +21451,7 @@ PYEOF
 # narration-key prompt early (B1-standalone), readme-writer invocation
 # (M11-standalone), final-report video handoff (B2a-standalone) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block to be placed LAST in build.sh, just before STEP 5, after all
+# patch block to be placed in build.sh, before STEP 5, after all
 # prior patches, whose old-strings the substitutions below are anchored on
 # (i.e. against the CURRENT built text in
 # hackathon-ecc/skills/orch-build-mvp/SKILL.md).
@@ -21507,12 +21514,12 @@ PYEOF
 
 # Fix program #5, Batch 3: ui-ux-pro-max — M9 MASTER.md conformance + Audit M3 ask-user carve-out.
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST, just before STEP 5, after the GATE / carve-out /
+# patch block placed before STEP 5, after the GATE / carve-out /
 # Batch E / Batch F / fix-program-#4 / master-prompt patches, whose
 # old-strings the substitutions below are anchored on (i.e. against the
 # CURRENT built text in hackathon-ecc/skills/ui-ux-pro-max/SKILL.md).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
-# match. The coordinator inserts this block last, just before STEP 5.
+# match. The coordinator inserts this block before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -21538,7 +21545,7 @@ PYEOF
 # narration continuity (B3) + skip deploy-ready poll when the deploy is
 # already known-blocked (M6) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches, whose old-strings the substitutions below are anchored on (i.e.
 # against the CURRENT built text in
 # hackathon-ecc/skills/orch-change-feature/SKILL.md).
@@ -21586,7 +21593,7 @@ PYEOF
 # --- Fix program #6, Batch 2: orch-build-mvp — key handoff to step 8 (B1),
 # Phase 6 named composer (M5), TDD inside the GAN loop (M9) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches, whose old-strings the substitutions below are anchored on (i.e.
 # against the CURRENT built text in
 # hackathon-ecc/skills/orch-build-mvp/SKILL.md).
@@ -21643,7 +21650,7 @@ PYEOF
 # --- Fix program #6, Batch 3: /gan-build command — test-writing in the
 # generator-evaluator loop (M9, command half) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches, whose old-strings the substitutions below are anchored on (i.e.
 # against the CURRENT built text in hackathon-ecc/commands/gan-build.md).
 # Never edit hackathon-ecc/ directly. Each substitution asserts exactly one
@@ -21732,7 +21739,7 @@ PYEOF
 # --- Fix program #6, Batch 4: ui-ux-pro-max — design-token source is the
 # durable file now (B2 pointer) ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches, whose old-strings the substitutions below are anchored on (i.e.
 # against the CURRENT built text in
 # hackathon-ecc/skills/ui-ux-pro-max/SKILL.md, as written by fix5 batch 3).
@@ -21763,7 +21770,7 @@ PYEOF
 # --- Fix program #7: ui-ux-pro-max — M1 no-landing fallback for the
 # design-token handoff ---
 # Upstream ECC file, copied fresh on every build — this fix lives here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches, whose old-strings the substitutions below are anchored on (i.e.
 # against the CURRENT built text in
 # hackathon-ecc/skills/ui-ux-pro-max/SKILL.md, as written by fix6 batch 4).
@@ -21795,7 +21802,7 @@ PYEOF
 # npx/npm instructions the security re-scan found outside the 5 pinned items
 # (F2) ---
 # Upstream ECC files, copied fresh on every build — these fixes live here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches (including fix7), whose old-strings the substitutions below are
 # anchored on (i.e. against the CURRENT built text). Versions verified on npm
 # before writing: ecc-universal 2.2.3, ccg-workflow 3.7.4. Never edit
@@ -21857,7 +21864,7 @@ PYEOF
 
 # --- Fix program #9: pin the remaining registry-fetching installs ---
 # Upstream ECC files, copied fresh on every build — these fixes live here as a
-# patch block placed LAST in build.sh, just before STEP 5, after all prior
+# patch block placed in build.sh, before STEP 5, after all prior
 # patches (including fix8 findings), whose old-strings the substitutions below
 # are anchored on (i.e. against the CURRENT built text). Versions verified on
 # npm (npm view) before writing. Never edit hackathon-ecc/ directly. Each
@@ -21897,10 +21904,6 @@ subs = [
   ("commands/pm2.md",
    r"""npm install -g pm2""",
    r"""npm install -g pm2@7.1.2"""),
-  # Sweep — astra-review codex.js: pin the version in the install hint.
-  ("scripts/lib/astra-review/codex.js",
-   r"""npm i -g @openai/codex""",
-   r"""npm i -g @openai/codex@0.167.1"""),
   # Sweep — angular-aria: pin the conditional install.
   ("skills/angular-developer/references/angular-aria.md",
    r"""npm install @angular/aria""",
@@ -21919,12 +21922,12 @@ for rel, old, new in subs:
     text = open(p, encoding="utf-8").read()
     assert text.count(old) == 1, f"{rel}: pattern not found exactly once: {old[:60]!r}"
     open(p, "w", encoding="utf-8").write(text.replace(old, new))
-print("fix9: sweep registry pins applied (ecc-agentshield@1.6.0, agent-browser@0.42.0, pm2@7.1.2, codex@0.167.1, angular/aria@22.2.6, tailwindcss@4.3.5, postcss@8.5.32, sdk@1.32.2, zod@4.6.7)")
+print("fix9: sweep registry pins applied (ecc-agentshield@1.6.0, agent-browser@0.42.0, pm2@7.1.2, angular/aria@22.2.6, tailwindcss@4.3.5, postcss@8.5.32, sdk@1.32.2, zod@4.6.7)")
 PYEOF
 
 # --- Fix program #11: ui-ux-pro-max — Impeccable craft-floor read ---
 # ui-ux-pro-max is fetched fresh from upstream on every build (pinned SHA),
-# so this wiring lives here as a patch block placed LAST in build.sh, just
+# so this wiring lives here as a patch block placed in build.sh, just
 # before STEP 5, after the fix9 block. It anchors on the CURRENT built text
 # (post-copy). One substitution, asserts exactly one match.
 # The Impeccable craft floor lives in polish-pass (canonical location);
@@ -21947,7 +21950,7 @@ PYEOF
 
 # --- Fix program #12 (D5): orch-change-feature routes landing redesigns
 # through the Hallmark redesign flow. Upstream ECC file, copied fresh on every
-# build — this fix lives here as a patch block placed LAST — just before
+# build — this fix lives here as a patch block placed — just before
 # STEP 5 — after the GATE patch and all earlier patch blocks. The anchor is
 # the "Removing a feature" heading the B20 patch creates, so this block must
 # run after it. Each substitution asserts exactly one match.
@@ -21975,7 +21978,7 @@ PYEOF
 
 # --- Weave program #1: connection/weaving loop (ordered Nov 10, ~23:05 CST).
 # Upstream ECC files, copied fresh on every build — these fixes live here as
-# a patch block placed LAST — just before STEP 5 — after the GATE patch and
+# a patch block placed — just before STEP 5 — after the GATE patch and
 # all earlier patch blocks. Each substitution asserts exactly one match.
 # Staged-source edits live in weave1/weave1.py Part A; this block covers
 # only files no staged source owns, plus the skill-triggers JSON.
@@ -22066,10 +22069,10 @@ subs = [
    """Put these in a `backgrounds.css` file (or a `<style>` block) and reference them by class. Do not cram data-URI SVGs into Tailwind arbitrary values. Record every treatment applied, on which surface, in `docs/design-tokens.md` (or MASTER.md on a dashboard-only build) — later slices and polish-pass read the record from there, not from the CSS."""),
   # W2-C1: example hexes are placeholders — re-tint to the dealt palette.
   ("skills/less-flat-ui/SKILL.md",
-   """## The 22 treatments
+   """## The 23 treatments
 
 ### 1. Felt texture""",
-   """## The 22 treatments
+   """## The 23 treatments
 
 Re-tint every example below to the project's dealt palette and tokens before using it — the hex values are placeholders, not the palette. Never copy a purple/violet gradient onto a landing page (Hallmark gate 2a and Taste §6 Never ban it); the craft floor's purple-blue-gradient ban applies the same way on app surfaces.
 
@@ -22158,7 +22161,7 @@ print("weave1: skill-triggers updated (36 -> 58 keys; 3 phrases re-pointed)")
 PYEOF
 
 # --- Weave fix program #2 (dry-run #12: B1 blocking, M1 + M2 minor).
-# Upstream ECC files, copied fresh on every build — this block runs LAST,
+# Upstream ECC files, copied fresh on every build — this block runs
 # just before STEP 5, AFTER the weave1 block (its anchors depend on weave1's
 # output). Each substitution asserts exactly one match.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
@@ -22183,7 +22186,7 @@ print("weave2: upstream patches applied")
 PYEOF
 # --- fix13-A: design package + Grok pin for the orch-* pipelines ---
 # (orch-build-mvp / orch-change-feature / orch-pipeline have no staged sources;
-#  they are upstream ECC patched here). Placement: LAST, just before STEP 5.
+#  they are upstream ECC patched here). Placement: before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -22263,8 +22266,8 @@ PYEOF
 
 # --- fix13b: dry-run #14 minors — M2/M3/M4/M5/M8 (orch pipelines + browser-qa) ---
 # (orch-change-feature / orch-pipeline / browser-qa / orch-build-mvp have no
-#  staged sources; they are upstream ECC patched here). Placement: LAST, just
-#  before STEP 5 (after the fix13-A/B blocks).
+#  staged sources; they are upstream ECC patched here). Placement: before STEP 5
+#  (after the fix13-A/B blocks).
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -22306,7 +22309,7 @@ PYEOF
 
 # --- fix13c: dry-run #15 minors — M1a/M1b/M1c (single distinctiveness executor) ---
 # (orch-build-mvp / gan-style-harness / gan-design have no staged sources;
-#  they are upstream ECC patched here). Placement: LAST, just before STEP 5
+#  they are upstream ECC patched here). Placement: before STEP 5
 #  (after the fix13b block).
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -22352,7 +22355,7 @@ PYEOF
 # --- fix13d: Audit #44 minors + dry-run #16 blocking/minor — single executor, rubric deferral, GAN truth ---
 # (orch-build-mvp / gan agents / gan-design / gan-style-harness / design-system
 #  have no staged sources; they are upstream ECC patched here). Placement:
-#  LAST, just before STEP 5 (after the fix13c block).
+#  before STEP 5 (after the fix13c block).
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
 base = sys.argv[1]
@@ -22442,7 +22445,7 @@ PYEOF
 # (ui-ux-pro-max / gan-style-harness / gan agents / gan-design / gan-build /
 #  gan-harness.sh / orch-build-mvp / design-system / browser-qa / orch-add-feature /
 #  orch-fix-defect / orch-refine-code / shipped README have no staged sources;
-#  they are upstream ECC patched here). Placement: LAST, just before STEP 5
+#  they are upstream ECC patched here). Placement: before STEP 5
 #  (after the fix13d block).
 python3 - "$PLUGIN_DIR" <<'PYEOF'
 import os, sys
@@ -22671,7 +22674,7 @@ claude -p --model sonnet "You are a Generator. Read spec.md and feedback-001.md.
   ("README.md",
    r'''- **Taste** needs Node 22+ and Chrome/Edge/Chromium for its finish gate (run the gate explicitly — it does not auto-run on stop in Cursor).''',
    r'''- **Taste** needs Node 22+ and Chrome/Edge/Chromium for its finish gate (run the gate explicitly — it does not auto-run on stop in Cursor).
-- **Before the first build — Grok 4.7 High in the model picker:** the plugin pins its design role to `grok-4.7-high`. Cursor's subagent model allowlist is coupled to the model-picker dropdown, so select **Grok 4.7 High** in Cursor's model picker before the first build, or the design pin may silently fall back to another model. This is a one-time setup note, not a mid-build ask. File-level pin only — whether it holds is decided by the live smoke test (`LIVE_SMOKE_TEST.md` §14).'''),
+- **Before the first build — Grok 4.7 High in the model picker:** the plugin pins its design role to `grok-4.7-high`. Cursor's subagent model allowlist is coupled to the model-picker dropdown, so select **Grok 4.7 High** in Cursor's model picker before the first build, or the design pin may silently fall back to another model. This is a one-time setup note, not a mid-build ask. File-level pin only — whether it holds is decided by the live smoke test (`LIVE_SMOKE_TEST.md` §14). Task agents pin to Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`); the orchestrator and the design/implementation roles pin to Grok 4.7 High (`grok-4.7-high`).'''),
   # 6a design-system Mode 1: package-generated direction, no competitors.
   ("skills/design-system/SKILL.md",
    r'''3. Research 3 competitor sites for inspiration (via browser MCP)''',
@@ -22709,7 +22712,7 @@ PYEOF
 #  skills/orch-change-feature/SKILL.md have no staged sources; they are upstream ECC
 #  patched here. The orchestrate half of B5 / Audit M2 / dry-run M1 / dry-run M2 is
 #  in fix13f/worker2.py — staged source new-skills/orchestrate/SKILL.md.)
-# Placement: LAST, just before STEP 5 (after the fix13e block).
+# Placement: before STEP 5 (after the fix13e block).
 # All anchors were verified count==1 against the post-fix13e built tree by
 # fix13f/worker2.py (preflight); the asserts below re-verify at build time and
 # fail the build loudly on mismatch.
@@ -22822,7 +22825,7 @@ PYEOF
 #  sources; they are upstream ECC patched here. The orchestrate half of B3 / M3 / M4 /
 #  M5 and the staged gates.md / craft-floor.md / impeccable-critique.md edits are
 #  in fix13g/fix13g.py — staged sources.)
-# Placement: LAST, just before STEP 5 (after the fix13f block).
+# Placement: before STEP 5 (after the fix13f block).
 # All anchors were verified count==1 against the post-fix13f built tree by
 # fix13g/fix13g.py (preflight); the asserts below re-verify at build time and
 # fail the build loudly on mismatch.
@@ -22926,7 +22929,7 @@ PYEOF
 #  half of B2 / M1 / M2 / M3 / M5 / M7 / M8 / M9 and the staged gates.md /
 #  craft-floor / polish.md / SKILL.md / critique edits are in fix13h/fix13h.py
 #  — staged sources.)
-# Placement: LAST, just before STEP 5 (after the fix13g block).
+# Placement: before STEP 5 (after the fix13g block).
 # All anchors were verified count==1 against the post-fix13g built tree by
 # fix13h/fix13h.py (preflight); the asserts below re-verify at build time and
 # fail the build loudly on mismatch.
@@ -23051,7 +23054,7 @@ PYEOF
 #  patched here. The orchestrate half of B1 / M1 / M2 / M3 / M4 / M5 / M7 and
 #  the staged gates.md / review-finish.md / review-hero.md / polish.md / Taste
 #  edits are in fix13i/fix13i.py — staged sources.)
-# Placement: LAST, just before STEP 5 (after the fix13h block).
+# Placement: before STEP 5 (after the fix13h block).
 # All anchors were verified count==1 against the post-fix13h built tree by
 # fix13i/fix13i.py (preflight); the asserts below re-verify at build time and
 # fail the build loudly on mismatch.
@@ -23109,7 +23112,7 @@ PYEOF
 # (skills/orch-build-mvp/SKILL.md has no staged source; it is upstream ECC
 #  patched here. The orchestrate half of the same fix is in fix13j/fix13j.py
 #  — staged source.)
-# Placement: LAST, just before STEP 5 (after the fix13i block).
+# Placement: before STEP 5 (after the fix13i block).
 # All anchors were verified count==1 against the post-fix13i built tree by
 # fix13j/fix13j.py (preflight); the asserts below re-verify at build time and
 # fail the build loudly on mismatch.
@@ -23147,6 +23150,931 @@ for rel, old, new in subs:
 print("fix13j upstream block applied")
 PYEOF
 
+
+# --- fix15: variety + theme-match rule (SPEC section A), count-moving rules R1-R5, fonts/text C1-C3, screenshot QA D1 ---
+# (skills/ui-ux-pro-max, make-interfaces-feel-better, the motion-* skills and orch-build-mvp are upstream;
+#  they have no staged source and are patched here. The staged-source halves -- design-taste-frontend,
+#  orchestrate, polish-pass, less-flat-ui, hallmark-floor.md -- are applied by fix15/fix15.py to their
+#  sources. All anchors were verified count==1 against the post-fix14 built tree by fix15.py's preflight;
+#  the asserts below re-verify at build time and fail the build loudly on mismatch.)
+# Placement: before STEP 5 (after the fix13j block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+CANONICAL = r'''**Element variety, all theme-matched.** Every build applies design elements across a wide variety of kinds — treatments, moments, effects, diagrams, components, motion, and type moments — never all of one kind: a build whose new elements are all one kind has not met this rule. Every element, of whatever kind, must match the dealt theme (its material, tokens, palette balance, and do-nots): theme-match is a precondition, not a preference — an element that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element. Every element application is recorded per surface in `docs/design-tokens.md` (surface → elements applied, kind, theme-fit).'''
+
+D1_RULE = r'''**Screenshot QA at least once before finish (fix #15 D1).** Before the final report is written, the build runs a screenshot QA pass at least once: the rendered page/app is inspected in screenshots (desktop + mobile) for whitespace, sizing, spacing, alignment, overflow, and collisions. The pass counts toward the requirement from whichever existing tooling ran it (Taste shoot.mjs / check.mjs / consistency.mjs, polish-pass before/after verification, or browser-qa's visual loop) — do not run a duplicate pass to satisfy it; record the run (tool, screens, findings count) in the run ledger and the final report. A build that never ran a screenshot QA pass is incomplete and cannot be reported as finished. Findings feed the fix batch like other checks; browser-qa alone issues pass/fail verdicts on rendered screens.'''
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   r'''Only `browser-qa`'s pass/fail verdict on the rendered screen decides whether the surface fails for having nothing memorable — this skill never states a screen pass/fail.''',
+   "\n\n" + CANONICAL),
+  ('skills/ui-ux-pro-max/SKILL.md',
+   r'''the same 10 items `design-taste-frontend` step 4a defines (that step is the canonical item list).''',
+   ' The dealt pairing / type scale is the ONLY permitted faces on the build — no other face is introduced; record the pairing + its source in `docs/design-tokens.md` (fix #15 C1).'),
+  ('skills/make-interfaces-feel-better/SKILL.md',
+   r'''Source: salvaged from stale community PR #1659 by `linus707`.''',
+   "\n\n" + CANONICAL),
+  ('skills/motion-foundations/SKILL.md',
+   r'''Responsiveness always outranks smoothness. A 60 fps animation that causes
+input delay is worse than no animation.''',
+   "\n\n" + CANONICAL),
+  ('skills/motion-patterns/SKILL.md',
+   r'''- `layout` is used only for small, isolated shifts. Large subtrees get explicit transforms.''',
+   "\n\n" + CANONICAL),
+  ('skills/motion-advanced/SKILL.md',
+   r'''- Motion values (`useMotionValue`, `useSpring`) are SSR-safe and do not cause hydration errors.''',
+   "\n\n" + CANONICAL),
+  ('skills/orch-build-mvp/SKILL.md',
+   r'''The GAN evaluator does NOT judge screen distinctiveness: its Design Quality / Originality rows defer to browser-qa (see `gan-style-harness`).''',
+   "\n\n" + CANONICAL),
+  ('skills/orch-build-mvp/SKILL.md',
+   r'''expansion Phase 5 checks BY NAME — `browser-qa` / `click-path-audit` / `verification-before-completion` per feature, after the MVP is built.''',
+   " **Screenshot QA at least once before finish (fix #15 D1).** Before the final report is written, the build runs a screenshot QA pass at least once: the rendered page/app is inspected in screenshots (desktop + mobile) for whitespace, sizing, spacing, alignment, overflow, and collisions. The pass counts toward the requirement from whichever existing tooling ran it (Taste shoot.mjs / check.mjs / consistency.mjs, polish-pass before/after verification, or browser-qa's visual loop) — do not run a duplicate pass to satisfy it; record the run (tool, screens, findings count) in the run ledger and the final report. A build that never ran a screenshot QA pass is incomplete and cannot be reported as finished. Findings feed the fix batch like other checks; browser-qa alone issues pass/fail verdicts on rendered screens."),
+  ('skills/orch-build-mvp/SKILL.md',
+   r'''Review findings are fixed inside the capped 2-round fix loop; past that, the item is recorded blocked with evidence and work moves on.''',
+   ' Static check, not a screen verdict: every dealt moment has one application or a re-deal log entry in `docs/design-tokens.md` — a dealt moment with neither is an incomplete build (fix #15 R1).'),
+  ('skills/orch-build-mvp/SKILL.md',
+   r'''Write it to `docs/final-report.md` in the project AND deliver it as the reply.''',
+   ' The final report names the screenshot QA pass (tool, screens, findings count) — a build that never ran a screenshot QA pass is incomplete and cannot be reported as finished (fix #15 D1).'),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix15 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, old + add))
+print("fix15 upstream block applied")
+PYEOF
+
+# --- fix16: re-pin all model pins to Grok; scrub Claude/Codex/Anthropic ---
+# (fix16/fix16.py operates on the built tree as the last build step, mirroring
+#  the fix15 precedent. Staged-source halves — orchestrate trio, dispatch-prompt,
+#  agent-TEMPLATE, README picker note — were edited directly in new-skills/ and
+#  flow through the STEP 2 copy. Fails the build loudly on any anchor mismatch;
+#  the run log lands in fix16/fix16-run-log.md.)
+python3 "$PLUGIN_ROOT/fix16/fix16.py" "$PLUGIN_DIR"
+
+# --- fix17: back-port ALL Campus Eats render feedback (U1/T1/F1/M1-M6/E1, sticker exceptions A+B, R3 widening) ---
+# (skills/ui-ux-pro-max, make-interfaces-feel-better, the motion-* skills and orch-build-mvp are upstream;
+#  they have no staged source and are patched here. The staged-source halves -- design-taste-frontend,
+#  sticker.md, orchestrate, polish-pass, typeset lens, less-flat-ui -- are applied by fix17/fix17.py to their
+#  sources. All anchors were verified count==1 against the post-fix16 built tree by fix17.py's preflight;
+#  the asserts below re-verify at build time and fail the build loudly on mismatch.)
+# Placement: before STEP 5 (after the fix16 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   "Only `browser-qa`'s pass/fail verdict on the rendered screen decides whether a screen fails any of these — this skill never states a screen pass/fail.",
+   "\n\n**Unique page-only elements (fix #17 U1, app surfaces).** Each primary app surface carries at least 1 page-only element (invented through this skill's styles/palettes/pairings, never a searched reference), recorded in the 'Unique elements' list in `docs/design-tokens.md` (or MASTER.md) with its kind, the job it serves, and why it is not a catalogue item; a surface with none records `none — <reason>`. The full U1 rule (at least three per build, four-part uniqueness test) lives in `design-taste-frontend` step 4a.\n\n**Push boundaries — be trailblazing, not dumb (fix #17 E1).** The design-lead MUST push boundaries and aim to be trailblazing: invent original, first-of-its-kind elements for the page — the unique elements of U1 are the normal case, and a build with no element a template would not produce has not pushed far enough. 'Trailblazing' means original, first-of-its-kind decisions, not safe or derivative ones. 'Not in a dumb way' means EVERY boundary push must still: (1) serve the section's job, named in the Unique-list entry; (2) fit the theme's material world — material, tokens, palette balance, do-nots; (3) obey the type/space rules — the C3 Type list, the T1 fill rule, measure and contrast checks; (4) be theme-matched (fix #15 rule A); (5) pass the craft floor; (6) pass the Hallmark floor; (7) use no violet; (8) be anti-derivative — never based on a searched reference, and the entry names the theme material it draws on, never a URL; (9) stand or fall on browser-qa's verdict on the rendered screen, which is the final word on whether the invented element reads as distinct rather than generic or template. NOT within reason: a new theme (re-deal instead, Taste step 4); a new palette (the Tokens block is the page's `:root` — re-deal once if it clashes); a template pattern (a sections-library recipe reused as-is is a catalogue item, not an invention — it fails U1's not-a-catalogue test); breaking a floor or a ban (craft-floor bans are absolute; the Hallmark floor binds). Each invented element's Unique-list entry carries the nine-point bound checklist, one line per bound; a missing or failed bound is a static-check finding, and a floor/ban break blocks. Distinctiveness itself is browser-qa's verdict alone."),
+  ('skills/ui-ux-pro-max/SKILL.md',
+   'The dealt pairing / type scale is the ONLY permitted faces on the build — no other face is introduced; record the pairing + its source in `docs/design-tokens.md` (fix #15 C1).',
+   " **Type fills its bubble (fix #17 T1).** For every display, figure, or label type set inside a bounded container — a tile, card, bubble, chip, tag, badge, stat fill, or price-ladder cell — the size is chosen so the type fills its container: the rendered glyph bounding box must span at least 60% of the container's inner width where the layout fills horizontally, or at least 60% of its inner height where it fills vertically, measured in-page (glyph box vs container box) and recorded per surface in `docs/design-tokens.md`'s Type list as surface → face/size → container inner size → fill ratio. Bounded by no-overflow (no text clipped or spilling its container at 1440 or 390) and no-crowding (type never touches the container edge — the inset is at least the theme's own padding/rhythm token — and adjacent type runs never collide; the existing check.mjs collision/overflow findings govern). The step-6 screenshot check includes a dead-space item: a bubble, card, or tile whose largest empty band exceeds 25% of its minor dimension is a finding, fed to the fix batch like other checks. Flowing body copy is not a bubble — the C3 body-measure rule (65–75ch) governs there, not this rule. **Every font decision cites the type system (fix #17 F1 — extends fix #15 C1–C3, does not replace them).** Every face, weight, size, and tracking value on the page is an explicit value from the skills' type system — the dealt pairing (Taste step 4a / ui-ux-pro-max type scale), the theme file's type voice, or the `system.md` Type scale step. No face, weight, size, or tracking on the page is a browser or framework default, and no value is chosen flat (unstated, inherited, 'whatever it came with'). The Type list in `docs/design-tokens.md` gains two columns — weight and tracking — and every row gains a Source cell naming the exact skill text the choice comes from (pairing line, theme-file line, or scale step). A row with an empty Source cell, a Source of 'default', or a value that traces to no recorded pairing/scale/theme line is an incomplete build — a static check item in step 6, never a screen verdict. The polish-pass harmony check verifies the Type list including the Source cells (consistency only — a surface whose type does not trace to the recorded pairing/scale is a harmony divergence, recorded as candidate evidence, never a verdict). App surfaces record theirs the same way in `design-system/<project-slug>/MASTER.md`, conforming to the tokens file."),
+  ('skills/motion-patterns/SKILL.md',
+   '8. **All token values are imported from `motion-foundations`.** No inline numbers.',
+   "\n9. **M1 — Scroll entrances on motion-governed surfaces (fix #17).** On surfaces governed by the motion-* skills (React/Next.js app surfaces), each content section enters on scroll: `whileInView` with `viewport={{ once: true }}` (motion-patterns rule 7), using motion-foundations tokens. Each entrance is recorded per surface in `docs/design-tokens.md`'s Motion list (surface → entrance → tokens used). A section with no entrance and no recorded reason is an incomplete build — a static check item in step 6, never a screen verdict. SCOPE: the design-taste-frontend page system keeps its standing rule (`references/motion.md`: 'Scrolling moves nothing but the dealt moment') — scroll entrances do NOT apply to Taste landing pages under this rule. A theme file may record a scoped, named exception permitting scroll entrances as that theme's own motion (see sticker.md, fix #17 exception B) — the exception is the theme's decision, not this rule's.\n10. **M2 — 1500ms fail-safe: content can never stay hidden (fix #17).** Every scroll-entrance element becomes fully visible within 1500ms of entering the viewport even if its observer never fires: a timed fail-safe (a timer or CSS fallback that forces the visible state — opacity 1, transform none — 1500ms after mount/entry) is a required part of every entrance implementation, and its presence is recorded in the Motion list (surface → entrance → fail-safe mechanism). The step-6 check scrolls to each section, waits 1500ms, and confirms in the screenshot that no content is still hidden (no element left at opacity 0 or off-screen). A section still hidden after the wait is a finding, fed to the fix batch. Under `prefers-reduced-motion: reduce` the content is visible at rest, with no entrance to fail — reduced-motion renders are exempt from the entrance itself but never from visibility."),
+  ('skills/motion-patterns/SKILL.md',
+   '  transition={{ duration: motionTokens.duration.slow, ease: motionTokens.easing.smooth }}\n/>\n```',
+   '\n\n**1500ms fail-safe (fix #17 M2).** If the reveal has not fired within 1500ms of the element entering the viewport, the content is shown anyway — nothing ever stays hidden because an observer never fired. Implement with a timer or CSS fallback that forces the visible state (opacity 1, transform none) 1500ms after mount/entry; record the mechanism in the Motion list. See `motion-advanced` `useScrollRevealSafe` for the shared implementation.'),
+  ('skills/motion-foundations/SKILL.md',
+   '8. **Never read `window` or `navigator` at module level.** Always guard with `typeof window !== "undefined"`.',
+   "\n9. **M1 — Scroll entrances on motion-governed surfaces (fix #17).** On surfaces governed by the motion-* skills (React/Next.js app surfaces), each content section enters on scroll: `whileInView` with `viewport={{ once: true }}` (motion-patterns rule 7), using motion-foundations tokens. Each entrance is recorded per surface in `docs/design-tokens.md`'s Motion list (surface → entrance → tokens used). A section with no entrance and no recorded reason is an incomplete build — a static check item in step 6, never a screen verdict. SCOPE: the design-taste-frontend page system keeps its standing rule (`references/motion.md`: 'Scrolling moves nothing but the dealt moment') — scroll entrances do NOT apply to Taste landing pages under this rule. A theme file may record a scoped, named exception permitting scroll entrances as that theme's own motion (see sticker.md, fix #17 exception B) — the exception is the theme's decision, not this rule's.\n10. **M2 — 1500ms fail-safe: content can never stay hidden (fix #17).** Every scroll-entrance element becomes fully visible within 1500ms of entering the viewport even if its observer never fires: a timed fail-safe (a timer or CSS fallback that forces the visible state — opacity 1, transform none — 1500ms after mount/entry) is a required part of every entrance implementation, and its presence is recorded in the Motion list (surface → entrance → fail-safe mechanism). The step-6 check scrolls to each section, waits 1500ms, and confirms in the screenshot that no content is still hidden (no element left at opacity 0 or off-screen). A section still hidden after the wait is a finding, fed to the fix batch. Under `prefers-reduced-motion: reduce` the content is visible at rest, with no entrance to fail — reduced-motion renders are exempt from the entrance itself but never from visibility."),
+  ('skills/motion-foundations/SKILL.md',
+   'Motion must degrade gracefully. It must never disappear abruptly in a way\nthat causes layout shift or confuses orientation.',
+   ' Under reduced motion the fail-safe still reveals (opacity-only ≤ 0.2s) — content is visible at rest with no entrance to fail (fix #17 M2/M6). Every motion rule in this section is gated on `prefers-reduced-motion: reduce`, in both layers: the CSS block above and the JS guard (`useSafeMotion` / `motionConfig.shouldAnimate`); the built page must contain both, and the step-6 record notes the reduced-motion render (or records that it did not run — never claim a render pass that did not run) (fix #17 M6).'),
+  ('skills/motion-advanced/SKILL.md',
+   '<motion.section ref={ref} style={style} />\n```',
+   '\n\n// 1500ms fail-safe (fix #17 M2): if the reveal has not completed within\n// 1500ms of mount, force the visible state — content can never stay hidden\n// because an observer never fired. Record the mechanism in the Motion list.\nexport function useScrollRevealSafe() {\n  const { ref, style } = useScrollReveal()\n  const [revealed, setRevealed] = useState(false)\n  useEffect(() => {\n    const t = setTimeout(() => setRevealed(true), 1500)\n    return () => clearTimeout(t)\n  }, [])\n  return { ref, style: revealed ? { opacity: 1, y: 0 } : style }\n}\n'),
+  ('skills/make-interfaces-feel-better/SKILL.md',
+   '- Icon swaps: cross-fade with opacity, scale, and blur instead of instant\n  visibility toggles.',
+   "\n\n**Default motion set (fix #17, v4-level).** Every page carries the default motion set — scroll entrances with a 1500ms fail-safe (M1/M2, on motion-governed surfaces; landing pages keep the Taste scroll ban except where a theme file records a scoped exception), hover micro-interactions on every interactive element (M3), life in existing pieces (M4), and at least one small interactive bit per page where the page has one (M5) — decided here for feel/timing, implemented with the motion-* skills. Reduced motion is respected in CSS and JS (M6). Each item is recorded in `docs/design-tokens.md`'s Motion list (surface → item → trigger/tokens/fail-safe).\n\n**M3 — Hover micro-interactions on every interactive element (fix #17).** Every link, button, linked card, and linked photograph has a visible hover state per the hover layer (`references/motion.md`, hover-layer table) and the motion defaults (enter: opacity + small translateY; press: scale 0.97; transitions scoped to the changed properties, never `transition: all`). A hover may also warm a name's colour on a fill (never pink text on the paper ground), lift-and-pop a card or photograph on tap, or wiggle a sticker — each distinct hover behaviour is its own authored motion, recorded in `docs/design-tokens.md`'s Motion list. The step-6 check shoots a hovered card and a hovered photograph at 1440 (the existing Taste rule) and records hovered shots per interactive surface; an interactive element with no visible hover change is a finding, fed to the fix batch like other checks.\n\n**M4 — Life in existing pieces (fix #17).** Every authored motion element already on the page — hero entrance, dealt hero loop (fix #15 R4), dealt moment, count, diagram pulse, effect/scene loop — must actually move in the rendered page. Ambient loops on existing pieces (a card's bob, a seal's breathe, a flag's sway, a heart's beat, a marquee's pause-on-hover) are authored motion too, each recorded in the Motion list with its trigger (on load / on scroll / on hover / timed loop / count). The D1 screenshot pass (and browser-qa's visual loop) confirms each one moves; a piece that should move and does not is a finding.\n\n**M5 — At least one small interactive bit per page, where the page has one (fix #17).** Each page that carries an interactive surface — a stepper, toggle, tab, filter, counter, peek-list, or live total — must have at least one working interactive bit recorded in `docs/design-tokens.md` (name, surface, what it does, what state it shows). A page with an interactive surface and no recorded bit is incomplete — a static check item in step 6, never a screen verdict. A page with no interactive surface is exempt, and the exemption is recorded ('no interactive surface — none'). The bit is small: one control and its feedback, not a feature."),
+  ('skills/make-interfaces-feel-better/SKILL.md',
+   '- Small controls still have usable hit areas.',
+   '\n- Every interactive element has a visible hover state, with hovered shots recorded per interactive surface (fix #17 M3).\n- Every authored motion element actually moves in the rendered page; each recorded in the Motion list with its trigger (fix #17 M4).\n- Each page with an interactive surface has at least one working interactive bit recorded, or the exemption noted (fix #17 M5).'),
+  ('skills/orch-build-mvp/SKILL.md',
+   'The GAN evaluator does NOT judge screen distinctiveness: its Design Quality / Originality rows defer to browser-qa (see `gan-style-harness`).',
+   "\n\n**Push boundaries — be trailblazing, not dumb (fix #17 E1).** The design-lead MUST push boundaries and aim to be trailblazing: invent original, first-of-its-kind elements for the page — the unique elements of U1 are the normal case, and a build with no element a template would not produce has not pushed far enough. 'Trailblazing' means original, first-of-its-kind decisions, not safe or derivative ones. 'Not in a dumb way' means EVERY boundary push must still: (1) serve the section's job, named in the Unique-list entry; (2) fit the theme's material world — material, tokens, palette balance, do-nots; (3) obey the type/space rules — the C3 Type list, the T1 fill rule, measure and contrast checks; (4) be theme-matched (fix #15 rule A); (5) pass the craft floor; (6) pass the Hallmark floor; (7) use no violet; (8) be anti-derivative — never based on a searched reference, and the entry names the theme material it draws on, never a URL; (9) stand or fall on browser-qa's verdict on the rendered screen, which is the final word on whether the invented element reads as distinct rather than generic or template. NOT within reason: a new theme (re-deal instead, Taste step 4); a new palette (the Tokens block is the page's `:root` — re-deal once if it clashes); a template pattern (a sections-library recipe reused as-is is a catalogue item, not an invention — it fails U1's not-a-catalogue test); breaking a floor or a ban (craft-floor bans are absolute; the Hallmark floor binds). Each invented element's Unique-list entry carries the nine-point bound checklist, one line per bound; a missing or failed bound is a static-check finding, and a floor/ban break blocks. Distinctiveness itself is browser-qa's verdict alone."),
+  ('skills/orch-build-mvp/SKILL.md',
+   'a dealt moment with neither is an incomplete build (fix #15 R1).',
+   " **Fix #17 static checks (all static checks, never screen verdicts).** (U1) The 'Unique elements' list in `docs/design-tokens.md` has at least three complete entries — element, surface, kind, section job, theme material, why-not-a-catalogue-item — with at least one on the primary page; fewer is an incomplete build. (F1) The Type list gains weight and tracking columns and a Source cell per row naming the exact skill text; a row with an empty or 'default' Source is an incomplete build. (T1) Each Type-list row records the fill ratio (glyph box / container box, minimum 0.60), and the screenshot check includes the dead-space item (a bubble, card, or tile whose largest empty band exceeds 25% of its minor dimension is a finding). (M1–M6) The Motion list records, per surface: each scroll entrance with its tokens and fail-safe mechanism (M1/M2, motion-governed surfaces only — landing pages keep the Taste scroll ban except where a theme file records a scoped exception); hovered shots per interactive surface and each distinct hover behaviour (M3); each authored motion piece with its trigger, confirmed moving in the D1 pass (M4); one working interactive bit per page with an interactive surface, or the recorded exemption 'no interactive surface — none' (M5); the reduced-motion render noted, or recorded as not run (M6). (E1) Each Unique-list entry carries the nine-point bound checklist, all passing, or the failure recorded as a finding; a floor/ban break blocks."),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix17 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, old + add))
+print("fix17 upstream block applied")
+PYEOF
+
+# --- fix19: font identity, forced font choice, Tiempos body font, thought-out decisions (F2/F3/F4/D19) ---
+# (skills/ui-ux-pro-max and orch-build-mvp are upstream; they have no
+#  staged source and are patched here. The staged-source halves --
+#  design-taste-frontend (incl. theme Tokens blocks, start.mjs, theme.mjs),
+#  pitch-deck-video template shots.json, orchestrate, polish-pass, typeset
+#  lens, less-flat-ui -- are applied by fix19/fix19.py to their sources.
+#  All anchors were verified count==1 against the post-fix18 built tree
+#  by fix19.py's preflight; the asserts below re-verify at build time
+#  and fail the build loudly on mismatch.)
+# Placement: before STEP 5 (after the fix17 block; fix18 made
+#  no build.sh block — it edited staged sources only).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   "Only `browser-qa`'s pass/fail verdict on the rendered screen decides whether a screen fails any of these — this skill never states a screen pass/fail.",
+   "\n\n**Fonts render identically on iPhone and web — static bundled files only (fix #19 F2, app surfaces).** App surfaces ship static font instances only (one file per weight); a variable font file is never the shipped format; no `system-ui` or bare generic fallback as a live path; `font-synthesis: none`, `text-size-adjust: 100%`; preload the first-paint faces. The D1 screenshot pass (desktop + mobile) confirms the same faces render on both widths. Recorded in `design-system/<project-slug>/MASTER.md` (face → static files, source, preloads). The full F2 rule lives in `design-taste-frontend` step 4a.\n\n**Font choice is unique and interesting — forced (fix #19 F3, app surfaces).** No generic/system font as a display or body face on app surfaces; the pairing is distinctive, made through this skill's type scale, and recorded in MASTER.md with a Source cell. A framework-default, system-stack, or template-stock pairing is an incomplete build. The full F3 rule lives in `design-taste-frontend` step 4a.\n\n**Plain/body text uses Tiempos (fix #19 F4, app surfaces).** Body and plain text use Tiempos, or the recorded stand-in 'Fraunces (stand-in for Tiempos)' at 1.55 line-height; a theme body face kept without a scoped, recorded exception is an incomplete build. The full F4 rule lives in `design-taste-frontend` step 4a.\n\n**Every UI decision carries a thought-out reason across the FULL experience (fix #19 D19, app surfaces).** Each app-surface UI decision carries its recorded reason in MASTER.md — job served, considered-and-rejected, theme-fit — across all six dimensions (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; a layout-only reason does not satisfy the rule. The full D19 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/ui-ux-pro-max/SKILL.md',
+   'The dealt pairing / type scale is the ONLY permitted faces on the build — no other face is introduced; record the pairing + its source in `docs/design-tokens.md` (fix #15 C1).',
+   ' On app surfaces, the font-identity rules apply as in fix #19 F2/F3/F4 (static bundled instances only, no system fallback; a distinctive pairing recorded with its Source cell; body text Tiempos or the recorded Fraunces stand-in) — see the F2/F3/F4 app mirrors in this skill.'),
+  ('skills/orch-build-mvp/SKILL.md',
+   "Distinctiveness itself is browser-qa's verdict alone.",
+   '\n\n**Every UI decision carries a thought-out reason across the FULL experience (fix #19 D19, app surfaces).** Each app-surface UI decision carries its recorded reason in MASTER.md — job served, considered-and-rejected, theme-fit — across all six dimensions (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; a layout-only reason does not satisfy the rule. The full D19 rule lives in `design-taste-frontend` step 4a.'),
+  ('skills/orch-build-mvp/SKILL.md',
+   'or the failure recorded as a finding; a floor/ban break blocks.',
+   "\n\n**Fix #19 static checks (all static checks, never screen verdicts).** (F2) The Type list names, per face, its static files (weight → file) with source and preloads; a row naming a variable file, a `system-ui` fallback, a bare generic fallback, or no preload is an incomplete build. (F3) The pairing is recorded with a Source cell naming the exact skill text; a pairing that is a framework default, a system stack, or a template's stock pairing is an incomplete build. (F4) Body/plain text is Tiempos or the recorded stand-in 'Fraunces (stand-in for Tiempos)' at 1.55 line-height; a theme body face kept without a scoped, recorded exception is an incomplete build. (D1 face check) The D1 screenshot pass (desktop + mobile) confirms the same faces render on both widths — a rendered face that is not a declared bundled face (a system font, a synthesised weight, a fallback sans) is a finding. (D19) Every decision-record entry carries all six dimension lines (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; an entry missing a dimension, or a reason covering only layout/structure, is an incomplete build."),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix19 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, old + add))
+print("fix19 upstream block applied")
+PYEOF
+
+# --- fix20: Tiempos body-only scope, unique important font, impressive bar, brand identity, component-as-experience (F4_SCOPE/F5/F6/B1/X1) ---
+# (skills/ui-ux-pro-max and orch-build-mvp are upstream; they have no
+#  staged source and are patched here. The staged-source halves --
+#  design-taste-frontend (step 4a + step 6), orchestrate (design-package
+#  rule + Verify 5a), polish-pass (harmony), typeset lens -- are applied
+#  by fix20/fix20.py to their sources. All anchors were verified
+#  count==1 against the post-fix19 built tree by fix20.py's preflight;
+#  the asserts below re-verify at build time and fail the build loudly
+#  on mismatch. D19_APP occurs twice in build.sh (once per patched
+#  file) -- the runtime asserts below are per FILE, never build.sh-wide.)
+# Placement: before STEP 5 (after the fix19 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   '**Every UI decision carries a thought-out reason across the FULL experience (fix #19 D19, app surfaces).** Each app-surface UI decision carries its recorded reason in MASTER.md — job served, considered-and-rejected, theme-fit — across all six dimensions (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; a layout-only reason does not satisfy the rule. The full D19 rule lives in `design-taste-frontend` step 4a.',
+   "\n\n**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). The full scope rule lives in `design-taste-frontend` step 4a.\n\n**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. The full F5 rule lives in `design-taste-frontend` step 4a.\n\n**The design just has to be impressive (fix #20 F6, app surfaces).** On app surfaces, a font choice that is correct per the rules but leaves the design unimpressive still fails; the finish review (browser-qa's visual verdict) judges impressiveness, and MASTER.md states why the important font is the impressive choice for each surface. The full F6 rule lives in `design-taste-frontend` step 4a.\n\n**Every build carries a distinct brand identity (fix #20 B1, app surfaces).** On app surfaces, the build carries the product's own brand — wordmark, identity tokens, voice — recorded in MASTER.md; every surface, component, and decision expresses it. A build with no recorded brand identity is an incomplete build. The full B1 rule lives in `design-taste-frontend` step 4a.\n\n**Every component is an experience (fix #20 X1, app surfaces).** On app surfaces, each component is designed as a moment/interaction, not a static functional block; every component entry in MASTER.md states the experience it creates (what it feels like, what moment it is) alongside its six fix #19 D19 dimension lines. A component recorded only as a functional block is an incomplete build. The full X1 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   '**Every UI decision carries a thought-out reason across the FULL experience (fix #19 D19, app surfaces).** Each app-surface UI decision carries its recorded reason in MASTER.md — job served, considered-and-rejected, theme-fit — across all six dimensions (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; a layout-only reason does not satisfy the rule. The full D19 rule lives in `design-taste-frontend` step 4a.',
+   "\n\n**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). The full scope rule lives in `design-taste-frontend` step 4a.\n\n**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. The full F5 rule lives in `design-taste-frontend` step 4a.\n\n**The design just has to be impressive (fix #20 F6, app surfaces).** On app surfaces, a font choice that is correct per the rules but leaves the design unimpressive still fails; the finish review (browser-qa's visual verdict) judges impressiveness, and MASTER.md states why the important font is the impressive choice for each surface. The full F6 rule lives in `design-taste-frontend` step 4a.\n\n**Every build carries a distinct brand identity (fix #20 B1, app surfaces).** On app surfaces, the build carries the product's own brand — wordmark, identity tokens, voice — recorded in MASTER.md; every surface, component, and decision expresses it. A build with no recorded brand identity is an incomplete build. The full B1 rule lives in `design-taste-frontend` step 4a.\n\n**Every component is an experience (fix #20 X1, app surfaces).** On app surfaces, each component is designed as a moment/interaction, not a static functional block; every component entry in MASTER.md states the experience it creates (what it feels like, what moment it is) alongside its six fix #19 D19 dimension lines. A component recorded only as a functional block is an incomplete build. The full X1 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   "**Fix #19 static checks (all static checks, never screen verdicts).** (F2) The Type list names, per face, its static files (weight → file) with source and preloads; a row naming a variable file, a `system-ui` fallback, a bare generic fallback, or no preload is an incomplete build. (F3) The pairing is recorded with a Source cell naming the exact skill text; a pairing that is a framework default, a system stack, or a template's stock pairing is an incomplete build. (F4) Body/plain text is Tiempos or the recorded stand-in 'Fraunces (stand-in for Tiempos)' at 1.55 line-height; a theme body face kept without a scoped, recorded exception is an incomplete build. (D1 face check) The D1 screenshot pass (desktop + mobile) confirms the same faces render on both widths — a rendered face that is not a declared bundled face (a system font, a synthesised weight, a fallback sans) is a finding. (D19) Every decision-record entry carries all six dimension lines (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; an entry missing a dimension, or a reason covering only layout/structure, is an incomplete build.",
+   "\n\n**Fix #20 static checks (all static checks, never screen verdicts).** (F4 scope) The Type list marks the body face as body-only; no heading, display, hero, call-to-action, or key-label token points at the body face; a dealt theme naming the same face for display and body is either re-dealt with a distinct display face or recorded as a scoped exception with a fix #19 D19 reason and a fix #20 F6 justification. (F5) Every important-text token points at the display face; the display face is recorded with its fix #19 D19 reason and its fix #20 F6 justification; a build setting important text in the body face or a generic/system font is an incomplete build. (F6 record) The decision record states, for the important font on each surface, why it is the impressive choice for that surface; a record that cannot say so is an incomplete build. (F6 verdict) The impressiveness verdict itself is browser-qa's at the finish review, never a static check. (B1) The decision record names the build's brand identity (wordmark, identity tokens, voice); a build with no recorded brand identity is an incomplete build. (X1) Every component entry in the decision record states the experience it creates (what it feels like, what moment it is) alongside the six D19 dimension lines; a component recorded only as a functional block is an incomplete build."),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix20 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, old + add))
+print("fix20 upstream block applied")
+PYEOF
+
+# --- Weave program #20: design-decision pointers at every decision point
+# (SPEC §10, ordered Nov 11 evening). Upstream ECC files, patched on every
+# build — this block runs before STEP 5, after the fix20 block.
+# Staged-source edits live in fix20/weave20.py Part A; this block covers
+# only files no staged source owns, plus the skill-triggers JSON.
+# Each substitution asserts exactly one match in the BUILT file. The weave
+# adds POINTERS only — no rule text, no canonical-block change, no new
+# skills/agents/rules/commands.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import json, os, sys
+base = sys.argv[1]
+subs = [
+  # A1: accessibility — When to Use (UI component specifications).
+  ("skills/accessibility/SKILL.md",
+   "- Defining UI component specifications for Web, iOS, or Android.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A2: ai-feature-spec — blueprint section 10 UX Integration (UX states).
+  ("skills/ai-feature-spec/SKILL.md",
+   "[Where result appears, loading state, streaming vs batch, feedback mechanism]",
+   """
+**Design-decision pointer:** D19/F6/X1 as relevant (UX states are the component's experience — what the user feels) — design-package rule — Taste step 4a / orchestrate."""),
+  # A3: browser-qa — visual iteration loop (the F6 verdict executor).
+  ("skills/browser-qa/SKILL.md",
+   "Never claim visual verification without actually inspecting the rendered interface.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A4: click-path-audit — Step 2 audit each touchpoint.
+  ("skills/click-path-audit/SKILL.md",
+   "For each button/toggle/form submit in the target area:",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A5: design-system — Mode 1 generate (direction step).
+  ("skills/design-system/SKILL.md",
+   "— never competitor sites and never a searched external reference (orchestrate row-10 anti-derivative rule)",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A6: design-system — Mode 2 visual audit (10 dimensions).
+  ("skills/design-system/SKILL.md",
+   "Scores your UI across 10 dimensions (0-10 each):",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A7: frontend-a11y — When to Activate (form/interactive components).
+  ("skills/frontend-a11y/SKILL.md",
+   "- Building or reviewing form components (`<input>`, `<select>`, `<textarea>`)",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A8: frontend-slides — step 3 Discover Style (feeling -> previews).
+  ("skills/frontend-slides/SKILL.md",
+   "1. Ask what feeling the deck should create: impressed, energized, focused, inspired.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A9: gan-style-harness — Evaluation Rubric (Design Quality row).
+  ("skills/gan-style-harness/SKILL.md",
+   "do not raise or lower a score for screen distinctiveness.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A10: less-flat-ui — check-every-surface decision.
+  ("skills/less-flat-ui/SKILL.md",
+   "Never skip the check because a surface is small.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A11: make-interfaces-feel-better — Motion section (feel/timing decisions).
+  ("skills/make-interfaces-feel-better/SKILL.md",
+   "one-shot entrances or loading sequences.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A12: motion-advanced — Decision Guidance (choosing the API).
+  ("skills/motion-advanced/SKILL.md",
+   "### Choosing the right advanced API",
+   """
+
+**Design-decision pointer:** D19/F6/X1 as relevant (motion is a D19 dimension; the experience is the moment) — design-package rule — Taste step 4a / orchestrate."""),
+  # A13: motion-foundations — Decision Guidance (choosing a duration).
+  ("skills/motion-foundations/SKILL.md",
+   "### Choosing a duration",
+   """
+
+**Design-decision pointer:** D19/F6/X1 as relevant (motion is a D19 dimension; the experience is the moment) — design-package rule — Taste step 4a / orchestrate."""),
+  # A14: motion-patterns — Decision Guidance (choosing the pattern).
+  ("skills/motion-patterns/SKILL.md",
+   "### Choosing the right pattern",
+   """
+
+**Design-decision pointer:** D19/F6/X1 as relevant (motion is a D19 dimension; the experience is the moment) — design-package rule — Taste step 4a / orchestrate."""),
+  # A15: orch-add-feature — UI change / build-a-surface rule.
+  ("skills/orch-add-feature/SKILL.md",
+   "Pure backend/logic changes with no visual surface are exempt.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A16: orch-build-mvp — step 4 (first UI slice writes design-tokens.md).
+  ("skills/orch-build-mvp/SKILL.md",
+   "if it is missing, prepend it — never start the loop on a rubric without it.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A17: orch-change-feature — UI change / rebuild-a-surface rule.
+  ("skills/orch-change-feature/SKILL.md",
+   "Pure backend/logic changes with no visual surface are exempt.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A18: orch-fix-defect — UI change / rebuild-a-surface rule.
+  ("skills/orch-fix-defect/SKILL.md",
+   "Pure backend/logic changes with no visual surface are exempt.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A19: orch-pipeline — Review (direction RECORDED check + QA loop).
+  ("skills/orch-pipeline/SKILL.md",
+   "if the app cannot run, record that as blocked with evidence instead of iterating.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A20: orch-refine-code — UI change / rebuild-a-surface rule.
+  ("skills/orch-refine-code/SKILL.md",
+   "Pure backend/logic changes with no visual surface are exempt.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+  # A21: ui-ux-pro-max — Define the design system (Step 2).
+  ("skills/ui-ux-pro-max/SKILL.md",
+   "so any later slice can recover which direction the UI traces to.",
+   """
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate."""),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p, encoding="utf-8").read()
+    n = t.count(old)
+    assert n == 1, f"weave20 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if old + add in t:
+        continue
+    open(p, "w", encoding="utf-8").write(t.replace(old, old + add))
+print("weave20: upstream skill pointers applied")
+
+# Trigger keys for in-scope skills that lack one (6 new keys, 58 -> 64).
+# Deliberately NOT added: orch-pipeline (internal engine, weave1 precedent)
+# and frontend-design-direction (out of scope — hackathon-mode section 5).
+tp = os.path.join(base, "manifests/context-packs/skill-triggers@1.json")
+data = json.load(open(tp, encoding="utf-8"))
+tr = data["triggers"]
+assert data["coverage"]["withTriggers"] == 58, data["coverage"]
+new_keys = {
+  "skill:accessibility": ["make this accessible", "wcag compliance",
+                          "accessibility audit", "aria labels"],
+  "skill:ai-feature-spec": ["spec an ai feature", "ai feature spec",
+                            "specify the ai feature"],
+  "skill:gan-style-harness": ["gan build", "generator evaluator loop",
+                              "build with the gan harness"],
+  "skill:motion-advanced": ["advanced motion", "drag and drop animation",
+                            "gesture animation"],
+  "skill:motion-foundations": ["motion tokens", "spring animation",
+                               "motion presets"],
+  "skill:motion-patterns": ["animate this component", "button animation",
+                            "page transition", "modal animation"],
+}
+seen = [p for v in tr.values() for p in v]
+for k, v in new_keys.items():
+    assert k not in tr, f"trigger key already exists: {k}"
+    for p in v:
+        assert p not in seen, f"trigger phrase already used elsewhere: {p!r}"
+    tr[k] = v
+data["triggers"] = {k: tr[k] for k in sorted(tr)}
+data["coverage"]["withTriggers"] = len(data["triggers"])
+assert data["coverage"]["withTriggers"] == 64, data["coverage"]
+open(tp, "w", encoding="utf-8").write(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+print("weave20: skill-triggers updated (58 -> 64 keys)")
+PYEOF
+
+# --- fixup20: F4_SCOPE role-scope + F5 key-label definition + coverage.skills 169->166 ---
+# (audit #62 + sweep #25 follow-up to fix #20, Nov 12. Amends the fix20
+#  rule texts in place; staged halves are edited by fix20/fixup20.py,
+#  upstream halves are patched here. Placement: before STEP 5
+#  (after the fix20 and weave20 blocks). Each substitution asserts
+#  exactly one match in the BUILT file and fails the build loudly.)
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   '**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). The full scope rule lives in `design-taste-frontend` step 4a.',
+   '**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). Role-scoped (fix #20 fix-up): this binds the face as the body face; a pairing that deals Fraunces as the display face, with a different face as body, is governed by F3/F5, not by this scope rule. The full scope rule lives in `design-taste-frontend` step 4a.'),
+  ('skills/ui-ux-pro-max/SKILL.md',
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. The full F5 rule lives in `design-taste-frontend` step 4a.",
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (hero eyebrow/kicker, featured section label, emphasis badge); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   '**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). The full scope rule lives in `design-taste-frontend` step 4a.',
+   '**Body-only scope for the Tiempos rule (fix #20 — F4 is body-only, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for basic text only — body copy and plain reading text, never important text. Headings, display type, hero text, emphasis, key labels, and calls to action use the display face (fix #20 F5). Role-scoped (fix #20 fix-up): this binds the face as the body face; a pairing that deals Fraunces as the display face, with a different face as body, is governed by F3/F5, not by this scope rule. The full scope rule lives in `design-taste-frontend` step 4a.'),
+  ('skills/orch-build-mvp/SKILL.md',
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. The full F5 rule lives in `design-taste-frontend` step 4a.",
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (hero eyebrow/kicker, featured section label, emphasis badge); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   "**Fix #20 static checks (all static checks, never screen verdicts).** (F4 scope) The Type list marks the body face as body-only; no heading, display, hero, call-to-action, or key-label token points at the body face; a dealt theme naming the same face for display and body is either re-dealt with a distinct display face or recorded as a scoped exception with a fix #19 D19 reason and a fix #20 F6 justification. (F5) Every important-text token points at the display face; the display face is recorded with its fix #19 D19 reason and its fix #20 F6 justification; a build setting important text in the body face or a generic/system font is an incomplete build. (F6 record) The decision record states, for the important font on each surface, why it is the impressive choice for that surface; a record that cannot say so is an incomplete build. (F6 verdict) The impressiveness verdict itself is browser-qa's at the finish review, never a static check. (B1) The decision record names the build's brand identity (wordmark, identity tokens, voice); a build with no recorded brand identity is an incomplete build. (X1) Every component entry in the decision record states the experience it creates (what it feels like, what moment it is) alongside the six D19 dimension lines; a component recorded only as a functional block is an incomplete build.",
+   "**Fix #20 static checks (all static checks, never screen verdicts).** (F4 scope) The Type list marks the body face as body-only — the body face is the face serving as body/reading text on that build, so a pairing that deals Fraunces as the display face (with a different body face) is checked under F5, not here; no heading, display, hero, call-to-action, or key-label token points at the body face; a dealt theme naming the same face for display and body is either re-dealt with a distinct display face or recorded as a scoped exception with a fix #19 D19 reason and a fix #20 F6 justification. (F5) Every important-text token points at the display face; the display face is recorded with its fix #19 D19 reason and its fix #20 F6 justification; a build setting important text in the body face or a generic/system font is an incomplete build. (F6 record) The decision record states, for the important font on each surface, why it is the impressive choice for that surface; a record that cannot say so is an incomplete build. (F6 verdict) The impressiveness verdict itself is browser-qa's at the finish review, never a static check. (B1) The decision record names the build's brand identity (wordmark, identity tokens, voice); a build with no recorded brand identity is an incomplete build. (X1) Every component entry in the decision record states the experience it creates (what it feels like, what moment it is) alongside the six D19 dimension lines; a component recorded only as a functional block is an incomplete build."),
+  ('manifests/context-packs/skill-triggers@1.json',
+   '    "skills": 169,',
+   '    "skills": 166,'),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f'fixup20 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})'
+    open(p, "w").write(t.replace(old, new))
+print("fixup20 upstream block applied")
+PYEOF
+
+# --- fixup20b: F5 key-label examples (drop eyebrow/kicker) ---
+# (sweep #26 MINOR-1 follow-up to fix #20, Nov 12. Amends the F5/F5_APP
+#  example lists in place; staged halves are edited by fix20/fixup20b.py,
+#  upstream halves are patched here. Placement: before STEP 5
+#  (after the fix20, weave20, and fixup20 blocks). Each substitution
+#  asserts exactly one match in the BUILT file and fails the build loudly.)
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (hero eyebrow/kicker, featured section label, emphasis badge); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a.",
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (featured section label, emphasis badge, price label); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (hero eyebrow/kicker, featured section label, emphasis badge); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a.",
+   "**Important text uses a unique, important font (fix #20 F5, app surfaces).** On app surfaces, anything supposed to be important uses a unique, important display face, chosen through this skill's type scale and recorded in MASTER.md with its fix #19 D19 reason and its fix #20 F6 justification — never the body face, never a generic/system font. A 'key label' is a label meant to stand out (featured section label, emphasis badge, price label); ordinary small labels follow the Hallmark gates in the body face. The full F5 rule lives in `design-taste-frontend` step 4a."),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f'fixup20b anchor not found exactly once in {rel}: {old[:70]!r} (count={n})'
+    open(p, "w").write(t.replace(old, new))
+print("fixup20b upstream block applied")
+PYEOF
+
+# --- fixup20c: H1 hierarchy + BIND/INNOV binding + OVERDRIVE pointers ---
+# (steers #3/#4/#5 follow-up to fix #20, Nov 12. Built-file pointers in
+#  orch-build-mvp / orch-pipeline; staged halves are edited by
+#  fix20/fixup20c.py. Placement: before STEP 5 (after the fix20, weave20,
+#  fixup20, and fixup20b blocks). Each substitution asserts exactly one
+#  match in the BUILT file and fails the build loudly.)
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/orch-build-mvp/SKILL.md',
+   'its Design Quality / Originality rows defer to browser-qa (see `gan-style-harness`).',
+   "its Design Quality / Originality rows defer to browser-qa (see `gan-style-harness`). **Binding routing (fix #20 BIND/INNOV):** every slice brief names its operating skill before work starts (this rule names the design components); a decision with no named skill is refused and routed; on-skill innovation — an original element built on these skills' principles, recorded with its D19 reason — passes, off-skill improvisation fails."),
+  ('skills/orch-pipeline/SKILL.md',
+   'Each phase delegates — it does not do the work inline.',
+   'Each phase delegates — it does not do the work inline. **Binding routing (fix #20 BIND/INNOV):** each phase names its operating skill before delegating; a decision with no named skill is refused and routed; on-skill innovation passes with its D19 reason, off-skill improvisation fails.'),
+]
+for rel, old, new in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f'fixup20c anchor not found exactly once in {rel}: {old[:70]!r} (count={n})'
+    open(p, "w").write(t.replace(old, new))
+print("fixup20c upstream block applied")
+PYEOF
+
+# --- fix21: long body and small text only; every text element gets an artistic font design decision (F4_TIGHT/F7) ---
+# (skills/ui-ux-pro-max and orch-build-mvp are upstream; they have no
+#  staged source and are patched here. The staged-source halves --
+#  design-taste-frontend (step 4a + step 6), orchestrate (design-package
+#  rule + Verify 5a), polish-pass (harmony), typeset lens -- are applied
+#  by fix21/fix21.py to their sources. All anchors were verified
+#  count==1 against the post-fix20 built tree by fix21.py's preflight;
+#  the asserts below re-verify at build time and fail the build loudly
+#  on mismatch. X1_APP occurs twice in build.sh (once per patched
+#  file) -- the runtime asserts below are per FILE, never build.sh-wide.
+#  STATIC20 note: the fix21 block runs after fixup20, so the built
+#  orch-build-mvp file holds the AMENDED STATIC20, which is the
+#  runtime anchor for the step-6 sub (see fix21.py docstring).)
+# Placement: before STEP 5 (after the fix20 blocks).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('skills/ui-ux-pro-max/SKILL.md',
+   '**Every component is an experience (fix #20 X1, app surfaces).** On app surfaces, each component is designed as a moment/interaction, not a static functional block; every component entry in MASTER.md states the experience it creates (what it feels like, what moment it is) alongside its six fix #19 D19 dimension lines. A component recorded only as a functional block is an incomplete build. The full X1 rule lives in `design-taste-frontend` step 4a.',
+   "\n\n**Long body and small text only (fix #21 — F4 tightened, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for long-length body text and small incidental text only — never a default for text generally, never main visible text. The full tightened scope rule lives in `design-taste-frontend` step 4a.\n\n**Every text element gets an artistic font design decision (fix #21 F7, app surfaces).** On app surfaces, every text element has a deliberate, recorded artistic font design decision — which face, why, what job it serves, how it matches the theme and the brand — recorded in MASTER.md's Type list, per text element or per genuinely uniform text class. No element defaults to the body face without a decision; main visible text uses the display face (fix #20 F5) or another artistic face chosen through the skills. The full F7 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   '**Every component is an experience (fix #20 X1, app surfaces).** On app surfaces, each component is designed as a moment/interaction, not a static functional block; every component entry in MASTER.md states the experience it creates (what it feels like, what moment it is) alongside its six fix #19 D19 dimension lines. A component recorded only as a functional block is an incomplete build. The full X1 rule lives in `design-taste-frontend` step 4a.',
+   "\n\n**Long body and small text only (fix #21 — F4 tightened, app surfaces).** On app surfaces, Tiempos and the Fraunces stand-in are for long-length body text and small incidental text only — never a default for text generally, never main visible text. The full tightened scope rule lives in `design-taste-frontend` step 4a.\n\n**Every text element gets an artistic font design decision (fix #21 F7, app surfaces).** On app surfaces, every text element has a deliberate, recorded artistic font design decision — which face, why, what job it serves, how it matches the theme and the brand — recorded in MASTER.md's Type list, per text element or per genuinely uniform text class. No element defaults to the body face without a decision; main visible text uses the display face (fix #20 F5) or another artistic face chosen through the skills. The full F7 rule lives in `design-taste-frontend` step 4a."),
+  ('skills/orch-build-mvp/SKILL.md',
+   "**Fix #20 static checks (all static checks, never screen verdicts).** (F4 scope) The Type list marks the body face as body-only — the body face is the face serving as body/reading text on that build, so a pairing that deals Fraunces as the display face (with a different body face) is checked under F5, not here; no heading, display, hero, call-to-action, or key-label token points at the body face; a dealt theme naming the same face for display and body is either re-dealt with a distinct display face or recorded as a scoped exception with a fix #19 D19 reason and a fix #20 F6 justification. (F5) Every important-text token points at the display face; the display face is recorded with its fix #19 D19 reason and its fix #20 F6 justification; a build setting important text in the body face or a generic/system font is an incomplete build. (F6 record) The decision record states, for the important font on each surface, why it is the impressive choice for that surface; a record that cannot say so is an incomplete build. (F6 verdict) The impressiveness verdict itself is browser-qa's at the finish review, never a static check. (B1) The decision record names the build's brand identity (wordmark, identity tokens, voice); a build with no recorded brand identity is an incomplete build. (X1) Every component entry in the decision record states the experience it creates (what it feels like, what moment it is) alongside the six D19 dimension lines; a component recorded only as a functional block is an incomplete build.",
+   "\n\n**Fix #21 static checks (all static checks, never screen verdicts).** (F4 tight) The Type list marks the body face as long-body-and-small-text-only — no token for main visible text points at the body face; the body face serves long-length body text and small incidental text only. (F7) Every text element in the Type list — or every genuinely uniform text class — carries its recorded artistic font decision (face + why + job + theme/brand fit); a text element with no recorded decision is an incomplete build; a main visible text element (heading, display, hero, prominent label, price, name, call to action) set in the body face is an incomplete build; a blanket 'all text' class line is not a class decision. (F7 record) The decision record lists the font decision per text element or per uniform class; the D19 reason covers the font choice."),
+]
+for rel, old, add in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix21 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    open(p, "w").write(t.replace(old, old + add))
+print("fix21 upstream block applied")
+PYEOF
+
+# --- fix22: weave 7 @charles.unemployed reels (142 items) + H1/H2 accents + Mobbin + directives + 4 libraries + Bang Motion port ---
+# (motion-*, make-interfaces-feel-better, ui-ux-pro-max, GAN agents and
+#  ui-ux-pro-max data files are upstream/ECC; they have no staged source
+#  and are patched here. The staged-source halves -- orchestrate,
+#  design-taste-frontend (+ 15 Hallmark themes + glossary), polish-pass
+#  (slop checklist + unslop fixes + wiring), pitch-deck-video (Bang port)
+#  -- were applied directly to their sources by the wave-1 agents.
+#  All anchors were verified count==1 against the post-fix21 built tree
+#  by fix22/fix22.py's preflight (in-memory simulation, in list order);
+#  the asserts below re-verify at build time and fail the build loudly
+#  on mismatch. Three token conflicts from ab-patches.md are carried
+#  unresolved in the comments (B3 30ms vs Rule 5 floor; B15 0.8x vs
+#  exit-faster ~60-70%; B4 0.97 vs scale.press 0.95) — the parent
+#  adjudicates. GSAP converges on 3.15.1; three.js is scoped (Vanta
+#  0.134.0, general 0.185.1, Bang's 0.161.0 recorded as Bang's only).
+# Placement: before STEP 5 (after the fix21 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('AB-01', 'skills/motion-foundations/SKILL.md', 'Responsiveness always outranks smoothness. A 60 fps animation that causes\ninput delay is worse than no animation.', "\n\n**Animation principles (fix #22, PRINCIPLES_F22).** The twelve principles below govern\nevery motion decision in this skill. Each line states what the principle is and how it\nshows up in UI. A build names which principles it leans on in the decision record\n(orchestrate step 3, design-package brief) — a motion decision with no named principle\nis an ungrounded decision.\n\n- **A1 Squash & stretch** — a moving object deforms slightly along its direction of\n  travel (squashes on impact, stretches while moving) so it reads as physical, not\n  rigid. In UI: a pressed button or a landing card squashes a few percent on press and\n  eases back, instead of scaling uniformly.\n- **A2 Anticipation wind-up** — a small move in the opposite direction before the main\n  move, so the main move reads as intentional. In UI: a knob stretches before it\n  slides (B5), a sheet pulls back slightly before it dismisses, a control winds up\n  before it springs (see also B19 rubber band).\n- **A3 Staging the focus** — only one thing moves, changes, or demands attention at a\n  time, so the eye knows where to look. In UI: when a modal opens, the page behind it\n  stills; when a toast arrives, nothing else animates with it.\n- **A4 Pose to pose** — motion travels between clear, readable states (poses), never\n  through an unreadable in-between. In UI: a card has a defined collapsed pose and a\n  defined expanded pose; the transition interpolates between them, and both poses are\n  legible at rest.\n- **A5 Follow through** — parts of an object keep moving briefly after the main body\n  stops, then settle. In UI: a list's trailing rows settle a beat after the leading\n  row; a sheet's content settles after the sheet lands.\n- **A6 Slow in & slow out** — motion eases at both ends (slow start, slow stop) instead\n  of starting and stopping abruptly. In UI: entrances ease out (B1) and moves ease\n  in-out (B9); nothing starts at full speed or halts dead.\n- **A7 Moving in arcs** — objects travel along curved paths, not straight lines, so\n  motion reads as natural. In UI: a dragged card, a flying element, or a moving knob\n  follows an arc (B7 is this principle applied — the primary home is motion-patterns).\n- **A8 Secondary action** — a smaller motion supports the main motion without\n  competing with it. In UI: as a row enters, its details settle in after it (B6 is\n  this principle applied); as a button is pressed, its icon shifts a touch.\n- **A9 Snappy timing** — timing is the principle: motion is quick enough to feel\n  responsive, never so slow it feels like waiting. In UI: feedback lands in the\n  150–250ms band (B2); a transition that drags past its token duration is a defect,\n  not a style.\n- **A10 Exaggerated feedback** — feedback is big enough to be unmistakable, then\n  settles. In UI: a success pulse (B8) overshoots slightly so the confirmation cannot\n  be missed; a destructive action's feedback is visibly stronger than a neutral one.\n  (One family with B8 and D20 animate-useful-feedback; D20 points here.)\n- **A11 Solid drawing in 3D** — an object keeps believable volume, weight, and depth\n  while it moves. In UI: a card that flips or expands keeps its shadow, edge, and\n  layering consistent through the move; it never flattens into a texture or shears.\n- **A12 Overall appeal** — the motion as a whole is pleasing and on-character for the\n  build, not merely correct per rule. In UI: the sum of the build's motion reads as\n  one personality (the dealt theme's motion voice), judged at the finish review.\n\nTheme-match precondition: these principles are a decision vocabulary, not a look —\nevery element animated under them must still match the dealt theme (its material,\ntokens, palette balance, and do-nots); a principle applied in a way that clashes with\nthe theme is not applied, and the reason is recorded in `docs/design-tokens.md` with\nthe element.\n\n- **D19 (for the principles set as a whole)** — Motion: the principles decide what moves,\nhow it moves, and how fast, so motion serves attention and state; Theme: each\nprinciple is applied in the dealt theme's motion voice, never as a generic stock move;\nTexture: none — the principles govern motion, not surface treatment; Visuals: staging,\narcs, and appeal keep the moving picture legible and on-character; Techniques: the\nprinciples route to the motion-* token and pattern implementations, never to ad-hoc\nvalues; Colors: none — the principles do not choose colours.", 'after'),  # 'AB-01'
+  ('AB-02', 'skills/motion-foundations/SKILL.md', '## Core Concepts', "\n### UX laws that decide motion (fix #22, LAWS_F22)\n\nEach law below is a decision rule with its one-line consequence for design decisions.\nThe laws live here and nowhere else — `ui-ux-pro-max` points at them (AB-12) and never\nrestates them; `make-interfaces-feel-better` routes feel decisions through them (AB-11).\n\n- **A13 Fitts's law** — the time to reach a target depends on its size and distance:\n  big, near targets are fast; small, far targets are slow. Consequence: put the most\n  frequent actions on the biggest, nearest targets, and never make a primary action\n  small or far away. D19 — Motion: target size and distance set how fast a reach\n  feels; Theme: the law applies inside the dealt theme, it does not restyle it;\n  Texture: none — the law is about reach, not surface; Visuals: bigger, nearer\n  targets read as more important; Techniques: implement via the hit-area rule and\n  placement, never via decoration; Colors: none — the law does not choose colours.\n- **A14 Bigger hit areas** — NAMED here as Fitts's law (A13) with its rationale; the\n  size rule itself already exists and is NOT duplicated: interactive controls keep at\n  least a 44x44px hit area (the plugin floor — `make-interfaces-feel-better` Hit Areas\n  section), expanding with a pseudo-element when the visible icon is smaller, without\n  letting expanded areas overlap. Consequence: a control that cannot be hit reliably\n  cannot be used quickly, whatever its motion does. D19 — Motion: the hit area is what\n  the pointer actually reaches, so it bounds every motion decision on the control;\n  Theme: none — size is a usability floor, not a theme choice; Texture: none — the\n  area is invisible, not a treatment; Visuals: the visible control stays the theme's\n  size while the hit area grows beneath it; Techniques: pseudo-element expansion, never\n  a visible size change; Colors: none — the law does not choose colours.\n- **A15 Hick's law** — decision time grows with the number and complexity of choices.\n  Consequence: fewer, clearer options per screen and per menu; every added choice\n  costs the user time, so a screen that offers everything offers nothing quickly.\n  D19 — Motion: fewer choices means fewer competing motions and a faster read;\n  Theme: none — the law is about choice count, not theme; Texture: none — the law is\n  about structure, not surface; Visuals: the remaining choices get the space and\n  emphasis the removed ones freed; Techniques: progressive disclosure and grouping,\n  never decoration; Colors: none — the law does not choose colours.\n- **A16 Miller's law** — working memory holds about seven items (give or take two), so\n  information must be chunked. Consequence: group lists, steps, and options into\n  chunks of five to nine; a 20-item flat list is a memory failure, not a layout.\n  D19 — Motion: chunks enter and settle as groups (stagger per chunk, not per item\n  past the chunk); Theme: none — the law is about chunking, not theme; Texture:\n  none — the law is about structure, not surface; Visuals: chunk boundaries are\n  visible (spacing, grouping) so the eye can count the chunks; Techniques: grouping\n  and spacing, never decoration; Colors: none — the law does not choose colours.\n- **A17 Doherty threshold** — the system must respond within about 400ms or the user's\n  attention breaks and productivity falls. Consequence: every interaction gets visible\n  feedback inside 400ms (an optimistic update, a loading state, a press response) —\n  a silent 500ms wait is a defect even if the result is correct. D19 — Motion:\n  feedback inside 400ms is the motion deadline every animation budget answers to;\n  Theme: none — the threshold is a human limit, not a theme choice; Texture: none —\n  the law is about timing, not surface; Visuals: the feedback must be visible (a\n  state change the eye can see), not a silent background update; Techniques:\n  optimistic updates and loading states, never a longer animation; Colors: none —\n  the law does not choose colours.\n- **A18 Postel's law** — be liberal in what you accept, conservative in what you send.\n  Consequence: accept sloppy input gracefully (forgiving parsing, tolerant gestures,\n  generous tap targets) and emit strict, predictable output (exact states, clean\n  values). D19 — Motion: tolerant input means a gesture that slightly misses still\n  lands, and the motion confirms it instead of snapping back; Theme: none — the law\n  is about input/output, not theme; Texture: none — the law is about behaviour, not\n  surface; Visuals: the accepted state is shown plainly so the user knows what was\n  taken; Techniques: forgiving handlers and strict emitters, never silent coercion;\n  Colors: none — the law does not choose colours.\n- **A19 Jakob's law** — users spend most of their time on other products, so they\n  expect your product to work like the ones they already know. Consequence: follow\n  established patterns for standard interactions (menus, dialogs, navigation) and\n  spend originality on the product's own job, not on reinventing a dropdown. D19 —\n  Motion: standard interactions use standard motion (the motion-patterns defaults),\n  so the user never has to learn a new feel for a known job; Theme: the dealt theme\n  dresses the pattern, it does not replace the pattern's behaviour; Texture: none —\n  the law is about behaviour, not surface; Visuals: the familiar pattern reads as\n  familiar at a glance; Techniques: the motion-patterns library, never a bespoke\n  reinvention of a standard control; Colors: none — the law does not choose colours.\n- **A20 Frequency of use** — the more often a thing is used, the more it should be\n  optimised (bigger, nearer, faster, fewer steps). Consequence: rank every action by\n  how often it is used and spend the best targets, the shortest paths, and the\n  snappiest feedback on the top of the ranking; a rare action never outranks a daily\n  one. D19 — Motion: the most-used actions get the fastest, most direct motion;\n  Theme: none — the law is about ranking, not theme; Texture: none — the law is\n  about priority, not surface; Visuals: the most-used action is the most prominent\n  one on its screen; Techniques: ranking by measured or stated frequency, never by\n  guesswork; Colors: none — the law does not choose colours.\n\nTheme-match precondition: the laws are decision rules, not a look — every element\ndecided under them must still match the dealt theme (its material, tokens, palette\nbalance, and do-nots); a law applied in a way that clashes with the theme is not\napplied, and the reason is recorded in `docs/design-tokens.md` with the element.\n", 'before'),  # 'AB-02'
+  ('AB-03a', 'skills/motion-foundations/SKILL.md', '    fast:    0.18,', '\n    dropdown: 0.2,   // B2 (fix #22): dropdowns animate at 150–250ms; 0.2s is the default inside the range.', 'after'),  # 'AB-03a'
+  ('AB-03b', 'skills/motion-foundations/SKILL.md', 'dropdown: 0.2,   // B2 (fix #22): dropdowns animate at 150–250ms; 0.2s is the default inside the range.', "\n    staggerRow: 0.03, // B3 (fix #22): list rows stagger by 30ms per row. CONFLICT FLAG (SPEC §4c): 0.03s sits below motion-patterns Rule 5's 0.05s floor — Rule 5 is NOT changed here; the parent adjudicates.", 'after'),  # 'AB-03b'
+  ('AB-03c', 'skills/motion-foundations/SKILL.md', '    smooth: [0.22, 1, 0.36, 1],', '    smooth: [0.22, 1, 0.36, 1], // B1 (fix #22): the ease-out curve — entrances use this easing.', 'replace'),  # 'AB-03c'
+  ('AB-03d', 'skills/motion-foundations/SKILL.md', '    linear: [0, 0, 1, 1],', '\n    inOut:  [0.65, 0, 0.35, 1], // B9 (fix #22): ease-in-out for moves — an element travelling from one place to another.', 'after'),  # 'AB-03d'
+  ('AB-03e', 'skills/motion-foundations/SKILL.md', '    press:  0.95,', '\n    popover: 0.95, // B10 (fix #22): popovers start at scale 0.95 and grow to 1. Separate token from press — the value coincides with press by chance, never merge them.\n    stretch: 1.12, // B5 (fix #22): a moving knob stretches 12% along its direction of travel while it moves, then springs back.', 'after'),  # 'AB-03e'
+  ('AB-03f', 'skills/motion-foundations/SKILL.md', '    pop:    1.04,\n  },\n}', '    pop:    1.04,\n  },\n  exitFactor: 0.8, // B15 (fix #22): exits run 20% shorter than their enter — exit duration = 0.8 x the matching enter duration. CONFLICT FLAG (SPEC §4c): quick-reference `exit-faster-than-enter` says ~60–70%; quick-reference is NOT changed here; the parent adjudicates.\n}\n\n- **D19 (for the token group as a whole)** — Motion: the tokens are the values every animation in the build runs on, so motion timing is decided once and reused, never improvised per component; Theme: tokens are values, not looks — the theme still decides what the moving element is and what it means; Texture: none — tokens carry no surface treatment; Visuals: the values keep entrances, moves, and exits legible (nothing too fast to see, nothing slow enough to wait on); Techniques: values live in `motionTokens` and are imported, never hardcoded in components (Rule 5); Colors: none — tokens do not choose colours.\n\n- **Theme-match precondition:** tokens are numbers, not designs — every element animated with them must still match the dealt theme (its material, tokens, palette balance, and do-nots); a token applied in a way that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element.', 'replace'),  # 'AB-03f'
+  ('AB-04', 'skills/motion-foundations/SKILL.md', 'reduced-motion renders are exempt from the entrance itself but never from visibility.', "\n11. **Entrances ease out (fix #22 B1).** Every entrance uses the ease-out curve\n    (`easing.smooth`): fast start, slow landing. An entrance that eases in (slow start)\n    feels like the page is holding the element back.\n12. **Moves ease in-out (fix #22 B9).** An element travelling from one place to another\n    uses the ease-in-out curve (`easing.inOut`): slow start, fast middle, slow landing.\n    Ease-out is for arriving; ease-in-out is for travelling.\n\n- **D19 (for rules 11–12)** — Motion: the easing curve is what makes an entrance feel\nlike an arrival and a move feel like travel; Theme: the curves are the theme's\nmotion voice applied consistently, never per-component improvisation; Texture:\nnone — easing carries no surface treatment; Visuals: eased motion reads as\ndeliberate where linear motion reads as mechanical; Techniques: the curves come from\n`motionTokens.easing`, never hardcoded (Rule 5); Colors: none — easing does not\nchoose colours.\n\n- **Theme-match precondition:** as AB-03 — the easing rules govern how elements move,\nnever what they look like; every element moved under them must still match the dealt\ntheme, and a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.", 'after'),  # 'AB-04'
+  ('AB-05', 'skills/motion-patterns/SKILL.md', 'reduced-motion renders are exempt from the entrance itself but never from visibility.', '\n11. **Enter from the trigger (fix #22 B11 — origin-aware animation, glossary G10).**\n    A popover, dropdown, or menu enters from the element that opened it: its\n    `transformOrigin` sits at the trigger, and its initial position grows out of the\n    trigger\'s edge. An element that appears from nowhere has no spatial story.\n12. **Exit to the trigger (fix #22 B12 — origin-aware animation, glossary G10).** The\n    same element exits back to its trigger: same origin, reversed path. Enter and exit\n    are one round trip, not two unrelated animations.\n13. **No bounce on everyday UI (fix #22 B13).** The bounce easing (`easing.bounce`) and\n    the `bouncy` spring are for playful moments only (empty states, onboarding) — never\n    for everyday controls, menus, dialogs, or lists. A bouncing dropdown is a toy, not\n    a tool.\n14. **Don\'t tween while held (fix #22 B14 — related: glossary G18 interruptible\n    animation).** While the user holds or drags an element, drive its values directly\n    from the gesture (motion values, `useTransform`) — never run a timed tween against\n    a held element. A tween fights the hand; a driven value follows it. On release, a\n    spring takes over.\n15. **Exits run 20% shorter than their enter (fix #22 B15).** Exit duration = 0.8 x the\n    matching enter duration (`motionTokens.exitFactor`). An exit that lasts as long as\n    its enter feels like the interface is lingering; a shorter, quieter exit feels\n    responsive. (Conflict flag: see the header of this patch spec, item 2.)\n16. **Overlap old & new states (fix #22 B16).** During an in-container content swap, the\n    incoming state starts before the outgoing state finishes, so the screen never\n    blanks between them — crossfade, don\'t cut to empty. SCOPE: in-container swaps\n    only. Page transitions still use `mode="wait"` (Rule 3): enter must not start\n    until exit completes there.\n17. **Pulse to confirm success (fix #22 B8 — one family with A10 exaggerated feedback;\n    D20 animate-useful-feedback points here).** A successful action gets one short\n    pulse (scale up slightly and back, once) so the confirmation cannot be missed. One\n    pulse, then still — a looping pulse is a live indicator (see `motion-advanced`\n    `PulseDot`), not a confirmation.\n18. **Reuse the same layoutId (fix #22 B20 — shared element transition, glossary G20).**\n    When the same object appears in two contexts, both contexts use the same\n    `layoutId` so the object expands in place (see the Shared-element crossfade\n    example below — its primary home). A disconnected replacement (unmount one element,\n    mount a different one with no shared `layoutId`) loses the object; the eye has to\n    find it again.\n19. **Move along arcs (fix #22 B7 — the moving-in-arcs principle, A7, applied).** An\n    element travelling between two points follows a curved path (an arc via `x`/`y`\n    keyframes or a curved `useTransform` mapping), not a straight line — straight-line\n    travel between distant points reads as mechanical. Short hops may stay straight; any\n    travel the eye follows takes the arc.\n\nIcon swaps (fix #22 B18) are already covered — `make-interfaces-feel-better` ("Icon\nswaps: cross-fade with opacity, scale, and blur instead of instant visibility\ntoggles") — so no new rule is added here; the motion-patterns button and modal\nexamples follow it.\n\n- **D19 (for rules 11–19 as a set)** — Motion: the rules decide where motion starts and\nends, how long exits run, and what overlaps, so every transition tells a spatial\nstory instead of flashing; Theme: origin, bounce, and overlap are applied in the\ndealt theme\'s motion voice, never as stock effects; Texture: none — the rules govern\nmotion, not surface treatment; Visuals: trigger-anchored, overlapped, confirmed\nmotion keeps the eye on the object instead of losing it between states; Techniques:\nall values come from `motion-foundations` tokens (Rule 8), and the trigger origin is\nset explicitly per element; Colors: none — the rules do not choose colours.\n\n- **Theme-match precondition:** as AB-03 — every element moved under these rules must\nstill match the dealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.', 'after'),  # 'AB-05'
+  ('AB-06', 'skills/motion-patterns/SKILL.md', '### Modal', '\n### Dropdown (fix #22 B2)\n\n```tsx\n"use client"\nimport { motion, AnimatePresence } from "motion/react"\nimport { motionTokens, springs } from "@/lib/motion-tokens"\n\n// B2: dropdowns animate at 150–250ms (motionTokens.duration.dropdown, 0.2s default).\n// The panel enters from its trigger (B11) and exits back to it (B12).\n<AnimatePresence>\n  {open && (\n    <motion.div\n      key="menu"\n      initial={{ opacity: 0, y: -4 }}\n      animate={{ opacity: 1, y: 0 }}\n      exit={{ opacity: 0, y: -4 }}\n      transition={{ duration: motionTokens.duration.dropdown, ease: motionTokens.easing.smooth }}\n      style={{ transformOrigin: "top left" }} // origin at the trigger (B11/B12)\n    />\n  )}\n</AnimatePresence>\n```\n\n**Stagger as details settle (fix #22 B6).** When a row\'s details load after the row\nitself (image, then title, then meta), stagger the details in 30ms steps\n(`motionTokens.duration.staggerRow`) so the row settles instead of popping whole — the\nsame stagger primitive as the Stagger list example above, applied inside the row\n(glossary G14 Stagger). This is the secondary-action principle (A8) applied to a row.\n\n- **D19 (for the dropdown example + B6 note)** — Motion: the dropdown duration band\nand the 30ms settle steps are the timing values the pattern runs on; Theme: the\ndropdown and the settling row are the theme\'s own surfaces, animated, never restyled\nby the animation; Texture: none — the example adds no surface treatment; Visuals:\nthe panel grows from its trigger and the row settles visibly instead of flashing;\nTechniques: durations and stagger come from `motionTokens` (Rule 8), the trigger\norigin is set explicitly; Colors: none — the example does not choose colours.\n\n- **Theme-match precondition:** as AB-03 — the dropdown and the settling row must\nmatch the dealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n', 'before'),  # 'AB-06'
+  ('AB-07', 'skills/motion-patterns/SKILL.md', '### Toast stack', '\n### Popover (fix #22 B10/B11/B12)\n\n```tsx\n"use client"\nimport { motion, AnimatePresence } from "motion/react"\nimport { motionTokens, springs } from "@/lib/motion-tokens"\n\n// B10: popovers start at scale 0.95 (motionTokens.scale.popover) and grow to 1.\n// B11/B12: the popover enters from its trigger and exits back to it.\n<AnimatePresence>\n  {open && (\n    <motion.div\n      key="popover"\n      initial={{ opacity: 0, scale: motionTokens.scale.popover }}\n      animate={{ opacity: 1, scale: 1 }}\n      exit={{ opacity: 0, scale: motionTokens.scale.popover }}\n      transition={springs.gentle}\n      style={{ transformOrigin: "top left" }} // origin at the trigger (B11/B12)\n    />\n  )}\n</AnimatePresence>\n```\n\n- **D19 (for the popover example)** — Motion: the 0.95 start scale and the trigger\norigin are what make the popover read as growing out of its trigger; Theme: the\npopover is the theme\'s own surface, animated, never restyled by the animation;\nTexture: none — the example adds no surface treatment; Visuals: the popover\'s growth\nis visible and anchored, so the eye follows it from the trigger; Techniques: the\nstart scale comes from `motionTokens.scale.popover` (Rule 8), the origin is set\nexplicitly; Colors: none — the example does not choose colours.\n\n- **Theme-match precondition:** as AB-03.\n', 'before'),  # 'AB-07'
+  ('AB-08', 'skills/motion-patterns/SKILL.md', '### Accordion', '\n**Reuse the same layoutId (fix #22 B20).** The example above is the primary home of\nthis rule: the source and the destination carry the same `layoutId` (`"hero-image"`),\nso the same object expands instead of being replaced. A disconnected replacement —\nunmounting one element and mounting a different one with no shared `layoutId` — is\nthe failure this rule prevents: the eye loses the object and has to find it again.\nThis is the shared element transition (glossary G20); B20 points at it and adds\nnothing beyond the rule and this example.\n\n- **D19 (for the B20 note)** — Motion: the shared `layoutId` is what turns a cut into\na continuous move; Theme: the expanding object is the theme\'s own element, carried\nacross contexts, never restyled by the move; Texture: none — the note adds no\nsurface treatment; Visuals: the object stays visible through the transition, so\nspatial continuity holds; Techniques: one `layoutId` string shared by both contexts\n(Rule 8 — no inline values); Colors: none — the note does not choose colours.\n\n- **Theme-match precondition:** as AB-03.\n', 'before'),  # 'AB-08'
+  ('AB-09', 'skills/motion-advanced/SKILL.md', '8. **SVG morphing requires equal path command counts.** Paths with different command structures snap instead of interpolating.', '\n9. **Overlap old & new states in multi-step sequences (fix #22 B16).** In an imperative\n    sequence (`useAnimate`), the incoming step starts before the outgoing step finishes,\n    so the screen never blanks between them. SCOPE: in-container swaps and sequences\n    only — page transitions still use `mode="wait"` (motion-patterns Rule 3).\n10. **Masks for reveals & colour (fix #22 B17).** Reveal an element (or a colour change)\n    behind a mask — `clipPath` inset, or a mask image — instead of fading the whole\n    element in: the mask edge is the moving part, the content behind it is already\n    there. A colour change revealed by a sweeping mask reads as a transformation; the\n    same change as a flat crossfade reads as a swap.\n11. **Rubber band past bounds (fix #22 B19).** A dragged or scrolled element may travel\n    past its bound and spring back — resistance grows with distance past the bound\n    (`dragElastic` on drag; a spring on release). The overshoot is small and the\n    spring-back is immediate; a bound that stops dead feels broken, and an overshoot\n    that never returns is a bug. This is the anticipation principle (A2) applied to a\n    bound.\n\n- **D19 (for rules 9–11 as a set)** — Motion: overlap, masks, and rubber-banding decide\nhow a sequence hands off, how a reveal travels, and how a bound behaves, so advanced\nmotion stays continuous instead of cutting; Theme: the choreography is the dealt\ntheme\'s motion voice, never a stock effect; Texture: none — the rules govern motion,\nnot surface treatment; Visuals: the eye follows the mask edge and the overshoot\ninstead of losing the element between states; Techniques: `useAnimate` sequences,\n`clipPath`/mask, and `dragElastic` + spring release (all token-governed, Rule 6);\nColors: the mask rule covers colour reveals — the revealed colour is the theme\'s own\ntoken, never a new colour invented by the reveal.\n\n- **Theme-match precondition:** as AB-03 — every element moved under these rules must\nstill match the dealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.', 'after'),  # 'AB-09'
+  ('AB-10', 'skills/motion-advanced/SKILL.md', '### Cursor follower', '\n### Mask reveal (fix #22 B17)\n\n```tsx\n"use client"\nimport { motion } from "motion/react"\nimport { motionTokens } from "@/lib/motion-tokens"\n\n// B17: the reveal travels behind a mask — the clip edge moves, the content is\n// already there. Same technique reveals a colour change: the new colour sits\n// behind the mask and the mask sweeps across.\n<motion.div\n  initial={{ clipPath: "inset(0 100% 0 0)" }}\n  animate={{ clipPath: "inset(0 0% 0 0)" }}\n  transition={{ duration: motionTokens.duration.normal, ease: motionTokens.easing.smooth }}\n/>\n```\n\n### Stretching knob (fix #22 B5)\n\n```tsx\n"use client"\nimport { motion } from "motion/react"\nimport { motionTokens, springs } from "@/lib/motion-tokens"\n\n// B5: a moving knob stretches 12% along its direction of travel\n// (motionTokens.scale.stretch, 1.12) while it moves, then springs back.\n// This is the anticipation principle (A2) applied to a control.\n<motion.div\n  drag="x"\n  dragConstraints={{ left: 0, right: 200 }}\n  whileDrag={{ scaleX: motionTokens.scale.stretch }}\n  dragTransition={springs.release}\n/>\n```\n\n### Overlapping state change (fix #22 B16)\n\n```tsx\n"use client"\nimport { useAnimate } from "motion/react"\n\n// B16: the incoming state starts before the outgoing state finishes — the\n// screen never blanks between them. Scope: in-container swaps only;\n// page transitions still use mode="wait" (motion-patterns Rule 3).\nconst [scope, animate] = useAnimate()\n\nasync function swap() {\n  await Promise.all([\n    animate(".old", { opacity: 0 }, { duration: 0.2 }),\n    animate(".new", { opacity: 1 }, { duration: 0.2, delay: 0.1 }),\n  ])\n}\n```\n\n- **D19 (for the three examples as a set)** — Motion: the mask edge, the 12% stretch,\nand the overlapped handoff are the moving parts the eye follows; Theme: each example\nanimates the theme\'s own element, never restyles it; Texture: none — the examples add\nno surface treatment; Visuals: the reveal, the stretch, and the handoff are all\nvisible and anchored, so nothing flashes or vanishes; Techniques: `clipPath`,\n`motionTokens.scale.stretch`, and `useAnimate` with an explicit overlap delay (all\ntoken-governed, Rule 6); Colors: the mask example\'s revealed colour is the theme\'s\nown token, never a new colour invented by the reveal.\n\n- **Theme-match precondition:** as AB-03.\n', 'before'),  # 'AB-10'
+  ('AB-11', 'skills/make-interfaces-feel-better/SKILL.md', 'For React/Next.js motion implementation, see the motion-* skills (`motion-foundations`, `motion-patterns`, `motion-advanced`) — this skill decides the feel/timing; they provide the tokens and patterns.', "\n**Motion feel decisions route through the principles (fix #22, PRINCIPLES_F22 /\nLAWS_F22).** Timing, easing, and feel calls in this skill are decided against\n`motion-foundations` Principles A1–A12 and the UX laws A13–A20 — name the principle or\nlaw behind each feel decision in the decision record; this skill never invents a feel\nrule the principles do not support. Theme-match precondition: every feel decision must\nstill match the dealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n- **D19 (for the pointer)** — Motion: the pointer is what keeps feel decisions grounded\nin the principles instead of taste; Theme: the principles are applied in the dealt\ntheme's motion voice; Texture: none — the pointer adds no surface treatment;\nVisuals: none — the pointer changes no look, only where the decision is grounded;\nTechniques: the pointer names the owning skill (`motion-foundations`), never restates\nit; Colors: none — the pointer does not choose colours.", 'after'),  # 'AB-11'
+  ('AB-12', 'skills/ui-ux-pro-max/SKILL.md', '**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.', "\n**UX laws for motion decisions (fix #22, LAWS_F22).** Motion and interaction-feel\ndecisions on app surfaces route through `motion-foundations` Decision Guidance (Fitts's,\nHick's, Miller's, Doherty, Postel's, Jakob's, frequency of use) — the laws live there,\nnot here; this skill points at them and never restates them. Feel and timing itself is\ndecided in `make-interfaces-feel-better` against `motion-foundations` Principles\n(PRINCIPLES_F22). Theme-match precondition: the laws are decision rules, not a look —\nevery element decided under them must still match the dealt theme; a clash is not\napplied, with the reason recorded in `docs/design-tokens.md`.\n\n- **D19 (for the pointer)** — Motion: the pointer routes motion decisions to the laws\nthat govern them; Theme: the laws apply inside the dealt theme, they do not restyle\nit; Texture: none — the pointer adds no surface treatment; Visuals: none — the\npointer changes no look, only where the decision is grounded; Techniques: the pointer\nnames the owning skill (`motion-foundations`), never restates it; Colors: none — the\npointer does not choose colours.", 'after'),  # 'AB-12'
+  ('AB-13', 'skills/ui-ux-pro-max/SKILL.md', 'One accent, one button pair, one card style: gates.md F4/F15 governs on landing pages, the Impeccable craft floor on app surfaces.', '\n**One accent colour (fix #22 H1, ACCENT_F22).** The build has ONE accent colour (or\none defined accent palette with a single dominant accent): it is part of the brand\nidentity tokens (fix #20 B1) and is theme-matched; it is used sparingly and\nconsistently for the things that must be noticed — CTAs, active states, highlights,\nthe single most important element per screen — and for action/emphasis only, never as\na general fill or background wash. The accent colour is recorded in the decision\nrecord (`design-system/<project-slug>/MASTER.md` / `docs/design-tokens.md`) with its\nfix #19 D19 reason, like every other UI decision. Accent sprawl — multiple competing\naccent colours, or the accent used on non-action elements — is a `polish-pass` flag\n(see the accent-sprawl check there); this skill states the concept, `polish-pass`\nenforces the flag. This is the concept; the fix is D11 "Add an accent colour"\n(polish-pass fix guidance), which this rule points at and does not duplicate.\n\n- **D19 (for the accent-colour rule)** — Motion: none — the accent colour does not move;\nthe accent hierarchy it serves is motion-adjacent only where motion is the accent\nmeans (see AB-14); Theme: the accent is theme-matched and part of the brand identity\ntokens (fix #20 B1); Texture: none — the accent is a colour, not a surface\ntreatment; Visuals: one consistent accent makes the things that must be noticed\nunmistakable, and its sparing use is what keeps it noticeable; Techniques: the\naccent is a token in MASTER.md / `docs/design-tokens.md`, referenced, never a raw\nvalue in components; Colors: the accent IS the colour decision — one colour, used\nfor action/emphasis only, never as a general fill.\n\n- **Theme-match precondition:** the accent colour is theme-matched by definition (it is\npart of the brand identity tokens); an accent that clashes with the dealt theme is\nre-dealt, never applied, and the reason is recorded in `docs/design-tokens.md`.', 'after'),  # 'AB-13'
+  ('AB-14', 'skills/ui-ux-pro-max/SKILL.md', "Only `browser-qa`'s pass/fail verdict on the rendered screen decides whether the surface fails for having nothing memorable — this skill never states a screen pass/fail.", '\n**Accent hierarchy — every screen declares what draws the eye first (fix #22 H2,\nACCENTUATION_F22).** Accentuation is the deliberate emphasis that creates hierarchy\nand focal points — the means by which a screen says "look here first." Means include\nsize, weight, colour (the fix #22 H1 accent colour), spacing, motion, and texture\n(less-flat-ui treatments as accent means). Every screen declares its accent hierarchy\nin the decision record — what is accentuated first, second, and third, and by what\nmeans — with a fix #19 D19 reason for each accent. A screen with no deliberate\naccentuation (everything the same weight, nothing draws the eye) fails the check —\nthe check itself is a static record check here; whether the eye lands where the design\nintends on the rendered screen is `polish-pass` / `browser-qa` candidate evidence, not\na verdict of this skill. H2 is the umbrella principle; its specific means live where\nthey already do and are NOT duplicated here: fix #20 F5 (important text gets the\nunique important font — that IS an accentuation means), fix #20 F6 (impressive as the\nbar), the dealt moments (fix #15 R1/R4/R5 moments ARE accentuation), and the fix #22\nH1 accent colour. The design package must name the accent hierarchy (orchestrate\nstep 3, design-package brief).\n\n- **D19 (for the accent-hierarchy rule)** — Motion: motion is one accentuation means —\nthe first accent may move while the rest stay still, and the hierarchy names which;\nTheme: the hierarchy is the dealt theme\'s emphasis order, never a generic\nbig-to-small ladder; Texture: texture (less-flat-ui treatments) is one accentuation\nmeans, named per accent; Visuals: the hierarchy is what makes the screen readable\nat a glance — first, second, third, in that order; Techniques: the hierarchy is\nrecorded in the decision record (first/second/third + means + D19 reason per\naccent), never left implicit; Colors: colour (the fix #22 H1 accent colour) is one\naccentuation means, and the accent colour\'s own rule (AB-13) governs its use.\n\n- **Theme-match precondition:** the hierarchy is theme-matched by definition (its means\nare the theme\'s own size, weight, colour, spacing, motion, and texture); an accent\nthat clashes with the dealt theme is not applied, and the reason is recorded in\n`docs/design-tokens.md`.', 'after'),  # 'AB-14'
+  ('CD-P1', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `visual-hierarchy` - Establish hierarchy via size, spacing, contrast — not color alone', '\n- `headline-specific` - Headlines name the specific outcome or value (what it does, for whom, to what end), not a generic claim; a vague headline is fixed in polish-pass (UNSLOP_F22 D9 — Make headlines specific), never by restyling here (fix #22)', 'after'),  # 'CD-P1'
+  ('CD-P2', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `primary-action` - Each screen should have only one primary CTA; secondary actions visually subordinate (Apple HIG)', '\n- `cta-emphasis` - The one primary CTA is emphasized by size, weight, fill, and the accent (H1, ACCENT_F22); secondary actions stay subordinate. Emphasis detail lives in polish-pass (UNSLOP_F22 D10 — Emphasize the CTA) (fix #22)', 'after'),  # 'CD-P2'
+  ('CD-P3', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `color-contrast` - Minimum 4.5:1 ratio for normal text (large text 3:1); Material Design', '\n- `color-contrast-polish` - Text-contrast failures found in a polish pass are fixed against the polish-pass craft floor (Contrast ≥4.5:1, ≥3:1 large text, in light AND dark, in every state) — see UNSLOP_F22 D15 (fix #22); this rule states the ratio, the craft floor is the check', 'after'),  # 'CD-P3'
+  ('CD-P4', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `heading-line-balance` - Use balanced wrapping on short headings as a progressive, user-agent-controlled heuristic; keep natural wrapping readable and never force final words together with blanket nonbreaking spaces', '\n- `headline-wrap-polish` - Headline wrapping is fixed in a polish pass against the craft floor (headings use `text-wrap: balance`, no orphans, no mid-phrase breaks) — see UNSLOP_F22 D16 (fix #22)', 'after'),  # 'CD-P4'
+  ('CD-P5', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `number-tabular` - Use tabular/monospaced figures for data columns, prices, and timers to prevent layout shift', '\n- `tabular-polish` - Tabular figures are applied in a polish pass wherever digits change or align (counters, prices, tables) — see UNSLOP_F22 D18 (fix #22); the same value also lives in make-interfaces-feel-better (tabular-nums rule)', 'after'),  # 'CD-P5'
+  ('CD-P6', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `whitespace-balance` - Use whitespace intentionally to group related items and separate sections; avoid visual clutter (Apple HIG)', '\n- `spacing-group-polish` - Grouping with spacing is applied in a polish pass (related items tight, distinct groups at least 2 spacing steps apart; spacing, not dividers or borders, does the grouping) — see UNSLOP_F22 D8 (fix #22); this skill owns the spacing scale (`spacing-scale`)', 'after'),  # 'CD-P6'
+  ('CD-P7a', 'skills/motion-patterns/SKILL.md', '### Button feedback\n\n```tsx\n"use client"\nimport { motion } from "motion/react"\nimport { springs, motionTokens } from "@/lib/motion-tokens"\n\n<motion.button\n  whileHover={{ scale: motionTokens.scale.pop }}\n  whileTap={{ scale: motionTokens.scale.press }}\n  transition={springs.snappy}\n/>\n```', '\nAnimate useful feedback only (UNSLOP_F22 D20, fix #22): press feedback, a success pulse, a state change — motion that tells the user something happened. No decorative motion. This is one family with motion-foundations Principle A10 (Exaggerated feedback) and motion-patterns B8 (Pulse to confirm success); the A10/B8 items live in the motion skills (Groups A+B), this fix points at them.', 'after'),  # 'CD-P7a'
+  ('CD-P7b', 'skills/motion-foundations/SKILL.md', '| `crawl` | Deliberate storytelling; use sparingly |', '\nFeedback animation (UNSLOP_F22 D20) uses the `fast` token for button feedback; see motion-patterns "Button feedback" and Principle A10 / B8 (fix #22).', 'after'),  # 'CD-P7b'
+  ('G-P-G1', 'skills/ui-ux-pro-max/SKILL.md', 'For the full rule list per category (all 120 UX guidelines with rationale), read `references/quick-reference.md`. For app-specific polish rules (icons, touch feedback, dark mode contrast, safe areas) and the canonical pre-delivery checklist, read `references/pro-rules.md`.', '\nDesign vocabulary — the definitions of kerning, optical centre, tabular numbers, tracking, x-height, leading, widow, line length, optimistic update, touch target, affordance, combobox, progressive disclosure, layout shift, safe area, and OKLCH live in `skills/design-taste-frontend/references/design-glossary.md` (`GLOSSARY_F22`); this skill applies those concepts, the glossary defines them.', 'after'),  # 'G-P-G1'
+  ('G-P-G2', 'skills/motion-foundations/SKILL.md', '- **`motion-patterns`** — consumes tokens and springs defined here to build button, modal, stagger, page transition, and scroll patterns. Does not redefine any values.', '\nDesign vocabulary — the definition of interruptible animation (G18) lives in `skills/design-taste-frontend/references/design-glossary.md` (`GLOSSARY_F22`); this skill applies the concept, the glossary defines it.', 'after'),  # 'G-P-G2'
+  ('G-P-G3', 'skills/motion-patterns/SKILL.md', '- **`motion-foundations`** — defines all tokens, springs, the `useSafeMotion` hook, and SSR guards that every pattern here imports. Must be set up first.', '\nDesign vocabulary — the definitions of origin-aware animation (G10), stagger (G14), and shared element transition (G20) live in `skills/design-taste-frontend/references/design-glossary.md` (`GLOSSARY_F22`); this skill applies those concepts, the glossary defines them.', 'after'),  # 'G-P-G3'
+  ('PROC-P1', 'skills/ui-ux-pro-max/SKILL.md', '**Generated direction — never based on a searched reference.** Web search may inform facts (real product details, competitor awareness) but never the design direction: no design may be based off a searched external reference — not a marketing website, not a Dribbble shot, not a template, not any found page.', '\n\n**Pattern reference while building (fix #22 §9, MOBBIN_PATTERN_F22):** when a build needs a component or flow this skill describes abstractly, the implementing agent MAY consult the matching Mobbin pattern (mobbin.com) for how real apps handle it — structure, states, conventions — then implements it through this skill, theme-matched, with a D19 reason. The no-copy boundary: Mobbin informs pattern knowledge only — never the design direction, never a screen to copy; the generating skill is always the recorded source in `docs/design-tokens.md`, never a Mobbin URL, and a specific Mobbin screen is never cited as the source of a decision. Access is web browsing only on the free tier ($0; limited apps/sites, no search, no Flows/Animations, 3 collections) — no paid subscription, no paid account, no account creation that costs money, no API/MCP on the free tier. If the needed pattern is paywalled or Mobbin is unreachable, build from the skills alone and record the gap — the build is NEVER blocked on Mobbin. Platform match: web patterns for web builds; iOS/Android patterns only where the build is a mobile-web surface and the pattern transfers. Theme-match precondition: a pattern is applied only when it matches the dealt theme (or, on app surfaces with no landing, the named direction in `design-system/<project-slug>/MASTER.md`). (D19 — Motion: patterns inform how a flow moves; Theme: the dealt theme filters which patterns apply; Texture: none — pattern reference sets no surface treatment; Visuals: patterns inform the structure users expect; Techniques: consultation is category-level browsing, never copying a screen; Colors: none — pattern reference sets no colour.)', 'after'),  # 'PROC-P1'
+  ('PROC-P2', 'skills/ui-ux-pro-max/SKILL.md', '**Every component is an experience (fix #20 X1, app surfaces).** On app surfaces, each component is designed as a moment/interaction, not a static functional block; every component entry in MASTER.md states the experience it creates (what it feels like, what moment it is) alongside its six fix #19 D19 dimension lines. A component recorded only as a functional block is an incomplete build. The full X1 rule lives in `design-taste-frontend` step 4a.', '\n\n**Component specs are directives, not descriptions (fix #22 §10, DIRECTIVES_F22):** every component spec on app surfaces is a DIRECTIVE — exact values (exact tokens, exact measurements, exact type decisions: face, size, weight, line-height, tracking; exact copy; exact motion values: duration, easing, distance; exact layout instructions: structure, spacing, order), naming the skill it routes through AND giving the values. Every component entry in `design-system/<project-slug>/MASTER.md` records its directive alongside the experience it creates and its six fix #19 D19 dimension lines. A component described in prose without exact values is incomplete and FAILS the handoff check; a directive without its D19 reason is incomplete; a reason without its directive is not a design decision. Implementers execute component directives verbatim and do not re-interpret them — an ambiguous, unbuildable, or conflicting directive is surfaced as a recorded gap instead of improvised around; improvising around a directive is off-skill improvisation and fails the audit. Theme-match precondition: every component directive must match the recorded direction. (D19 — Motion: directives carry exact motion values where motion is decided; Theme: directives are generated through the recorded direction; Texture: directives name the exact treatments where texture is decided; Visuals: directives fix the exact visual outcome per component; Techniques: directives name the skill they route through; Colors: directives carry exact colour tokens.)', 'after'),  # 'PROC-P2'
+  ('PROC-P3', 'agents/ecc-gan-planner.md', '- **Direction source**: [the design direction recorded by the design-lead (model `grok-4.7-high`) in `docs/design-tokens.md` BEFORE this loop — copied here, not generated: the planner records the supplied direction and never re-derives one from a searched reference or a fresh invention; if no direction is recorded, do NOT invent one and do NOT record a brief default: the design-lead step in `/gan-build` Phase 1 records the direction before this agent launches — if this agent is ever launched with no direction recorded, invoke the design-lead (model `grok-4.7-high`) to generate it through the package skills and record it in `docs/design-tokens.md` first, then copy it here — never a searched external reference, per the anti-derivative rule]', '\n\n- **Directives, not descriptions (fix #22 §10, DIRECTIVES_F22):** the Design Direction section above is recorded as DIRECTIVES, not prose — every design decision in `gan-harness/spec.md` carries exact values (exact tokens, exact measurements, exact type decisions: face, size, weight, line-height, tracking; exact copy; exact motion values: duration, easing, distance; exact layout instructions: structure, spacing, order), each naming the skill it routes through, plus its fix #19 D19 reason. A design decision written as prose without exact values is incomplete and FAILS the handoff check; a directive without its D19 reason is incomplete. The Generator executes these directives verbatim and does not re-interpret them. Theme-match precondition: every directive must match the recorded direction copied above. (D19 — Motion: directives carry exact motion values; Theme: directives are the recorded direction expressed as values; Texture: directives name the exact treatments; Visuals: directives fix the exact visual outcome; Techniques: directives name the skill they route through; Colors: directives carry exact colour tokens.)', 'after'),  # 'PROC-P3'
+  ('PROC-P4', 'agents/ecc-gan-generator.md', '6. **Keep the dev server running** — The Evaluator needs a live app to test.', "\n\n**Directives, not descriptions (fix #22 §10, DIRECTIVES_F22):** the spec's design decisions are DIRECTIVES with exact values — execute them verbatim. Do not re-interpret a directive: if a directive is ambiguous, unbuildable, or conflicts with another directive, surface it as a recorded gap (note it in the iteration commit message and in your return text) instead of improvising around it. Improvising around a directive is off-skill improvisation and fails the audit. Creativity lives in the spec's directives, fidelity in the execution. A directive without its D19 reason is incomplete — if the spec hands you a design decision as prose without exact values, or a directive without its D19 reason, flag it as a recorded gap and do not build on the prose. (D19 — Motion: execute the spec's exact motion values; Theme: execute the recorded direction as written; Texture: execute the spec's exact treatments; Visuals: execute the spec's exact visual outcome; Techniques: the spec names the skill each directive routes through; Colors: execute the spec's exact colour tokens.)", 'after'),  # 'PROC-P4'
+  ('PROC-P5', 'agents/ecc-gan-evaluator.md', 'Write feedback to `gan-harness/feedback/feedback-NNN.md`:', "\n\n**Feedback items are directives, not descriptions (fix #22 §10, DIRECTIVES_F22):** every feedback item in the file is a DIRECTIVE — an exact replacement (exact file, exact element, exact old value → exact new value, exact tokens/measurements/copy), naming the skill it routes through, plus its fix #19 D19 reason. A feedback item described in prose without exact replacement values is incomplete and FAILS the handoff check; a directive without its D19 reason is incomplete. The Generator executes feedback directives verbatim; a feedback item that asks the Generator to re-interpret a design decision instead of giving it exact values is not a directive and must be rewritten. Theme-match precondition: every feedback directive must match the recorded direction. (D19 — Motion: feedback directives carry exact motion values where motion is fixed; Theme: fixes conform to the recorded direction; Texture: feedback names exact treatments where texture is fixed; Visuals: feedback states the exact visual outcome; Techniques: feedback names the skill it routes through; Colors: feedback carries exact colour tokens.) Scoring itself stays as the rubric requires — this rule governs the feedback items, never the scores, and never a screen-distinctiveness verdict (that is `browser-qa`'s alone).", 'after'),  # 'PROC-P5'
+  ('LIB-01', 'skills/motion-foundations/SKILL.md', '- The animation is purely decorative with no UX purpose', "\n\n### Smooth scroll — Lenis (fix #22 §11, LENIS_F22)\n\nSmooth scrolling is a scroll behaviour, not an animation: where a build wants\nbuttery, momentum-based scrolling, the approved mechanism is Lenis\n(`lenis@1.3.27`, MIT, vanilla JS, all stacks). Lenis owns the scroll; it never\nowns the animation — scroll-driven animation is driven by GSAP ScrollTrigger\n(see `motion-patterns` scroll routing, SCROLLTRIGGER_F22) or by `motion/react`\n`useScroll`, never by Lenis itself. Directed init (§10): `new Lenis({\nautoRaf: true, lerp: 0.1, anchors: true })` — `lerp: 0.1` is the directed\nsmoothing value; do not tune it per component. Lenis is NOT initialised when\n`prefers-reduced-motion: reduce` matches or on low-end devices\n(`motionConfig.shouldAnimate()` false): native scroll is the fallback, and\nanchor navigation still works. SCOPE: motion-governed app surfaces only\n(React/Next.js and other app stacks). The design-taste-frontend page system\nkeeps its standing rule (`references/motion.md`: no smooth-scroll library on\nany Taste landing page) — Lenis never applies there, and a Taste landing page\nthat initialises Lenis is an incomplete build. Lenis is a menu item, never a\ndefault: a build that adds smooth scrolling with no theme reason — no dealt\nmoment or scroll story that needs it — does not add it. Theme-match\nprecondition: smooth scrolling is a feel decision, not a look — it must still\nmatch the dealt theme's motion voice; a clash is not applied, with the reason\nrecorded in `docs/design-tokens.md`.\n\n(D19 — Motion: Lenis decides how the scroll itself feels — the smoothing value\nis the motion decision; Theme: the scroll feel is the dealt theme's motion\nvoice, never a stock glide; Texture: none — Lenis adds no surface treatment;\nVisuals: the scroll stays native (real scroll positions, working anchors, no\ntransform illusion), so layout and sticky behaviour never break; Techniques:\nthe single approved mechanism is Lenis at the pinned version, initialised once\nper page with the directed options above; Colors: none — Lenis chooses no\ncolours.)", 'after'),  # 'LIB-01'
+  ('LIB-02', 'skills/motion-patterns/SKILL.md', '      style={{ scaleX: scrollYProgress }}\n    />\n  )\n}\n```', "\n\n**Scroll-driven animation routes through Lenis + ScrollTrigger (fix #22 §11,\nLENIS_F22 / SCROLLTRIGGER_F22).** The two patterns above — Scroll reveal and\nScroll progress bar — are the motion-* defaults on React/Next.js surfaces\n(`useScroll` + `useTransform`, `whileInView`). Where the stack supports it and\nthe build uses GSAP, the same two patterns route through Lenis + ScrollTrigger\ninstead: Lenis owns the scroll (`lenis@1.3.27`, see `motion-foundations`\nsmooth-scroll rule, LENIS_F22), ScrollTrigger drives the animation\n(`gsap@3.15.1`, `gsap.registerPlugin(ScrollTrigger)` once at the top of the\nentry file before any `scrollTrigger` config — an unregistered ScrollTrigger\nthrows). Directed per §10 (effect name + exact parameters, never prose): a\nscroll reveal is `gsap.from(el, { opacity: 0, y: 12, duration:\nmotionTokens.duration.slow, ease: motionTokens.easing.smooth, scrollTrigger: {\ntrigger: el, start: 'top 90%', toggleActions: 'play none none reverse' } })`;\na scroll progress bar is a scrubbed tween on `scrollYProgress` (see the `gsap`\ndomain rows in `ui-ux-pro-max` `data/motion.csv` — the 17 GSAP presets — for\nthe ready-to-use snippets, matched to the motion tier). The Group B token\nvalues travel with the tween: dropdown duration\n`motionTokens.duration.dropdown` (0.2s, 150–250ms band), row stagger\n`motionTokens.duration.staggerRow` (0.03s — under the AB-03 conflict flag vs\nRule 5's 0.05s floor; the parent adjudicates), popover start scale\n`motionTokens.scale.popover` (0.95), knob stretch\n`motionTokens.scale.stretch` (1.12), exits at `motionTokens.exitFactor`\n(0.8× the enter — under the AB-03 conflict flag vs quick-reference ~60–70%;\nthe parent adjudicates), entrances on `motionTokens.easing.smooth`, moves on\n`motionTokens.easing.inOut`. The 1500ms fail-safe (fix #17 M2) still binds:\ncontent revealed by a ScrollTrigger tween becomes visible within 1500ms of\nentering the viewport even if the trigger never fires. Under\n`prefers-reduced-motion: reduce` neither Lenis nor the ScrollTrigger tween\nruns — the content renders at its final state immediately. SCOPE:\nmotion-governed app surfaces only; Taste landing pages keep their standing\nrule (`references/motion.md`: scrolling moves nothing but the dealt moment).\nTheme-match precondition: every element animated under this routing must still\nmatch the dealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n(D19 — Motion: Lenis + ScrollTrigger decide how scroll position drives\nanimation, with the Group B token values as the tween parameters; Theme: the\nscroll story is the dealt theme's motion voice, never a stock parallax;\nTexture: none — the routing adds no surface treatment; Visuals: reveals and\nprogress stay anchored to real scroll position, so nothing appears or vanishes\noff-scroll; Techniques: Lenis owns scroll, ScrollTrigger owns the animation,\nvalues come from `motionTokens` (Rule 8); Colors: none — the routing chooses\nno colours.)", 'after'),  # 'LIB-02'
+  ('LIB-03', 'skills/ui-ux-pro-max/SKILL.md', '**Available stacks:** `react`, `nextjs`, `vue`, `svelte`, `astro`, `nuxtjs`, `nuxt-ui`, `angular`, `laravel`, `swiftui`, `react-native`, `flutter`, `jetpack-compose`, `html-tailwind`, `shadcn`, `threejs`, `javafx`, `wpf`, `winui`, `avalonia`, `uno`, `uwp`. Use the stack detected in Step 1.', '\n\n**Design asset libraries — stack scope (fix #22 §11, LENIS_F22 / GSAP_F22 /\nVANTA_F22 / REACTBITS_F22).** Four free libraries are approved menu items,\nnever defaults — each is chosen through the skills, theme-matched, with a D19\nreason, and directed per §10 (library + effect name + exact parameters).\nStack scope: **Lenis** (`lenis@1.3.27`, MIT) and **GSAP** (`gsap@3.15.1`,\nGreenSock Standard "no charge" licence — free, all plugins included) are\nvanilla JS and available on every stack in the list above; **Vanta**\n(`vanta@0.5.24`, MIT) is vanilla JS plus three.js (`three@0.134.0` for Vanta\nscenes — the README-documented pair; the general three.js pin in\n`data/stacks/threejs.csv` does not apply to Vanta scenes) and is used only for\ndealt hero backgrounds / shader scenes on tech, gaming, software, and\nhardware surfaces (see `design-taste-frontend` step 2, VANTA_F22); **React\nBits** (repo commit `9d9c687dc4f55b23539aa5417b703078047efa74`, MIT + Commons\nClause) is React/Next.js ONLY — on any other stack the pattern is\nre-implemented with the stack\'s own tools (see `motion-patterns`,\nREACTBITS_F22). Every library effect respects `prefers-reduced-motion: reduce`\n(static fallback or off) — no library exempts the rule. Unpinned versions\n("latest") FAIL the pin check. The pinned versions live here and in the owning\nskills; a build that needs a newer version re-pins deliberately and records\nthe new pin + its verification, never floats. Theme-match precondition: a\nlibrary effect is applied only when it matches the dealt theme; a clash is not\napplied, with the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the libraries are the motion / scroll / background mechanisms,\nchosen per build; Theme: every effect is theme-matched or not applied;\nTexture: Vanta scenes and the Lenis scroll feel are texture / motion\ntreatments chosen through the theme; Visuals: scope keeps effects on the\nsurfaces where they read (3D backgrounds on tech heroes, bits on React);\nTechniques: exact pins + stack scope, install-on-demand per project (see\n`fix22/libraries-report.md` §4); Colors: none — the libraries choose no\ncolours (Vanta effect colours are the theme\'s own tokens).)', 'after'),  # 'LIB-03'
+  ('LIB-04', 'skills/ui-ux-pro-max/SKILL.md', "- `--motion` attaches a ready-to-use GSAP snippet (with framework notes, Do/Don't, and performance notes) pulled from `--domain gsap`, matched to the resolved tier (Subtle/Standard/Complex). The `--motion` dial is only an intensity parameter — it picks how much motion, not how the interface should feel or when it should move. Motion feel and timing decisions belong to `make-interfaces-feel-better` (see `rules/hackathon-mode.mdc` §5): decide feel/timing there first and record the decision as one line in the design-system brief (MASTER.md) before setting `--motion`, then use `--motion` only to set the intensity tier of the implementation. Do not use `--motion` to make a feel/timing decision on its own.", '\n\n- **GSAP is the animation engine; ScrollTrigger is its scroll plugin (fix #22\n  §11, GSAP_F22 / SCROLLTRIGGER_F22).** The `--domain gsap` integration is\n  verified intact: 17 GSAP presets in `data/motion.csv` (rows 1–17: hover,\n  scroll reveal, stagger list, page transition, parallax, loading, and more),\n  each with a ready-to-use snippet, framework notes, Do/Don\'t, and performance\n  notes, matched to the motion tier (Subtle/Standard/Complex) by `--motion`.\n  What is new here: **ScrollTrigger** (`gsap@3.15.1`, free with all plugins\n  since GSAP 3.13 under the GreenSock Standard "no charge" licence) is the\n  approved scroll-animation plugin — register it once\n  (`gsap.registerPlugin(ScrollTrigger)`) before any `scrollTrigger` config,\n  then drive scroll reveals, scrollytelling pins, parallax layers, and scroll\n  progress bars through it (see `motion-patterns` scroll routing,\n  SCROLLTRIGGER_F22). Note the preset snippets already use `scrollTrigger`\n  configs (motion.csv rows 4–6, 13–14) — this rule names the plugin in the\n  skill prose, where it was previously data-only. **Group B numbers travel\n  through GSAP tweens:** where the build uses GSAP, the fix #22 Group B values\n  are tween parameters, never prose — dropdown duration\n  `motionTokens.duration.dropdown` (0.2s, 150–250ms band), row stagger\n  `motionTokens.duration.staggerRow` (0.03s), popover start scale\n  `motionTokens.scale.popover` (0.95), knob stretch\n  `motionTokens.scale.stretch` (1.12), exits at `motionTokens.exitFactor`\n  (0.8× the enter), entrances on `motionTokens.easing.smooth` (ease-out),\n  moves on `motionTokens.easing.inOut` (ease-in-out). (Press scale is under\n  the AB-03 conflict flag — `motionTokens.scale.press` 0.95 vs the polish\n  default 0.97; the parent adjudicates; this spec does not set it.) A GSAP\n  effect is directed per §10 (effect name + exact parameters: tween target,\n  properties, duration, ease, stagger, ScrollTrigger config) — a GSAP effect\n  described in prose without exact parameters is incomplete and FAILS the\n  handoff check. Every GSAP tween respects `prefers-reduced-motion: reduce`\n  (render the final state immediately — every preset\'s framework notes already\n  say so). Pin: `gsap@3.15.1`, exact, in the project\'s package.json +\n  lockfile; "latest" FAILS the pin check. Theme-match precondition: a GSAP\n  effect is applied only when it matches the dealt theme; a clash is not\n  applied, with the reason recorded in `docs/design-tokens.md`.\n\n  (D19 — Motion: GSAP + ScrollTrigger are the animation engine — the Group B\n  values are its tween parameters; Theme: effects are the dealt theme\'s motion\n  voice, never stock tweens; Texture: none — GSAP adds no surface treatment;\n  Visuals: ScrollTrigger keeps animation tied to real scroll position, so\n  reveals never fire off-screen; Techniques: the 17 presets + `--domain gsap`\n  search are the source, values come from `motionTokens`; Colors: none — GSAP\n  chooses no colours.)', 'after'),  # 'LIB-04'
+  ('LIB-06', 'skills/ui-ux-pro-max/SKILL.md', "**Anti-generic bar (design guidance, not a screen verdict):** avoid generic AI-dashboard aesthetics — excessive gradients, repetitive same-size cards, decorative clutter. Earn distinction through deliberate typography, spacing, alignment, and contrast, plus the one memorable anchor from the captivating bar above. Design guidance the brief and Verify record as candidate evidence for `browser-qa` (checked against the recorded named direction): (1) Direction trace — every primary screen should visibly trace to the named direction recorded in MASTER.md / `docs/design-tokens.md`; a screen that could belong to any product is candidate evidence for `browser-qa`. (2) Memorable anchor — the primary view should carry the one unmistakable anchor from the captivating bar above; if no anchor can be named, record that as candidate evidence for `browser-qa`. (3) Not a default template — a surface that looks like a default template is candidate evidence for `browser-qa`. Only `browser-qa`'s pass/fail verdict on the rendered screen decides whether a screen fails any of these — this skill never states a screen pass/fail.", "\n\n**Animated 3D backgrounds — Vanta, on app surfaces (fix #22 §11, VANTA_F22).**\nWhere an app surface needs an animated 3D background — a hero or a dealt\nmoment, never a default wash — the approved source is Vanta (`vanta@0.5.24`,\nMIT, plus `three@0.134.0` — the README-documented pair; the general three.js\npin in `data/stacks/threejs.csv` does not apply to Vanta scenes). The effect\n(WAVES, BIRDS, NET, FOG, CLOUDS, GLOBE, and the other three.js-backed\neffects) is chosen through the design package, theme-matched, as a §10\ndirective (effect name + exact parameters: colour, scale, speed, mouse/touch\ncontrols) recorded in MASTER.md / `docs/design-tokens.md` with its fix #19 D19\nreason. Constraints, all binding: theme-matched (effect colours are the\ntheme's own tokens); a static fallback (the theme's gradient or image ground)\non mobile/low-power and whenever WebGL is unavailable; the scene MUST disable\nunder `prefers-reduced-motion: reduce` (the finished still shows instead);\nnever behind text without a scrim and a 4.5:1 contrast check; one Vanta scene\nper page by default; destroy the effect on unmount (`effect.destroy()`).\np5.js-backed Vanta effects (e.g. TRUNK) are not covered — no p5 pin,\nrecorded-gap if a build wants one. The full Vanta rule (shader scenes / hero\nbackgrounds) lives in `design-taste-frontend` step 2 (VANTA_F22); this skill\nstates the app-surface use. A Vanta background with no reduced-motion fallback\nor no scrim/contrast check is an incomplete build — a static check item in\nstep 6, never a screen verdict. Theme-match precondition: a Vanta scene is\napplied only when it matches the dealt theme; a clash is not applied, with the\nreason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the scene's motion is the dealt moment's motion; Theme:\ntheme-matched, colours are the theme's own tokens; Texture: the animated\nground is the surface's texture layer; Visuals: the scene is the hero anchor,\nnever behind unreadable text; Techniques: Vanta + three.js at the pinned pair,\ndestroy on unmount; Colors: effect colours are the theme's own tokens.)", 'after'),  # 'LIB-06'
+  ('LIB-07', 'skills/motion-patterns/SKILL.md', '## End-to-End Example', '\n### React Bits — animated components, React/Next only (fix #22 §11, REACTBITS_F22)\n\nReact Bits is a copy-paste library of animated React components and\nbackgrounds (text effects, backgrounds, components) — the bits are source\nfiles copied into the project, not a runtime package: add one bit with the\nshadcn CLI (`npx shadcn@latest add @react-bits/<BitName>-TS-TW` for the\nTypeScript + Tailwind flavour, `-JS-TW` / `-TS-CSS` / `-JS-CSS` as the build\nneeds) or the jsrepo CLI (`npx jsrepo add\ngithub/DavidHDev/react-bits/<ComponentName>`), at the pinned repo commit\n`9d9c687dc4f55b23539aa5417b703078047efa74` (2026-11-10; MIT + Commons Clause\n— free for personal and commercial use inside an app or product; the\ncomponents themselves may not be sold, sublicensed, or redistributed as a\nlibrary). Each bit is used as a §10 directive (component/effect name + exact\nprops, as listed for that bit on reactbits.dev — the directive records the\nprop values, it never says "a split-text effect") with its fix #19 D19 reason,\nrecorded in `docs/design-tokens.md`. SCOPE — React/Next.js builds ONLY: this\nskill is React-scoped and React Bits is React-only. On a non-React stack the\nPATTERN is implemented with the stack\'s own tools (recorded-gap style: name\nthe closest equivalent — a CSS / GSAP / vanilla implementation of the same\neffect — never force React Bits outside React). Some bits need optional peer\ndependencies (GSAP, three.js) — those resolve through the already-pinned\n`gsap@3.15.1` / `three@0.134.0` (Vanta pair) pins where the bit needs them,\nnever a new floating install. Bits that animate text or backgrounds respect\n`prefers-reduced-motion: reduce` (static final state) — a bit with no\nreduced-motion handling is not used. React Bits is a menu, never a default: a\nbit is used only when the dealt theme calls for that exact effect.\nTheme-match precondition: every bit must still match the dealt theme; a clash\nis not applied, with the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the bit\'s animation is the motion decision, with exact props as\nthe values; Theme: the bit is theme-matched or not used; Texture: none — a bit\nadds motion, not a surface treatment (background bits excepted: those ARE the\nsurface\'s texture, theme-matched); Visuals: the bit\'s effect is visible and\nanchored, never decoration that obscures content; Techniques: copy-paste\nsource at the pinned commit, CLI install, peer deps through existing pins;\nColors: none — the bit\'s colours are the theme\'s own tokens.)\n\n', 'before'),  # 'LIB-07'
+  ('LIB-08', 'skills/ui-ux-pro-max/SKILL.md', 'Domain is auto-detected from the query if `--domain` is omitted — but auto-detection can misroute overlapping terms (e.g. "font" matches both `typography` and `google-fonts`). If results look off-topic, pass `--domain` explicitly.', "\n\n**React Bits — React/Next only (fix #22 §11, REACTBITS_F22).** Animated React\ncomponents and backgrounds (text effects, backgrounds, components) from React\nBits are an approved menu item on React/Next.js builds only: copy-paste\nsource at the pinned repo commit\n`9d9c687dc4f55b23539aa5417b703078047efa74` (MIT + Commons Clause — free inside\nan app or product; the components themselves may not be sold, sublicensed, or\nredistributed). Each bit is used as a §10 directive (component name + exact\nprops) with its fix #19 D19 reason. On any non-React stack the pattern is\nre-implemented with the stack's own tools — never force React Bits outside\nReact. The primary home is `motion-patterns` (REACTBITS_F22); this skill\nstates the scope, it does not restate the install. Theme-match precondition: a\nbit is applied only when it matches the dealt theme; a clash is not applied,\nwith the reason recorded in `docs/design-tokens.md`. (D19 — Motion: the bit's\nanimation is the motion decision; Theme: theme-matched or not used; Texture:\nnone — a bit adds motion, not a surface treatment (background bits excepted);\nVisuals: the effect never obscures content; Techniques: copy-paste source at\nthe pinned commit; Colors: none — the bit's colours are the theme's own\ntokens.)", 'after'),  # 'LIB-08'
+  ('CSV-GSAP', 'skills/ui-ux-pro-max/data/stacks/threejs.csv', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/gsap.min.js', 'replace'),  # 'CSV-GSAP'
+  ('AB-03g', 'skills/motion-foundations/SKILL.md', 'export const motionTokens = {', '\n// Animation token values (fix #22) — group anchor: ANIM_TOKENS_F22\n', 'before'),  # 'AB-03g'
+  ('AB-05g', 'skills/motion-patterns/SKILL.md', '11. **Enter from the trigger (fix #22 B11 — origin-aware animation, glossary G10).**', '\n**Animation rules (fix #22) — group anchor: ANIM_RULES_F22.**\n', 'before'),  # 'AB-05g'
+  ('AB-09g', 'skills/motion-advanced/SKILL.md', '9. **Overlap old & new states in multi-step sequences (fix #22 B16).** In an imperative', '\n**Advanced animation rules (fix #22) — group anchor: ANIM_ADV_F22.**\n', 'before'),  # 'AB-09g'
+  ('DEPTH-09', 'skills/motion-foundations/SKILL.md', 'export const springs = {', '### Depth tokens — 3D motion values (fix #22 §13, DEPTH_F22)\n\n```ts\n// lib/motion-tokens.ts — depth values live beside motionTokens and are imported, never hardcoded (Rule 5).\nexport const depthTokens = {\n  perspective: 1000, // px — the perspective distance for 3D-transform heroes; smaller reads deeper.\n  parallax: { near: 0.5, mid: 0.25, far: 0.1 }, // scroll-linked translate multipliers: foreground moves most, background least.\n  tilt: { max: 6 }, // degrees — maximum card tilt on pointer move; small, never a spin.\n  elevation: { raised: 8, floating: 16, modal: 24 }, // px blur of the shadow that sells the height at each level (see ui-ux-pro-max depth rules, DEPTH_F22).\n}\n```\n\n**3D motion rules.** Parallax distances, 3D transform values, and camera moves come from `depthTokens` (Rule 5: no inline numbers — depth values are token values too). A parallax layer moves at its `depthTokens.parallax` multiplier (`useScroll` + `useTransform`); a 3D-transform hero sets `perspective: depthTokens.perspective` on its parent and rotates on `rotateX` / `rotateY` within `depthTokens.tilt.max`; a camera move (Bang Motion §12, camera-through-world) travels through the layers at the parallax multipliers, never as a jump cut. Occlusion is real: a foreground layer may cover a background layer, and the covered content must never be the only copy of anything the user needs. Depth of field: background layers may blur while the foreground stays sharp — never the reverse. Under `prefers-reduced-motion: reduce` all depth motion is off — every layer renders at its final state immediately (same rule as Rule 3: all transforms disabled, opacity-only fades at ≤ 0.2s the only permitted fallback). A11 solid drawing in 3D (Principles above) binds here: an object keeps believable volume, weight, and depth while it moves.\n\n- **D19 (for the depth tokens)** — Motion: the tokens are the values every depth move runs on, so parallax, tilt, and camera moves are decided once and reused; Theme: tokens are values, not looks — the theme still decides what the layered element is; Texture: none — depth tokens carry no surface treatment (Soft Shadow #23 is the texture-side depth cue, see `less-flat-ui` DEPTH_F22); Visuals: the multipliers keep near/mid/far layers legible (nothing moves so far it leaves the frame); Techniques: values live in `depthTokens` and are imported, never hardcoded (Rule 5); Colors: none — depth tokens do not choose colours; Depth: the tokens ARE the depth values — perspective, parallax distances, tilt, elevation blur.\n\n- **Theme-match precondition:** tokens are numbers, not designs — every element moved under them must still match the dealt theme; a token applied in a way that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element.', 'before'),  # 'DEPTH-09'
+  ('DEPTH-10', 'skills/motion-patterns/SKILL.md', '### Expanding card', '### Parallax layers and 3D-transform hero (fix #22 §13, DEPTH_F22)\n\n```tsx\n"use client"\nimport { motion, useScroll, useTransform } from "motion/react"\nimport { depthTokens } from "@/lib/motion-tokens"\n\n// Parallax: each layer translates at its depthTokens.parallax multiplier —\n// foreground (near) moves most, background (far) moves least. The multipliers\n// are the depth: 0.5 / 0.25 / 0.1, never per-layer improvisation (Rule 8).\nconst { scrollYProgress } = useScroll()\nconst yNear = useTransform(scrollYProgress, [0, 1], [0, -120 * depthTokens.parallax.near])\nconst yFar = useTransform(scrollYProgress, [0, 1], [0, 60 * depthTokens.parallax.far])\n<motion.div style={{ y: yNear }} />  // foreground layer\n<motion.div style={{ y: yFar }} />   // background layer\n```\n\n**3D-transform hero.** The hero sets `perspective: depthTokens.perspective`\n(1000px) on its parent; the hero object rotates within\n`depthTokens.tilt.max` (6°) on pointer move (`rotateX` / `rotateY`) and\nsettles on release. A flip or turn keeps the object\'s shadow, edge, and\nlayering consistent through the move (A11 solid drawing in 3D) — it never\nflattens into a texture or shears. **Camera move (Bang Motion §12).** A\ncamera-through-world move travels through the layers at the parallax\nmultipliers — push-through, glide, settle — with a subject that persists\nacross the move; the camera is depth in motion, not a slide transition.\n**Depth of field.** Background layers may blur while the foreground stays\nsharp; never blur the layer the user must read. Under\n`prefers-reduced-motion: reduce` none of this runs — every layer renders at\nits final state immediately (see `motion-foundations` Rule 3). SCOPE:\nmotion-governed app surfaces only; Taste landing pages keep their standing\nrule (`references/motion.md`: scrolling moves nothing but the dealt moment) —\na Taste depth moment is a dealt moment (DEPTH_F22 in\n`design-taste-frontend`), not a scroll parallax.\n\n- **D19 (for the parallax / 3D-hero patterns)** — Motion: the multipliers, the\nperspective, and the tilt cap are the moving values; Theme: the layered hero\nis the dealt theme\'s depth, never a stock parallax; Texture: none — the\npatterns add no surface treatment; Visuals: near/mid/far layers stay legible\nand the foreground never leaves the frame; Techniques: values come from\n`depthTokens` (Rule 8), the camera move follows Bang Motion §12;\nColors: none — the patterns do not choose colours; Depth: the layer order,\nparallax distances, and perspective value are the depth decision itself.\n\n- **Theme-match precondition:** as AB-03 — every element moved under these\npatterns must still match the dealt theme; a clash is not applied, with the\nreason recorded in `docs/design-tokens.md`.', 'before'),  # 'DEPTH-10'
+  ('DEPTH-11', 'skills/ui-ux-pro-max/SKILL.md', "(D19 — Motion: the scene's motion is the dealt moment's motion; Theme:\ntheme-matched, colours are the theme's own tokens; Texture: the animated\nground is the surface's texture layer; Visuals: the scene is the hero anchor,\nnever behind unreadable text; Techniques: Vanta + three.js at the pinned pair,\ndestroy on unmount; Colors: effect colours are the theme's own tokens.)", "\n\n**Depth rules — the z-axis on app surfaces (fix #22 §13, DEPTH_F22).** Every app surface has a named depth strategy (orchestrate step 3, DEPTH_F22): flat / layered / deep-3D / parallax / Vanta scene / 3D-transform hero / camera-through-world — recorded in `docs/design-tokens.md` alongside the other directives, with exact values per §10. The rules:\n\n- **Elevation system.** Shadow levels ARE depth: raised (`depthTokens.elevation.raised`, 8px blur), floating (16px), modal (24px) — a shadow's blur sells the height. One shadow alone reads flat; layered shadows at different blurs read as real height (see Soft Shadow #23 in `less-flat-ui`, DEPTH_F22 — the texture-side depth cue). Elevation is directed: the level per element is named in the design package, never improvised.\n- **Perspective.** 3D-transform surfaces set `perspective: depthTokens.perspective` (1000px) on the parent; smaller reads deeper. A surface with no perspective value has no 3D transforms.\n- **Parallax.** Layers move at `depthTokens.parallax` multipliers (near 0.5 / mid 0.25 / far 0.1): foreground moves most, background least. Parallax is a depth decision with exact distances, never a decorative drift.\n- **3D transforms.** Tilt and rotation stay within `depthTokens.tilt.max` (6°); a flip or turn keeps the object's shadow, edge, and layering consistent (A11 solid drawing in 3D). GSAP 3D transforms (§11) are the implementation on GSAP builds; `react-three-fiber` (§15) is the 3D layer on React builds; Vanta (§11, VANTA_F22 above) is the vanilla-JS 3D path.\n- **Layering.** Every surface declares its layer order — foreground / midground / background — in the design package. The order is the depth strategy made explicit.\n- **Occlusion.** A foreground layer may cover a background layer; the covered content must never be the only copy of anything the user needs, and an occluded control must never be the only path to an action.\n- **Depth of field.** Background layers may blur while the foreground stays sharp; never blur the layer the user must read.\n- **Theme-matched depth.** A brutalist theme's depth is hard offset shadows and stacked cards; a luxury theme's is soft elevation and slow parallax; a sticker theme's is die-cut layers and hard offset shadows. Depth treatment must match the theme deal, with a D19 reason.\n- **Never hurts readability or performance.** Text over 3D/deep backgrounds needs a scrim and a 4.5:1 contrast check (same rule as §11 Vanta). 3D motion respects `prefers-reduced-motion: reduce` (static fallback or off) with a mobile/low-power fallback. A deep design that is unreadable or that stutters on a phone FAILS the check — the finding is candidate evidence for `browser-qa`, never a verdict of this skill. One WebGL-heavy effect per surface (§15): a surface never stacks two WebGL depth effects.\n\n- **D19 (for the depth rules)** — Motion: the rules name how depth moves (parallax distances, camera moves, 3D transforms) or record `none — <reason>` for a still flat surface; Theme: the rules are applied in the dealt theme's depth (brutalist / luxury / sticker, above), never as a generic 3D effect; Texture: depth and texture are different axes — texture is the `less-flat-ui` layer, depth is the z-axis (Soft Shadow #23 is both); Visuals: layer order, occlusion, and depth of field keep the layered picture legible; Techniques: the rules route to depth tokens, Vanta, GSAP 3D, and the Bang Motion camera, never to ad-hoc values; Colors: depth treatments use the theme's own tokens; Depth: the rules ARE the depth axis — elevation, perspective, parallax, layering, occlusion, depth of field.\n\n- **Theme-match precondition:** a depth treatment that clashes with the dealt theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the surface.", 'after'),  # 'DEPTH-11'
+  ('DEPTH-12', 'skills/ui-ux-pro-max/SKILL.md', 'The full D19 rule lives in `design-taste-frontend` step 4a.', "\n\n**Depth — the seventh dimension (fix #22 §13, DEPTH_F22).** App surfaces record the same seventh dimension as the full rule in `design-taste-frontend` step 4a (DEPTH_F22 there): every app-surface UI decision's recorded reason in MASTER.md addresses SEVEN dimensions, the six above plus **Depth** (the z-axis: layers, elevation, perspective, parallax, occlusion, depth of field — or `flat by choice — <reason>` where flat is the deliberate call). A MASTER.md entry is complete only when it carries all seven dimension lines. The six-dimension text above is unchanged; this line extends it.", 'after'),  # 'DEPTH-12'
+  ('DEPTH-13', 'skills/less-flat-ui/SKILL.md', 'Layers with everything: a shadow is a depth cue, not a pattern, so it stacks on top of any other treatment without competing.', "\n\n**Depth and texture are different axes (fix #22 §13, DEPTH_F22).** This skill owns texture — the 23 treatments. The z-axis is owned by the depth rules (`ui-ux-pro-max` depth rules, DEPTH_F22) and the depth tokens (`motion-foundations` depth tokens, DEPTH_F22): layers, elevation, perspective, parallax, occlusion. Overlap, recorded once here and not duplicated: Soft Shadow #23 is BOTH — a texture treatment in this catalogue AND a depth cue (its three layered shadows sell elevation). A shadow used as a depth cue still needs its depth strategy named in the design package (orchestrate step 3, DEPTH_F22); a treatment with no depth intent is texture only, and its Depth dimension line records `flat by choice — <reason>` or `none — <reason>` for the z-axis. (D19 — Motion: none — a shadow does not move; Theme: the shadow tint follows the dealt theme's surface; Texture: the shadow IS the texture treatment; Visuals: layered blurs read as real height where one shadow reads flat; Techniques: the three-layer `box-shadow` above, never two separate drop shadows; Colors: the shadow tint is the surface's own hue at low opacity; Depth: the shadow is the elevation cue — its blur is the height.)", 'after'),  # 'DEPTH-13'
+  ('ORB-MP', 'skills/motion-patterns/SKILL.md', '### Toast stack', '### Thinking Orb — the loading indicator for AI/agent waiting states (fix #22 §14, ORBS_F22)\n\nThe approved loading indicator for AI/agent waiting states is the Thinking\nOrb (Jakub Antalik, `thinking-orbs@0.3.2`, MIT — see the pin record in\n`ui-ux-pro-max`, ORBS_F22): a dotted orb on a plain 2D canvas, one distinct\nhand-tuned animation per agent state — never a generic spinner. This is the\napproved IMPLEMENTATION of Group D fix D19 "Add loading states" (polish-pass\nunslop-fixes.md): the loading state for an AI/agent wait is an orb, not a\nspinner, and the state must match what the agent is actually doing.\n\n**The nine verified states (repo-verified — see the report §2; there is NO\n"tenth" state and NO state named "thinking").** Each state is a distinct\nanimation, not a recolour:\n\n| State | What the agent is doing | The animation does | Use it when |\n|---|---|---|---|\n| `working` | general activity | particles on tilted orbits | the agent is working and no narrower state fits |\n| `searching` | retrieving | a scan meridian sweeps a dotted globe | retrieving / looking something up |\n| `solving` | computing | bands scramble, then click back solved | computing / solving a problem |\n| `listening` | capturing input | a waveform rolls through the rings | capturing input (voice, audio, live input) |\n| `connecting` | establishing | a constellation wires itself | establishing a connection / handshake |\n| `weaving` | combining | three strands plait around the sphere | combining / merging sources or results |\n| `composing` | generating | an undulating multi-band sash | generating text, code, or media |\n| `breathing` | idle / waiting | a ring slowly morphing | waiting with nothing active to report (idle hold) |\n| `shaping` | transforming | dotted outline: circle → triangle → square | transforming / reshaping output |\n\n**Correction to the SPEC §14 mapping draft:** the draft mapped "thinking =\nreasoning". There is no `thinking` state in the library. Reasoning maps to\n`working` (general activity) or `solving` (computing), whichever the moment\nactually is. The `breathing` state\'s on-screen label reads "Thinking…" but\n`breathing` is the IDLE/WAITING state — never use it for reasoning. A build\nthat shows a "thinking" orb while the agent reasons is a mismatched state.\n\n**Sizes — two tuned presets, not a scale factor.** `size={64}` is the\nchat-avatar scale (in agent messages, beside the agent\'s avatar or name);\n`size={20}` is the inline-text scale (next to status text, e.g. "Searching…\n<orb>"). Each size carries its own dot count, dot size, and speed tuning\n(tokens in `motion-foundations`, ORBS_F22). Never scale an orb with CSS to\nsome other size — pick 64 or 20.\n\n**Usage (React/Next):**\n\n```tsx\nimport { ThinkingOrb } from \'thinking-orbs\';\n\n// Chat-avatar scale, in an agent message while the agent retrieves:\n<ThinkingOrb state="searching" size={64} />\n\n// Inline-text scale, next to status text:\n<span>Searching… <ThinkingOrb state="searching" size={20} /></span>\n```\n\n`speed` is a multiplier on the preset\'s baked speed (`speed={1.5}` runs 1.5x\nthe baked speed). `paused` freezes on the current frame. Every orb carries\n`role="img"` with a per-state `aria-label` out of the box ("Working…",\n"Searching…", … — the `breathing` label reads "Thinking…"); pass an explicit\n`aria-label` only to override it with the product\'s own status wording.\n\n**Rules — state-matched, never decorative.**\n\n- The orb state MUST match the actual agent activity. A `solving` orb while\n  the app is just loading a page is a mismatched state. A generic spinner\n  anywhere an AI/agent wait is shown is out — the orb replaces it.\n- Menu, not defaults: use ONLY the states the product actually uses. A\n  product that only ever retrieves and generates uses `searching` and\n  `composing` — it does not ship all nine. The design package names the\n  states the product uses (orchestrate step 3, ORBS_F22).\n- Not decoration, not a brand mark: an orb never appears where nothing is\n  waiting, never as a logo, never as a decorative background element.\n- Not a general spinner: non-AI loading (page loads, file uploads, form\n  submits with no agent behind them) does NOT use an orb — it uses the\n  product\'s ordinary loading treatment. The orb is for AI/agent waits only.\n- Monochrome + theme-matched: the orb takes the theme\'s ink colour (light\n  ink on dark substrates, dark ink on light ones — `theme="auto"` detects\n  from the host project; pin with `theme="dark"` / `theme="light"` where the\n  substrate is fixed). Never a rainbow orb, never a brand-colour orb, never\n  the accent colour — the ink is a neutral, never the accent.\n- Cursor gravity is an OPTIONAL interactive extra, off by default: the\n  `gravity={{ sprite }}` prop bends the pointer toward the orb, and it needs\n  a pointer-raster `sprite` the package does NOT ship. It is documented in\n  the author\'s Libraries.dev skill reference, NOT in the standalone repo\'s\n  component at main — a build that wants it verifies the prop exists in the\n  installed version first, and records a gap if it does not. Gravity turns\n  itself off under reduced motion. Never a default, never required.\n- Performance is the point (requirements, not options — tokens in\n  `motion-foundations`, ORBS_F22): plain 2D canvas arcs only (no WebGL, no\n  SVG filters, no `ctx.filter`); every instance pauses itself when scrolled\n  offscreen (`IntersectionObserver`) or when the tab is hidden, then resumes\n  in phase, and still paints one frame while paused; device-pixel-ratio\n  capped at 2; `prefers-reduced-motion: reduce` renders a frozen one-frame\n  orb (no animation) that still follows the live theme.\n\n**Dry-run fixture check phrases (fixtures (a)–(e) judge against these):**\n(a) "a generic spinner" FAILS — a build with a generic spinner for an\nAI/agent wait FAILS the check. (b) "a state-matched orb" PASSES — a build\nwhose orb state matches the actual agent activity PASSES. (c) "a mismatched\norb state" FAILS — an orb whose state does not match the actual agent\nactivity FAILS. (d) "an orb used as decoration" FAILS — an orb shown where\nnothing is waiting, or used as a logo or decorative element, FAILS.\n(e) "an orb that does not respect reduced motion" FAILS — an orb that\nanimates under `prefers-reduced-motion: reduce` instead of rendering a\nfrozen one-frame orb FAILS.\n\n- **D19 (for the orb pattern)** — Motion: the orb IS the waiting-state\nmotion — its state, size, and speed are the motion decision, and it pauses\noffscreen/hidden and freezes under reduced motion; Theme: the orb takes the\ntheme\'s ink and is used only for the states the dealt theme\'s product\nactually has, never as decoration; Texture: none — the orb is a canvas\nanimation, not a surface treatment; Visuals: the state-matched orb tells the\nuser what the agent is actually doing, where a generic spinner tells them\nnothing; Techniques: the single approved implementation is\n`thinking-orbs@0.3.2` on React/Next (ORBS_F22 pin in `ui-ux-pro-max`),\nnon-React stacks implement the pattern with their own tools; Colors: the\norb is strictly monochrome in the theme\'s ink — never a rainbow, brand, or\naccent colour.\n\n- **Theme-match precondition:** as AB-03 — every orb must still match the\ndealt theme (its ink is the theme\'s ink); an orb in a colour that clashes\nwith the theme is not applied, and the reason is recorded in\n`docs/design-tokens.md`.', 'before'),  # 'ORB-MP'
+  ('ORB-MF', 'skills/motion-foundations/SKILL.md', '### Accessibility', '### Thinking Orb tokens (fix #22 §14, ORBS_F22)\n\nThe tokens for the Thinking Orb pattern (`motion-patterns`, ORBS_F22). The\nlibrary ships nine states × two sizes as baked tunings (`src/presets.ts` in\nthe repo): each (state, size) pair resolves to an engine mode plus\nspeed/count/size multipliers over the mode\'s base profile, resolved once and\ncached. The numbers below ARE the tokens — a build uses the library\'s baked\ntunings, never re-tunes them per component.\n\n**Sizes.** `64` = chat-avatar scale; `20` = inline-text scale. Two tuned\npresets, not a scale factor: each size has its own dot count, dot size, and\nspeed tuning. The engine produces 24–600 dots per frame depending on state\nand size. Never scale an orb with CSS to another size — pick 64 or 20.\n\n**Per-state tunings (speed / count / size multipliers over the base profile;\n`extra` where the mode carries one).** Verified live from\n`src/presets.ts` (repo main, Nov 12, 2026):\n\n| State (engine mode) | size 64 — speed / count / size | size 20 — speed / count / size |\n|---|---|---|\n| `working` (orbits) | 1.885 / 1 / 1 | 3.9 / 0.238 / 2.4 |\n| `searching` (globe) | 2.015 / 0.42 / 1.15, extra scanMul 4.08, dimBase 0.45 | 2.665 / 0.105 / 1.75, extra scanMul 4.335, dimBase 0.45 |\n| `solving` (rubik) | 1.82 / 0.35 / 1.05 | 1.95 / 0.088 / 1.9 |\n| `listening` (wave) | 4.388 / 0.341 / 1 | 3.998 / 0.105 / 1.6 |\n| `connecting` (web) | 3.315 / 1.35 / 0.95 | 6.63 / 0.25 / 1.52 |\n| `weaving` (braid) | 1.625 / 0.5 / 1 | 2.75 / 0.1125 / 1.36 |\n| `composing` (ribbon) | 2.34 / 0.25 / 0.85, extra spin 0, bandMul 3.9, wobMul 1 | 3.12 / 0.051 / 1.073, extra spin 0, bandMul 4.94, wobMul 1 |\n| `breathing` (ring) | 3.24 / 0.25 / 0.956, extra spin 0, bandMul 3.627, wobMul 0.368 | 3.78 / 0.028 / 1.622, extra spin 0, bandMul 3.968, wobMul 0.565 |\n| `shaping` (morph) | 2.405 / 0.702 / 0.395, extra spread 1.45 | 2.08 / 0.53 / 1.011, extra spread 1.45 |\n\n**Speed multiplier.** The `speed` prop is a multiplier on the preset\'s baked\nspeed (`speed={1.5}` = 1.5x the baked speed). The baked speed is the default;\na build changes it only with a recorded reason (e.g. a deliberately slower\nidle orb), never per component by taste.\n\n**Monochrome rule.** Strictly monochrome: light ink on dark substrates, dark\nink on light ones. `theme="auto"` (default) resolves in three layers and\nupdates live: an ancestor `data-theme="dark|light"` attribute or `dark` /\n`light` class (watched via `MutationObserver`); otherwise\n`prefers-color-scheme`; SSR-safe (the canvas paints only on the client,\nafter the theme has resolved). Pin with `theme="dark"` / `theme="light"`\nwhere the substrate is fixed. The ink is the theme\'s ink — never a rainbow,\nbrand, or accent colour.\n\n**Reduced-motion behaviour — frozen one-frame orb.** Under\n`prefers-reduced-motion: reduce` the orb renders ONE static representative\nframe (frame at t=0.6 in the library) and does not animate — and still\nfollows the live theme. This is a requirement, not an option: an orb that\nanimates under reduced motion FAILS the check (fixture (e)).\n\n**Offscreen / hidden pause.** Every instance pauses itself when scrolled\noffscreen (`IntersectionObserver`) or when the tab is hidden\n(`visibilitychange`), then resumes in phase — all instances share one clock.\nA paused orb still paints one frame. This is a requirement, not an option.\n\n**Device-pixel-ratio cap.** DPR is capped at 2 (`Math.min(2,\ndevicePixelRatio)` in the library). This is a requirement, not an option.\n\n**Render budget.** Plain 2D canvas arcs only — no `ctx.filter`, no SVG\nfilters, no WebGL — the same pixels everywhere, cheap on low-end devices,\n60 fps, minimal main-thread use. The heaviest state is under 1% of a 60 fps\nframe budget in the library\'s own measurement; the plugin records the 2D\ncanvas + pause + DPR-cap requirements and does not re-measure them.\n\n- **D19 (for the orb tokens)** — Motion: the tunings ARE the motion values —\nbaked per (state, size), speed a multiplier on them, pause offscreen/hidden,\nfrozen one frame under reduced motion; Theme: the monochrome rule is the\ntheme\'s ink, resolved live from the host project; Texture: none — tokens\ncarry no surface treatment; Visuals: two tuned sizes keep the orb legible at\navatar scale and inline scale, never a CSS-scaled blur; Techniques: the\ntunings are the library\'s baked presets, imported, never re-tuned per\ncomponent; Colors: strictly monochrome ink — the tokens choose no colour\nbeyond the theme\'s ink.\n\n- **Theme-match precondition:** as AB-03 — tokens are values, not designs;\nevery orb rendered with them must still match the dealt theme; a clash is\nnot applied, with the reason recorded in `docs/design-tokens.md`.', 'before'),  # 'ORB-MF'
+  ('ORB-UIPRO', 'skills/ui-ux-pro-max/SKILL.md', 'One accent, one button pair, one card style: gates.md F4/F15 governs on landing pages, the Impeccable craft floor on app surfaces.', '\n**Thinking Orb — the loading indicator component for AI/agent waiting states (fix #22 §14, ORBS_F22).** The component rules live here; the pattern lives in `motion-patterns` (ORBS_F22) and the tokens in `motion-foundations` (ORBS_F22). **Where it goes:** size 64 (chat-avatar scale) inside agent messages, beside the agent\'s avatar or name; size 20 (inline-text scale) next to status text ("Searching… <orb>"). **When to use it:** AI/agent waiting states only — while the agent is working, searching, solving, listening, connecting, weaving, composing, breathing (idle hold), or shaping, with the state matched to the actual activity. **When NOT to use it:** never as a general spinner for non-AI loading (page loads, uploads, form submits with no agent behind them — those use the product\'s ordinary loading treatment); never as decoration; never as a brand mark or logo. **Menu, not defaults:** only the states the product actually uses are shipped — the design package names them (orchestrate step 3, ORBS_F22). **Supply chain (pinned, verified live Nov 12, 2026):** `thinking-orbs@0.3.2` — exact pin in the project\'s `package.json` + lockfile; "latest" FAILS the pin check. The repo\'s `package.json` at main reads 0.3.1; 0.3.2 is the version published on npm (registry `latest`, verified Nov 12, 2026) — pin 0.3.2, the published version, not the repo\'s 0.3.1. License MIT, verified live (repo LICENSE + `package.json` `"license": "MIT"` + npm registry `"license": "MIT"`); free for commercial use. Peer dependency: React >= 18. **Stack scope:** React/Next via npm `thinking-orbs`. React Native: a package (`thinking-orbs-native`) exists IN the repo under `ports/react-native/`, is NOT published on npm, and has NOT run on a device or simulator yet — install-from-repo only, gated on that verification, never assumed shippable. SwiftUI: PLANNED only (`ports/ios/ThinkingOrbsKit` in the repo\'s port plan) — no Swift package exists in the repo; do not claim SwiftUI support until it ships. Non-React stacks implement the pattern with their own tools (same routing rule as React Bits, §11): the orb PATTERN (state-matched, monochrome, two sizes, pause + reduced-motion behaviour) is implemented natively, never by forcing the React package outside React. **Monochrome + theme-matched:** the orb takes the theme\'s ink colour, never a rainbow, brand, or accent colour. Theme-match precondition: an orb is applied only when it matches the dealt theme; a clash is not applied, with the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the orb is the waiting-state motion, state-matched and pausing offscreen/hidden; Theme: theme-matched ink, used only for the product\'s real agent states; Texture: none — the orb adds motion, not a surface treatment; Visuals: the orb sits at avatar or inline scale where the wait is, never as a decorative element; Techniques: the pinned npm package on React/Next, install-from-repo-gated on React Native, planned-only on SwiftUI, native re-implementation elsewhere; Colors: strictly monochrome theme ink, never the accent.)', 'after'),  # 'ORB-UIPRO'
+  ('L15-01', 'skills/motion-foundations/SKILL.md', '- **A11 Solid drawing in 3D** — an object keeps believable volume, weight, and depth\n  while it moves. In UI: a card that flips or expands keeps its shadow, edge, and\n  layering consistent through the move; it never flattens into a texture or shears.', '\n### React Three Fiber — the 3D implementation layer for React (fix #22 §15, R3F_F22)\n\nReact Three Fiber (R3F) is THE 3D implementation layer for React builds:\nthe §13 depth rules (3D transforms, parallax, camera moves) are implemented\nthrough R3F on React builds. Vanta (§11) stays the vanilla-JS 3D path; R3F\nis the React path. R3F is a React renderer for Three.js: JSX elements map\nto Three.js objects declaratively (`<mesh />` becomes `new THREE.Mesh()`),\nwith no overhead (components render outside React). Ecosystem (menu, never\ndefaults): `@react-three/drei` helpers, Rapier physics, postprocessing, XR.\nInstall (exact pins, per project, install-on-demand): `npm install\nthree@0.185.1 @types/three@0.185.1 @react-three/fiber@9.8.2` on React 19,\n`@react-three/fiber@8.18.0` on React 18. `three@0.185.1` is the plugin\'s\ngeneral three.js pin (`data/stacks/threejs.csv` row 1) — it satisfies the\nR3F peer ranges (v9: `three >=0.156`; v8: `three >=0.133`) and the\nShaderGradient matrix (`three >=0.158.0`); it is NOT the Vanta-scoped\n`three@0.134.0`, which governs Vanta scenes only. **Version pairing is\nSTRICT — check it before installing:** read the project\'s `package.json`\n`react` version first, then install the matching R3F major. React 18 +\nR3F v9 FAILS the pairing check. React 19 + R3F v8 FAILS the pairing check.\nNext.js 15 App Router MUST use R3F v9 + React 19 (R3F v8 is structurally\nincompatible with the App Router\'s vendored React 19). Directed per §10\n(library + effect + exact parameters): a 3D scene is a `<Canvas>` with an\nexact camera (`camera={{ position: [0, 0, 5], fov: 45 }}`), exact lights,\nand exact motion values (see `motion-patterns`, R3F_F22) — never "a 3D\nhero". Under `prefers-reduced-motion: reduce` the scene does not run — a\nstatic image/poster of the finished scene shows instead. One WebGL-heavy\neffect per surface (WEBGL_ONE_F22, see the `polish-pass` slop checklist):\nan R3F scene counts as the surface\'s one effect. Theme-match\nprecondition: a 3D scene is applied only when it matches the dealt theme;\na clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n(D19 — Motion: R3F is how 3D motion (rotation, parallax, camera moves) is\nimplemented on React builds, with exact camera and motion values; Theme:\nthe scene is the dealt theme\'s depth, never a stock 3D demo; Texture:\nnone — R3F adds geometry and light, not a surface treatment (a glass or\ngradient ground inside the scene is that library\'s own treatment);\nVisuals: the scene is the hero\'s depth anchor, never behind unreadable\ntext (4.5:1 scrim/contrast check where text overlaps it); Techniques: R3F\nat the paired pin, peer deps pinned with it, install-on-demand per\nproject; Colors: none — the scene\'s colours are the theme\'s own tokens.)', 'after'),  # 'L15-01'
+  ('L15-02', 'skills/motion-patterns/SKILL.md', '## End-to-End Example', '### 3D scene — React Three Fiber (fix #22 §15, R3F_F22)\n\nA 3D scene on a React/Next.js build is built with React Three Fiber\n(`@react-three/fiber` — see `motion-foundations`, R3F_F22, for the strict\nversion pairing: React 18 + R3F v9 FAILS the pairing check, React 19 +\nR3F v8 FAILS the pairing check). The scene below is the pattern: a\n`<Canvas>` with an exact camera and lights, a mesh whose rotation is\ndriven per frame. 3D motion values (rotation speed, camera position,\nparallax distance) are §10 directives — exact numbers in the directive,\nnever prose. SCOPE — React/Next.js builds ONLY: on a non-React stack the\nsame depth is built with the stack\'s own tools or with Vanta (§11, the\nvanilla-JS 3D path) — never force R3F outside React.\n\n```tsx\n"use client"\nimport { Canvas, useFrame } from "@react-three/fiber"\nimport { useRef } from "react"\n\n// R3F_F22: the 3D scene pattern. Camera, lights, and motion values are\n// exact (directed per §10); the mesh rotates 0.01 radians per frame.\nfunction SpinningBox() {\n  const ref = useRef()\n  useFrame((state, delta) => (ref.current.rotation.y += delta * 0.6))\n  return (\n    <mesh ref={ref}>\n      <boxGeometry args={[1, 1, 1]} />\n      <meshStandardMaterial color="#ff5005" />\n    </mesh>\n  )\n}\n\n<Canvas camera={{ position: [0, 0, 5], fov: 45 }}>\n  <ambientLight intensity={Math.PI / 2} />\n  <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />\n  <SpinningBox />\n</Canvas>\n```\n\n**Parallax through the camera (fix #22 §13 depth).** Depth motion is a\ncamera move, not a layout shift: the camera\'s position (or a group\'s\nposition) moves with scroll or pointer, with exact distances in the\ndirective (e.g. `camera.position.z` from 5 to 3.5 across the scroll).\nUnder `prefers-reduced-motion: reduce` the Canvas does not mount — a\nstatic image/poster of the finished scene renders in its place. An R3F\nscene is the surface\'s one WebGL-heavy effect (WEBGL_ONE_F22) — it never\nshares a surface with a Vanta scene, a ShaderGradient, liquid glass, or\nliquid metal. Theme-match precondition: the scene must still match the\ndealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n(D19 — Motion: the per-frame rotation and the camera move are the 3D\nmotion values, exact in the directive; Theme: the scene is the dealt\ntheme\'s depth moment, never a stock spinning cube; Texture: none — the\nscene adds geometry and light, not a surface treatment; Visuals: the\nobject stays visible and legible through the move (A11 solid drawing in\n3D); Techniques: R3F at the paired pin, Canvas + useFrame, install-on-demand\nper project; Colors: none — the scene\'s colours are the theme\'s own\ntokens.)\n', 'before'),  # 'L15-02'
+  ('L15-03', 'skills/ui-ux-pro-max/SKILL.md', 'library effect is applied only when it matches the dealt theme; a clash is not\napplied, with the reason recorded in `docs/design-tokens.md`.', '\n**§15 design asset libraries — stack scope (fix #22 §15, R3F_F22 /\nLIQGLASS_F22 / SHADERGRAD_F22 / LIQLOGO_F22).** Four more free libraries\nare approved menu items, never defaults — each is chosen through the\nskills, theme-matched, with a D19 reason, and directed per §10 (library +\neffect name + exact parameters). Stack scope: **react-three-fiber**\n(`@react-three/fiber@9.8.2` on React 19, `@react-three/fiber@8.18.0` on\nReact 18, MIT; peer deps `three@0.185.1` + `@types/three@0.185.1`) and\n**ShaderGradient** (`@shadergradient/react@2.4.20`, ESM-only; MIT declared\nin package.json + README but NO root LICENSE file — see the caveat below)\nare React/Next.js ONLY — on any other stack the pattern is re-implemented\nwith the stack\'s own tools (see `motion-patterns`, R3F_F22 /\nSHADERGRAD_F22). **liquid-glass-js** (repo commit\n`78cb6ccb0b9987bb60a88b14ccbd13a9e6e8ab2a`, MIT; NO npm package — copy\n`container.js`, `button.js`, `glass.css` into the project) is vanilla JS\nand available on every stack. **liquid-logo** (repo commit\n`689bb38a1e0d5a6a8baf2d34847635eefde19994`; PolyForm Shield 1.0.0, not MIT)\nis a STANDALONE TOOL, not a runtime dependency — it produces the animated\nbrand mark once (see `design-taste-frontend` step 4a, LIQLOGO_F22); it is\nnever installed as a project dependency. **One WebGL-heavy effect per\nsurface (WEBGL_ONE_F22):** a surface/page uses AT MOST ONE WebGL-heavy\nlibrary effect (an R3F scene, a Vanta scene, a ShaderGradient, liquid\nglass, liquid metal). Stacking two or more WebGL-heavy effects on one\nsurface FAILS the `polish-pass` flag (see the slop checklist,\nWEBGL_ONE_F22) — performance + "more, not bolder" restraint. Every library\neffect respects `prefers-reduced-motion: reduce` (static fallback or off)\n— no library exempts the rule. Unpinned versions ("latest") FAIL the pin\ncheck. The pinned versions live here and in the owning skills; a build\nthat needs a newer version re-pins deliberately and records the new pin +\nits verification, never floats. Theme-match precondition: a library effect\nis applied only when it matches the dealt theme; a clash is not applied,\nwith the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the libraries are the 3D / gradient / glass / brand-motion\nmechanisms, chosen per build; Theme: every effect is theme-matched or not\napplied; Texture: ShaderGradient grounds and liquid glass ARE texture /\nsurface treatments chosen through the theme; Visuals: scope keeps effects\non the surfaces where they read (3D scenes on React heroes, glass on rich\nbackgrounds, gradients on landing heroes); Techniques: exact pins + stack\nscope, install-on-demand per project (liquid-glass-js vendored file\ncopies, liquid-logo a standalone tool — see `fix22/libraries15-report.md`\n§5 in the manifest record); Colors: none — the libraries choose no\ncolours (ShaderGradient colours come from the customize URL, which is the\ntheme\'s own palette).)\n\n**ShaderGradient licence caveat (fix #22 §15, SHADERGRAD_F22).** The\nShaderGradient repo has NO root LICENSE file (verified live: no `LICENSE`\nin the repo root, no licence field on the repo page). The MIT grant rests\non two declarations only: the README ("MIT © ruucm, stone-skipper") and\nthe `@shadergradient/react` package.json (`"license": "MIT"`). That is a\nrecorded caveat, not an assumed-away fact: if a build\'s legal review\nneeds actual licence text, the grant must be confirmed with the\nmaintainer before shipping — the plugin records the caveat and proceeds\non the declared MIT. Install `@shadergradient/react` (v2), NOT legacy\n`shadergradient` (v1.3.5, dead end): a build installing legacy\n`shadergradient` v1 FAILS the version check. The Figma plugin\'s paid Pro\ntier is out of scope — the npm library is the integration, and it is free.', 'after'),  # 'L15-03'
+  ('L15-04', 'skills/ui-ux-pro-max/SKILL.md', 'A build with no recorded brand identity is an incomplete build. The full B1 rule lives in `design-taste-frontend` step 4a.', "\n**Animated brand mark — liquid-logo, standalone tool (fix #22 §15,\nLIQLOGO_F22).** Where a build wants its wordmark animated as liquid\nmetal, the approved production method is liquid-logo\n(paper-design/liquid-logo, repo commit\n`689bb38a1e0d5a6a8baf2d34847635eefde19994`; PolyForm Shield 1.0.0 — the\nanimated mark is a brand asset produced ONCE with the tool or its hosted\nversion at liquid.paper.design, exported as MP4/PNG, and shipped as an\nasset; it is never a runtime dependency and never the only logo — the\noriginal static logo is kept as the fallback for old phones and\nnon-WebGL contexts. The full rule (input requirements, the honest input\ncheck, attribution) lives in `design-taste-frontend` step 4a (fix #20 B1,\nLIQLOGO_F22); this skill states the app-surface use. Theme-match\nprecondition: the animated mark is the build's own brand, produced once\nfrom its own wordmark — a liquid-metal treatment that clashes with the\ndealt theme is not used, with the reason recorded in\n`docs/design-tokens.md`. (D19 — Motion: the animation is the brand\nmotion, produced once, never runtime-heavy; Theme: the mark is the\nbuild's own brand, theme-matched; Texture: none — the mark is an asset,\nnot a surface treatment; Visuals: the animated mark is the brand anchor,\nthe static logo is the fallback where it cannot play; Techniques:\nstandalone tool at the pinned commit, asset output only; Colors: none —\nthe metal is the shader's own chrome, the brand's colours are unchanged.)", 'after'),  # 'L15-04'
+  ('L15-06', 'skills/less-flat-ui/SKILL.md', '### 3. Thermal gradients', '**Liquid glass — real refraction (fix #22 §15, LIQGLASS_F22).** Fluted\nglass (#2 above) is a frosted-blur approximation. Where a build needs\nREAL refraction — Apple-style liquid glass with edge highlights, blur,\nand masking through WebGL 2.0 shaders, not just `backdrop-filter` blur —\nthe approved implementation is liquid-glass-js (dashersw/liquid-glass-js,\nrepo commit `78cb6ccb0b9987bb60a88b14ccbd13a9e6e8ab2a`, MIT; NO npm package\n— copy `container.js`, `button.js`, `glass.css` into the project; vanilla\nJS, all stacks, no build step). Use for nav bars, floating cards, modals,\nand CTA buttons over rich backgrounds. Directed per §10 (class + exact\nparameters, from the library\'s own API): `new Container({ type: \'pill\',\nborderRadius: 24, tintOpacity: 0.3 })` for a nav pill, `new Button({\ntext: \'<label>\', size: 28, type: \'pill\', tintOpacity: 0.4, warp: true,\nonClick: <handler> })` for a glass CTA; global glass parameters via\n`window.glassControls` (`edgeIntensity: 0.02, rimIntensity: 0.08,\nblurRadius: 7.0, tintOpacity: 0.3` — the directed defaults, do not tune\nper component). Shape types: `\'rounded\'` / `\'circle\'` / `\'pill\'`\n(defaults: `borderRadius: 48`, `tintOpacity: 0.2`, `size: 48` for Button).\nPerformance note (from the README): the library samples the page with\nhtml2canvas (`html2canvas@1.4.1`) — that sampling is the cost; keep glass\nto one surface per screen by default and never stack it with another\nWebGL-heavy effect (one WebGL-heavy effect per surface, WEBGL_ONE_F22 —\nsee the `polish-pass` slop checklist). Fallback: under\n`prefers-reduced-motion: reduce`, on mobile/low-power, or whenever WebGL\nis unavailable, the glass renders as frosted blur — treatment #2 fluted\nglass above — never as a missing element. Text over glass keeps 4.5:1\ncontrast. Cross-reference, do not duplicate: Group E trend "Liquid Glass"\n(E15, in `design-taste-frontend`) is the MENU item; this library is the\nIMPLEMENTATION. Record the treatment per surface in\n`docs/design-tokens.md` like every other treatment, with its six fix #19\nD19 dimension lines.\n\n(D19 — Motion: none — the glass does not move (its refraction is light,\nnot motion); Theme: the glass is the theme\'s own material, never a generic\nblur wash; Texture: the glass IS the surface\'s texture layer (real\nrefraction, not a flat treatment); Visuals: the glass panel stays legible\n— 4.5:1 over it, content above it; Techniques: vendored file copies at\nthe pinned commit, html2canvas@1.4.1 for page sampling, no npm package;\nColors: the glass tint is the theme\'s own tint, never a new colour.)', 'before'),  # 'L15-06'
+  ('VERCEL-02', 'skills/polish-pass/SKILL.md', 'Also read the slop checklist ([reference/slop-checklist.md](reference/slop-checklist.md), `SLOP_F22`) and apply its fixes from [reference/unslop-fixes.md](reference/unslop-fixes.md) (`UNSLOP_F22`) on every pass', " Also read the Vercel checklist ([reference/vercel-checklist.md](reference/vercel-checklist.md), `VERCEL_F22`) and apply its fix guidance on every pass — the checklist's findings are static checks producing candidate evidence for `browser-qa`, never verdicts, and a finding is cleared only by a recorded D19 reason + theme-fit.", 'after'),  # 'VERCEL-02'
+  ('VERCEL-03', 'skills/polish-pass/SKILL.md', 'After the detector runs, run the slop checklist ([reference/slop-checklist.md](reference/slop-checklist.md), `SLOP_F22`) on the same target — same standing: candidate evidence for `browser-qa`, never a verdict — and fix flagged instances with [reference/unslop-fixes.md](reference/unslop-fixes.md) (`UNSLOP_F22`).', ' Then run the Vercel checklist ([reference/vercel-checklist.md](reference/vercel-checklist.md), `VERCEL_F22`) on the same target — same standing: candidate evidence for `browser-qa`, never a verdict — and fix flagged instances with its paired fix guidance, or clear them with a recorded D19 reason + theme-fit.', 'after'),  # 'VERCEL-03'
+  ('VERCEL-04', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `aria-labels` - aria-label for icon-only buttons; accessibilityLabel in native (Apple HIG)', '\n- `vercel-a11y-check` - Accessibility, focus, and form rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): labels, keyboard handlers, semantic elements, alt text, live regions, focus visibility, autocomplete, paste, spellcheck, error placement (V-A1–V-A12, V-F1–V-F5, V-FO1–V-FO11) — this skill states the patterns, the checklist is the check (fix #22)', 'after'),  # 'VERCEL-04'
+  ('VERCEL-05', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `touch-target-size` - Min 44×44pt (Apple) / 48×48dp (Material); extend hit area beyond visual bounds if needed', '\n- `vercel-touch-check` - Touch, safe-area, and drag rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): touch-action, tap highlight, overscroll, drag alternatives, autoFocus, safe-area insets (V-TO1–V-TO7, V-S1–V-S3) — this skill states the sizes, the checklist is the check (fix #22)', 'after'),  # 'VERCEL-05'
+  ('VERCEL-06', 'skills/ui-ux-pro-max/references/quick-reference.md', '- `number-tabular` - Use tabular/monospaced figures for data columns, prices, and timers to prevent layout shift', '\n- `vercel-type-check` - Typography and copy rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): ellipsis, curly quotes, non-breaking spaces, loading ellipsis, tabular figures, balanced headings, active voice, Title Case, numerals, specific labels, error next-steps (V-T1–V-T6, V-CC1–V-CC7) — this skill states the type scale, the checklist is the check (fix #22)', 'after'),  # 'VERCEL-06'
+  ('VERCEL-07', 'skills/motion-foundations/SKILL.md', '4. **Never animate layout properties.** `width`, `height`, `top`, `left`, `margin`, `padding` are banned from `animate`. Use `transform` and `opacity` only.', '\n\nAnimation rules are also checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): reduced-motion, transform/opacity-only, no `transition: all`, transform-origin, SVG `<g>` transforms, interruptible animations, autoplay controls (V-AN1–V-AN8) — this skill states the tokens and rules, the checklist is the file:line check (fix #22).', 'after'),  # 'VERCEL-07'
+  ('L17-01', 'skills/motion-foundations/SKILL.md', '- **A11 Solid drawing in 3D** — an object keeps believable volume, weight, and depth\n  while it moves. In UI: a card that flips or expands keeps its shadow, edge, and\n  layering consistent through the move; it never flattens into a texture or shears.', '\n### Particle backgrounds — Casberry, a standalone tool (fix #22 §17, CASBERRY_F22)\n\nWhere a build needs a bespoke particle scene — a hero or dealt moment the\nlibraries do not have (Vanta\'s named effects, a hand-built React Three\nFiber scene) — the approved production method is Casberry\n(particles.casberry.in, "AI Particle Architect", free, no sign-up, no\ninstall): a hosted tool that generates a live 20,000+ particle Three.js /\nWebGL simulation from a prompt and exports React / Three.js code or a\nstandalone WebGL / HTML file, which is then dropped into the project.\nCasberry is a STANDALONE TOOL, not a library to import and not a runtime\ndependency — the plugin never imports it; it records the tool + the\nexport step (same form as liquid-logo, §15). Directed per §10: the agent\nwrites the prompt / spec with exact values (particle count, form, motion,\ncolours from the theme\'s own tokens, controls) and the tool generates;\nthe generated effect is reviewed against the theme and D19 before use.\nThe export is the surface\'s one WebGL-heavy effect (see the\n`polish-pass` slop checklist, one-WebGL rule): a Casberry export never\nshares a surface with a Vanta scene, a React Three Fiber scene, a\nShaderGradient, liquid glass, or liquid metal. Constraints, all binding:\ntheme-matched (particle colours are the theme\'s own tokens); a static\nfallback (the theme\'s gradient or image ground) on mobile/low-power and\nwhenever WebGL is unavailable; the scene MUST disable under\n`prefers-reduced-motion: reduce` (the finished still shows instead);\nnever behind text without a scrim and a 4.5:1 contrast check. TRUST FLAG\n+ EXPORT REVIEW (binding): the domain carries a very low automated trust\nscore (ScamAdviser 1/100, WHOIS hidden, iframed — a weak automated\nsignal, NOT a verdict; a second checker rates it 60/100 with no malware\ndetected) and its terms / licence are UNRESOLVED (no terms or licence\nstatement found on the site as of Nov 13, 2026 — exported effects are\nNOT assumed free for commercial use). Every exported snippet is\ntherefore treated as UNTRUSTED code: review every line before it enters\na build (same bar as the plugin\'s security re-scan — no document /\nwindow / fetch / eval / network access, no obfuscated payloads), never\npaste it blind; a Casberry export pasted without review FAILS the\nsecurity check (see the `polish-pass` slop checklist, export-review\ncheck). Which 3D path to reach for: Vanta (§11) is the imported\n3D-background LIBRARY for a known effect; Casberry is the TOOL that\nexports Three.js code for a bespoke particle scene; React Three Fiber\n(§15) is the React 3D layer the exported React code can feed and the\nlayer for hand-built React scenes. Theme-match precondition: a particle\nscene is applied only when it matches the dealt theme; a clash is not\napplied, with the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the particle motion is the dealt moment\'s motion, with\nexact values in the directing prompt; Theme: the scene is the dealt\ntheme\'s depth, never a stock particle demo; Texture: the particle field\nis the surface\'s texture / depth layer; Visuals: the scene is the hero\'s\nvisual anchor, never behind unreadable text (4.5:1 scrim / contrast\ncheck where text overlaps it); Techniques: standalone tool at\nparticles.casberry.in, exported code reviewed line by line before it\nenters the build, no runtime dependency; Colors: none — the particle\ncolours are the theme\'s own tokens.)', 'after'),  # 'L17-01'
+  ('L17-02', 'skills/motion-patterns/SKILL.md', '## End-to-End Example', '### OriginKit — animated components, React/Next only (fix #22 §17, ORIGINKIT_F22)\n\nOriginKit (originkit.dev) is a browsable catalog of animated React\ncomponents — backgrounds, cursor treatments, text effects, buttons,\nloaders, image galleries — fetched by copy-paste from the site or\nthrough its MCP server. The catalog is organised in 6 categories\n(interactive elements, image galleries, text effects, animations,\nbackground animations, buttons). COUNT NOTE (binding): the site\'s own\nnumbers disagree — the homepage says "Discover 805 Components" (Nov 13,\n2026), the skill README says 50 across the 6 categories, the pricing\npage says 60 components — the categories matter more than the exact\nnumber; never cite a component count as exact. Stack: React, Tailwind\nCSS, Framer Motion; usable in Framer, React, Next.js, Vite. SCOPE —\nReact/Next.js builds ONLY: on a non-React stack the PATTERN is\nimplemented with the stack\'s own tools (recorded-gap style: name the\nclosest equivalent — a CSS / GSAP / vanilla implementation of the same\neffect — never force OriginKit outside React). Each component is used as\na §10 directive (component name + exact props, as listed for that\ncomponent on originkit.dev — the directive records the prop values, it\nnever says "a fluid-trail effect") with its fix #19 D19 reason, recorded\nin `docs/design-tokens.md`. ACCESS + CAP (binding): browsing is free, no\nAPI key. FETCHING component source requires a FREE API key\n(originkit.dev > Settings > API Integration). DAILY LIMIT: 10 component\nfetches per key per day, resets midnight UTC, shared between MCP and\nwebsite copies. A build needing more than 10 OriginKit fetches in a day\nhits the cap: proceed from the skills alone, record the gap, never pay\nfor Pro ($79/yr) or Ultimate ($99/yr) — same form as Mobbin §9.\nPro-marked components are excluded on the free tier. API KEY HANDLING\n(binding): the free key is an env var only, never written to any file\n(same rule as the ElevenLabs narration key). NO MCP WIRING in the plugin:\nthe default is copy-paste from the site; the MCP server\n(https://mcp.originkit.dev/mcp) is NOT wired in unless reachability +\nenv-only key flow are verified — that verification has NOT been done, so\ncopy-paste is the only wired path. LICENSE (binding): CONDITIONAL /\nsource-available — NOT a clean open-source licence. The terms restrict\nredistribution of components and templates: components are for use in\nyour own project, not for redistribution, and the plugin must not\nre-publish OriginKit components as its own. DISTINCTION CHECK (binding):\nOriginKit (originkit.dev — animated flourishes) is NOT Origin UI\n(originui.com, now coss ui / Base UI — solid form / layout primitives:\nbutton, input, nav, card shells). A build citing Origin UI when it\nmeans OriginKit (or vice versa) FAILS the distinction check. DEDUPE vs\nReact Bits (§11): React Bits is the importable MIT library (copy-paste\nsource at a pinned commit); OriginKit is the browsable catalog for\nanimated flourishes fetched by copy-paste or MCP. Reach for React Bits\nwhen the build wants a pinned, importable bit; reach for OriginKit when\nthe build wants to browse a catalog for a flourish (background, cursor\ntreatment, text effect, button, loader) and fetch it. OriginKit\ncomponents are IMPLEMENTATIONS of motion patterns — the pattern stays\nthe authority, the component is the menu item. Components that animate\nrespect `prefers-reduced-motion: reduce` (static final state) — a\ncomponent with no reduced-motion handling is not used. OriginKit is a\nmenu, never a default: a component is used only when the dealt theme\ncalls for that exact effect. Theme-match precondition: every component\nmust still match the dealt theme; a clash is not applied, with the\nreason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: the component\'s animation is the motion decision, with\nexact props as the values; Theme: the component is theme-matched or not\nused; Texture: none — a component adds motion, not a surface treatment\n(background components excepted: those ARE the surface\'s texture,\ntheme-matched); Visuals: the component\'s effect is visible and anchored,\nnever decoration that obscures content; Techniques: copy-paste fetch at\nthe 10/day cap, env-only key, no MCP wiring; Colors: none — the\ncomponent\'s colours are the theme\'s own tokens.)\n\n### Particle background — Casberry export (fix #22 §17, CASBERRY_F22)\n\nA bespoke particle background on any stack is produced with Casberry\n(particles.casberry.in) — see `motion-foundations` for the full rule:\nthe agent directs the prompt with exact values, exports React /\nThree.js code or a standalone WebGL / HTML file, and drops it into the\nproject. The export is the surface\'s one WebGL-heavy effect and is\nreviewed as untrusted code before it enters the build (same bar as the\nplugin\'s security re-scan) — never pasted blind. Under\n`prefers-reduced-motion: reduce` the scene does not run — a static\nimage / poster of the finished scene renders in its place. Theme-match\nprecondition: the particle scene must still match the dealt theme; a\nclash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n(D19 — Motion: the particle motion is the dealt moment\'s motion, exact\nin the directing prompt; Theme: the scene is the dealt theme\'s depth\nmoment, never a stock particle demo; Texture: the particle field is the\nsurface\'s texture / depth layer; Visuals: the scene is the hero\'s visual\nanchor, never behind unreadable text; Techniques: standalone tool,\nexported code reviewed line by line, no runtime dependency; Colors:\nnone — the particle colours are the theme\'s own tokens.)\n', 'before'),  # 'L17-02'
+  ('L17-03', 'skills/ui-ux-pro-max/SKILL.md', "The Figma plugin's paid Pro\ntier is out of scope — the npm library is the integration, and it is free.", '\n**§17 design asset libraries — stack scope (fix #22 §17, CASBERRY_F22 /\nORIGINKIT_F22 / DAISYUI_F22).** Three more free libraries / tools are\napproved menu items, never defaults — each is chosen through the\nskills, theme-matched, with a D19 reason, and directed per §10 (library\n+ effect name + exact parameters). The three arrive in three different\nintegration forms: **daisyUI** (`daisyui@5.7.50`, MIT) is an npm plugin\ndependency; **OriginKit** (originkit.dev; conditional / source-available\nlicence — see `motion-patterns`) is a browsable library fetched by\ncopy-paste (MCP not wired — see below); **Casberry**\n(particles.casberry.in; terms unresolved — see\n`motion-foundations`) is a standalone tool that exports code. Stack\nscope: **daisyUI** is Tailwind builds ONLY (any framework, since it is\nCSS) — daisyUI 5.x pairs with Tailwind CSS v4 ONLY (`@plugin "daisyui"`\nin CSS; v4 class names changed from earlier versions — never mix\nv4-era snippets with v5); **OriginKit** is React/Next.js ONLY\n(Framer / React / Vite); **Casberry** exports are stack-independent\n(the exported React code feeds the React 3D layer on React builds; the\nstandalone HTML file drops into any stack). Install (exact pins, per\nproject, install-on-demand): `npm i -D daisyui@5.7.50`, then `@import\n"tailwindcss";` + `@plugin "daisyui";` in CSS. Caps + paid exclusions\n(binding): OriginKit free tier — 10 component fetches per key per day\n(resets midnight UTC, shared MCP + website copies), Pro-marked\ncomponents excluded, Pro ($79/yr) / Ultimate ($99/yr) never paid;\ndaisyUI free (MIT) — the Blueprint MCP server ($22/mo, paid licence\nkey) is NOT wired, and the paid Dashboard / Charts skills, Figma\nlibrary, and templates are out of scope; Casberry free, no sign-up —\nterms unresolved, exports reviewed as untrusted code. Running total of\nasset libraries / tools in fix #22: §11\'s 4 + §15\'s 4 + §17\'s 3 = 11.\nEvery library effect respects `prefers-reduced-motion: reduce` (static\nfallback or off) — no library exempts the rule. Unpinned versions\n("latest") FAIL the pin check. The pinned versions live here and in the\nowning skills; a build that needs a newer version re-pins deliberately\nand records the new pin + its verification, never floats. Theme-match\nprecondition: a library effect is applied only when it matches the\ndealt theme; a clash is not applied, with the reason recorded in\n`docs/design-tokens.md`.\n\n(D19 — Motion: the libraries are the component / flourish / particle\nmechanisms, chosen per build; Theme: every effect is theme-matched or\nnot applied; Texture: Casberry particle fields ARE texture / surface\ntreatments chosen through the theme; Visuals: scope keeps effects on\nthe surfaces where they read (daisyUI components on Tailwind builds,\nOriginKit flourishes on React, particle scenes on heroes); Techniques:\nexact pins + stack scope + caps, install-on-demand per project\n(OriginKit copy-paste fetch, Casberry standalone tool — see\n`fix22/libraries17-patches.md` §6 in the manifest record); Colors: none\n— the libraries choose no colours (daisyUI themes are re-themed to the\nbrand deal; OriginKit and Casberry colours are the theme\'s own tokens).)', 'after'),  # 'L17-03'
+  ('L17-04', 'skills/design-system/SKILL.md', 'Output: `DESIGN.md` + `design-tokens.json` + `design-preview.html`', '\n### Component library menu — daisyUI (fix #22 §17, DAISYUI_F22)\n\nOn Tailwind builds, daisyUI (`daisyui@5.7.50`, MIT) is an approved menu\nitem for prebuilt components: semantic class names (`btn`, `card`,\n`modal`, `toggle`, ...) on top of Tailwind utilities, plus built-in\nthemes; 68 components; 0 JavaScript shipped, 0 dependencies;\nframework-agnostic (any framework, since it is CSS). Install (exact pin,\nper project, install-on-demand): `npm i -D daisyui@5.7.50`, then\n`@import "tailwindcss";` + `@plugin "daisyui";` in CSS. Version pairing\nis PINNED: daisyUI 5.x + Tailwind CSS v4 ONLY — v4 class names changed\nfrom earlier versions; never mix v4-era snippets with v5, and never\ninstall daisyUI 4 against Tailwind v4. FIT-CHECK (binding): daisyUI has\na strong default look. Its components are a MENU of implementations,\nre-themed through the brand / theme deal — the design package chooses\nthe direction; daisyUI supplies prebuilt components that get re-themed.\nA build shipping daisyUI\'s default theme unexamined FAILS (generic look\n— the Home Run lesson). DEDUPE vs shadcn: the plugin already pins\nshadcn (`shadcn@4.23.0`, build.sh pin) as its React copy-paste\ncomponent set. Reach for daisyUI when the build is Tailwind-native and\nwants semantic-class components with zero JS on any framework; reach\nfor shadcn when the build is React and wants the copy-paste component\nset. The component primitives in this skill stay the authority — daisyUI\nis the menu item, never the source of the primitives. Paid extras OUT\nof scope: the Blueprint MCP server ($22/mo, paid licence key) is NOT\nwired; Dashboard / Charts skills, the Figma library, and templates are\npaid — out of scope. Theme-match precondition: a daisyUI component is\napplied only when it matches the dealt theme; a clash is not applied,\nwith the reason recorded in `docs/design-tokens.md`.\n\n(D19 — Motion: none — daisyUI adds components, not motion (an animated\ncomponent on top of daisyUI is a motion-patterns decision); Theme: the\ncomponents are re-themed to the brand deal, never shipped in the\ndefault theme; Texture: none — daisyUI adds component structure, not a\nsurface treatment; Visuals: semantic classes keep the markup readable\nand the components consistent across the build; Techniques: exact pin +\nTailwind v4 pairing, install-on-demand per project; Colors: the theme\ncolours ARE the re-theme — the default theme\'s colours are never\nshipped unexamined.)', 'after'),  # 'L17-04'
+  ('DEMOGATE_B2S1', 'skills/orch-build-mvp/SKILL.md', '8. **Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — LOCAL only.**', '8. **Deploy via `deploy-fast`.** **Demo — never automatic (fix #22 /demo gate, DEMOGATE_B2S1_F22).** `/demo` is not filmed here.', 'replace'),  # 'DEMOGATE_B2S1'
+  ('DEMOGATE_B2S2', 'skills/orch-build-mvp/SKILL.md', 'then film the LOCAL app from the project dir (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it. The demo video is a required deliverable; its file is `<app-name>-video/out/demo.mp4`.', "Do NOT film via `/demo` here — `/demo` (`pitch-deck-video`) runs ONLY when the user invokes it explicitly (or the user's request explicitly asks for a demo video). If the user asked for one, film the LOCAL app from the project dir after deploy (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it; the video file is `<app-name>-video/out/demo.mp4`. If no video was requested, the final report notes that no demo video was filmed. (fix #22 /demo gate, DEMOGATE_B2S2_F22)", 'replace'),  # 'DEMOGATE_B2S2'
+  ('DEMOGATE_B2S3', 'skills/orch-build-mvp/SKILL.md', '`/demo` films the verified tree as it stands after any revert (see 6b) — a held redesign is never in the filmed tree. After filming, invoke `readme-writer` to write/update the README from the built app, before the final report in step 9', 'A filmed video shows the verified tree as it stands after any revert (see 6b) — a held redesign is never in the filmed tree. After deploy (and any requested filming), invoke `readme-writer` to write/update the README from the built app, before the final report in step 9 (fix #22 /demo gate, DEMOGATE_B2S3_F22)', 'replace'),  # 'DEMOGATE_B2S3'
+  ('DEMOGATE_B2S4', 'skills/orch-build-mvp/SKILL.md', 'and the demo-video handoff: the video file path (`<app-name>-video/out/demo.mp4`) plus the narration record (ElevenLabs usage remaining, narration status per line-set, the provider decision-log entries, and the music credit).', 'and, if a video was filmed, the demo-video handoff: the video file path (`<app-name>-video/out/demo.mp4`) plus the narration record (ElevenLabs usage remaining, narration status per line-set, the provider decision-log entries, and the music credit). If no video was filmed, the report notes that instead. (fix #22 /demo gate, DEMOGATE_B2S4_F22)', 'replace'),  # 'DEMOGATE_B2S4'
+  ('DEMOGATE_B2S5', 'skills/orch-build-mvp/SKILL.md', 'The report also states the demo video handoff: the video file path (the local filmed video file) AND the instruction "upload this file to YouTube/Vimeo and paste the link into Devpost" — the first build never uploads the video anywhere (it has no YouTube/Devpost account access), so the file path + upload instruction is how the video reaches the submission.', 'If a video was filmed, the report also states the demo video handoff: the video file path (the local filmed video file) AND the instruction "upload this file to YouTube/Vimeo and paste the link into Devpost" — the first build never uploads the video anywhere (it has no YouTube/Devpost account access), so the file path + upload instruction is how the video reaches the submission. If no video was filmed, the report notes that no demo video was filmed. (fix #22 /demo gate, DEMOGATE_B2S5_F22)', 'replace'),  # 'DEMOGATE_B2S5'
+  ('DEMOGATE_B2C1', 'commands/orch-build-mvp.md', '8. Deploy via `deploy-fast`, then film via `/demo` (`pitch-deck-video`) — the demo video is a required deliverable; film the LOCAL app from the project dir only, never a deployed URL (if deploy was static-only or blocked, noted in the final report).', "8. Deploy via `deploy-fast`. Do NOT film via `/demo` here — `/demo` runs ONLY when the user invokes it explicitly (or the user's request explicitly asks for a demo video); if the user asked for one, film the LOCAL app from the project dir only, never a deployed URL (if deploy was static-only or blocked, noted in the final report). (fix #22 /demo gate, DEMOGATE_B2C1_F22)", 'replace'),  # 'DEMOGATE_B2C1'
+  ('DEMOGATE_B3S1', 'skills/orch-change-feature/SKILL.md', "After the redeploy, wait for the deploy to be ready before re-filming — UNLESS the deploy was already known-blocked (blocked-deploy handling above: no git-linked deploy, no deploy-fast path, or an unauthenticated deploy CLI): in that case skip the poll entirely, film local immediately, and note it in the final report — polling a URL that can never become ready burns up to ~5 minutes for nothing. Otherwise take the deployed URL and deploy path from `.hackathon/run-ledger.md` (or `docs/final-report.md` if the ledger is absent), then poll the deployed app until it serves the new version (no removed feature, no dangling references), with a BOUNDED wait — check every ~30s, stop after ~5 minutes. If it never becomes ready in that bound, film local and note it in the final report — never film a stale deployed URL, and never wait unboundedly. Then, before re-filming, update `shots.json` FIRST relative to the re-film — remove the feature's shots, selectors, and narration lines (FIRST means first before the re-film, not first in this step overall: the push/re-deploy above precedes it) — then re-check every remaining shot against the updated demo storyboard in `docs/scope.md` (move the feature to the cut list first, so the storyboard is current): a shot whose feature was removed, or whose narration still promises the removed feature, is removed or rewritten before the re-film — then re-film via `/demo --rebuild`, which films the LOCAL app from the project dir (`APP_DIR`/project root), never a deployed URL; if the deploy was blocked, film local anyway and note in the final report that the video shows the local app, not the deployed one.", "After the redeploy, verify the deploy serves the new version (no removed feature, no dangling references) — UNLESS the deploy was already known-blocked (blocked-deploy handling above: no git-linked deploy, no deploy-fast path, or an unauthenticated deploy CLI): in that case skip the check entirely and note it in the final report. Otherwise take the deployed URL and deploy path from `.hackathon/run-ledger.md` (or `docs/final-report.md` if the ledger is absent), then poll the deployed app until it serves the new version, with a BOUNDED wait — check every ~30s, stop after ~5 minutes. If it never becomes ready in that bound, record the deploy as not-verified in the final report and move on — never wait unboundedly. (The poll verifies the redeploy; it is not a prelude to filming — no re-film happens here.) Then, before any future re-film, update `shots.json` FIRST — remove the feature's shots, selectors, and narration lines — then re-check every remaining shot against the updated demo storyboard in `docs/scope.md` (move the feature to the cut list first, so the storyboard is current): a shot whose feature was removed, or whose narration still promises the removed feature, is removed or rewritten before the re-film. If the user asks for a re-film, re-film via `/demo --rebuild`, which films the LOCAL app from the project dir (`APP_DIR`/project root), never a deployed URL; if the deploy was blocked, film local anyway and note in the final report that the video shows the local app, not the deployed one. (fix #22 /demo gate, DEMOGATE_B3S1_F22)", 'replace'),  # 'DEMOGATE_B3S1'
+  ('DEMOGATE_B3S2', 'skills/orch-change-feature/SKILL.md', '**Narration continuity on the re-film:** narration lines that did not change are served from the per-line cache', '**Narration continuity on a requested re-film (fix #22 /demo gate, DEMOGATE_B3S2_F22):** if the user asks for a re-film, narration lines that did not change are served from the per-line cache', 'replace'),  # 'DEMOGATE_B3S2'
+  ('DEMOGATE_B3S3', 'skills/orch-change-feature/SKILL.md', 'After re-filming, IF a hosted video link exists (in the Devpost submission, the README, or the final report) AND the agent has YouTube/Vimeo account access for that host, re-upload the new video', 'After a requested re-film, IF a hosted video link exists (in the Devpost submission, the README, or the final report) AND the agent has YouTube/Vimeo account access for that host, re-upload the new video (fix #22 /demo gate, DEMOGATE_B3S3_F22)', 'replace'),  # 'DEMOGATE_B3S3'
+  ('DEMOGATE_B3S4', 'skills/orch-change-feature/SKILL.md', 'the removal is done-with-blocked-re-upload, satisfied by the re-filmed LOCAL video plus this blocked record, not by a phantom upload', 'the removal is done-with-blocked-re-upload, satisfied by the stale-video record (or the re-filmed LOCAL video, if the user asked for a re-film) plus this blocked record, not by a phantom upload (fix #22 /demo gate, DEMOGATE_B3S4_F22)', 'replace'),  # 'DEMOGATE_B3S4'
+  ('DEMOGATE_B3S5', 'skills/orch-change-feature/SKILL.md', 'The removal\'s done-condition ("the demo video reflects the removal") is satisfied by the re-filmed LOCAL video + the honest hosting note, not by a phantom upload.', 'The removal\'s done-condition for the video ("the demo video reflects the removal, or is flagged as stale") is satisfied by the re-filmed LOCAL video (if the user asked for a re-film) + the honest hosting note, or by the stale-video record when no re-film was requested — never by a phantom upload, never by an automatic re-film. (fix #22 /demo gate, DEMOGATE_B3S5_F22)', 'replace'),  # 'DEMOGATE_B3S5'
+  ('DEMOGATE_B3S6', 'skills/orch-change-feature/SKILL.md', 'a removal is not done until the deployed app, the demo video, the ledger, and the inventory all reflect it; none of them may go stale.', 'a removal is not done until the deployed app, the ledger, and the inventory all reflect it, and the demo video is either re-filmed (on request) or flagged as stale; none of them may go stale silently. (fix #22 /demo gate, DEMOGATE_B3S6_F22)', 'replace'),  # 'DEMOGATE_B3S6'
+  ('DEMOGATE_B3S7', 'skills/orch-change-feature/SKILL.md', 'the re-uploaded video link if a hosted video existed (or the blocked re-upload record from step 5 if the re-upload was blocked for no account access), else the honest hosting note from step 5 — "video re-filmed locally at <path>, not yet hosted"', 'the re-uploaded video link if a hosted video existed and a re-film was requested (or the blocked re-upload record from step 5 if the re-upload was blocked for no account access), else the honest hosting note from step 5 — "video re-filmed locally at <path>, not yet hosted" if a re-film was requested, or "demo video STALE — shows the removed feature; re-film with `/demo --rebuild` on request" if not (fix #22 /demo gate, DEMOGATE_B3S7_F22)', 'replace'),  # 'DEMOGATE_B3S7'
+  ('DEMOGATE_B3C1', 'commands/orch-change-feature.md', 'update `shots.json` before re-filming, re-film locally via `/demo --rebuild`, re-upload the video and update its link, update the docs, inventory, and pitch, and deliver the updated final report as the reply (the done signal for the removal).', "update `shots.json` (remove the feature's shots, selectors, and narration lines) so it is ready for a re-film, note in the final report that the demo video is now stale (re-film with `/demo --rebuild` only when the user asks), re-upload the video and update its link only if a re-film was requested and a hosted link exists, update the docs, inventory, and pitch, and deliver the updated final report as the reply (the done signal for the removal). (fix #22 /demo gate, DEMOGATE_B3C1_F22)", 'replace'),  # 'DEMOGATE_B3C1'
+  ('DEMOGATE_B2S6', 'skills/orch-build-mvp/SKILL.md', 'it runs once, after deploy/demo/commit/README, and never gates a feature.', 'it runs once, after deploy/commit/README, and never gates a feature. (fix #22 /demo gate, DEMOGATE_B2S6_F22)', 'replace'),  # 'DEMOGATE_B2S6'
+  ('DEMOGATE_B2S7', 'skills/orch-build-mvp/SKILL.md', '**Narration-key prompt — once, at the start of the standalone run, never blocking.** At the start of the run (step 1), if narration will need a key and none is set (no `ELEVENLABS_API_KEY` in the environment, no MiniMax credentials), issue the single `pitch-deck-video` narration-key prompt once (ElevenLabs free tier — 10,000 characters a month, no credit card — with the free-tier facts), then continue the build immediately without waiting: the prompt never blocks, the key is an env var only and is never written to any file, and if it never arrives the video renders music-only/silent with a note in the final report. This is the ONE sanctioned user prompt during the standalone run besides grill-me itself (hackathon-mode §7 carve-out) — never a wait point, never an approval gate. Do NOT re-prompt at step 8 `/demo` time: the single early prompt covers the run, and `/demo` uses the key if present, else falls back to music-only/silent. **Key handoff to step 8:** if the user replies with a key mid-run, hold it in working context ONLY and pass it to the step-8 `/demo` via the dispatch: the step-8 dispatch carries an explicit env instruction naming `ELEVENLABS_API_KEY` with the value held in working context, and the `/demo` executor runs the `tts` step with that variable set in its process environment — the key travels in the dispatch (working context), never in a file; `tts.mjs` reads it only from the environment. If the key arrives after step 8 already rendered but before the step-9 final report, re-run the video script step (`npm run script` in the video project — tts + render) with the key set, so the delivered video is the narrated cut; if it arrives after the report, note the re-run command in the report with the key redacted (`ELEVENLABS_API_KEY=$KEY npm run script` in the video project dir — the user supplies their own key).', '**Narration-key prompt — once, at the start of the standalone run, never blocking.** At the start of the run (step 1), if the user asked for a demo video and narration will need a key and none is set (no `ELEVENLABS_API_KEY` in the environment, no MiniMax credentials), issue the single `pitch-deck-video` narration-key prompt once. If the user did NOT ask for a demo video, do NOT send this prompt — no video is being built, so no key is needed (ElevenLabs free tier — 10,000 characters a month, no credit card — with the free-tier facts), then continue the build immediately without waiting: the prompt never blocks, the key is an env var only and is never written to any file, and if it never arrives the video renders music-only/silent with a note in the final report. This is the ONE sanctioned user prompt during the standalone run besides grill-me itself (hackathon-mode §7 carve-out) — never a wait point, never an approval gate. Do NOT re-prompt at `/demo` time: the single early prompt covers the run, and a user-invoked `/demo` uses the key if present, else falls back to music-only/silent. **Key handoff to a user-invoked `/demo`:** if the user replies with a key mid-run, hold it in working context ONLY and pass it to `/demo` via the dispatch if the user asks for a video: the `/demo` dispatch carries an explicit env instruction naming `ELEVENLABS_API_KEY` with the value held in working context, and the `/demo` executor runs the `tts` step with that variable set in its process environment — the key travels in the dispatch (working context), never in a file; `tts.mjs` reads it only from the environment. If the key arrives after the user-invoked `/demo` already rendered but before the step-9 final report, re-run the video script step (`npm run script` in the video project — tts + render) with the key set, so the delivered video is the narrated cut; if it arrives after the report, note the re-run command in the report with the key redacted (`ELEVENLABS_API_KEY=$KEY npm run script` in the video project dir — the user supplies their own key). (fix #22 /demo gate, DEMOGATE_B2S7_F22)', 'replace'),  # 'DEMOGATE_B2S7'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix22 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix22 upstream block applied")
+PYEOF
+
+# --- fix23 W1: motion default (fix #23 §2, MOTION_F23) ---
+# (motion-foundations / motion-patterns / motion-advanced /
+#  make-interfaces-feel-better / ui-ux-pro-max are upstream/ECC; they have
+#  no staged source and are patched here. The staged-source half --
+#  orchestrate (design-package step: AMBITION_F23 / INVENTORY_F23 /
+#  MOTION_F23) + the inventory file
+#  (new-skills/orchestrate/references/design-inventory.md) + the
+#  design-lead dispatch prompt (dispatch-prompt.md §5a) -- was applied
+#  directly to its staged sources by the W1 worker. All anchors were
+#  verified count==1 against the post-fix22 built tree by greps before
+#  this script was written; the asserts below re-verify at build time
+#  and fail the build loudly on mismatch. Motion default respects the
+#  standing scope: Taste landing pages keep the scroll ban (scrolling
+#  moves nothing but the dealt moment) -- their motion is the hero
+#  entrance + dealt moments + micro-interactions; motion-governed
+#  (React/Next) app surfaces get entrances + staggers as well.
+#  Known open token conflicts carried from fix #22 (parent adjudicates):
+#  B3 30ms vs Rule 5 floor 0.05s; B15 0.8x vs exit-faster ~60-70%;
+#  B4 0.97 vs scale.press 0.95. This block changes no token value.
+# Placement: before STEP 5 (after the fix22 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('MOTION-01', 'skills/motion-foundations/SKILL.md', '## Rules', """
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** Every build ships deliberate, eye-catching motion: entrances, staggers, dealt moments, micro-interactions, state transitions -- routed through the fix #22 motion tokens (Group A principles + Group B values, e.g. stagger 30ms, press scale 0.97, dropdowns 150-250ms). A build that feels static fails, even if every static rule passes. Motion is recorded in the decision record with its D19 reason (Motion dimension) and its token values, directed per §10 (direct, don't describe). Scope: on motion-governed surfaces (React/Next app surfaces) this means scroll entrances (M1) + staggers + micro-interactions; on Taste landing pages the scroll ban stands (scrolling moves nothing but the dealt moment) and the motion is the hero entrance + dealt moments + micro-interactions. `prefers-reduced-motion` is respected everywhere with a complete static fallback -- content visible at rest, no entrance to fail, every loop/scene rendered at its final state -- never a broken one. (D19 -- Motion: this rule IS the motion decision -- deliberate motion on every build, token-routed; Theme: motion is the dealt theme's motion voice, never a generic effect; Texture: none -- motion carries no surface treatment; Visuals: motion is what makes the build read as alive rather than static; Techniques: values come from `motionTokens` and the Group B rules, never hardcoded; Colors: none -- motion chooses no colours.)""", 'after'),
+  ('MOTION-02', 'skills/motion-patterns/SKILL.md', '## Rules', """
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** Every pattern on a build ships with its motion live: entrances, staggers, dealt moments, micro-interactions, state transitions -- routed through the fix #22 motion tokens (Group A principles + Group B values, e.g. stagger 30ms, press scale 0.97, dropdowns 150-250ms). A build that feels static fails, even if every static rule passes. Each pattern is recorded in `docs/design-tokens.md`'s Motion list with its trigger and its token values, and its D19 reason (Motion dimension), directed per §10 (direct, don't describe). A pattern that should move and does not move in the rendered page is a finding (M4). `prefers-reduced-motion` is respected in every pattern with a complete static fallback -- a frozen one-frame state or the static final state, content visible at rest -- never a broken one. (D19 -- Motion: each pattern IS a motion decision -- trigger + tokens recorded; Theme: patterns move in the dealt theme's motion voice; Texture: none -- patterns carry no surface treatment; Visuals: live patterns are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 8); Colors: none -- patterns choose no colours.)""", 'after'),
+  ('MOTION-03', 'skills/motion-advanced/SKILL.md', '## Rules', """
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** Advanced choreography is deliberate motion too: every drag, reveal, counter, mask, knob, overlap, cursor-follow, shimmer, or loading piece on a build must actually move in the rendered page, routed through the fix #22 motion tokens (Group A principles + Group B values, e.g. B5 knob stretch 12%, B16 overlap old & new states, B17 masks, B19 rubber band) and recorded in `docs/design-tokens.md`'s Motion list with its trigger and its token values, plus its D19 reason (Motion dimension), directed per §10 (direct, don't describe). A build that feels static fails, even if every static rule passes -- an advanced piece that sits still is a finding (M4). `prefers-reduced-motion` is respected everywhere with a complete static fallback -- the piece renders at its final state, content visible at rest -- never a broken one. (D19 -- Motion: each advanced piece IS a motion decision -- trigger + tokens recorded; Theme: choreography moves in the dealt theme's motion voice; Texture: none -- choreography carries no surface treatment; Visuals: moving pieces are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 6); Colors: none -- choreography chooses no colours.)""", 'after'),
+  ('MOTION-04', 'skills/make-interfaces-feel-better/SKILL.md', '### Motion', """
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** The feel/timing decisions made here include a deliberate-motion inventory per surface: what moves (entrances, staggers, dealt moments, micro-interactions, state transitions), what triggers it, and which fix #22 motion tokens it runs on (Group A principles + Group B values, e.g. stagger 30ms, press scale 0.97, dropdowns 150-250ms). A surface with no deliberate motion and no recorded reason fails -- a build that feels static fails, even if every static rule passes. Motion is recorded in the decision record with its D19 reason (Motion dimension) and its token values, directed per §10 (direct, don't describe). `prefers-reduced-motion` is respected everywhere with a complete static fallback -- content visible at rest, no entrance to fail -- never a broken one. (D19 -- Motion: the inventory IS the motion decision for the surface; Theme: motion is the dealt theme's motion voice; Texture: none -- motion carries no surface treatment; Visuals: deliberate motion is what makes the surface read as alive; Techniques: feel/timing decided here, implemented with the motion-* skills; Colors: none -- motion chooses no colours.)""", 'after'),
+  ('MOTION-05', 'skills/ui-ux-pro-max/SKILL.md', '## Before Delivering App UI', """
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** Before delivering app UI, check the motion default alongside the checklist above: every app/dashboard surface ships deliberate, eye-catching motion -- entrances, staggers, dealt moments, micro-interactions, state transitions -- implemented with the GSAP presets (`data/motion.csv`, 17 presets) and the fix #22 motion tokens (Group A principles + Group B values, e.g. stagger 30ms, press scale 0.97, dropdowns 150-250ms), directed per §10 (direct, don't describe). A build that feels static fails, even if every static rule passes. Motion is recorded in the decision record with its D19 reason (Motion dimension) and its token values. `prefers-reduced-motion` is respected everywhere with a complete static fallback -- content visible at rest, no entrance to fail -- never a broken one. (D19 -- Motion: this check IS the motion decision for the surface; Theme: motion is the dealt theme's motion voice; Texture: none -- motion carries no surface treatment; Visuals: deliberate motion is what makes the surface read as alive; Techniques: GSAP presets + motion tokens, never hardcoded values; Colors: none -- motion chooses no colours.)""", 'after'),
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 W1 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 W1 upstream block applied")
+PYEOF
+
+# --- fix23 §3: type audit — fonts, no defaulting (TYPEAUDIT_F23) ---
+# (browser-qa / ui-ux-pro-max / orch-build-mvp are upstream; they have no
+#  staged source and are patched here. The staged-source half --
+#  polish-pass (SKILL.md harmony + non-negotiable 5, typeset lens,
+#  slop checklist) -- was applied directly to its sources by worker W2.
+#  All anchors were verified count==1 against the post-fix22 built tree
+#  by apply-w2.py's preflight; the asserts below re-verify at build time
+#  and fail the build loudly on mismatch. The fix #21 static-checks text
+#  is NOT rewritten: the orch-build-mvp sub appends an extension paragraph
+#  only (fix22 section 13 DEPTH-12 precedent).)
+# Placement: before STEP 5 (after the fix22 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('BQA-TYPEAUDIT', 'skills/browser-qa/SKILL.md', 'a screen with no named direction, no applied theme/tokens, reading as a default template, or derivative (the design is based on a searched external reference) FAILS — report it as a distinctiveness finding (minor at least) with the top-5 list, so the caller routes it to the fix loop within the existing caps.', "\n\n**Type-audit verdict (fix #23 §3, TYPEAUDIT_F23).** Typography that reads as defaulted fails here, on the rendered screen: before rendering a verdict in any round, read the type-audit table from `.hallmark/candidate-evidence.md` (per-face visual shares, trio-vs-previous-build comparison, variety count — recorded by `polish-pass`, TYPEAUDIT_F23) alongside the other candidate evidence. A type-audit FAIL — the body face over 40% of the build's visual share (or over 55% on any primary screen), the display face(s) under 25% of the build's visual share, the display face losing to the body face on the hero/home surface, the trio identical to the previous build's trio with no recorded reuse reason, or fewer distinct faces than the variety floor (max(3, ceil(N/20)) for N Type-list text elements, each counted face at least 5% share) — is a distinctiveness finding (minor at least) that FAILS the build, routed back to the design skill for a re-deal of the trio or a re-balance of the shares. A hit cleared in the decision record by its recorded reason (trio reuse) or scoped exception (body-led build, display floor still binding) is not a FAIL — the clearance is cited in the verdict, never assumed. Only this skill renders the type-audit verdict; `polish-pass` records the evidence, never the verdict.", 'after'),  # 'BQA-TYPEAUDIT'
+  ('UIPRO-F7VAR', 'skills/ui-ux-pro-max/SKILL.md', 'No element defaults to the body face without a decision; main visible text uses the display face (fix #20 F5) or another artistic face chosen through the skills. The full F7 rule lives in `design-taste-frontend` step 4a.', '\n\n**F7 strengthened — the decision record must show VARIETY across the build (fix #23 §3, F7VAR_F23).** One artistic decision per text element is the floor, not the bar: the decisions together must show variety. The trio "one display face + body stand-in + mono" is a pattern, not a default — the trio itself is re-chosen per build (Hallmark already deals type; the pairing is re-dealt, not inherited from the previous build), and a build that reuses the previous build\'s trio without a recorded reason fails (see the type-audit trio check, TYPEAUDIT_F23). Distinct faces number at least max(3, ceil(N/20)) for N Type-list text elements, each counted face carrying at least 5% of the build\'s visual share — a face that appears on one label is not variety. The display face must do the visible work: the display/important faces together carry at least 25% of the build\'s visual share, and on the hero/home surface the display face\'s share exceeds the body face\'s. A decision record in which every element\'s decision names the same face for different jobs, or in which the display face appears only on H1s, has not met F7. The full F7 variety rule and the type-audit thresholds live in `polish-pass` (reference/lenses/typeset.md, TYPEAUDIT_F23); this skill states the variety requirement, `polish-pass` measures it, `browser-qa` alone verdicts it.', 'after'),  # 'UIPRO-F7VAR'
+  ('ORCH-TYPEAUDIT', 'skills/orch-build-mvp/SKILL.md', "a blanket 'all text' class line is not a class decision. (F7 record) The decision record lists the font decision per text element or per uniform class; the D19 reason covers the font choice.", "\n\n**Fix #23 static checks — type audit (TYPEAUDIT_F23, all static checks, never screen verdicts).** The Type list carries the type-audit table (face | roles | visual share % | element count, per primary screen + build roll-up, visual share = Σ size × visible characters per face ÷ total) and the trio-vs-previous-build line (this build's trio, the previous build's recorded trio, match? + reuse reason if matched; a first build records `previous trio: none (first build)`); a Type list with no type-audit table or no trio line is an incomplete build. (T1 record) The record states the body-face share (≤ 40% roll-up, ≤ 55% per screen), the display-face share (≥ 25% roll-up), and the hero-surface comparison (display > body); a missing share is an incomplete build — the numbers themselves are judged by `browser-qa`, never here. (T2 record) The trio line states whether the trio matches the previous build's; a match with no recorded reuse reason is an incomplete build. (T3 record) The record states the distinct-face count against the variety floor (max(3, ceil(N/20)) for N Type-list text elements, each counted face ≥ 5% share); a count below the floor is an incomplete build. (T1/T2/T3 verdict) Whether a recorded share, trio, or count FAILS the build is `browser-qa`'s verdict on the rendered screen alone — this check records the numbers, never the verdict. The fix #21 text above is unchanged; this paragraph extends it.", 'after'),  # 'ORCH-TYPEAUDIT'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 section 3 upstream block applied")
+PYEOF
+# --- fix23-W3: hero amazing + functionality verdicts (fix #23 SS4/SS5) ---
+# (ui-ux-pro-max and browser-qa are upstream/ECC; they have no staged
+#  source and are patched here. The staged-source halves -- Taste
+#  SKILL.md (HERO_F23 / FUNC_F23 + fix #23 static checks + checklist),
+#  Taste diagrams.md (FUNC-DIAG_F23), Hallmark review-hero.md
+#  (Hero-moment row) -- were applied directly to their staged sources
+#  by worker W3. The orchestrate lines live in fix23/orch-lines-w3.py
+#  for the integration worker to insert mechanically.)
+#  All anchors were verified count==1 against the post-fix22 built tree
+#  by apply-w3.py's preflight (in-memory simulation, in list order);
+#  the asserts below re-verify at build time and fail the build loudly
+#  on mismatch. browser-qa remains the SOLE executor of pass/fail
+#  verdicts on rendered screens; the static halves are candidate
+#  evidence / completeness checks only, never verdicts.
+# Placement: before STEP 5 (after the fix22 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('FUNC-UIPRO_F23', 'skills/ui-ux-pro-max/SKILL.md', 'Every element application is recorded per surface in `docs/design-tokens.md` (surface → elements applied, kind, theme-fit).', "\n\n**Functionality pointer — show how it works (fix #23 §5, FUNC-UIPRO_F23).** App and dashboard surfaces show their mechanism, not just their chrome: the pipeline, the live data, the stack, the live system state — as a first-class surface, theme-matched, visible early (on the home/feed surface or the first screen after it). The full rule lives in `design-taste-frontend` step 4a (FUNC_F23) and its diagram form in `design-taste-frontend/references/diagrams.md` (FUNC-DIAG_F23): the mechanism shown must be THIS build's mechanism — its pipeline, its data, its stack — with the product's own names and real figures; a generic diagram relabelled with generic words does not satisfy it. The decision record states the functionality story: what is technically new here, and how the design shows it. A build that looks good but hides what the thing does fails. (D19 — Motion: the mechanism moves where it is live or records `none — <reason>` where still; Theme: drawn in the theme's own lines and tokens; Texture: the theme's treatment or `none — <reason>`; Visuals: the mechanism is the section's picture; Techniques: routes through `diagrams.md` or the live-data surface; Colors: the theme's ink and one signal; Depth: layer order named or `flat by choice — <reason>`.)", 'after'),  # 'FUNC-UIPRO_F23'
+  ('HERO-BQA_F23', 'skills/browser-qa/SKILL.md', 'Never claim visual verification without actually inspecting the rendered interface.', '\n\n**Hero verdict — amazing is the bar (fix #23 §4, HERO-BQA_F23).** In the visual loop, the hero surface — a landing hero, or the home/feed surface of an app — carries the highest weight: judge it against the hero-moment line recorded in `docs/design-tokens.md` and the Picks block\'s Hero-moment row (a dealt moment + a distinctive composition + motion). A merely adequate hero — correct but unremarkable — FAILS F6, however correct the rest of the screens are. Calibration: on a phone-first utility app the home/feed surface IS the hero surface; the amazing bar is calibrated to the product\'s job, not to decoration — the moment must serve what the user opens the app to do. "Amazing" never means a generic hero section pasted onto an app that does not need one. This verdict is `browser-qa`\'s alone: no other step judges the hero.', 'after'),  # 'HERO-BQA_F23'
+  ('FUNC-BQA_F23', 'skills/browser-qa/SKILL.md', '4. Check dark mode if applicable', "\n5. Functionality check (fix #23 §5, FUNC-BQA_F23): the build shows HOW it works early — its mechanism (diagram / live data / system state) is visible on the hero surface or the first screen after it, theme-matched, naming THIS build's pipeline, data, and stack with the product's own names and real figures. A build that looks good but hides what the thing does FAILS, even with zero layout findings. A generic diagram relabelled with generic words does not pass.", 'after'),  # 'FUNC-BQA_F23'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23-W3 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23-W3 upstream block applied")
+PYEOF
+
+# --- fix23 §6: alignment + centering (ALIGN_F23) ---
+# (browser-qa is upstream; it has no staged source and is patched here.
+#  browser-qa remains the SOLE executor of pass/fail verdicts on rendered
+#  screens; polish-pass reference/alignment.md (ALIGN_F23) is candidate
+#  evidence only. All anchors were verified count==1 against the post-fix22
+#  built tree by fix23/apply-w4.py's preflight; the asserts below
+#  re-verify at build time and fail the build loudly on mismatch.
+#  Measurement model: the Home Run render alignment audit harness
+#  (cold-start-render/home-run/qa/align-audit.mjs) — getBoundingClientRect()
+#  geometry at 1440 / 900 / 390 across every flow state, never eyeballing.
+# Placement: before STEP 5 (after the fix22 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('ALIGN_F23-A', 'skills/browser-qa/SKILL.md', '### Phase 3: Visual Regression', "\n\n**Alignment assertions (fix #23 §6, ALIGN_F23).** Eyeballing screenshots is not a check: run these programmatic assertions wherever the harness allows, on the live rendered page via `getBoundingClientRect()`. Tolerances: 0px for overflow; ≤ 2px for centering / grid / spacing equality. (a) No horizontal overflow at any tested width (`scrollWidth - innerWidth == 0`); no leaf text element with `scrollWidth > clientWidth + 1`. (b) Hero / phone frame centered in the viewport (offset ≤ 2px); at the mid band, if side panels share the row, the hero GROUP is centered with equal outer margins ≤ 2px. (c) Nav items evenly spaced (adjacent gaps equal ± 2px) and the nav group centered; each label center == its item center ± 2px. (d) Card edges aligned to a common left/right grid: full-width children share one left and one right edge (± 2px); a narrower child is left-aligned or centered; feed cards share one left and one right edge. (e) No text clipped or overflowing its container; no element beyond its frame unless a declared intentional bleed recorded in the decision record (page overflow still 0). (f) No label collisions: diagram / SVG text boxes pairwise non-overlapping and inside the viewport; stamps centered on their parent ± 2px; status pairs judged by vertical CENTERS, not tops. (g) Primary actions centered on their axis: grouped inputs centered on their panel ± 2px; full-width actions share the grid edges, narrower ones centered. (h) Desktop side panels: gutters symmetric ± 2px, tops aligned ± 2px unless a stagger is recorded in the decision record; stacked mid-band blocks centered as a group. Full checklist (candidate evidence): `polish-pass` reference/alignment.md (`ALIGN_F23`).", 'after'),
+  ('ALIGN_F23-B', 'skills/browser-qa/SKILL.md', '1. Screenshot key pages at 3 breakpoints (375px, 768px, 1440px)', "\n\nWidths (fix #23 §6, COVER_F23): 1440 desktop, 900 mid-band default probe (band 768–1100), 390 mobile — these three widths supersede the 375 / 768 / 1440 breakpoints in step 1 above for alignment coverage. If a layout breakpoint falls inside 768–1100, probe at the breakpoint ± 1 as well and take a mid full-page composition shot.", 'after'),
+  ('ALIGN_F23-C', 'skills/browser-qa/SKILL.md', '3. Flag layout shifts > 5px, missing elements, overflow', "\n\nCoverage is MANDATORY for EVERY flow state, not just the happy path (COVER_F23): enumerate all screens × all reachable states — error / wrong-code, empty, success / delivered, accepted, scrolled positions — and measure + screenshot each at all three widths. A build with an unverified width or an unverified flow state is NOT shippable (BLOCK_F23, see the verdict rule below).", 'after'),
+  ('ALIGN_F23-D', 'skills/browser-qa/SKILL.md', '# verdict ∈ SHIP / SHIP WITH FIXES / DO NOT SHIP; use INCONCLUSIVE if no visual baseline', "\n\n**Blocking-gap rule (fix #23 §6, BLOCK_F23).** A build with an unverified width or an unverified flow state is NOT shippable — the gap is a blocking finding, not a note. Missing coverage → blocking finding → verdict DO NOT SHIP. A coverage matrix with an empty cell is never reported as SHIP, SHIP WITH FIXES, or INCONCLUSIVE-as-pass; the matrix is complete or the build does not ship.", 'after'),
+  ('ALIGN_F23-E', 'skills/browser-qa/SKILL.md', '### Visual\n- [✗] Hero section overflows on 375px viewport', "\n\n### Alignment (fix #23 §6, ALIGN_F23)\n- [✓/✗] Overflow: 0px at 1440 / 900 / 390; text overflow: 0 elements\n- [✓/✗] Centering: frame / hero-group offset ≤ 2px at every width\n- [✓/✗] Nav: gaps equal ± 2px, group centered, labels centered on items\n- [✓/✗] Grid: card edges share one left / one right per width\n- [✓/✗] Clipping / collisions: 0 clipped, 0 label collisions, 0 undeclared beyond-frame\n- [✓/✗] Actions: primary actions centered on their axis ± 2px\n- [✓/✗] Coverage: every width × every flow state measured + screenshotted (BLOCK_F23: any gap → DO NOT SHIP)", 'after'),
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 §6 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 §6 alignment block applied")
+PYEOF
+
+# --- fix23 §9: dynamic interface (DYNAMIC_F23) ---
+# (motion-foundations / motion-patterns / motion-advanced /
+#  browser-qa are upstream; they have no staged source and are
+#  patched here. The staged-source halves -- orchestrate
+#  (design-package step: DYNAMIC_F23, fix23/orch-lines-s9.py)
+#  + polish-pass (dynamic-story candidate evidence,
+#  fix23/polish-lines-s9.py) -- are inserted by the integration
+#  worker from those files, not by this block.
+#  All anchors were verified count==1 against the post-fix23
+#  §1–§6 built tree by apply-s9.py's preflight; the asserts
+#  below re-verify at build time and fail the build loudly on
+#  mismatch. browser-qa remains the SOLE executor of pass/fail
+#  verdicts on rendered screens; the motion skills state the
+#  rule, polish-pass records candidate evidence, never a verdict.
+#  §9 vs §2: §2 (MOTION_F23) is motion presence on every build;
+#  §9 (DYNAMIC_F23) is state changes + interactivity — what
+#  changes, what triggers it, how it moves. Cross-referenced,
+#  never restated.
+# Placement: before STEP 5 (after the fix22 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('DYNAMIC-01', 'skills/motion-foundations/SKILL.md', '## Decision Guidance', "\n\n**State changes are choreographed, not instant swaps (fix #23 §9, DYNAMIC_F23).** Every state change on a build is a choreographed transition, routed through the fix #22 motion tokens (Group A principles + Group B values) and, where the change is a moment, a dealt moment: entering/leaving, loading to loaded, empty to filled, selected, confirmed. A state change with no motion is a gap — the interface must never snap between states with nothing in between. Each state change is recorded in `docs/design-tokens.md`'s Motion list with its trigger, its token values, and its D19 reason (Motion dimension), directed per §10 (direct, don't describe). This is the state-change rule; §2 (MOTION_F23) is the motion-presence rule — deliberate motion on every build — and this section says how each change moves, it does not restate it. `prefers-reduced-motion` is respected everywhere: the state still changes and the content is correct at rest — opacity-only fades at ≤ 0.2s or no motion — with a complete static fallback, never a broken state. (D19 — Motion: each state change IS a motion decision — trigger + tokens recorded; Theme: changes move in the dealt theme's motion voice; Texture: none — state changes carry no surface treatment; Visuals: choreographed changes are what make the interface read as alive rather than frozen; Techniques: values come from `motionTokens` and the Group B rules, never hardcoded; Colors: none — state changes choose no colours; Depth: a change that reorders layers names the layer order, or `flat by choice — <reason>`.)", 'after'),  # 'DYNAMIC-01'
+  ('DYNAMIC-02', 'skills/motion-patterns/SKILL.md', '## Decision Guidance', "\n\n**Interactive depth — the interface invites interaction (fix #23 §9, DYNAMIC_F23).** Patterns are chosen so the user can DO things, not just look: sortable, filterable, expandable, draggable where it serves the job (Accordion, Expanding card, Dropdown, Modal, Popover, Toast stack, Page transition — each with its live behaviour, not a static mock). Every interactive pattern responds immediately: press states (press scale 0.97), hover, transitions — and every state change it drives is choreographed (AnimatePresence enter/exit, `layout` for size/position changes, stagger for lists), with its trigger and token values recorded in `docs/design-tokens.md`'s Motion list. A control that looks interactive but does nothing on press is a gap; a surface showing frozen mock content — counts and totals that never move — is a gap: surfaces show live state (data updating, statuses changing, counts and totals moving). A state change with no motion is a gap. `prefers-reduced-motion` is respected in every pattern with a complete static fallback — the state still changes, content visible at rest — never a broken one. (D19 — Motion: each interactive pattern IS a motion decision — trigger + tokens recorded; Theme: patterns move in the dealt theme's motion voice; Texture: none — patterns carry no surface treatment; Visuals: live patterns are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 8); Colors: none — patterns choose no colours; Depth: a pattern that reorders layers names the layer order, or `flat by choice — <reason>`.)", 'after'),  # 'DYNAMIC-02'
+  ('DYNAMIC-03', 'skills/motion-advanced/SKILL.md', '## Decision Guidance', "\n\n**Advanced pieces are live and interactive (fix #23 §9, DYNAMIC_F23).** Every advanced piece on a build must actually respond and move in the rendered page: drags with physics on release, reorderable lists, drag-to-dismiss, swipe detection, long-press, counters tweening to live values, SVG draws, mask reveals, shimmer skeletons and button loading states — routed through the fix #22 motion tokens (Group A principles + Group B values) and recorded in `docs/design-tokens.md`'s Motion list with trigger and token values, plus its D19 reason (Motion dimension), directed per §10 (direct, don't describe). A draggable that snaps without physics, a counter that jumps to its value without tweening, or a loading state that flips to loaded with no transition is a gap — a state change with no motion is a gap, and a control that does not respond is a gap. `prefers-reduced-motion` is respected everywhere with a complete static fallback — the piece renders at its final state, content visible at rest — never a broken one. (D19 — Motion: each advanced piece IS a motion decision — trigger + tokens recorded; Theme: choreography moves in the dealt theme's motion voice; Texture: none — choreography carries no surface treatment; Visuals: moving pieces are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 6); Colors: none — choreography chooses no colours; Depth: a piece that reorders layers names the layer order, or `flat by choice — <reason>`.)", 'after'),  # 'DYNAMIC-03'
+  ('DYNAMIC-BQA-01', 'skills/browser-qa/SKILL.md', '5. Test critical user journeys (checkout, onboarding, search)\n   — read-only by default; only exercise mutating journeys against staging\n     with explicit opt-in (see "Safety first" above)', '\n6. Dynamic-interface live check (fix #23 §9, DYNAMIC_F23): interact with the app like a user — click/press/hover every interactive control, and sort, filter, expand, and drag where the job calls for it — and confirm the interface responds immediately (press state, hover, transition visible) and that live state moves (data updating, statuses changing, counts and totals moving) rather than frozen mock content. Read the dynamic story from `docs/design-tokens.md` / the decision record (per surface: what changes, what triggers it, how it moves) and confirm each state change observed is choreographed (motion present — entering/leaving, loading to loaded, empty to filled, selected, confirmed). A control that does not respond, or a state that changes without motion, FAILS the build. Read-only by default; only exercise mutating journeys against staging with explicit opt-in (see "Safety first" above).', 'after'),  # 'DYNAMIC-BQA-01'
+  ('DYNAMIC-BQA-02', 'skills/browser-qa/SKILL.md', '- [✓] Auth flow: login/logout working', '\n- [✓/✗] Dynamic (DYNAMIC_F23): controls respond immediately; every state change choreographed (motion present); live state, not frozen mock content', 'after'),  # 'DYNAMIC-BQA-02'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 §9 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 section 9 upstream block applied")
+PYEOF
+# --- fix23 CORE: memorability verdict (fix #23 §1, MEMORABLE_F23) ---
+# (browser-qa is upstream; it has no staged source and is
+#  patched here. The staged-source halves -- orchestrate
+#  (design-package step: MEMORABLE_F23 elevation of
+#  AMBITION_F23, fix23/orch-lines-core.py) + polish-pass
+#  (memorability-candidates candidate evidence,
+#  fix23/polish-lines-core.py) -- are inserted by the
+#  integration worker from those files, not by this block.
+#  All anchors were verified count==1 against the post-fix23
+#  §9 built tree by apply-core.py's preflight; the asserts
+#  below re-verify at build time and fail the build loudly on
+#  mismatch. browser-qa remains the SOLE executor of pass/fail
+#  verdicts on rendered screens; the orchestrate line states
+#  the bar, polish-pass records candidate evidence, never a
+#  verdict. MEMORABLE-BQA-02 anchors on the Dynamic report
+#  row the §9 block inserts (DYNAMIC-BQA-02): this block sits
+#  AFTER the §9 block in build.sh, so that row exists by the
+#  time this block runs. CORE vs §4/§6: §4 (HERO-BQA_F23) is
+#  the hero verdict, §6 (BLOCK_F23) the coverage blocking
+#  rule; CORE is the governing bar ABOVE both — memorability
+#  is the TOP finish-review criterion. Cross-referenced,
+#  never restated. "Over the top" is ambition and impact,
+#  NOT loudness: "more, not bolder" governs styling.
+# Placement: before STEP 5 (after the fix23 §9 block).
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('MEMORABLE-BQA-01', 'skills/browser-qa/SKILL.md', "This verdict is `browser-qa`'s alone: no other step judges the hero.", '\n\n**Memorability verdict — memorable is the bar, above F6 (fix #23 §1, MEMORABLE_F23).** At the finish review, browser-qa judges memorability as the TOP criterion, above the F6 impressive bar: dynamic (it moves and responds), over the top (it goes beyond adequate in ambition, elements, and motion), wow / striking / stunning (it hits on first sight and on use). Judge it across the enumerated screens — the hero surface carries the highest weight (HERO-BQA_F23), but a memorable hero on a forgettable build does not pass. A build the user would forget the next day FAILS, however rule-correct — this extends the hero verdict (a merely adequate hero fails F6) and the F6/impressive verdicts: rule-correct but unambitious, unimpressive, or forgettable all fail. "Over the top" is ambition and impact, not loudness for its own sake: "more, not bolder" still governs styling (do not just crank weight, color, or size) — a build can be over the top and quiet in palette; it cannot be forgettable. This verdict is `browser-qa`\'s alone: no other step judges memorability.', 'after'),  # 'MEMORABLE-BQA-01'
+  ('MEMORABLE-BQA-02', 'skills/browser-qa/SKILL.md', '- [✓/✗] Dynamic (DYNAMIC_F23): controls respond immediately; every state change choreographed (motion present); live state, not frozen mock content', '\n- [✓/✗] Memorability (MEMORABLE_F23): dynamic + over the top + wow / striking / stunning — the build is memorable tomorrow, not merely correct today', 'after'),  # 'MEMORABLE-BQA-02'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 CORE anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 CORE upstream block applied")
+PYEOF
+# --- fix23 M1: DYNAMIC-BQA-01 undrivable-interaction disposition (Audit #70) ---
+# Audit #70 M1 (MINOR): the DYNAMIC-BQA-01 live check tells the executor
+# to sort, filter, expand, and drag where the job calls for it but gives
+# no disposition for an interaction the harness cannot drive. This block
+# records an undrivable interaction as unverified -- a gap, never a
+# silent pass. Placement: before STEP 5 (after the CORE block); the
+# anchor text only exists because the §9 block runs first. The added
+# sentence carries no DYNAMIC_F23 token, so token counts do not change.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import os, sys
+base = sys.argv[1]
+
+subs = [
+  ('DYNAMIC-BQA-01-M1', 'skills/browser-qa/SKILL.md', 'A control that does not respond, or a state that changes without motion, FAILS the build.', ' If the harness cannot drive an interaction the job calls for, record that interaction as unverified — a gap, never a silent pass; the Dynamic row is not ✓ on an interaction never driven.', 'after'),  # 'DYNAMIC-BQA-01-M1'
+]
+for pid, rel, old, add, mode in subs:
+    p = os.path.join(base, rel)
+    t = open(p).read()
+    n = t.count(old)
+    assert n == 1, f"fix23 M1 anchor not found exactly once in {rel}: {old[:70]!r} (count={n})"
+    if mode == 'after':
+        new = old + add
+    elif mode == 'before':
+        new = add.rstrip('\n') + '\n\n' + old
+    else:  # replace
+        new = add
+    open(p, "w").write(t.replace(old, new))
+print("fix23 M1 upstream block applied")
+PYEOF
+
+# --- fix #24: coherence re-weave + Cursor dial-in (build-time patch) ---
+# fix24/fix24.py patches the built tree in place, same pattern as fix16/fix16.py:
+# C2/C3 flag replacements, C4b six→seven, C7 scope qualifier, E-2/E-4/E-6 Windows
+# paths, G-1–G-4 command surface, picker prerequisite pointers, agent-ref dual
+# citation, C-1 block-no-verify PowerShell/cmd branch, C-2/C-3 hook notes, D-8
+# harness-audit reword, D-9 angular mcp note, README F-1/F-2/picker/counts.
+# Runs after fix23, before STEP 5. Exits non-zero on anchor errors (set -euo
+# pipefail stops the build); the run log lands in fix24/fix24-run-log.md.
+python3 "$PLUGIN_ROOT/fix24/fix24.py" "$PLUGIN_DIR"
+
+# --- fix #25: build-time patches (§1 wires, §2 inventory, §4 S1/benchmark) ---
+# fix25/fix25.py patches the built tree in place, same pattern as fix24/fix24.py:
+# §1 wires ck (session-start.js runs skills/ck/hooks/session-start.mjs) and
+# /prp-commit via conventional-commit-review; §2 closes the orch-* inventory
+# bypass; §4(a) S1 header 80 -> 89 styles; §4(d) browser-qa beat-v5 line;
+# loop-status dangling references removed. Runs after fix24, before STEP 5;
+# exits non-zero on anchor errors; run log in fix25/fix25-patch-log.md.
+python3 "$PLUGIN_ROOT/fix25/fix25.py" "$PLUGIN_DIR"
+
+# --- fix #26: build-time patches (ck cost lines + §1 pip pins) ---
+# fix26/fix26.py patches the built tree in place, same pattern as fix25/fix25.py:
+# §8 corrects the stale ck cost claims to the measured ~1k tokens/session
+# (session-start.mjs header + load comment, ck SKILL.md per-session line).
+# §1 pip pins (13 upstream lines, P-01–P-13) land in the same script.
+# Runs after fix25, before STEP 5. Exits non-zero on anchor errors (set -euo
+# pipefail stops the build); the run log lands in fix26/fix26-patch-log.md.
+python3 "$PLUGIN_ROOT/fix26/fix26.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

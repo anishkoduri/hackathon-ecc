@@ -12,7 +12,6 @@
 const path = require('path');
 const fs = require('fs');
 const { getSessionsDir, getDateString, getTimeString, getSessionIdShort, sanitizeSessionId, getProjectName, getRepoIdentity, ensureDir, readFile, writeFile, runCommand, stripAnsi, log } = require('../lib/utils');
-const { generateSessionSummary, getContextRemainingPct, getContextThreshold } = require('../lib/llm-summary');
 
 const SUMMARY_START_MARKER = '<!-- ECC:SUMMARY:START -->';
 const SUMMARY_END_MARKER = '<!-- ECC:SUMMARY:END -->';
@@ -29,7 +28,7 @@ const EMPTY_SESSION_BODY = '## Current State\n\n[Session context goes here]\n\n#
  */
 function userMessageText(entry) {
   if (entry.type !== 'user' && entry.role !== 'user' && entry.message?.role !== 'user') return '';
-  // Support both direct content and nested message.content (Claude Code JSONL format)
+  // Support both direct content and nested message.content (Cursor JSONL format)
   const rawContent = entry.message?.content ?? entry.content;
   // Skip tool_result carrier turns — they are not user asks.
   if (Array.isArray(rawContent) && rawContent.some(c => c && c.type === 'tool_result')) return '';
@@ -65,7 +64,7 @@ function collectEntry(entry, tally) {
     recordToolUse(toolName, entry.tool_input?.file_path || entry.input?.file_path || '', tally);
   }
 
-  // Extract tool uses from assistant message content blocks (Claude Code JSONL format)
+  // Extract tool uses from assistant message content blocks (Cursor JSONL format)
   if (entry.type === 'assistant' && Array.isArray(entry.message?.content)) {
     for (const block of entry.message.content) {
       if (block.type === 'tool_use') recordToolUse(block.name || '', block.input?.file_path || '', tally);
@@ -110,7 +109,7 @@ function extractSessionSummary(transcriptPath) {
   };
 }
 
-// Read hook input from stdin (Claude Code provides transcript_path via stdin JSON)
+// Read hook input from stdin (Cursor provides transcript_path via stdin JSON)
 const MAX_STDIN = 1024 * 1024;
 let stdinData = '';
 process.stdin.setEncoding('utf8');
@@ -196,7 +195,7 @@ function resolveTranscriptPath() {
   } catch {
     // Malformed stdin: fall through to the env-var fallback below.
   }
-  const envTranscriptPath = process.env.CLAUDE_TRANSCRIPT_PATH;
+  const envTranscriptPath = process.env.ECC_TRANSCRIPT_PATH;
   return typeof envTranscriptPath === 'string' && envTranscriptPath.length > 0 ? envTranscriptPath : null;
 }
 
@@ -207,7 +206,7 @@ function resolveTranscriptPath() {
  * getSessionIdShort() would have produced from the same UUID), while making
  * every session map to a unique filename based on its own transcript UUID.
  *
- * Without this, a parent session and any `claude -p ...` subprocess spawned by
+ * Without this, a parent session and any CLI subprocess spawned by
  * another Stop hook share the project-name fallback filename, and the subprocess
  * overwrites the parent's summary. See issue #1494 for full repro details.
  */
@@ -223,29 +222,6 @@ function sessionShortId(transcriptPath) {
  * Decide whether to call LLM for a richer summary.
  * Triggers: summary budget remaining < 20%, or every 50 user messages as a baseline.
  */
-function maybeGenerateLlmSummary(transcriptPath, summary) {
-  const contextPct = getContextRemainingPct(transcriptPath);
-  const isContextLow = contextPct !== null && contextPct < getContextThreshold();
-  const interval = parseInt(process.env.ECC_LLM_SUMMARY_INTERVAL || '50', 10);
-  const safeInterval = Number.isFinite(interval) && interval > 0 ? interval : 50;
-  const isPeriodicTurn = summary.totalMessages > 0 && summary.totalMessages % safeInterval === 0;
-  if (!isContextLow && !isPeriodicTurn) return null;
-
-  log(`[SessionEnd] LLM summary triggered (summary budget: ${contextPct ?? 'unknown'}%, messages: ${summary.totalMessages})`);
-  let skipped = false;
-  const llmSummary = generateSessionSummary(transcriptPath, {
-    onSkip: reason => {
-      skipped = true;
-      log(`[SessionEnd] LLM summary skipped (${reason}); falling back to mechanical extraction`);
-    }
-  });
-  if (llmSummary) {
-    log('[SessionEnd] LLM summary generated successfully');
-  } else if (!skipped) {
-    log('[SessionEnd] LLM summary failed; falling back to mechanical extraction');
-  }
-  return llmSummary;
-}
 
 function summaryBlockFor(summary, llmSummary) {
   return llmSummary ? `${SUMMARY_START_MARKER}\n${llmSummary}\n${SUMMARY_END_MARKER}` : buildSummaryBlock(summary);
@@ -307,7 +283,7 @@ function createSessionFile(sessionFile, { today, currentTime, metadata, summary,
 async function main() {
   const transcriptPath = resolveTranscriptPath();
 
-  // ECC's LLM summary helper launches a one-shot Claude subprocess whose Stop
+  // ECC's LLM summary helper launches a one-shot Cursor subprocess whose Stop
   // hooks inherit this dedicated marker. Skip that known internal session
   // before touching session state. Transcript cardinality is not a safe proxy:
   // an ordinary user session may legitimately contain one prompt and no tools.
@@ -339,7 +315,7 @@ async function main() {
   ensureDir(sessionsDir);
 
   const currentTime = getTimeString();
-  const llmSummary = transcriptPath && summary && transcriptExists ? maybeGenerateLlmSummary(transcriptPath, summary) : null;
+  const llmSummary = null; // LLM summary removed in fix #16 (no Cursor equivalent)
   const context = { today, currentTime, metadata, summary, llmSummary };
 
   if (fs.existsSync(sessionFile)) {

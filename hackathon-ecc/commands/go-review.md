@@ -144,5 +144,5 @@ Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 
 ## Related
 
-- Agent: `agents/ecc-go-reviewer.md`
+- Agent: `go-reviewer` (`agents/ecc-go-reviewer.md`)
 - Skills: `skills/golang-patterns/`, `skills/golang-testing/`

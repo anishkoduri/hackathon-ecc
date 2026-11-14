@@ -92,7 +92,7 @@ commands with expected output — you can only do that by reading the repo.
   the project tree and the How-it-works steps cite real files
   (`src/lib/check.js`, `app/main.py`), the way the examples do.
 - **What already exists**: a partial README, LICENSE, screenshots in
-  `assets/`/`docs/`/`public/`, a deployed URL in config, CI workflows. Reuse it. **Deployed URL and demo video path:** in a first build, take them from `.hackathon/run-ledger.md` (the deployed-URL line; the video path is `<app-name>-video/out/demo.mp4`) — when the ledger names them, write the real links, never a `<!-- TODO: add demo link -->` placeholder.
+  `assets/`/`docs/`/`public/`, a deployed URL in config, CI workflows. Reuse it. **Deployed URL and demo video path:** in a first build, take them from `.hackathon/run-ledger.md` (the deployed-URL line; the video path is `<app-name>-video/out/demo.mp4`) — when the ledger names them, write the real links, never a `<!-- TODO: add demo link -->` placeholder. A video filmed later, by an explicit /demo run after the README was written, is linked into the README by that run (pitch-deck-video step 7, README_UPDATE_F26) — readme-writer is not re-run just for the video link.
 
 If you don't have repo access (the user only describes the project), skip the
 scan, lean on the interview, and say so — flag that setup commands and file

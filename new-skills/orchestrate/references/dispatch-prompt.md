@@ -9,7 +9,7 @@ stated up front).
 
 ## Skeleton — every dispatch, in this order
 
-1. **Role preamble** — ONLY on the `general-purpose` fallback path and for the
+1. **Role preamble** — ONLY on the general subagent fallback path and for the
    second deep-reasoner pass. Named subagents (deep-reasoner / fast-worker / scout) already carry
    their operating contract as a system prompt; repeating it is noise.
 2. **Scene-setting** — one line: where this piece fits in the larger job.
@@ -21,14 +21,14 @@ stated up front).
    is your operating procedure; follow it: `<path>/SKILL.md`"*. The tier's
    contract and return format still bind. On the blind-parallel path this
    line is part of the verbatim task body both executors receive.
-5a. **Design package — named by default on every UI dispatch (not custom-roster-only).** Every dispatch whose work touches a UI surface names the design components for that surface in the Inputs, per the design-package rule (orchestrate SKILL.md row 10): landing/company page — `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; dashboard/app surface or component — `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion work — + `make-interfaces-feel-better`; new design-system work — + `design-system`; legacy drift — + `inherit-legacy-style`. The dispatch also restates the recorded direction from `docs/design-tokens.md` (theme/axes/mood, named) inline — never "see the design system". A UI dispatch with no named design skill is incomplete; the custom roster is not the only path a design skill reaches a dispatch.
+5a. **Design package — named by default on every UI dispatch (not custom-roster-only).** Every dispatch whose work touches a UI surface names the design components for that surface in the Inputs, per the design-package rule (orchestrate SKILL.md row 10): landing/company page — `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; dashboard/app surface or component — `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion work — + `make-interfaces-feel-better`; new design-system work — + `design-system`; legacy drift — + `inherit-legacy-style`. The dispatch also restates the recorded direction from `docs/design-tokens.md` (theme/axes/mood, named) inline — never "see the design system". A UI dispatch with no named design skill is incomplete; the custom roster is not the only path a design skill reaches a dispatch. **Design inventory (fix #23 §1, INVENTORY_F23 — the design-lead prompt):** every UI dispatch also names the design inventory — `skills/orchestrate/references/design-inventory.md` — and instructs the design-lead to READ it at the design-package step BEFORE deciding, and to record used vs considered-and-rejected inventory entries (with specific D19 reasons) in the decision record. The dispatch also points at the inventory's asset-library pins (design-inventory.md §1/§9 — pinned versions + stack scope for all 11 libraries/tools). A dispatch that never points the design-lead at the inventory is incomplete the same way a dispatch with no named design skill is.
 6. **Before-you-begin clause** — questions surface now, not mid-work.
 7. **Report contract** — status vocabulary + final-message cap (+ report file
    for implement-type work).
 8. **Environment** — env vars the executor needs, passed inline in the dispatch
    (never written to a file): e.g. `ELEVENLABS_API_KEY=<value held in working
    context>` on a /demo dispatch when a narration key was received mid-build
-   (orchestrate step 0 / step 5d) — the executor runs the `tts` step with that
+   (orchestrate step 0 — only when the user asked for a demo video) — the executor runs the `tts` step with that
    variable set in its process environment. Omit this field when no env var is
    needed; never put a key in a file, a log, or the ledger.
 
@@ -194,7 +194,7 @@ Return format:    Status first, then a DEFECT LIST — each item `path:line`
 ## Worked example — mechanical tier, fallback path, filled
 
 ```
-Spawn a general subagent (model: composer-2.5[fast=false]) with this prompt:
+Spawn a general subagent (model: cursor-grok-4.6-high-fast) with this prompt:
 You are acting as the fast-worker — a mechanical executor. Execute
 efficiently; do not redesign, second-guess the spec, or expand scope. Your
 final message IS the return value. If a real design decision surfaces, stop

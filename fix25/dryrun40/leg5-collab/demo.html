@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Collab fixture — two live clients, one CRDT document</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 24px; color: #1c1c1c; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p.sub { margin: 0 0 16px; color: #555; }
+  .row { display: flex; gap: 16px; }
+  .pane { flex: 1; border: 2px solid #ccc; border-radius: 8px; padding: 12px; }
+  .pane.a { border-color: #2563eb; } .pane.b { border-color: #dc2626; }
+  .pane h2 { margin: 0 0 8px; font-size: 15px; }
+  .pane.a h2 { color: #2563eb; } .pane.b h2 { color: #dc2626; }
+  .editor { min-height: 120px; border: 1px solid #999; border-radius: 4px;
+    padding: 8px; white-space: pre-wrap; word-break: break-word; outline: none;
+    font: 15px/1.5 ui-monospace, monospace; }
+  .editor .remote-caret { border-left: 2px solid; margin-left: -1px; }
+  .controls { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+  button { padding: 6px 10px; font-size: 13px; cursor: pointer; }
+  .stat { font-size: 13px; color: #444; margin-top: 8px; }
+  #verdict { margin-top: 16px; font-size: 16px; font-weight: 700; }
+  #verdict.ok { color: #15803d; } #verdict.bad { color: #b91c1c; }
+  #log { margin-top: 12px; font: 12px ui-monospace, monospace; background: #f4f4f4;
+    padding: 8px; border-radius: 4px; max-height: 180px; overflow: auto; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>Real-time collaborative editor — CRDT fixture</h1>
+<p class="sub">Two clients (A blue, B red) edit the <b>same document</b> over WebSocket.
+Ops are sequence-CRDT ops (RGA: id = lamport:client, parent = left neighbour).
+Presence = live cursor badges under each pane. Type in either pane and watch the other converge.</p>
+<div class="row">
+  <div class="pane a">
+    <h2>Client A <span id="stateA">connecting…</span></h2>
+    <div class="editor" id="edA" contenteditable="true" spellcheck="false"></div>
+    <div class="controls">
+      <button id="undoA">Undo my last edit (A)</button>
+      <button id="offA">Go offline (A)</button>
+      <button id="pasteA">Paste 5,000 chars (A)</button>
+    </div>
+    <div class="stat" id="statA"></div>
+    <div class="stat" id="presenceA"></div>
+  </div>
+  <div class="pane b">
+    <h2>Client B <span id="stateB">connecting…</span></h2>
+    <div class="editor" id="edB" contenteditable="true" spellcheck="false"></div>
+    <div class="controls">
+      <button id="undoB">Undo my last edit (B)</button>
+      <button id="burstB">100-op burst (B)</button>
+    </div>
+    <div class="stat" id="statB"></div>
+    <div class="stat" id="presenceB"></div>
+  </div>
+</div>
+<div id="verdict">…</div>
+<div id="log"></div>
+<script>
+// The CRDT source is Node-style (module.exports); load it as text and eval
+// it in a sandbox so the browser demo uses the exact same code as the tests.
+</script>
+<script>
+(async () => {
+  const logEl = document.getElementById('log');
+  const log = (m) => { logEl.textContent += m + '\n'; logEl.scrollTop = logEl.scrollHeight; };
+  const crdtSrc = await (await fetch('/crdt.js')).text();
+  const module = { exports: {} };
+  new Function('module', 'exports', crdtSrc)(module, module.exports);
+  const { Replica } = module.exports;
+
+  const PORT = location.port;
+  const mkClient = (id, edEl, stateEl, statEl, presenceEl, caretColor) => {
+    const replica = new Replica(id);
+    let ws = null, offline = false, outbox = [];
+    let lastEchoMs = null, opsSent = 0, opsRecv = 0;
+    let lastText = '';
+    // Caret as a character OFFSET (a number), not a DOM node: render()
+    // replaces textContent, which destroys text nodes — a node-based
+    // restore silently drops the caret to offset 0 and the next keystroke
+    // lands at the start (which reversed typed text in the first probe).
+    const caretOffset = (el) => {
+      const s = getSelection();
+      if (!s.rangeCount || !el.contains(s.anchorNode)) return null;
+      const r = s.getRangeAt(0).cloneRange();
+      r.selectNodeContents(el);
+      r.setEnd(s.anchorNode, s.anchorOffset);
+      return r.toString().length;
+    };
+    const setCaretOffset = (el, off) => {
+      if (off === null || off === undefined) return;
+      const s = getSelection();
+      const r = document.createRange();
+      let remaining = off, node = null, nodeOff = 0;
+      const walk = (n) => {
+        if (n.nodeType === 3) {
+          if (remaining <= n.length) { node = n; nodeOff = remaining; return true; }
+          remaining -= n.length;
+        }
+        for (const c of n.childNodes) if (walk(c)) return true;
+        return false;
+      };
+      if (walk(el) && node) {
+        r.setStart(node, nodeOff); r.collapse(true);
+        s.removeAllRanges(); s.addRange(r);
+      } else {
+        r.selectNodeContents(el); r.collapse(false);
+        s.removeAllRanges(); s.addRange(r);
+      }
+    };
+    const updateStats = () => {
+      statEl.textContent = `doc ${replica.visibleLength()} chars · nodes ${replica.nodeCount()} · sent ${opsSent} · received ${opsRecv}` +
+        (lastEchoMs === null ? '' : ` · last echo ${lastEchoMs.toFixed(0)} ms`);
+    };
+    const render = () => {
+      // Only touch the DOM when the text actually changed; a local
+      // keystroke already put the character in the DOM — replacing
+      // textContent here would destroy the caret for no reason.
+      const target = replica.toString();
+      if (edEl.textContent !== target) {
+        const off = caretOffset(edEl);
+        edEl.textContent = target;
+        setCaretOffset(edEl, off);
+      }
+      lastText = target;
+      updateStats();
+      checkVerdict();
+    };
+    const send = (msg) => {
+      const text = JSON.stringify(msg);
+      if (offline) { outbox.push(text); return; }
+      ws.send(text);
+    };
+    const connect = () => {
+      ws = new WebSocket(`ws://${location.hostname}:${PORT}/`);
+      ws.onopen = () => {
+        stateEl.textContent = offline ? 'offline (queued ' + outbox.length + ')' : 'connected';
+        if (outbox.length) { for (const t of outbox) ws.send(t); outbox = []; log(`${id}: reconnected, flushed queue`); }
+      };
+      ws.onmessage = (ev) => {
+        const msg = JSON.parse(ev.data);
+        if (msg.kind === 'sync') {
+          for (const op of msg.ops) replica.apply(op);
+          render(); log(`${id}: sync — ${msg.ops.length} ops replayed`);
+        } else if (msg.kind === 'op') {
+          const t0 = performance.now();
+          replica.apply(msg.op);
+          opsRecv++;
+          lastEchoMs = performance.now() - t0;
+          render();
+        } else if (msg.kind === 'presence' && msg.from !== id) {
+          // Presence as a badge, NOT a caret span inside the editor:
+          // splitting the editor's text nodes destroys the local caret.
+          presenceEl.textContent = `${msg.from} is here — cursor at char ${msg.cursor || 0}`;
+          presenceEl.style.color = caretColor === '#2563eb' ? '#dc2626' : '#2563eb';
+        }
+      };
+      ws.onclose = () => { stateEl.textContent = 'disconnected'; };
+    };
+    // Local editing -> CRDT ops. Diff the editor content against the
+    // replica string (first/last difference). The DOM already shows the
+    // keystroke, so this handler must NOT re-render textContent — it only
+    // derives ops, updates stats, and broadcasts presence.
+    edEl.addEventListener('input', () => {
+      const now = edEl.textContent;
+      let a = 0;
+      while (a < Math.min(lastText.length, now.length) && lastText[a] === now[a]) a++;
+      let bLast = lastText.length, bNow = now.length;
+      while (bLast > a && bNow > a && lastText[bLast - 1] === now[bNow - 1]) { bLast--; bNow--; }
+      for (let i = a; i < bLast; i++) { const op = replica.delete(a); if (op) { send({ kind: 'op', op }); opsSent++; } }
+      for (let i = a; i < bNow; i++) { const op = replica.insert(a + (i - a), now[i]); send({ kind: 'op', op }); opsSent++; }
+      lastText = replica.toString();
+      updateStats();
+      checkVerdict();
+      send({ kind: 'presence', from: id, cursor: caretOffset(edEl) || 0 });
+    });
+    const api = {
+      replica, render,
+      undo: () => { const op = replica.undo(); if (op) { send({ kind: 'op', op }); opsSent++; lastText = replica.toString(); render(); } },
+      goOffline: () => { offline = true; ws.close(); stateEl.textContent = 'OFFLINE (edits queue locally)'; log(`${id}: went offline — edits will queue`); },
+      goOnline: () => { offline = false; connect(); },
+      isOffline: () => offline,
+      pasteBig: (n) => {
+        const chunk = 'Lorem ipsum dolor sit amet. ';
+        let s = ''; while (s.length < n) s += chunk;
+        s = s.slice(0, n);
+        // Chain left-ids (insertAfter) so a 5,000-char paste is O(n),
+        // not one O(n) index scan per char.
+        let left = replica.lastVisibleId();
+        for (let i = 0; i < s.length; i++) { const op = replica.insertAfter(left, s[i]); left = op.id; send({ kind: 'op', op }); opsSent++; }
+        lastText = replica.toString(); render();
+        log(`${id}: pasted ${n} chars as ${n} CRDT insert ops`);
+      },
+      burst: (n) => {
+        const t0 = performance.now();
+        let left = replica.lastVisibleId();
+        for (let i = 0; i < n; i++) { const op = replica.insertAfter(left, 'x'); left = op.id; send({ kind: 'op', op }); opsSent++; }
+        const ms = performance.now() - t0;
+        lastText = replica.toString(); render();
+        log(`${id}: ${n}-op burst applied locally in ${ms.toFixed(1)} ms (${(n / (ms / 1000)).toFixed(0)} ops/s)`);
+      },
+      setText: (t) => { lastText = t; },
+      text: () => replica.toString(),
+    };
+    connect();
+    return api;
+  };
+
+  const A = mkClient('A', document.getElementById('edA'), document.getElementById('stateA'), document.getElementById('statA'), document.getElementById('presenceA'), '#2563eb');
+  const B = mkClient('B', document.getElementById('edB'), document.getElementById('stateB'), document.getElementById('statB'), document.getElementById('presenceB'), '#dc2626');
+  window.__A = A; window.__B = B;
+  const verdictEl = document.getElementById('verdict');
+  function checkVerdict() {
+    const a = A.text(), b = B.text();
+    if (a === b) { verdictEl.textContent = '✓ CONVERGED — both clients hold the identical document (' + a.length + ' chars)'; verdictEl.className = 'ok'; }
+    else { verdictEl.textContent = '✗ DIVERGED — A=' + a.length + ' chars, B=' + b.length + ' chars'; verdictEl.className = 'bad'; }
+  }
+  document.getElementById('undoA').onclick = () => A.undo();
+  document.getElementById('undoB').onclick = () => B.undo();
+  document.getElementById('pasteA').onclick = () => A.pasteBig(5000);
+  document.getElementById('burstB').onclick = () => B.burst(100);
+  const offBtn = document.getElementById('offA');
+  offBtn.onclick = () => {
+    if (!A.isOffline()) { A.goOffline(); offBtn.textContent = 'Reconnect (A) — merge queued edits'; }
+    else { A.goOnline(); offBtn.textContent = 'Go offline (A)'; }
+  };
+  log('Open this page, type in either pane, and watch the other converge.');
+  log('Try: A offline → type in both → reconnect → merge without loss.');
+})();
+</script>
+</body>
+</html>

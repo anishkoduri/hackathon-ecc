@@ -1,0 +1,121 @@
+anchors: all fix #23 rule texts present verbatim in the built tree
+PASS F23-1a
+     expected FLAG/FAIL, observed FLAG/FAIL -- record says 'we considered everything' -- blanket line, not a reason
+PASS F23-1b
+     expected PASS, observed PASS -- used + considered-and-rejected named specifically with D19 reasons
+PASS F23-1c
+     expected FLAG/FAIL, observed FLAG/FAIL -- small slice of the inventory with no recorded specific reasons
+PASS F23-1d
+     expected FLAG/FAIL, observed FLAG/FAIL -- design usable without the package (bare minimum only)
+PASS F23-1e
+     expected FLAG/FAIL, observed FLAG/FAIL -- rule-correct but unambitious design fails at the finish review
+PASS F23-1f
+     expected PASS, observed PASS -- inventory read before deciding; record cites entries used vs rejected
+PASS F23-Ca
+     expected FLAG/FAIL, observed FLAG/FAIL -- forgettable build: no memorable moment named -- fails, however rule-correct
+PASS F23-Cb
+     expected PASS, observed PASS -- over-the-top ambition + quiet palette + strong moment -- not flagged for being quiet
+PASS F23-Cc
+     expected FLAG/FAIL, observed FLAG/FAIL -- loud styling (cranked weight/color/size), thin ambition -- over-the-top is ambition, not loudness
+PASS F23-2a
+     expected PASS, observed PASS -- deliberate eye-catching motion, token-routed, reduced-motion fallback
+PASS F23-2b
+     expected FLAG/FAIL, observed FLAG/FAIL -- build feels static -- fails even though every static rule passes
+PASS F23-2c
+     expected FLAG/FAIL, observed FLAG/FAIL -- 3D motion with no reduced-motion fallback
+PASS F23-2d
+     expected PASS, observed PASS -- motion values are the fix #22 tokens (stagger 30ms, press 0.97, dropdowns 150-250ms)
+PASS F23-2e
+     expected FLAG/FAIL, observed FLAG/FAIL -- Taste landing page with scroll motion -- scroll ban scope guard
+PASS F23-3a
+     expected FLAG/FAIL, observed FLAG/FAIL -- body face 59% of build visual share -- T1a cap 40%
+PASS F23-3b
+     expected PASS, observed PASS -- body 36% roll-up, display 50%, hero display > body, 4 faces -- PASS
+PASS F23-3c
+     expected FLAG/FAIL, observed FLAG/FAIL -- body 60% on one primary screen -- T1b cap 55%
+PASS F23-3d
+     expected FLAG/FAIL, observed FLAG/FAIL -- display/important faces 13% of build share -- T1c floor 25%
+PASS F23-3e
+     expected FLAG/FAIL, observed FLAG/FAIL -- hero/home surface: body share exceeds display share -- T1d
+PASS F23-3f
+     expected FLAG/FAIL, observed FLAG/FAIL -- trio identical to previous build, no recorded reuse reason -- T2
+PASS F23-3g
+     expected PASS, observed PASS -- same trio with a recorded D19 reason + theme-fit -- T2 cleared
+PASS F23-3h
+     expected FLAG/FAIL, observed FLAG/FAIL -- N=50 text elements, only 2 faces >=5% (mono 2.8%) -- T3 needs >= max(3, 3)=3
+PASS F23-3i
+     expected PASS, observed PASS -- N=50, 4 distinct faces each >=5% -- T3 variety floor met
+PASS F23-3j
+     expected FLAG/FAIL, observed FLAG/FAIL -- one face (body) dominates the visual field -- reads as defaulted, fails at browser-qa
+PASS F23-4a
+     expected PASS, observed PASS -- hero with dealt moment + distinctive composition + motion, recorded
+PASS F23-4b
+     expected FLAG/FAIL, observed FLAG/FAIL -- merely adequate hero, no dealt moment -- fails F6
+PASS F23-4c
+     expected PASS, observed PASS -- app home/feed surface IS the hero surface; moment serves the job
+PASS F23-4d
+     expected FLAG/FAIL, observed FLAG/FAIL -- generic hero section pasted onto an app that does not need one
+PASS F23-4e
+     expected FLAG/FAIL, observed FLAG/FAIL -- Picks block missing the Hero-moment row -- static check fails
+PASS F23-5a
+     expected PASS, observed PASS -- this build's pipeline/diagram visible early, theme-matched, story recorded
+PASS F23-5b
+     expected FLAG/FAIL, observed FLAG/FAIL -- build looks good but hides what the thing does
+PASS F23-5c
+     expected FLAG/FAIL, observed FLAG/FAIL -- generic 'add a diagram' -- not this build's pipeline/data/stack
+PASS F23-5d
+     expected FLAG/FAIL, observed FLAG/FAIL -- mechanism buried below the fold -- must be visible early
+PASS F23-5e
+     expected PASS, observed PASS -- functionality story recorded: pipeline + live data + stack with the product's own names and real figures
+PASS F23-6a
+     expected PASS, observed PASS -- scrollWidth - innerWidth == 0 at every tested width
+PASS F23-6b
+     expected FLAG/FAIL, observed FLAG/FAIL -- 5px horizontal overflow at 390 -- ALIGN_F23_OVERFLOW
+PASS F23-6c
+     expected PASS, observed PASS -- hero/phone frame centered, offset 0 at 1440/900/390
+PASS F23-6d
+     expected FLAG/FAIL, observed FLAG/FAIL -- phone frame 5px off center -- tolerance is <=2px
+PASS F23-6e
+     expected PASS, observed PASS -- nav gaps equal, nav group centered, each label center == item center
+PASS F23-6f
+     expected FLAG/FAIL, observed FLAG/FAIL -- adjacent nav gaps unequal (75/75/99/75) -- beyond +/-2px
+PASS F23-6g
+     expected PASS, observed PASS -- feed cards share one left and one right edge per width
+PASS F23-6h
+     expected FLAG/FAIL, observed FLAG/FAIL -- one feed card 4px off the common left edge -- grid fails
+PASS F23-6i
+     expected FLAG/FAIL, observed FLAG/FAIL -- leaf text element scrollWidth > clientWidth + 1 -- clipped text
+PASS F23-6j
+     expected PASS, observed PASS -- stamps offset 0, code-box group centered on its panel (offset 0)
+PASS F23-6k
+     expected PASS, observed PASS -- coverage matrix complete: 3 widths x all flow states measured + screenshotted -- shippable
+PASS F23-6l
+     expected FLAG/FAIL, observed FLAG/FAIL -- 390 width never measured -- BLOCKING gap (DO NOT SHIP): missing widths [390], missing states []
+PASS F23-6m
+     expected FLAG/FAIL, observed FLAG/FAIL -- wrong-code state never measured -- BLOCKING gap (DO NOT SHIP): missing widths [], missing states ['trip-wrongcode']
+PASS F23-6n
+     expected PASS, observed PASS -- element beyond its frame with a DECLARED intentional bleed in the decision record, page overflow still 0 -- passes
+PASS F23-6o
+     expected FLAG/FAIL, observed FLAG/FAIL -- element beyond its frame with NO declared bleed -- ALIGN_F23_CLIP
+PASS F23-6p
+     expected PASS, observed PASS -- desktop side-panel tops differ 26px with a recorded stagger -- passes
+PASS F23-6q
+     expected FLAG/FAIL, observed FLAG/FAIL -- desktop side-panel tops differ 26px, no stagger recorded -- ALIGN_F23_PANELS
+PASS F23-9a
+     expected PASS, observed PASS -- live state moves, controls respond immediately, every state change choreographed, story recorded
+PASS F23-9b
+     expected FLAG/FAIL, observed FLAG/FAIL -- frozen mock content -- surfaces show no live state
+PASS F23-9c
+     expected PASS, observed PASS -- loading-to-loaded / empty-to-filled transitions choreographed (motion tokens + dealt moments)
+PASS F23-9d
+     expected FLAG/FAIL, observed FLAG/FAIL -- state change with no motion -- a gap
+PASS F23-9e
+     expected PASS, observed PASS -- interactive depth: sortable / filterable / expandable where it serves the job -- the user can DO things
+PASS F23-9f
+     expected FLAG/FAIL, observed FLAG/FAIL -- controls do not respond live -- FAIL at browser-qa
+PASS F23-9g
+     expected PASS, observed PASS -- reduced-motion fallback complete: state still changes, content correct at rest
+PASS F23-9h
+     expected FLAG/FAIL, observed FLAG/FAIL -- no dynamic story in the decision record (what changes / trigger / how it moves)
+
+59/59 fix #23 fixture expectations met

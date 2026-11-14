@@ -1,0 +1,74 @@
+Remotion root directory: /home/hatch/workspace/hackathon-plugin/fix22/dryrun37-rerun2/demo-sample-video
+Applied configuration from /home/hatch/workspace/hackathon-plugin/fix22/dryrun37-rerun2/demo-sample-video/remotion.config.ts.
+Checking if src/index.ts is the entry file
+Entry point = /home/hatch/workspace/hackathon-plugin/fix22/dryrun37-rerun2/demo-sample-video/src/index.ts (argument passed - found in cwd)
+Ensuring browser executable
+Ensured browser is available.
+[openBrowser()] Opening browser: gl = angle, executable = ../tmp/proxy-chrome.sh, enableMultiProcessOnLinux = true
+Using setpriv --pdeathsig SIGKILL so the browser is killed if the Node parent process dies (Linux).
+Bundling 6%
+Bundling 22%
+Bundling 54%
+Bundling 65%
+Bundling 71%
+Bundling 76%
+Bundling 81%
+Bundling 87%
+Bundling 92%
+Bundling 98%
+Bundling 100%
+Bundling done in 3884ms
+Copying done in 0ms
+Getting composition
+Bundled under /tmp/remotion-webpack-bundle-3fOLUU
+Created directory for temporary files /tmp/remotion-v4.0.526-assetssh8nokso90
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+[Tab 0, delayRender()] "Loading root component - See https://remotion.dev/docs/troubleshooting/loading-root-component if you experience a timeout" handle was cleared after 0ms
+Browser failed to load https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+[chrome] net/socket/ssl_client_socket_impl.cc:923: handshake failed; returned -1, SSL error code 1, net_error -107
+Browser failed to load https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+Browser failed to load https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2 (Fetch): net::ERR_SSL_PROTOCOL_ERROR
+[https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2] Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
+💡 On Lambda, one reason this could happen is that Chrome is rejecting an asset to be loaded when it is running low on disk space.
+Try increasing the disk size of your Lambda function.
+
+[Tab 0, delayRender()] "Waiting for root component to load - See https://remotion.dev/docs/troubleshooting/loading-root-component if you experience a timeout" handle was cleared after 5ms
+An error occurred:
+ TypeError  Failed to fetch
+
+at node_modules/remotion/dist/esm/no-react.mjs:1338
+1336 │ if (cached) {
+1337 │   return cached;
+1338 │ }
+1339 │ const promise = fetch(fontUrl).then((response) => {
+1340 │   if (!response.ok) {
+1341 │     throw new Error(`Failed to load font ${JSON.stringify(fontUrl)}: ${response.status} ${response.statusText}`);
+
+at tryToLoad (node_modules/@remotion/google-fonts/dist/esm/HankenGrotesk.mjs:115)
+at (node_modules/@remotion/google-fonts/dist/esm/HankenGrotesk.mjs:132)
+Cleaning up...
+Cleanup job "Delete /tmp/remotion-webpack-bundle-3fOLUU" done
+Cleanup job "Close server" done
+Cleanup job "Cleanup bundle" done
+Received SIGTERM signal. Killing browser process
+Trying to kill browser process group -37899
+Cleanup job "Close browser" done
+Cleanup done in 13ms

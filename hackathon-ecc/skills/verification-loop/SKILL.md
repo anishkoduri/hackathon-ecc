@@ -145,5 +145,5 @@ Run: /quality-gate
 
 ## Integration with Hooks
 
-This skill complements manual review (and, in Claude Code, PostToolUse hooks) but provides deeper verification.
+This skill complements manual review (and, in Cursor, PostToolUse hooks) but provides deeper verification.
 No PostToolUse hooks run in this Cursor build; this skill provides comprehensive review.

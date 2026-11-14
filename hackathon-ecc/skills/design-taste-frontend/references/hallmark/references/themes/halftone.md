@@ -25,7 +25,7 @@ A loud one-colour print voice: butter-cream stock, brown-black ink, a fat Ultra 
   --color-rule: oklch(82% 0.042 82);
   --color-accent: oklch(54.5% 0.215 33); --color-accent-deep: oklch(46% 0.19 31); --color-accent-ink: oklch(97% 0.022 94); --color-focus: oklch(46% 0.19 31);
   --color-dot: var(--color-accent); --halftone-size: 12px; --halftone-dot: 3px;
-  --font-display: "Ultra", ui-serif, Georgia, serif; --font-body: "Chivo", ui-sans-serif, sans-serif;
+  --font-display: "Ultra", Georgia; --font-body: "Chivo";
   --radius-card: 0; --radius-input: 3px; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 3px;
   --shadow-card: none;
   --tracking-display: 0.005em; --display-weight: 400;
@@ -61,6 +61,7 @@ Committed: the spot carries the screen, the controls and a field band. Three sto
 - **The label as a panel:** a 3px ink rule over full-width rows, the name in Chivo 700, the value in Ultra at item size, hairlines between, the way a can's back reads; never shrunk into a box.
 - **The order on the spot:** a spot band with a cream knockout head, a stepper and its running total in Ultra, the screen fading in from one edge behind the empty side.
 - **A statement knocked out:** one blunt sentence in Ultra at display size, cream out of the ink or the spot, nothing else on the field but its links.
+- **Dithering (TRENDS_F22 E1):** the dot screen is this theme's own print voice, used as the ink's fade on a band or a well with a recorded theme reason, never as a default wash over the page. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

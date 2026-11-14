@@ -24,8 +24,8 @@ A broadsheet in a browser: pale newsprint stock, warm black ink, a blunt Zilla S
   --color-ink: oklch(17% 0.012 60); --color-ink-2: oklch(27% 0.012 58); --color-muted: oklch(46% 0.014 60);
   --color-rule: oklch(68% 0.016 75); --color-rule-2: oklch(34% 0.012 60);
   --color-accent: oklch(44% 0.13 32); --color-accent-ink: oklch(95% 0.012 90); --color-focus: oklch(48% 0.17 32);
-  --font-display: "Zilla Slab", ui-serif, Georgia, serif; --font-body: "Spectral", ui-serif, Georgia, serif;
-  --font-outlier: "Libre Franklin", ui-sans-serif, sans-serif;
+  --font-display: "Zilla Slab", Georgia; --font-body: "Spectral", Georgia;
+  --font-outlier: "Libre Franklin";
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px;
   --shadow-card: none;
   --tracking-display: -0.02em; --display-weight: 700;
@@ -55,6 +55,7 @@ A broadsheet in a browser: pale newsprint stock, warm black ink, a blunt Zilla S
 - **Listings as agate:** a week, a programme or a price list as ruled rows, the day or item in Zilla Slab at title size, the line in Spectral, the figure in Franklin agate at the right edge.
 - **Figures as a box score:** the publication's own numbers in Zilla Slab at display size between two double rules, each over one Spectral line, parted by column rules.
 - **The ink band:** a notice reversed in paper on `--color-ink` (a price, a call to subscribe) with its form; the brick becomes a hairline on it, never a fill.
+- **Pretext text wrapping (TRENDS_F22 E20):** body text wrapped around a real figure in the theme's own column craft, serving reading and keeping the 65-75ch measure. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

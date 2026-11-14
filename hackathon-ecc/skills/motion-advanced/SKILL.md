@@ -42,7 +42,11 @@ This skill produces:
 - `useAnimate` sequences are imperative and interrupt-safe — calling `animate()` mid-flight cancels the previous animation automatically.
 - Motion values (`useMotionValue`, `useSpring`) are SSR-safe and do not cause hydration errors.
 
+**Element variety, all theme-matched.** Every build applies design elements across a wide variety of kinds — treatments, moments, effects, diagrams, components, motion, and type moments — never all of one kind: a build whose new elements are all one kind has not met this rule. Every element, of whatever kind, must match the dealt theme (its material, tokens, palette balance, and do-nots): theme-match is a precondition, not a preference — an element that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element. Every element application is recorded per surface in `docs/design-tokens.md` (surface → elements applied, kind, theme-fit).
+
 ## Rules
+
+**Motion is the default, not an afterthought (fix #23 §2, MOTION_F23).** Advanced choreography is deliberate motion too: every drag, reveal, counter, mask, knob, overlap, cursor-follow, shimmer, or loading piece on a build must actually move in the rendered page, routed through the fix #22 motion tokens (Group A principles + Group B values, e.g. B5 knob stretch 12%, B16 overlap old & new states, B17 masks, B19 rubber band) and recorded in `docs/design-tokens.md`'s Motion list with its trigger and its token values, plus its D19 reason (Motion dimension), directed per §10 (direct, don't describe). A build that feels static fails, even if every static rule passes -- an advanced piece that sits still is a finding (M4). `prefers-reduced-motion` is respected everywhere with a complete static fallback -- the piece renders at its final state, content visible at rest -- never a broken one. (D19 -- Motion: each advanced piece IS a motion decision -- trigger + tokens recorded; Theme: choreography moves in the dealt theme's motion voice; Texture: none -- choreography carries no surface treatment; Visuals: moving pieces are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 6); Colors: none -- choreography chooses no colours.)
 
 1. **Drag interactions must be tested on touch devices**, not just mouse. `drag` prop works on both but feel and threshold differ.
 2. **Infinite animations must pause when `document.visibilityState === "hidden"`.** Background tabs must not consume GPU/CPU.
@@ -53,9 +57,45 @@ This skill produces:
 7. **Custom hooks must handle cleanup.** Every `window.addEventListener` needs a matching `removeEventListener` in the `useEffect` return.
 8. **SVG morphing requires equal path command counts.** Paths with different command structures snap instead of interpolating.
 
+**Advanced animation rules (fix #22) — group anchor: ANIM_ADV_F22.**
+
+9. **Overlap old & new states in multi-step sequences (fix #22 B16).** In an imperative
+    sequence (`useAnimate`), the incoming step starts before the outgoing step finishes,
+    so the screen never blanks between them. SCOPE: in-container swaps and sequences
+    only — page transitions still use `mode="wait"` (motion-patterns Rule 3).
+10. **Masks for reveals & colour (fix #22 B17).** Reveal an element (or a colour change)
+    behind a mask — `clipPath` inset, or a mask image — instead of fading the whole
+    element in: the mask edge is the moving part, the content behind it is already
+    there. A colour change revealed by a sweeping mask reads as a transformation; the
+    same change as a flat crossfade reads as a swap.
+11. **Rubber band past bounds (fix #22 B19).** A dragged or scrolled element may travel
+    past its bound and spring back — resistance grows with distance past the bound
+    (`dragElastic` on drag; a spring on release). The overshoot is small and the
+    spring-back is immediate; a bound that stops dead feels broken, and an overshoot
+    that never returns is a bug. This is the anticipation principle (A2) applied to a
+    bound.
+
+- **D19 (for rules 9–11 as a set)** — Motion: overlap, masks, and rubber-banding decide
+how a sequence hands off, how a reveal travels, and how a bound behaves, so advanced
+motion stays continuous instead of cutting; Theme: the choreography is the dealt
+theme's motion voice, never a stock effect; Texture: none — the rules govern motion,
+not surface treatment; Visuals: the eye follows the mask edge and the overshoot
+instead of losing the element between states; Techniques: `useAnimate` sequences,
+`clipPath`/mask, and `dragElastic` + spring release (all token-governed, Rule 6);
+Colors: the mask rule covers colour reveals — the revealed colour is the theme's own
+token, never a new colour invented by the reveal.
+
+- **Theme-match precondition:** as AB-03 — every element moved under these rules must
+still match the dealt theme; a clash is not applied, with the reason recorded in
+`docs/design-tokens.md`.
+
 ## Decision Guidance
 
+**Advanced pieces are live and interactive (fix #23 §9, DYNAMIC_F23).** Every advanced piece on a build must actually respond and move in the rendered page: drags with physics on release, reorderable lists, drag-to-dismiss, swipe detection, long-press, counters tweening to live values, SVG draws, mask reveals, shimmer skeletons and button loading states — routed through the fix #22 motion tokens (Group A principles + Group B values) and recorded in `docs/design-tokens.md`'s Motion list with trigger and token values, plus its D19 reason (Motion dimension), directed per §10 (direct, don't describe). A draggable that snaps without physics, a counter that jumps to its value without tweening, or a loading state that flips to loaded with no transition is a gap — a state change with no motion is a gap, and a control that does not respond is a gap. `prefers-reduced-motion` is respected everywhere with a complete static fallback — the piece renders at its final state, content visible at rest — never a broken one. (D19 — Motion: each advanced piece IS a motion decision — trigger + tokens recorded; Theme: choreography moves in the dealt theme's motion voice; Texture: none — choreography carries no surface treatment; Visuals: moving pieces are what make the build read as alive; Techniques: values come from `motion-foundations` tokens, never inline numbers (Rule 6); Colors: none — choreography chooses no colours; Depth: a piece that reorders layers names the layer order, or `flat by choice — <reason>`.)
+
 ### Choosing the right advanced API
+
+**Design-decision pointer:** D19/F6/X1 as relevant (motion is a D19 dimension; the experience is the moment) — design-package rule — Taste step 4a / orchestrate.
 
 | Scenario | API |
 | ------------------------------ | -------------------------------- |
@@ -330,6 +370,86 @@ export function useScrollReveal() {
 const { ref, style } = useScrollReveal()
 <motion.section ref={ref} style={style} />
 ```
+
+// 1500ms fail-safe (fix #17 M2): if the reveal has not completed within
+// 1500ms of mount, force the visible state — content can never stay hidden
+// because an observer never fired. Record the mechanism in the Motion list.
+export function useScrollRevealSafe() {
+  const { ref, style } = useScrollReveal()
+  const [revealed, setRevealed] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setRevealed(true), 1500)
+    return () => clearTimeout(t)
+  }, [])
+  return { ref, style: revealed ? { opacity: 1, y: 0 } : style }
+}
+
+
+
+### Mask reveal (fix #22 B17)
+
+```tsx
+"use client"
+import { motion } from "motion/react"
+import { motionTokens } from "@/lib/motion-tokens"
+
+// B17: the reveal travels behind a mask — the clip edge moves, the content is
+// already there. Same technique reveals a colour change: the new colour sits
+// behind the mask and the mask sweeps across.
+<motion.div
+  initial={{ clipPath: "inset(0 100% 0 0)" }}
+  animate={{ clipPath: "inset(0 0% 0 0)" }}
+  transition={{ duration: motionTokens.duration.normal, ease: motionTokens.easing.smooth }}
+/>
+```
+
+### Stretching knob (fix #22 B5)
+
+```tsx
+"use client"
+import { motion } from "motion/react"
+import { motionTokens, springs } from "@/lib/motion-tokens"
+
+// B5: a moving knob stretches 12% along its direction of travel
+// (motionTokens.scale.stretch, 1.12) while it moves, then springs back.
+// This is the anticipation principle (A2) applied to a control.
+<motion.div
+  drag="x"
+  dragConstraints={{ left: 0, right: 200 }}
+  whileDrag={{ scaleX: motionTokens.scale.stretch }}
+  dragTransition={springs.release}
+/>
+```
+
+### Overlapping state change (fix #22 B16)
+
+```tsx
+"use client"
+import { useAnimate } from "motion/react"
+
+// B16: the incoming state starts before the outgoing state finishes — the
+// screen never blanks between them. Scope: in-container swaps only;
+// page transitions still use mode="wait" (motion-patterns Rule 3).
+const [scope, animate] = useAnimate()
+
+async function swap() {
+  await Promise.all([
+    animate(".old", { opacity: 0 }, { duration: 0.2 }),
+    animate(".new", { opacity: 1 }, { duration: 0.2, delay: 0.1 }),
+  ])
+}
+```
+
+- **D19 (for the three examples as a set)** — Motion: the mask edge, the 12% stretch,
+and the overlapped handoff are the moving parts the eye follows; Theme: each example
+animates the theme's own element, never restyles it; Texture: none — the examples add
+no surface treatment; Visuals: the reveal, the stretch, and the handoff are all
+visible and anchored, so nothing flashes or vanishes; Techniques: `clipPath`,
+`motionTokens.scale.stretch`, and `useAnimate` with an explicit overlap delay (all
+token-governed, Rule 6); Colors: the mask example's revealed colour is the theme's
+own token, never a new colour invented by the reveal.
+
+- **Theme-match precondition:** as AB-03.
 
 ### Cursor follower
 

@@ -1,9 +1,9 @@
 /**
- * Session Manager Library for Claude Code
+ * Session Manager Library for Cursor
  * Provides core session CRUD operations for listing, loading, and managing sessions
  *
- * Sessions are stored as markdown files in ~/.claude/session-data/ with
- * legacy read compatibility for ~/.claude/sessions/:
+ * Sessions are stored as markdown files in ~/.cursor/ecc/session-data/ with
+ * legacy read compatibility for ~/.cursor/ecc/sessions/:
  * - YYYY-MM-DD-session.tmp (old format)
  * - YYYY-MM-DD-<short-id>-session.tmp (new format)
  */

@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 
 const { readInstallState } = require('../install-state');
-const { hasEditedCodexUserConfig } = require('./codex-user-config');
 
 function pathExists(filePath) {
   try {
@@ -30,7 +29,7 @@ function comparablePath(filePath) {
  * symptom is a lost edit; the dangerous one is the install-state record,
  * which makes a later uninstall delete the user's file.
  *
- * This guard generalises the Claude flat-skill migration conflict pattern to
+ * This guard generalises the Cursor flat-skill migration conflict pattern to
  * every adapter copy operation: when a destination exists and is NOT recorded
  * as an ECC-managed operation in the previous install-state, the operation is
  * skipped with a warning instead of overwriting and claiming ownership.
@@ -72,8 +71,7 @@ function prepareUserOwnedFileGuard(plan, migration, recordedState) {
   const warnings = [];
   for (const operation of [...plannedOperations, ...retainedOperations]) {
     const previousOperation = previousManagedOperations.get(comparablePath(operation.destinationPath));
-    const editedConfig = previousOperation
-      && hasEditedCodexUserConfig(plan, operation, previousOperation);
+    const editedConfig = false;
     if (
       operation
       && operation.kind === 'copy-file'
@@ -139,9 +137,6 @@ function prepareUserOwnedFileGuard(plan, migration, recordedState) {
 
 function assertNoNewUserOwnedFile(migration, operation, plan) {
   const previousOperation = migration.previousManagedOperations.get(comparablePath(operation.destinationPath));
-  if (plan && hasEditedCodexUserConfig(plan, operation, previousOperation)) {
-    throw new Error(`Refusing to overwrite user configuration changed after planning: ${operation.destinationPath}. Rerun to preserve it.`);
-  }
   if (operation.kind !== 'copy-file'
     || migration.managedDestinations.has(comparablePath(operation.destinationPath))
     || !pathExists(operation.destinationPath)) {

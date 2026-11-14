@@ -200,7 +200,7 @@ function validateSchema(value, schemaName) {
   if (!validate(value)) throw new Error(`Invalid ${schemaName} schema: ${JSON.stringify(validate.errors)}`);
 }
 
-function validateTarget(target = 'codex') {
+function validateTarget(target = 'cursor') {
   if (!TARGETS.includes(target)) throw new Error(`Unknown context target: ${target}`);
   return target;
 }

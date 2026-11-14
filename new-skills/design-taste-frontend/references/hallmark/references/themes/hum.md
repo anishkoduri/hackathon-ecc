@@ -29,8 +29,8 @@ Cut paper made by hand, cheerful without turning childish: cream paper with a vi
   --color-card: oklch(98.8% 0.007 95); --color-edge: oklch(83% 0.04 88); --color-fringe: oklch(99.2% 0.006 95);
   --color-kraft: oklch(63% 0.085 62); --color-sand: oklch(77% 0.1 76); --color-sugar: oklch(89% 0.035 236);
   --color-hill-1: oklch(94.5% 0.03 118); --color-hill-2: oklch(91.5% 0.045 135); --color-leaf: oklch(64% 0.15 150);
-  --font-display: "Chillax", ui-rounded, ui-sans-serif, sans-serif; --font-body: var(--font-display);
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Chillax"; --font-body: var(--font-display);
+  --font-outlier: "Geist Mono";
   --radius-card: 24px; --radius-stock: 16px; --radius-input: 14px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 1px 2px oklch(20% 0.014 255 / 0.06), 0 12px 28px -14px oklch(20% 0.014 255 / 0.22);
   --shadow-paper: drop-shadow(0 0 0.6px oklch(20% 0.014 255 / 0.32)) drop-shadow(1.5px 2.5px 1.5px oklch(20% 0.014 255 / 0.1)) drop-shadow(6px 14px 16px oklch(20% 0.014 255 / 0.13));
@@ -60,6 +60,7 @@ Cut paper made by hand, cheerful without turning childish: cream paper with a vi
 - **Growth set in type:** a bed of plants made of Chillax glyphs (stems of l, bracket leaves, letter heads) on torn soil, filling as the prompt's numbers say, shown in states a row of pills switches.
 - **Figures on the pear field:** three or four of the prompt's numbers at display size in ink on one pear sheet, each unit beneath in 500.
 - **A choice as card-stock pills:** a working control on the prompt's facts, the result a sentence with its key value in a pear highlighter band.
+- **Cream backgrounds (TRENDS_F22 E11):** the grained cream paper is this theme's own ground, dealt on its keywords, never cream plus a high-contrast serif plus terracotta assembled by hand. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

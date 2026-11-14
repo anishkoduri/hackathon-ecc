@@ -7,7 +7,7 @@ metadata:
 
 # Open-Source Pipeline Skill
 
-Safely open-source any project through a 3-stage pipeline: **Fork** (strip secrets) → **Sanitize** (verify clean) → **Package** (CLAUDE.md + setup.sh + README).
+Safely open-source any project through a 3-stage pipeline: **Fork** (strip secrets) → **Sanitize** (verify clean) → **Package** (AGENTS.md + setup.sh + README).
 
 ## When to Activate
 
@@ -22,7 +22,7 @@ Safely open-source any project through a 3-stage pipeline: **Fork** (strip secre
 |---------|--------|
 | `fork PROJECT` | Full pipeline: fork + sanitize + package |
 | `verify PROJECT` | Run sanitizer on existing repo |
-| `package PROJECT` | Generate CLAUDE.md + setup.sh + README |
+| `package PROJECT` | Generate AGENTS.md + setup.sh + README |
 | `list` | Show all staged projects |
 | `status PROJECT` | Show reports for a staged project |
 
@@ -56,7 +56,7 @@ mkdir -p $HOME/opensource-staging/
 
 #### Step 3: Run Forker Agent
 
-Spawn the `opensource-forker` agent as a Cursor subagent with this prompt:
+Spawn the `opensource-forker` agent (`agents/ecc-opensource-forker.md`) as a Cursor subagent with this prompt:
 
 ```
 Fork project for open-source release.
@@ -96,7 +96,7 @@ would publish it in history.
 
 #### Step 4: Run Sanitizer Agent
 
-Spawn the `opensource-sanitizer` agent as a Cursor subagent with this prompt:
+Spawn the `opensource-sanitizer` agent (`agents/ecc-opensource-sanitizer.md`) as a Cursor subagent with this prompt:
 
 ```
 Verify sanitization of open-source fork.
@@ -148,7 +148,7 @@ missing count, or an unconfirmed list stops the pipeline here.
 
 #### Step 5: Run Packager Agent
 
-Spawn the `opensource-packager` agent as a Cursor subagent with this prompt:
+Spawn the `opensource-packager` agent (`agents/ecc-opensource-packager.md`) as a Cursor subagent with this prompt:
 
 ```
 Generate open-source packaging for project.
@@ -160,7 +160,7 @@ Description: {description}
 GitHub repo: {github_repo}
 
 Generate:
-1. CLAUDE.md (commands, architecture, key files)
+1. AGENTS.md (commands, architecture, key files)
 2. setup.sh (one-command bootstrap, make executable)
 3. README.md (or enhance existing)
 4. LICENSE
@@ -190,7 +190,7 @@ Open-Source Fork Ready: {PROJECT_NAME}
 Location: {STAGING_PATH}
 License: {license}
 Files generated:
-  - CLAUDE.md
+  - AGENTS.md
   - setup.sh (executable)
   - README.md
   - LICENSE
@@ -258,7 +258,7 @@ Package: {resolved_path} ...
 ls -d $HOME/opensource-staging/*/
 ```
 
-Show each project with pipeline progress (FORK_REPORT.md, SANITIZATION_REPORT.md, CLAUDE.md presence).
+Show each project with pipeline progress (FORK_REPORT.md, SANITIZATION_REPORT.md, AGENTS.md presence).
 
 ---
 
@@ -276,7 +276,7 @@ $HOME/opensource-staging/
   my-project/
     FORK_REPORT.md           # From forker agent
     SANITIZATION_REPORT.md   # From sanitizer agent
-    CLAUDE.md                # From packager agent
+    AGENTS.md                # From packager agent
     setup.sh                 # From packager agent
     README.md                # From packager agent
     .env.example             # From forker agent

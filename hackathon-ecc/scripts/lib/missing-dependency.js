@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Runtime dependencies that can be missing when ECC is installed via the
-// Claude Code plugin marketplace (a plain git clone, so `npm install` never
+// Cursor plugin marketplace (a plain git clone, so `npm install` never
 // runs), even though the code that needs them is fine. Versions are read
 // straight from package.json's "dependencies" field instead of a second
 // hardcoded copy, so this can't silently drift out of sync with what's
@@ -53,7 +53,7 @@ function describeMissingDependencyError(error) {
 
   return (
     `Missing dependency '${moduleName}'. ECC's production dependencies aren't installed ` +
-    '(this happens when ECC was installed via the Claude Code plugin marketplace, which ' +
+    '(this happens when ECC was installed via the Cursor plugin marketplace, which ' +
     'clones the repo but never runs npm install). Run "npm install" from the ECC repo ' +
     `root, or install just this package with "${installCommand}".`
   );

@@ -27,7 +27,7 @@ The page is the terminal surface, and its pictures are printed in type. A near-b
   --color-accent-wash: oklch(23% 0.06 145);
   --glyph-0: oklch(30% 0.06 146); --glyph-1: oklch(38% 0.08 145); --glyph-2: oklch(47% 0.11 144); --glyph-3: oklch(57% 0.14 143);
   --glyph-4: oklch(67% 0.17 142); --glyph-5: oklch(77% 0.19 142); --glyph-6: oklch(86% 0.2 141); --glyph-7: oklch(94% 0.12 138);
-  --font-display: "Martian Mono", ui-monospace, monospace; --font-body: var(--font-display); --font-outlier: var(--font-display);
+  --font-display: "Martian Mono"; --font-body: var(--font-display); --font-outlier: var(--font-display);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.02em; --display-weight: 500; --stretch-display: 112.5%; --stretch-body: 87.5%;
 }
@@ -54,6 +54,7 @@ The page is the terminal surface, and its pictures are printed in type. A near-b
 - **Figures as a tool's output:** three or four of the prompt's numbers at display size, wide and light, parted by vertical rules, each labelled by a `# comment` beneath, as `wc` or `du` would print them.
 - **The session at size:** a session in a `--color-paper-2` well across eight columns or more, typed once, its output lighting a `+ - |` diagram beside it.
 - **A reference as rows:** a command per row at `--text-title`, wide, its arguments in the accent, its line on the right, like a man page's synopsis; or a table of hosts, flags or exit codes.
+- **ASCII over video (TRENDS_F22 E2):** a picture printed in the page's own glyphs over moving footage, with the footage staying the subject and a recorded theme reason, never ASCII as a default ground. Full D19 reason in the TRENDS_F22 menu entry.
 
 ## Controls
 

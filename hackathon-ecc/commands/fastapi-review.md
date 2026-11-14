@@ -4,7 +4,7 @@ description: Review a FastAPI application for architecture, async correctness, d
 
 # FastAPI Review
 
-Invoke the `fastapi-reviewer` agent for a focused FastAPI review.
+Invoke the `fastapi-reviewer` agent (`agents/ecc-fastapi-reviewer.md`) for a focused FastAPI review.
 
 ## Usage
 

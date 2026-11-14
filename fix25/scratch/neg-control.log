@@ -1,0 +1,5 @@
+[http://localhost:3000/public/fonts/HankenGrotesk.woff2] Failed to load resource: the server responded with a status of 404 (Not Found)
+[http://localhost:3000/public/fonts/InstrumentSerif.woff2] Failed to load resource: the server responded with a status of 404 (Not Found)
+[http://localhost:3000/public/fonts/JetBrainsMono.woff2] Failed to load resource: the server responded with a status of 404 (Not Found)
+ Error  Failed to load font "/public/fonts/HankenGrotesk.woff2": 404 Not Found
+    at http://localhost:3000/bundle.js:34126:13

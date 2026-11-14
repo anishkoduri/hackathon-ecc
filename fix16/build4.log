@@ -1,0 +1,903 @@
+agent models pinned to Grok IDs: 69
+hooks.json rewritten for plugin layout
+new-skill cleanup patches applied
+stale repo paths rewritten: 106 files
+delivery-gate install example repointed
+description routing notes appended (7)
+feature-expansion note inserted before final sentence
+description replacements applied (9)
+multi-line description replacements applied (2)
+small content fixes applied (2)
+agent-self-evaluation patched to manual-only
+audit description patched: production-audit
+audit description patched: delivery-gate
+audit description patched: codehealth-mcp
+audit description patched: verification-loop
+audit description patched: santa-method
+audit description patched: security-scan
+verification-loop tail sentence appended
+feature-expansion patched to ECC process
+polish-pass patched to name design-taste-frontend
+routing note appended: frontend-design-direction
+routing note appended: intent-driven-development
+routing note appended: investor-materials
+routing note appended: product-lens
+routing note applied: make-interfaces-feel-better
+codehealth-mcp body triggers fixed
+verification-loop body triggers fixed
+security-scan body triggers fixed
+D1/D2 dangling references removed
+playwright MCP added
+codebase-memory MCP added
+audit #1 fixes applied: 130 files, 243 replacements
+PNG optimization: 46 files, 5461134 -> 3671643 bytes (saved 1789491)
+Rule frontmatter: renamed paths: -> globs: in 81 files
+quality check fixes applied: 63 files, 94 replacements
+audit #2 fixes applied: 112 files, 134 replacements
+audit #3 fixes (Fixer B, Cleanliness) applied: 14 files, 16 replacements
+audit #4 fix (CF-D5, common-hooks) applied
+audit #4 fixes (Cleanliness) applied: 19 files, 23 replacements, 1 removal
+
+added 9 packages in 1s
+node_modules: 4.9M
+audit #4 fixes (Connectivity: resolver + qwen guard + opencode build guard) applied
+audit #4 fixes (Connectivity: command inlines regenerated: 12 standard + 1 auto-update, 5 instinct invocations, astra-review candidate) applied
+schemas: 17 files; manifests: 10 files
+audit #5 fixes applied: 13 files, 46 replacements
+audit #5 fixes (CLI dispatch + syntax checks) applied
+audit #6 fixes applied: 31 files, 54 replacements
+install-modules pruned: 47 -> 15 modules, 370 -> 165 paths, 0 dangling dependencies pruned
+audit #7 fixes applied: 25 files, 36 replacements
+install-profiles pruned: {'minimal': 5, 'opencode': 3, 'core': 6, 'developer': 9, 'security': 7, 'research': 9, 'full': 34} -> {'minimal': 5, 'opencode': 3, 'core': 6, 'developer': 9, 'security': 7, 'research': 8, 'full': 15}
+install-components pruned: 93 -> 61 components
+install-components orphans removed: 61 -> 57 components
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_catalog_refresh.py
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_catalog_summary_line_endings.py
+deleted failing upstream test: skills/ui-ux-pro-max/scripts/tests/test_skill_script_paths.py
+audit #8 fixes applied: 23 files, 26 replacements
+audit #9 fixes applied: 4 files, 18 replacements
+audit #9 fixer A fixes applied: 4 files, 7 replacements
+audit #9 fixer B fixes applied: 9 files, 33 replacements
+audit #10 fixes applied: 19 files, 47 replacements
+audit #11 fixes applied: 14 files, 21 replacements
+audit #12 fixes applied: 4 files, 5 replacements
+audit #13 fixes applied: 5 files, 5 replacements
+audit #14 fixes applied: 12 files, 19 replacements
+audit #15 fixes applied: 13 files, 43 replacements
+pi-core.json: pruned 41 unshipped skills.include entries; 93 remain, all resolve; commands.include all resolve
+audit #16 fixes applied: 4 files, 4 replacements
+audit #16 fixer B fixes applied: 1 files, 2 replacements
+audit #17 quality fixes applied: 2 files, 4 replacements
+audit #17 conflicts fixes applied: 2 files, 2 replacements
+audit #17 cleanliness fixes applied: 8 files, 8 replacements
+audit #18 fixes applied: 6 files, 4 replacements
+audit #19 fixes applied: 21 files, 21 replacements
+audit #20 fixer A fixes applied: 4 files, 4 replacements
+audit #20 fixer C fixes applied: 5 files, 2 replacements
+audit #20 fixer B fixes applied: 4 files, 4 replacements
+codebase-memory triggers added
+codebase-memory added to hackathon module
+orch pipeline gates patched to auto-approve during a hackathon first build
+orch engine + skills patched with first-build auto-approve carve-out
+batch E orch fixes applied
+batch F wave-2 fixes applied
+batch A one-engine fixes applied (orch-build-mvp)
+batch A orch-pipeline intake fix applied
+batch A orch-build-mvp command fixes applied
+batch C systematic-debugging :126 carve-out applied
+batch C systematic-debugging debugging order applied
+batch C browser-qa fixes applied
+batch C click-path-audit trigger fix applied
+batch C common-code-review BLOCK carve-out applied
+batch D shots.json + refilm fixes applied (orch-change-feature)
+batch D re-deploy mechanism fix applied (orch-change-feature)
+batch D remote-DB + migration + shared-table fixes applied (orch-change-feature)
+batch D docs/scope + README + Devpost fix applied (orch-change-feature)
+batch D final-report inventory fix applied (orch-change-feature)
+batch D routing-statement fix applied (orch-change-feature frontmatter)
+batch D reference-verification fix applied (orch-change-feature)
+batch D command removal-pointer fix applied (orch-change-feature command)
+fix4 batch A: orch-build-mvp one-engine + phase mapping + 9-step rewrite applied
+fix4 batch A: orch-build-mvp command rewritten to the skill's 9 steps
+fix4 batch A: orch-pipeline one-engine + Phase 4 belief + numbering applied
+orch-* commands patched with first-build carve-out on empty $ARGUMENTS
+batch E ui-ux-pro-max captivating bar applied
+batch E less-flat-ui captivating bar applied
+batch F fix4: orch-change-feature removal delivery + failure branches applied
+batch F fix4: orch-change-feature command removal pointer applied
+batch F fix4: devpost-autofiller re-uploaded video link applied
+batch F fix4: hackathon-pitch refresh on removal applied
+master-prompt ui-ux-pro-max design-system definition applied
+master-prompt browser-qa visual iteration loop applied
+master-prompt ecc-code-reviewer adversarial stance applied
+master-prompt orch-build-mvp adversarial audit + final-report format applied
+fix5 batch 2: orch-change-feature B2 + M2 + M4 + Audit M1 applied
+fix5 batch 2: orch-build-mvp B1-standalone + M11-standalone + B2a-standalone applied
+fix5 batch 3: ui-ux-pro-max M9 conformance + M3 ask-user carve-out applied
+fix6 batch 1: orch-change-feature B3 + M6 applied
+fix6 batch 2: orch-build-mvp B1 + M5 + M9 applied
+fix6 batch 3: gan-build M9 applied
+supply-chain pins applied: angular 22.2.6, shadcn 4.23.0, nuxt 4.0.3, playwright 1.65.0 / chromium r1254
+fix6 batch 4: ui-ux-pro-max B2 pointer applied
+fix7: ui-ux-pro-max M1 no-landing fallback applied
+fix8: F2 registry pins applied (ecc-universal@2.2.3, ccg-workflow@3.7.4)
+fix9: sweep registry pins applied (ecc-agentshield@1.6.0, agent-browser@0.42.0, pm2@7.1.2, angular/aria@22.2.6, tailwindcss@4.3.5, postcss@8.5.32, sdk@1.32.2, zod@4.6.7)
+fix11: ui-ux-pro-max Impeccable craft-floor read applied
+fix12: orch-change-feature landing-redesign routing applied
+weave1: upstream skill patches applied
+weave1: skill-triggers updated (36 -> 58 keys; 3 phrases re-pointed)
+weave2: upstream patches applied
+fix13-A orch-pipeline block applied
+ui-ux-pro-max patched (fix13-B: named direction + enforced bars + routing + generated-direction rule)
+fix13b orch-pipeline block applied
+fix13c single-executor block applied
+fix13d upstream block applied
+fix13e upstream block applied
+fix13f worker-2 upstream block applied
+fix13g upstream block applied
+fix13h upstream block applied
+fix13i upstream block applied
+fix13j upstream block applied
+fix15 upstream block applied
+# fix16 run log
+
+## Errors (0)
+- none
+
+## Notes (11)
+- rules/common-performance.mdc — effort-controls sentence already rewritten by the build.sh NEW-side patch; fix16 edit skipped (no-op)
+- agent-data-home.js: Cursor home ~/.cursor/ecc is VERIFIED in this file (getDefaultCursorAgentDataHome + ECC_AGENT_DATA_HOME + .cursor/ecc-agent-data.json), so it becomes the only default. getAgentDataHome() callers (metrics, session aliases, package manager) now resolve under ~/.cursor/ecc automatically.
+- scripts/lib/install-executor.js: pattern not found (verify manually): "target = 'claude'"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs: pattern not found (verify manually): 'for claude and codex'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh: pattern not found (verify manually): '\\$HOME/\\.claude/rules'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh: pattern not found (verify manually): '\\.claude/rules'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh: pattern not found (verify manually): '\\$HOME/\\.claude/skills'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh: pattern not found (verify manually): '\\$PWD/\\.claude/skills'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh: pattern not found (verify manually): '\\*/\\.claude/skills\\*'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh: pattern not found (verify manually): '\\.claude/skills'
+- rules/common-hooks.mdc: pattern not found (verify manually): ' \\(or [^)]*\\.claude/settings\\.json[^)]*\\)'
+
+## Changes (625)
+- scripts/lib/transcript-context.js — 'Reads the latest assistant `usage` record from a Claude Code session' -> 'Reads the latest assistant `usage` record from an agent session'
+- scripts/lib/transcript-context.js — dropped KNOWN_MODEL_WINDOW_TOKENS table + isKnownModelFamilyMatch (D7)
+- scripts/lib/transcript-context.js — '  // Large-window model families without a [1m] marker fall through the checks\n ' -> ''
+- scripts/lib/transcript-context.js — '  // Explicit window override wins: 400k models (e.g. Opus 4.x) match neither th' -> '  // Explicit window override wins: a model whose window matches neither the\n  /'
+- scripts/lib/transcript-context.js — "  // Claude Code's CLAUDE_CODE_AUTO_COMPACT_WINDOW is the harness auto-compact\n " -> ''
+- scripts/lib/transcript-context.js — ' * Detect the context window size for a turn.\n * 1M when the model id carries th' -> ' * Detect the context window size for a turn.\n * 1M when the model id carries th'
+- scripts/lib/transcript-context.js — '(e.g. a 1M-context Opus tier, where the base tier is 200k and the' -> '(e.g. a 1M-context tier, where the base tier is 200k and the'
+- scripts/lib/transcript-context.js — ' * `COMPACT_CONTEXT_THRESHOLD=0` disables the context signal entirely;\n * other ' -> ' * `COMPACT_CONTEXT_THRESHOLD=0` disables the context signal entirely;\n * other '
+- scripts/lib/transcript-context.js — '  const defaultThreshold = windowTokens >= LARGE_CONTEXT_WINDOW_TOKENS ? DEFAULT' -> '  const defaultThreshold = windowTokens >= LARGE_CONTEXT_WINDOW_TOKENS ? DEFAULT'
+- schemas/agent.schema.json — '"haiku", "sonnet", "opus"' -> '"cursor-grok-4.6-high-fast", "grok-4.7-high"'
+- schemas/agent.schema.json — 'Claude aliases only in v1' -> 'Grok model slugs only in v1'
+- schemas/agent.schema.json — 'agents/*.md Claude frontmatter' -> 'agents/*.md frontmatter'
+- schemas/agent.schema.json — 'Claude tool identifiers such as Read, Grep' -> 'tool identifiers such as Read, Grep'
+- schemas/agent.schema.json — 'Claude color tag' -> 'color tag'
+- scripts/lib/agent-ir.js — "VALID_MODELS = ['haiku', 'sonnet', 'opus']" -> "VALID_MODELS = ['cursor-grok-4.6-high-fast', 'grok-4.7-high']"
+- scripts/lib/agent-ir.js — '(expected haiku, sonnet, or opus)' -> '(expected cursor-grok-4.6-high-fast or grok-4.7-high)'
+- scripts/lib/agent-ir.js — 'Claude frontmatter markdown' -> 'frontmatter markdown'
+- scripts/lib/agent-ir.js — 'Claude agents use comma-separated strings' -> 'Agents use comma-separated strings'
+- scripts/lib/agent-emit-pi.js — 'Claude tiers are not valid Pi model ids' -> 'Grok slugs are not valid Pi model ids'
+- scripts/lib/agent-emit-pi.js — '# source model tier: opus' -> '# source model tier: grok-4.7-high'
+- hooks/adapter.js — 'transformToClaude' -> 'transformToHookPayload'
+- hooks/adapter.js — 'CLAUDE_SESSION_ID' -> 'ECC_SESSION_ID'
+- hooks/adapter.js — 'not a Claude Code-only or unwired script' -> 'not an unwired script'
+- hooks/session-start.js — 'CLAUDE_SESSION_ID' -> 'ECC_SESSION_ID'
+- hooks/stop.js — 'CLAUDE_SESSION_ID' -> 'ECC_SESSION_ID'
+- hooks/stop.js — removed whole cost-tracker hook if-block (D12)
+- commands/model-route.md — '`haiku`' -> '`cursor-grok-4.6-high-fast`'
+- commands/model-route.md — '`sonnet`' -> '`grok-4.7-high`'
+- commands/model-route.md — '`opus`' -> '`grok-4.7-high`'
+- commands/astra-review.md — rewritten prose-only (deep-reasoner blind review; D5)
+- skills/gan-style-harness/SKILL.md — "Based on Anthropic's March 2026 harness design paper." -> 'Based on the upstream multi-agent harness design paper (March 2026).'
+- skills/gan-style-harness/SKILL.md — '(The upstream `claude -p` invocation path is Claude Code only and does not run i' -> '(In this plugin the harness loop runs in Cursor through `/gan-build` + `/gan-des'
+- skills/gan-style-harness/SKILL.md — "> Inspired by [Anthropic's Harness Design for Long-Running Application Developme" -> '> Inspired by the upstream multi-agent harness design paper (March 24, 2026)'
+- skills/gan-style-harness/SKILL.md — '**Model:** Sonnet by default; raise via `GAN_PLANNER_MODEL=opus`' -> '**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise vi'
+- skills/gan-style-harness/SKILL.md — '| `GAN_PLANNER_MODEL` | `sonnet` |' -> '| `GAN_PLANNER_MODEL` | `cursor-grok-4.6-high-fast` |'
+- skills/gan-style-harness/SKILL.md — '**Model:** Sonnet by default; raise via `GAN_GENERATOR_MODEL=opus`' -> '**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise vi'
+- skills/gan-style-harness/SKILL.md — '| `GAN_GENERATOR_MODEL` | `sonnet` |' -> '| `GAN_GENERATOR_MODEL` | `cursor-grok-4.6-high-fast` |'
+- skills/gan-style-harness/SKILL.md — '**Model:** Sonnet by default; raise via `GAN_EVALUATOR_MODEL=opus`' -> '**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise vi'
+- skills/gan-style-harness/SKILL.md — '| `GAN_EVALUATOR_MODEL` | `sonnet` |' -> '| `GAN_EVALUATOR_MODEL` | `cursor-grok-4.6-high-fast` |'
+- skills/gan-style-harness/SKILL.md — removed section 'Via Shell Script'
+- skills/gan-style-harness/SKILL.md — removed section 'Via Claude Code'
+- skills/gan-style-harness/SKILL.md — removed section 'Evolution Across Model Capabilities'
+- skills/continuous-learning-v2/agents/observer-loop.sh — 'parallel Claude analysis processes' -> 'parallel analysis processes'
+- skills/continuous-learning-v2/agents/observer-loop.sh — 'unset CLAUDECODE\n\n' -> ''
+- skills/continuous-learning-v2/agents/observer-loop.sh — 'SLEEP_PID=""\nCLAUDE_PID=""\nCLAUDE_PROCESS_GROUP=0\nWATCHDOG_PID=""\n' -> 'SLEEP_PID=""\n'
+- skills/continuous-learning-v2/agents/observer-loop.sh — deleted function claude_process_alive (D13)
+- skills/continuous-learning-v2/agents/observer-loop.sh — deleted function signal_claude_process (D13)
+- skills/continuous-learning-v2/agents/observer-loop.sh — deleted function stop_claude_process (D13)
+- skills/continuous-learning-v2/agents/observer-loop.sh — deleted function wait_for_claude_analysis (D13)
+- skills/continuous-learning-v2/agents/observer-loop.sh — '  if [ -n "$WATCHDOG_PID" ]; then\n    kill "$WATCHDOG_PID" 2>/dev/null || true\n ' -> ''
+- skills/continuous-learning-v2/agents/observer-loop.sh — analyze_observations stubbed (D13)
+- skills/plankton-code-quality/SKILL.md — 'Write-time code quality enforcement using Plankton — auto-formatting, linting, a' -> 'Write-time code quality enforcement using Plankton — auto-formatting, linting, a'
+- skills/plankton-code-quality/SKILL.md — 'Phase 3: Delegate + Verify' -> 'Phase 3: Report + Verify'
+- skills/plankton-code-quality/SKILL.md — '├─ Spawns claude -p subprocess with violations JSON' -> '├─ Reports violations JSON (no auto-fix subprocess since fix #16)'
+- skills/plankton-code-quality/SKILL.md — '```bash\n# Install core dependencies\nbrew install jaq ruff uv\n\n# Install Python l' -> '```bash\n# Install core dependencies\nbrew install jaq ruff uv\n\n# Install Python l'
+- scripts/lib/utils.js — '/**\n * Get the Claude config directory (alias of getAgentDataHome for backwards ' -> ''
+- scripts/lib/utils.js — '  getAgentDataHome,\n  getClaudeDir,\n' -> '  getAgentDataHome,\n'
+- scripts/lib/utils.js — 'Log to stderr (visible to user in Claude Code)' -> 'Log to stderr (visible to user)'
+- scripts/lib/utils.js — 'Output to stdout (returned to Claude)' -> 'Output to stdout (returned to the agent)'
+- scripts/lib/agent-data-home.js — "const CLAUDE_CONFIG_DIR_ENV = 'CLAUDE_CONFIG_DIR';\n" -> ''
+- scripts/lib/agent-data-home.js — "const DEFAULT_CLAUDE_DIR_NAME = '.claude';\n" -> ''
+- scripts/lib/agent-data-home.js — 'function getDefaultClaudeAgentDataHome() {\n  // Launcher-owned CLAUDE_CONFIG_DIR' -> ''
+- scripts/lib/agent-data-home.js — 'within the default Cursor or Claude data directories.' -> 'within the default Cursor data directory.'
+- scripts/lib/agent-data-home.js — '  const allowedRoots = [\n    getDefaultCursorAgentDataHome(),\n    getDefaultClau' -> '  const allowedRoots = [\n    getDefaultCursorAgentDataHome(),\n  ];'
+- scripts/lib/agent-data-home.js — '    process.env.CLAUDE_PROJECT_DIR,\n' -> ''
+- scripts/lib/agent-data-home.js — '  if (options.preferCursorDefault === true || isCursorHookRuntime()) {\n    retur' -> '  // Cursor-only: the default agent data home is ~/.cursor/ecc.\n  // (preferCurs'
+- scripts/lib/agent-data-home.js — '  CLAUDE_CONFIG_DIR_ENV,\n' -> ''
+- scripts/lib/agent-data-home.js — '  DEFAULT_CLAUDE_DIR_NAME,\n' -> ''
+- scripts/lib/agent-data-home.js — '  getDefaultClaudeAgentDataHome,\n' -> ''
+- scripts/lib/agent-data-home.js — 'which would create a circular\n * dependency and risk divergent defaults for `~/.' -> 'which would create a circular\n * dependency and risk divergent defaults.'
+- scripts/hooks/session-end.js — regex "const \\{[^}]*generateSessionSummary[^}]*\\} = require\\('\\.\\./lib/llm-summary'\\);\\n" (1x)
+- scripts/hooks/session-end.js — deleted maybeGenerateLlmSummary (D12)
+- scripts/hooks/session-end.js — 'const llmSummary = transcriptPath && summary && transcriptExists ? maybeGenerate' -> 'const llmSummary = null; // LLM summary removed in fix #16 (no Cursor equivalent'
+- scripts/hooks/pre-compact.js — "const { generateSessionSummary } = require('../lib/llm-summary');\n" -> ''
+- scripts/hooks/pre-compact.js — '/**\n * PreCompact Hook - Save LLM-generated summary before context compaction\n *' -> '/**\n * PreCompact Hook - Log the compaction event before context compaction.\n *\n'
+- scripts/hooks/pre-compact.js — removed LLM summary generation block (D12)
+- scripts/hooks/pre-compact.js — "const SUMMARY_START_MARKER = '<!-- ECC:SUMMARY:START -->';\n" -> ''
+- scripts/hooks/pre-compact.js — "const SUMMARY_END_MARKER = '<!-- ECC:SUMMARY:END -->';\n" -> ''
+- scripts/hooks/pre-compact.js — removed now-unused escapeRegExp (D12)
+- scripts/lib/resolve-ecc-root.js — "const CURRENT_PLUGIN_SLUG = 'ecc';\n// Legacy install id, kept for existing insta" -> "const CURRENT_PLUGIN_SLUG = 'ecc';\nconst CURRENT_PLUGIN_HANDLE = `${CURRENT_PLUG"
+- scripts/lib/resolve-ecc-root.js — "a user's own ~/.claude/skills/ can" -> "a user's own agent data directory's skills/ can"
+- scripts/lib/resolve-ecc-root.js — ' * Tries, in order:\n *   1. CLAUDE_PLUGIN_ROOT env var (set by Claude Code for h' -> ' * Tries, in order:\n *   1. ECC_PLUGIN_ROOT env var (set by the host for hooks, '
+- scripts/lib/resolve-ecc-root.js — '@param {string} [options.envRoot]  Override CLAUDE_PLUGIN_ROOT (for testing)' -> '@param {string} [options.envRoot]  Override ECC_PLUGIN_ROOT (for testing)'
+- scripts/lib/resolve-ecc-root.js — '  const envRoot = options.envRoot !== undefined\n    ? options.envRoot\n    : (pro' -> '  const envRoot = options.envRoot !== undefined\n    ? options.envRoot\n    : (pro'
+- scripts/lib/resolve-ecc-root.js — '  const homeDir = options.homeDir || os.homedir();\n  const configuredDir = optio' -> '  const homeDir = options.homeDir || os.homedir();\n'
+- scripts/lib/resolve-ecc-root.js — '  // Standard install — files are copied directly into ~/.claude/\n  if (isRoot(c' -> ''
+- scripts/lib/resolve-ecc-root.js — removed legacy plugin roots scan (D11)
+- scripts/lib/resolve-ecc-root.js — removed plugin cache scan (D11)
+- scripts/lib/resolve-ecc-root.js — '  return claudeDir;\n}' -> '  return selfRoot;\n}'
+- scripts/lib/resolve-ecc-root.js — removed now-unused convertWindowsPathToWSL loader
+- scripts/lib/resolve-ecc-root.js — removed now-unused getInlineWslConversion
+- scripts/lib/resolve-ecc-root.js — rewrote buildInlineResolve docstring (Cursor-only)
+- scripts/lib/resolve-ecc-root.js — rewrote buildInlineResolve (Cursor-only inline)
+- commands/auto-update.md — regenerated inline resolver blob (1x)
+- commands/evolve.md — regenerated inline resolver blob (1x)
+- commands/instinct-import.md — regenerated inline resolver blob (1x)
+- commands/instinct-status.md — regenerated inline resolver blob (1x)
+- commands/projects.md — regenerated inline resolver blob (1x)
+- commands/promote.md — regenerated inline resolver blob (1x)
+- commands/prune.md — regenerated inline resolver blob (1x)
+- commands/sessions.md — regenerated inline resolver blob (6x)
+- commands/skill-health.md — regenerated inline resolver blob (3x)
+- scripts/lib/resolve-ecc-root.js — regenerated inline resolver blob (1x)
+- inline resolver blobs regenerated in tree (17 blobs)
+- scripts/lib/install-manifests.js — regex 'SUPPORTED_INSTALL_TARGETS\\s*=\\s*\\[[^\\]]*\\]' (1x)
+- scripts/lib/install-manifests.js — "LEGACY_COMPAT_BASE_MODULE_IDS_BY_TARGET[target || 'claude']" -> "LEGACY_COMPAT_BASE_MODULE_IDS_BY_TARGET[target || 'cursor']"
+- scripts/lib/install-executor.js — regex "adapterId:\\s*'claude'" (1x)
+- scripts/lib/install-executor.js — regex "target \\|\\| 'claude'" (2x)
+- scripts/lib/install/apply.js — regex "\\['claude',\\s*'claude-project'\\]" (1x)
+- scripts/lib/install/content-transform.js — regex '[^\\n]*qwen-adapt-agents[^\\n]*\\n' (3x)
+- scripts/lib/control-pane/state.js — 'AGENT_OWNER_RE = /(agent|claude|codex|hermes|gemini|opencode|qwen|joycode|codebu' -> 'AGENT_OWNER_RE = /(agent|grok|cursor|\\bbot\\b)/i'
+- scripts/lib/install-manifests.js — regex 'const LEGACY_COMPAT_BASE_MODULE_IDS_BY_TARGET = Object\\.freeze\\(\\{.*?\\n\\}\\);' (1x)
+- scripts/lib/install-manifests.js — "const TARGET_DEFAULT_PROFILE_IDS = Object.freeze({\n  opencode: 'opencode',\n});\n" -> ''
+- scripts/lib/install-manifests.js — 'const TARGET_DEFAULT_EXCLUSIONS = Object.freeze({\n  opencode: [\n    {\n      modu' -> ''
+- scripts/lib/install-manifests.js — replaced function getTargetDefaultProfileId
+- scripts/lib/install-manifests.js — replaced function getTargetDefaultExclusions
+- scripts/lib/install-manifests.js — '|| LEGACY_COMPAT_BASE_MODULE_IDS_BY_TARGET.claude;' -> '|| LEGACY_COMPAT_BASE_MODULE_IDS_BY_TARGET.cursor;'
+- scripts/lib/install-manifests.js — "    ...(target === 'antigravity'\n      ? []\n      : canonicalLegacyLanguages.fla" -> '    ...canonicalLegacyLanguages.flatMap(language => LEGACY_LANGUAGE_EXTRA_MODULE'
+- scripts/lib/install-executor.js — regex 'CLAUDE_ECC_NAMESPACE' (2x)
+- scripts/lib/install-executor.js — regex 'planClaudeStyleLegacyInstall' (3x)
+- scripts/lib/install-executor.js — regex "'legacy-claude-rules'" (3x)
+- scripts/lib/install-executor.js — deleted function planClaudeLegacyInstall
+- scripts/lib/install-executor.js — deleted function planClaudeProjectLegacyInstall
+- scripts/lib/install-executor.js — deleted function planAntigravityLegacyInstall
+- scripts/lib/install-executor.js — '    claudeRulesDir: options.claudeRulesDir || process.env.CLAUDE_RULES_DIR || nu' -> '    cursorRulesDir: options.cursorRulesDir || process.env.CURSOR_RULES_DIR || nu'
+- scripts/lib/install-executor.js — "  let plan;\n  if (target === 'claude') {\n    plan = planClaudeLegacyInstall(cont" -> "  let plan;\n  if (target === 'cursor') {\n    plan = planCursorLegacyInstall(cont"
+- scripts/lib/install-targets/registry.js — rewritten Cursor-only (D10)
+- scripts/lib/install/content-transform.js — rewritten as passthrough (D10/D14)
+- scripts/lib/install/request.js — "const LEGACY_INSTALL_TARGETS = ['claude', 'claude-project', 'cursor', 'antigravi" -> "const LEGACY_INSTALL_TARGETS = ['cursor'];"
+- scripts/lib/install/request.js — "const target = options.target || config?.target || 'claude';" -> "const target = options.target || config?.target || 'cursor';"
+- scripts/lib/install/request.js — "const supportsLocale = target === 'claude' || target === 'claude-project';" -> "const supportsLocale = target === 'cursor';"
+- scripts/lib/install/request.js — "throw new Error('--locale can only be used with --target claude or --target clau" -> "throw new Error('--locale can only be used with --target cursor');"
+- scripts/lib/install/runtime.js — regex 'claudeRulesDir' (4x)
+- scripts/lib/install/plan.js — "const {\n  materializeManagedHooks,\n} = require('./claude-settings');\n" -> ''
+- scripts/lib/install/plan.js — deleted function materializeClaudeSettingsOperation
+- scripts/lib/install/plan.js — 'function materializeScaffoldOperation(sourceRoot, operation) {\n  if (operation.k' -> 'function materializeScaffoldOperation(sourceRoot, operation) {\n'
+- scripts/lib/install/plan.js — "  const applicableTransform = (contentTransform === 'copilot-workflow-paths'\n   " -> '  // Cursor-only: no host frontmatter/workflow transform applies.\n  const applic'
+- scripts/lib/install/plan.js — "  const target = options.target || 'claude';" -> "  const target = options.target || 'cursor';"
+- scripts/lib/install/plan.js — '    // Persist this projection so install, doctor and repair compare the same\n  ' -> '    // Cursor-only: operations pass through unchanged (no host projection).\n    '
+- scripts/lib/install/plan.js — deleted function isSelectedAntigravityLegacyRule
+- scripts/lib/install/plan.js — '  const operations = dedupeCopyFileOperations(\n    options.legacyMode && target ' -> '  const operations = dedupeCopyFileOperations(materializedOperations);'
+- scripts/lib/install/plan.js — '  // of them target the same path (e.g. a generic `commands/<name>.md` shadowed\n' -> '  // of them target the same path (e.g. a generic `commands/<name>.md` shadowed\n'
+- scripts/lib/install-state.js — 'const {\n  CLAUDE_HOOKS_CONFIG_PATH,\n  getClaudeSettingsPath,\n  validateRecordedM' -> ''
+- scripts/lib/install-state.js — removed update-claude-settings validation block
+- scripts/lib/install/hook-consent.js — "    operation.kind === 'update-claude-settings'\n    || operation.moduleId === HO" -> '    operation.moduleId === HOOK_RUNTIME_MODULE_ID'
+- scripts/lib/install/ownership-guard.js — "const { hasEditedCodexUserConfig } = require('./codex-user-config');\n" -> ''
+- scripts/lib/install/ownership-guard.js — '    const editedConfig = previousOperation\n      && hasEditedCodexUserConfig(pla' -> '    const editedConfig = false;'
+- scripts/lib/install/ownership-guard.js — '  const previousOperation = migration.previousManagedOperations.get(comparablePa' -> '  const previousOperation = migration.previousManagedOperations.get(comparablePa'
+- scripts/lib/install/guarded-write.js — "const { sameFileIdentity } = require('./claude-settings-lock');\n" -> '// fix #16 (D10): the file-identity check lived in the deleted\n// claude-setting'
+- scripts/lib/install/contained-fs.js — "const { assertClaudeSettingsPath } = require('./claude-settings');\n" -> ''
+- scripts/lib/install/contained-fs.js — deleted function assertClaudeSettingsDestination
+- scripts/lib/install/contained-fs.js — '  assertClaudeSettingsDestination,\n' -> ''
+- scripts/lib/install-targets/helpers.js — regex "const \\{\\n  CLAUDE_HOOKS_CONFIG_PATH,\\n  getClaudeSettingsPath,\\n\\} = require\\('\\.\\./install/claude-settings'\\);\\n" (1x)
+- scripts/lib/install-targets/helpers.js — deleted function planClaudeHooksOperations
+- scripts/lib/install/plugin-namespace.js — regex '\\(install-apply --target claude\\|claude-project\\)' (1x)
+- scripts/lib/install/excluded-paths-reconciliation.js — regex 'and Codex home targets\\)' (1x)
+- scripts/lib/session-aliases.js — "const { acquireSettingsLock } = require('./install/claude-settings-lock');" -> "const { acquireFileLock } = require('./install/file-lock');"
+- scripts/lib/session-aliases.js — "    release = acquireSettingsLock(aliasesPath, { label: 'session aliases', timeo" -> "    release = acquireFileLock(aliasesPath, { label: 'session aliases', timeoutMs"
+- scripts/lib/session-aliases.js — 'Manages session aliases stored in $ECC_AGENT_DATA_HOME/session-aliases.json (def' -> 'Manages session aliases stored in $ECC_AGENT_DATA_HOME/session-aliases.json (def'
+- scripts/lib/install/file-lock.js — created (host-neutral file lock, from the deleted claude-settings-lock logic)
+- scripts/lib/install/apply.js — 'const {\n  hasExplicitCommitAttributionPreference,\n  withCommitAttributionDisable' -> ''
+- scripts/lib/install/apply.js — 'const {\n  getClaudeSettingsPath,\n  mergeManagedHooks,\n  readSettings,\n  runWithS' -> ''
+- scripts/lib/install/apply.js — 'const {\n  assertSafeClaudeSkillOperation,\n  prepareClaudeSkillMigration,\n  remov' -> ''
+- scripts/lib/install/apply.js — "const { cleanupLegacyAntigravityInstall } = require('./antigravity-legacy-migrat" -> ''
+- scripts/lib/install/apply.js — 'const { cleanupLegacyOpencodeInstall, getLegacyLocationForPlan, inspectLegacyOpe' -> '// fix #16 (D10): the OpenCode legacy-migration module is removed\n// (Cursor-onl'
+- scripts/lib/install/apply.js — "const { withOpenCodeInstallLocks } = require('./opencode-install-lock');\n" -> ''
+- scripts/lib/install/apply.js — "const { assertScriptBoundary, isScriptBoundary } = require('./opencode-script-bo" -> ''
+- scripts/lib/install/apply.js — 'function isMarkdownPath(filePath) {' -> 'function uniqueOperations(operations) {\n  const byDestination = new Map();\n  for'
+- scripts/lib/install/apply.js — regex '[ \\t]*assertSafeClaudeSkillOperation\\([^;]*;\\n' (5x)
+- scripts/lib/install/apply.js — regex 'prepareClaudeSkillMigration\\(plan\\)' (2x)
+- scripts/lib/install/apply.js — deleted function shouldSetClaudeCommitAttributionPreference
+- scripts/lib/install/apply.js — deleted function writeClaudeCommitAttributionPreference
+- scripts/lib/install/apply.js — deleted function preflightClaudeSettingsOperations
+- scripts/lib/install/apply.js — deleted function findPreviousManagedHooks
+- scripts/lib/install/apply.js — replaced function prepareHookConsentMigration
+- scripts/lib/install/apply.js — replaced function assertOpenCodeScriptBoundary
+- scripts/lib/install/apply.js — replaced function assertOpenCodeLeaseCoverage
+- scripts/lib/install/apply.js — '  preflightClaudeSettingsOperations(appliedPlan);\n' -> ''
+- scripts/lib/install/apply.js — "  if (plan.adapter?.target === 'opencode') {\n    assertSafeInstallOperation(plan" -> ''
+- scripts/lib/install/apply.js — "  const isClaudeManualTarget = plan.adapter\n    && (plan.adapter.target === 'cla" -> '  return applyInstallPlanLocked(plan, dependencies, false);'
+- scripts/lib/install/apply.js — '  const hookRemovalCount = appliedPlan.operations.filter(operation => (\n    oper' -> '  // fix #16 (D12): settings-hook removal is gone; this stays zero.\n  const hook'
+- scripts/lib/install/apply.js — removed settings-apply branch from the install loop
+- scripts/lib/install/apply.js — '      if (hasLegacyMigration) {\n        removeLegacyClaudeSkillFiles(migration, ' -> ''
+- scripts/lib/install/apply.js — '  const hasLegacyMigration = migration.legacyOperationsToRemove.length > 0;\n' -> ''
+- scripts/lib/install/apply.js — '      if (shouldSetClaudeCommitAttributionPreference(appliedPlan)) {\n        wri' -> ''
+- scripts/lib/install/apply.js — removed legacy Antigravity cleanup block
+- scripts/lib/install/apply.js — '  prepareHookConsentMigration,\n' -> '  prepareHookConsentMigration,\n  createDisabledMigration,\n'
+- scripts/lib/install-lifecycle.js — "const { withOpenCodeInstallLocks } = require('./install/opencode-install-lock');" -> ''
+- scripts/lib/install-lifecycle.js — "const { isCodexUserConfig } = require('./install/codex-user-config');\n" -> ''
+- scripts/lib/install-lifecycle.js — "const {\n  prepareClaudeSkillMigration,\n} = require('./install/claude-skill-migra" -> ''
+- scripts/lib/install-lifecycle.js — 'const {\n  getLegacyAntigravityLocation,\n  inspectLegacyAntigravityState,\n} = req' -> ''
+- scripts/lib/install-lifecycle.js — "const {\n  getLegacyOpencodeLocation,\n  inspectLegacyOpencodeState,\n} = require('" -> ''
+- scripts/lib/install-lifecycle.js — 'const {\n  acquireSettingsLock,\n  getClaudeSettingsPath,\n  inspectManagedHooks,\n ' -> ''
+- scripts/lib/install-lifecycle.js — '  assertClaudeSettingsDestination,\n' -> ''
+- scripts/lib/install-lifecycle.js — deleted function repairClaudeSettings
+- scripts/lib/install-lifecycle.js — deleted function uninstallClaudeSettings
+- scripts/lib/install-lifecycle.js — deleted function inspectClaudeSettingsOperation
+- scripts/lib/install-lifecycle.js — replaced function acquireRepairSettingsLock
+- scripts/lib/install-lifecycle.js — "    case 'update-claude-settings':\n      return repairClaudeSettings(operation, " -> ''
+- scripts/lib/install-lifecycle.js — "    case 'update-claude-settings':\n      return uninstallClaudeSettings(operatio" -> ''
+- scripts/lib/install-lifecycle.js — "    case 'update-claude-settings':\n      return inspectClaudeSettingsOperation(o" -> ''
+- scripts/lib/install-lifecycle.js — '  if (operationHealth.invalidSettings.length > 0) {\n    issues.push(\n      build' -> ''
+- scripts/lib/install-lifecycle.js — '    ...desiredPlan.operations\n      .filter(operation => (\n        operation.kin' -> ''
+- scripts/lib/install-lifecycle.js — "    if (operation.kind === 'update-claude-settings') {\n      const sourcePath = " -> ''
+- scripts/lib/install-lifecycle.js — '      if ((isCodexUserConfig(record, operation)\n        || (record.adapter.targe' -> "      if ((record.adapter.target === 'opencode'\n          && require('./install/"
+- scripts/lib/install-lifecycle.js — '  const initialMigration = prepareClaudeSkillMigration(trustedPlan);' -> "  const initialMigration = require('./install/apply').createDisabledMigration(tr"
+- scripts/lib/install-lifecycle.js — "  const migration = trustedPlan.target === 'opencode'\n    ? require('./install/a" -> '  const migration = guardedMigration;'
+- scripts/lib/install-lifecycle.js — removed opencode/antigravity legacy branches from discoverInstalledStates
+- scripts/lib/install-lifecycle.js — replaced opencode repair block with an error result
+- scripts/lib/install-lifecycle.js — "      if (operations.some(operation => operation.kind === 'update-claude-setting" -> ''
+- scripts/lib/install-lifecycle.js — "      const { isScriptBoundary, retainScriptBoundary } = require('./install/open" -> '      // fix #16 (D10): the scripts/package.json boundary copy is produced\n     '
+- scripts/lib/session-manager.js — ' * Sessions are stored as markdown files in ~/.claude/session-data/ with\n * lega' -> ' * Sessions are stored as markdown files in ~/.cursor/ecc/session-data/ with\n * '
+- scripts/lib/state-store/index.js — "const DEFAULT_STATE_STORE_RELATIVE_PATH = path.join('.claude', 'ecc', 'state.db'" -> "const DEFAULT_STATE_STORE_RELATIVE_PATH = path.join('.ecc', 'state.db');"
+- scripts/lib/skill-improvement/observations.js — "  return path.join(resolveProjectRoot(options), '.claude', 'ecc', 'skills');" -> "  return path.join(resolveProjectRoot(options), '.ecc', 'skills');"
+- scripts/lib/skill-evolution/tracker.js — "  return path.join(resolveHomeDir(options.homeDir), '.claude', 'state', 'skill-r" -> "  return path.join(resolveHomeDir(options.homeDir), '.cursor', 'ecc', 'state', '"
+- scripts/lib/skill-evolution/provenance.js — "    learned: path.join(homeDir, '.claude', 'skills', 'learned'),\n    imported: p" -> "    learned: path.join(homeDir, '.cursor', 'ecc', 'skills', 'learned'),\n    impo"
+- scripts/lib/observer-sessions.js — '  const envRoot = process.env.CLAUDE_PROJECT_DIR;' -> '  const envRoot = process.env.CURSOR_PROJECT_DIR;'
+- scripts/lib/plan-canvas/sessions.js — '// The producer and the SessionStart/Stop hooks must land on one directory. The\n' -> '// The producer and the SessionStart/Stop hooks must land on one directory. The\n'
+- scripts/lib/plan-canvas/sessions.js — "  return path.join(resolveClaudeConfigDir(env), 'plan-canvas');" -> "  return path.join(resolveAgentDataHome(env), 'plan-canvas');"
+- scripts/lib/plan-canvas/markdown.js — ' * Renders .claude/plans/*.plan.md artifacts to HTML body content.' -> ' * Renders .ecc/plans/*.plan.md artifacts to HTML body content.'
+- scripts/lib/orchestration-session.js — "    coordinationDir: path.join(cwd, '.claude', 'orchestration', targetPath)," -> "    coordinationDir: path.join(cwd, '.ecc', 'orchestration', targetPath),"
+- scripts/lib/session-adapters/dmux-tmux.js — "  const coordinationDir = path.resolve(cwd, '.claude', 'orchestration', target);" -> "  const coordinationDir = path.resolve(cwd, '.ecc', 'orchestration', target);"
+- scripts/lib/control-pane/state.js — "const DEFAULT_STATE_STORE_RELATIVE_PATH = path.join('.claude', 'ecc', 'state.db'" -> "const DEFAULT_STATE_STORE_RELATIVE_PATH = path.join('.ecc', 'state.db');"
+- scripts/lib/control-pane/state.js — "  return path.join(homeDir(env), '.claude', 'ecc2.db');" -> "  return path.join(homeDir(env), '.cursor', 'ecc', 'ecc2.db');"
+- scripts/lib/control-pane/state.js — "  const paths = [path.join(home, 'Library', 'Application Support', 'ecc2', 'conf" -> "  const paths = [path.join(home, 'Library', 'Application Support', 'ecc2', 'conf"
+- scripts/lib/control-pane/state.js — "    paths.push(path.join(current, '.claude', 'ecc2.toml'));" -> "    paths.push(path.join(current, '.ecc', 'ecc2.toml'));"
+- scripts/hooks/hookify-runtime.js — regex "'\\.claude'" (7x)
+- scripts/hooks/hookify-runtime.js — regex '\\.claude/' (1x)
+- scripts/hooks/mcp-health-check.js — claudeConfigDir() re-pointed to the agent data home (~/.cursor/ecc)
+- scripts/hooks/plan-canvas-pending.js — claudeConfigDir() re-pointed to the agent data home (~/.cursor/ecc)
+- scripts/hooks/plan-canvas-sessions.js — claudeConfigDir() re-pointed to the agent data home (~/.cursor/ecc)
+- scripts/hooks/post-bash-command-log.js — claudeConfigDir() re-pointed to the agent data home (~/.cursor/ecc)
+- scripts/hooks/ecc-statusline.js — "    const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '" -> '    const agentDataDir = process.env.ECC_AGENT_DATA_HOME || path.join(os.homedir'
+- scripts/hooks/mcp-health-check.js — "  return [\n    path.join(cwd, '.claude.json'),\n    path.join(cwd, '.claude', 'se" -> "  return [\n    path.join(cwd, '.cursor', 'mcp.json'),\n    path.join(home, '.curs"
+- scripts/hooks/mcp-health-check.js — '  // SECURITY: cloning a malicious repo must not auto-execute its MCP servers.\n ' -> '  // SECURITY: cloning a malicious repo must not auto-execute its MCP servers.\n '
+- scripts/hooks/mcp-health-check.js — "    // A config file in the user's home directory (~/.claude.json or\n    // ~/.c" -> "    // A config file in the user's home directory (~/.cursor/mcp.json) is\n    //"
+- scripts/hooks/mcp-health-check.js — "      const isWorkspaceSource = src === pathMod.join(cwd, '.claude.json')\n      " -> "      const isWorkspaceSource = src === pathMod.join(cwd, '.cursor', 'mcp.json')"
+- scripts/lib/session-adapters/registry.js — rewritten dmux-tmux only (D10/F2)
+- scripts/lib/session-adapters/canonical-session.js — deleted function deriveClaudeWorkerId
+- scripts/lib/session-adapters/canonical-session.js — deleted function normalizeClaudeHistorySession
+- scripts/lib/session-adapters/canonical-session.js — deleted function normalizeCodexWorktreeSession
+- scripts/lib/session-adapters/canonical-session.js — deleted function normalizeOpencodeSession
+- scripts/lib/session-adapters/canonical-session.js — '  normalizeClaudeHistorySession,\n' -> ''
+- scripts/lib/session-adapters/canonical-session.js — '  normalizeCodexWorktreeSession,\n' -> ''
+- scripts/lib/session-adapters/canonical-session.js — '  normalizeOpencodeSession,\n' -> ''
+- scripts/lib/context-carriers.js — "const LAYOUTS = Object.freeze({\n  claude: { id: 'claude-plugin@1', skillRoot: 's" -> "const LAYOUTS = Object.freeze({\n  cursor: { id: 'cursor-project@1', skillRoot: '"
+- scripts/lib/context-carriers.js — replaced function generatedManifest
+- scripts/lib/context-profile-commands.js — "const NATIVE_COMMANDS = ['prepare-native', 'native-status', 'native-rollback', '" -> "const COMMANDS = ['resolve', 'set', 'mode', 'status', 'rollback', 'recover', 'ro"
+- scripts/lib/context-profile-commands.js — "  '--target', '--selection', '--include', '--exclude', '--native-root'];" -> "  '--target', '--selection', '--include', '--exclude'];"
+- scripts/lib/context-profile-commands.js — "} else if (!arg.startsWith('-') && !result.profileId && ['resolve', 'run', 'set'" -> "} else if (!arg.startsWith('-') && !result.profileId && ['resolve', 'set', 'mode"
+- scripts/lib/context-profile-commands.js — "  const taskCommand = ['resolve', 'run'].includes(result.command);" -> "  const taskCommand = result.command === 'resolve';"
+- scripts/lib/context-profile-commands.js — "  const allowed = result.command === 'start' ? ['--state-root', '--native-root']" -> "  const allowed = taskCommand\n    ? ['--task-input', '--previous', '--expected-d"
+- scripts/lib/context-profile-commands.js — "  if ((NATIVE_COMMANDS.includes(result.command) || result.command === 'start') &" -> ''
+- scripts/lib/context-profile-commands.js — "  if (result.command === 'start' && result.json && !result.dryRun) {\n    throw n" -> ''
+- scripts/lib/context-profile-commands.js — replaced function execute
+- scripts/lib/context-profile-commands.js — "  return { schemaVersion: 'ecc.profile-operation.v1', status: (value.launch?.sta" -> "  return { schemaVersion: 'ecc.profile-operation.v1', status: 'success',\n    sum"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — deleted function getClaudeGlobalConfigPath
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — regex '    getClaudeGlobalConfigPath\\(\\)\\n' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — '  // 2. Check project-specific config (.cursor first, then .claude)\n  for (const' -> "  // 2. Check project-specific config (.cursor)\n  for (const configDir of ['.cur"
+- scripts/lib/package-manager.js — Cursor-only config paths (fix #16)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/setup-package-manager.js — '  --project <pm>  Set project preference (saves to .cursor/package-manager.json;' -> '  --project <pm>  Set project preference (saves to .cursor/package-manager.json)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/setup-package-manager.js — '  console.log(`  Environment var: ${process.env.CURSOR_PACKAGE_MANAGER || proces' -> "  console.log(`  Environment var: ${process.env.CURSOR_PACKAGE_MANAGER || 'not s"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/setup-package-manager.js — "    console.log('  (Also read from ~/.cursor/package-manager.json and ~/.claude/" -> "    console.log('  (Also read from ~/.cursor/package-manager.json)');"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/setup-package-manager.js — "    console.log('  (An existing .claude/package-manager.json is still honoured o" -> ''
+- scripts/setup-package-manager.js — Cursor-only config paths (fix #16)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/resolve-formatter.js — ' * Resolve the runner binary and prefix args for the configured package\n * manag' -> ' * Resolve the runner binary and prefix args for the configured package\n * manag'
+- commands/setup-pm.md — Cursor-only package-manager config (fix #16)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/agent-tool-map.js — regex '\\bCLAUDE_TO_PI_TOOLS\\b' (4x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/agent-tool-map.js — "const CLAUDE_MODEL_TIERS = Object.freeze(['haiku', 'sonnet', 'opus']);" -> "const GROK_MODEL_TIERS = Object.freeze(['cursor-grok-4.6-high-fast', 'grok-4.7-h"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/agent-tool-map.js — '  CURSOR_TO_PI_TOOLS,\n  CLAUDE_MODEL_TIERS,' -> '  CURSOR_TO_PI_TOOLS,\n  GROK_MODEL_TIERS,'
+- scripts/lib/agent-tool-map.js — CLAUDE_MODEL_TIERS -> GROK_MODEL_TIERS (Grok slugs)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/pre-bash-commit-quality.js — "{ pattern: /sk-ant-[a-zA-Z0-9_-]{20,}/, name: 'Anthropic API key' }," -> "{ pattern: /sk-ant-[a-zA-Z0-9_-]{20,}/, name: 'sk-ant API key' },"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/insaits-security-monitor.py — '  INSAITS_MODEL      LLM model identifier for fingerprinting. Default: claude-op' -> '  INSAITS_MODEL      LLM model identifier for fingerprinting. Default: grok-4.7-'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/insaits-security-monitor.py — 'DEFAULT_MODEL: str = "claude-opus"' -> 'DEFAULT_MODEL: str = "grok-4.7-high"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs — "const MODES = { claude: 'block', codex: 'block', antigravity: 'continue' };" -> "const MODES = { cursor: 'block' };"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs — "if (HOOK !== null && !MODES[HOOK]) { console.error('gate: --hook takes claude, c" -> "if (HOOK !== null && !MODES[HOOK]) { console.error('gate: --hook takes cursor');"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs — regex 'node <skill>/scripts/gate\\.mjs --hook claude\\|codex\\|antigravity' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs — regex '\\{\\"decision\\":\\"block\\",\\"reason\\":\\.\\.\\.\\} for claude and codex,\\n  \\{' (1x)
+- skills/design-taste-frontend/scripts/gate.mjs — hook mode cursor-only (fix #16)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/references/gate.md — '{ "hooks": [ { "type": "command", "command": "node \\"/path/to/skill/scripts/gate' -> '{ "hooks": [ { "type": "command", "command": "node \\"/path/to/skill/scripts/gate'
+- skills/design-taste-frontend/references/gate.md — cursor-only hook paths (fix #16)
+- skills/design-taste-frontend/assets/icons/index.json — removed array entry 'anthropic'
+- skills/design-taste-frontend/assets/icons/index.json — removed array entry 'claude'
+- skills/design-taste-frontend/assets/icons/index.json — removed array entry 'claude-code'
+- skills/design-taste-frontend/assets/icons/index.json — removed array entry 'codex'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json — regex '  "logos:anthropic\\-icon": \\[\\n(?:   [^\\n]*\\n){4}  \\],\\n' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json — regex '  "logos:claude\\-icon": \\[\\n(?:   [^\\n]*\\n){4}  \\],\\n' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json — regex '  "logos:claude\\-code": \\[\\n(?:   [^\\n]*\\n){4}  \\],\\n' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json — regex '  "logos:codex": \\[\\n(?:   [^\\n]*\\n){4}  \\],\\n' (1x)
+- skills/design-taste-frontend/assets/icons/index.json — 4 brand icon entries + viewBox keys removed
+- skills/design-taste-frontend/assets/icons/demo/icons-credits.json — removed array entry 'anthropic.svg'
+- skills/design-taste-frontend/assets/icons/demo/icons-credits.json — removed array entry 'claude-code.svg'
+- skills/design-taste-frontend/assets/icons/demo/icons-credits.json — removed array entry 'claude.svg'
+- skills/design-taste-frontend/assets/icons/demo/icons-credits.json — removed array entry 'codex.svg'
+- skills/design-taste-frontend/assets/icons/demo/icons-credits.json — 4 brand credit entries removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/layout/heroes.json — '"from": "Anthropic, Stripe Press, Mercury, private banks and advisers"' -> '"from": "Stripe Press, Mercury, private banks and advisers"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/README.md — "The plugin's Node scripts (`/harness-audit`, `/skill-host-compat`, the" -> "The plugin's Node scripts (`/harness-audit`, the"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/package.json — '"description": "Runtime dependencies for the hackathon-ecc Cursor plugin\'s Node ' -> '"description": "Runtime dependencies for the hackathon-ecc Cursor plugin\'s Node '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/utils.js — ' * leading/trailing hyphens, and removes leading dots so hidden-dir names\n * lik' -> ' * leading/trailing hyphens, and removes leading dots so hidden-dir names\n * lik'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/hooks/after-file-edit.js — regex '\\bclaudeStr\\b' (4x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/evaluate-session.js — '    transcriptPath = process.env.CLAUDE_TRANSCRIPT_PATH;' -> '    transcriptPath = process.env.ECC_TRANSCRIPT_PATH;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/gan-build.md — "This command orchestrates a three-agent build loop inspired by Anthropic's March" -> 'This command orchestrates a three-agent build loop inspired by the upstream mult'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/gan-design.md — 'This is the same mode Anthropic used for their frontend design experiments, wher' -> 'This mode was used for frontend design experiments, with creative breakthroughs '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-planner.md — regex "\\(inspired by Anthropic's harness design paper, March 2026\\)" (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-generator.md — regex "\\(inspired by Anthropic's harness design paper, March 2026\\)" (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-evaluator.md — regex "\\(inspired by Anthropic's harness design paper, March 2026\\)" (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/rules/hackathon-mode.mdc — '(its upstream `claude -p` invocation path does not run in Cursor' -> '(its upstream CLI-subprocess invocation path does not run in Cursor'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "  // 'everything-claude-code' is the legacy package name, kept for older checkou" -> "  if (['ecc-universal'].includes(packageJson?.name)) {"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "    fileExists(rootDir, '.claude-plugin/plugin.json') &&" -> "    fileExists(rootDir, '.cursor-plugin/plugin.json') &&"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — '// The everything-claude-code entries below are legacy install ids, kept so\n// e' -> 'const ECC_PLUGIN_KEY_PATTERNS = [\n  /^ecc@/i,\n];\n\nconst ECC_LEGACY_PLUGIN_DIRS ='
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "  const pluginJson = path.join(installRoot, '.claude-plugin', 'plugin.json');" -> "  const pluginJson = path.join(installRoot, '.cursor-plugin', 'plugin.json');"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "    path.join(rootDir, '.claude', 'plugins'),\n    ...homeDirs.map(homeDir => pat" -> "    path.join(rootDir, '.cursor', 'plugins'),\n    ...homeDirs.map(homeDir => pat"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "    path.join(rootDir, '.claude', 'plugins', 'installed_plugins.json'),\n    ...h" -> "    path.join(rootDir, '.cursor', 'plugins', 'installed_plugins.json'),\n    ...h"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "  const projectHooks = safeRead(rootDir, '.claude/settings.json');" -> "  const projectHooks = safeRead(rootDir, '.ecc/settings.json');"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      path: '~/.claude/plugins/ecc/ (legacy everything-claude-code paths also su" -> "      path: '~/.cursor/plugins/hackathon-ecc/',"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      path: '.claude/',\n      description: 'Project-specific harness overrides e" -> "      path: '.ecc/',\n      description: 'Project-specific harness overrides exis"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      pass: fileExists(rootDir, 'AGENTS.md') || fileExists(rootDir, 'CLAUDE.md')" -> "      pass: fileExists(rootDir, 'AGENTS.md') || fileExists(rootDir, '.ecc/AGENTS"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      pass: fileExists(rootDir, '.mcp.json') || fileExists(rootDir, '.claude/set" -> "      pass: fileExists(rootDir, '.mcp.json') || fileExists(rootDir, '.ecc/settin"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      path: '.claude/memory.md',\n      description: 'Project memory or durable n" -> "      path: '.ecc/memory.md',\n      description: 'Project memory or durable note"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/harness-audit.js — "      path: '.claude/settings.json',\n      description: 'Project-local hook sett" -> "      path: '.ecc/settings.json',\n      description: 'Project-local hook setting"
+- scripts/harness-audit.js — Cursor-only paths + legacy everything-claude-code ids removed
+- scripts/lib/harness-capabilities.js — removed array entry 'claude'
+- scripts/lib/harness-capabilities.js — removed array entry 'codex'
+- scripts/lib/harness-capabilities.js — removed array entry 'kimi'
+- scripts/lib/harness-capabilities.js — removed array entry 'antigravity'
+- scripts/lib/harness-capabilities.js — removed array entry 'copilot'
+- scripts/lib/harness-capabilities.js — removed array entry 'gemini'
+- scripts/lib/harness-capabilities.js — removed array entry 'opencode'
+- scripts/lib/harness-capabilities.js — removed array entry 'codebuddy'
+- scripts/lib/harness-capabilities.js — removed array entry 'joycode'
+- scripts/lib/harness-capabilities.js — removed array entry 'qwen'
+- scripts/lib/harness-capabilities.js — removed array entry 'zed'
+- scripts/lib/harness-capabilities.js — removed array entry 'adal'
+- scripts/lib/harness-capabilities.js — removed array entry 'hermes'
+- scripts/lib/harness-capabilities.js — removed array entry 'openclaw'
+- scripts/lib/harness-capabilities.js — HARNESS_CAPABILITIES narrowed to the cursor entry
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'claude-code'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'codex'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'opencode'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'pi'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'gemini'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'zed'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'dmux'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'deepseek-harness'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'orca'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'superset'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'ghast'
+- scripts/lib/harness-adapter-compliance.js — removed array entry 'terminal-only'
+- scripts/lib/harness-adapter-compliance.js — ADAPTER_RECORDS narrowed to the cursor entry
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/statusline-render.js — 'Inspired by leeguooooo/claude-code-usage-bar (MIT). ECC re-implementation' -> 'Inspired by an open-source usage-bar project (MIT). ECC re-implementation'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/statusline-render.js — ' * @param {string} [claudeDir] selected profile root' -> ' * @param {string} [agentDataDir] selected profile root'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/statusline-render.js — 'function readInstalledPlugins(claudeDir, workspace) {\n  try {\n    const dir = cl' -> 'function readInstalledPlugins(agentDataDir, workspace) {\n  try {\n    const dir ='
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/statusline-render.js — "    const enabled = pluginEnablement([path.join(dir, 'settings.json'),\n      pat" -> "    const enabled = pluginEnablement([path.join(dir, 'settings.json')]);"
+- scripts/lib/statusline-render.js — plugin scan re-pointed to ~/.cursor/ecc; .claude settings reads dropped
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — 'ecc memory search "authentication migration" --target-harness codex' -> 'ecc memory search "authentication migration" --target-harness cursor'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — '    --source-harness codex \\' -> '    --source-harness cursor \\'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — '  --from codex \\\n  --target claude \\' -> '  --from cursor \\\n  --target cursor \\'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — 'ECC_MEMORY_HARNESS=codex ecc-memory-mcp' -> 'ECC_MEMORY_HARNESS=cursor ecc-memory-mcp'
+- skills/unified-memory/SKILL.md — narrowed to Cursor-only
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/context-budget/SKILL.md — regex '\\| Codex CLI \\(Codex only\\)[^\\n]*\\n' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/context-budget/SKILL.md — regex '\\| Codex app \\(Codex only\\)[^\\n]*\\n' (1x)
+- skills/context-budget/SKILL.md — Codex rows/link removed; Cursor meter kept
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ai-feature-spec/SKILL.md — '  compatible_with:\n  - claude-code\n  - codex\n' -> '  compatible_with:\n  - cursor\n'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/polish-pass/reference/impeccable-critique.md — 'Run Assessment A alone in this context and skip both sub-agent gates below, the ' -> 'Run Assessment A alone in this context and skip both sub-agent gates below: with'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/integration/SKILL.md — '- `integrations` by whawkinsiv (claude-code-skills): NOT used.' -> "- `integrations` by whawkinsiv (whawkinsiv's skills repo): NOT used."
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/feature-expansion/SKILL.md — '- **claude-handoff** (`cliffordcollinsglobal/agent-skills`, no license) — the ex' -> '- **handoff** (`cliffordcollinsglobal/agent-skills`, no license) — the execution'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-scout/SKILL.md — 'grep -RilE "keyword|synonym" ~/.cursor/skills ~/.cursor/plugins/marketplaces ~/.' -> 'grep -RilE "keyword|synonym" ~/.cursor/skills ~/.cursor/plugins/marketplaces 2>/'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — '# When CWD_SKILLS_DIR is omitted, defaults to $PWD/.claude/skills so the' -> '# When CWD_SKILLS_DIR is omitted, defaults to $PWD/.ecc/skills so the'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — '#   SKILL_STOCKTAKE_GLOBAL_DIR   Override ~/.claude/skills (for testing only;' -> '#   SKILL_STOCKTAKE_GLOBAL_DIR   Override ~/.cursor/skills (for testing only;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — regex '\\$HOME/\\.claude/skills' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — regex '\\$PWD/\\.claude/skills' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — regex '\\*/\\.claude/skills\\*' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — regex '\\.claude/skills' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/scan.sh — 'OBSERVATIONS="${SKILL_STOCKTAKE_OBSERVATIONS:-$HOME/.claude/observations.jsonl}"' -> 'OBSERVATIONS="${SKILL_STOCKTAKE_OBSERVATIONS:-$HOME/.cursor/ecc/observations.jso'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — '# When CWD_SKILLS_DIR is omitted, defaults to $PWD/.claude/skills so the' -> '# When CWD_SKILLS_DIR is omitted, defaults to $PWD/.ecc/skills so the'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — '#   SKILL_STOCKTAKE_GLOBAL_DIR   Override ~/.claude/skills (for testing only;' -> '#   SKILL_STOCKTAKE_GLOBAL_DIR   Override ~/.cursor/skills (for testing only;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — regex '\\$HOME/\\.claude/skills' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — regex '\\$PWD/\\.claude/skills' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — regex '\\*/\\.claude/skills\\*' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-stocktake/scripts/quick-diff.sh — regex '\\.claude/skills' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh — regex '\\$HOME/\\.claude/skills' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh — regex '\\$PWD/\\.claude/skills' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh — regex '\\*/\\.claude/skills\\*' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-skills.sh — regex '\\.claude/skills' (3x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh — regex '\\$HOME/\\.claude/rules' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/scripts/scan-rules.sh — regex '\\.claude/rules' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/SKILL.md — 'bash ~/.claude/skills/rules-distill/scripts/scan-skills.sh' -> 'bash "$ECC_PLUGIN_ROOT/skills/rules-distill/scripts/scan-skills.sh"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/rules-distill/SKILL.md — 'bash ~/.claude/skills/rules-distill/scripts/scan-rules.sh' -> 'bash "$ECC_PLUGIN_ROOT/skills/rules-distill/scripts/scan-rules.sh"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/repo-scan/SKILL.md — 'REPO_SCAN_INSTALL_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/repo-scan"' -> 'REPO_SCAN_INSTALL_DIR="$ECC_PLUGIN_ROOT/skills/repo-scan"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/delivery-gate/hooks/quality-gate.py — "    cwd = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())" -> "    cwd = os.environ.get('CURSOR_PROJECT_DIR', os.getcwd())"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/delivery-gate/hooks/quality-gate.py — "    mem = os.path.expanduser(f'~/.claude/projects/{safe}/memory')" -> "    mem = os.path.expanduser(f'~/.cursor/ecc/projects/{safe}/memory')"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ecc-recipes/SKILL.md — '  "$HOME"/.claude/plugins/marketplaces/ecc/commands \\\n  "$HOME"/.claude/plugins/' -> '  "$HOME"/.cursor/plugins/local/hackathon-ecc/commands \\\n  "$HOME"/.cursor/plugi'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/living-docs-governance/SKILL.md — '- Codex and harness-neutral projects commonly use `AGENTS.md`.' -> '- Harness-neutral projects commonly use `AGENTS.md`.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/codehealth-mcp/SKILL.md — 'Paste into the project `AGENTS.md` or `CLAUDE.md`:' -> 'Paste into the project `AGENTS.md`:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — 'description: "Run automated post-deploy UI verification with a browser automatio' -> 'description: "Run automated post-deploy UI verification with a browser automatio'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — 'Uses the browser automation MCP (claude-in-chrome, Playwright, or Puppeteer) to ' -> 'Uses the browser automation MCP (Playwright or Puppeteer) to interact with live '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/browser-qa/SKILL.md — '- `mChild__claude-in-chrome__*` tools (preferred — uses your actual Chrome)\n' -> ''
+- skills/browser-qa/SKILL.md — claude-in-chrome MCP removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/SKILL.md — regex '\\$\\{CLAUDE_SKILL_DIR\\}' (10x)
+- skills/ck/SKILL.md — storage re-pointed to ~/.cursor/ecc/ck
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/strategic-compact/SKILL.md — 'Do not copy the block below into your `hooks/hooks.json` — `~/.claude/scripts/` ' -> 'Do not copy the block below into your `hooks/hooks.json` — plugin scripts live u'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/strategic-compact/SKILL.md — '| Memory files (`~/.claude/memory/`) | Multi-step conversation context |' -> "| Memory files (the agent's memory directory) | Multi-step conversation context "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/strategic-compact/SKILL.md — '> `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` brings them back, but that is a per-machine\n' -> '> The tools cannot be re-enabled from this skill — **they do not travel with it*'
+- skills/strategic-compact/SKILL.md — auto-compact/env + path re-points
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/SKILL.md — '  "learned_skills_path": "~/.claude/skills/learned/",' -> '  "learned_skills_path": "~/.cursor/ecc/skills/learned/",'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/SKILL.md — 'Add to your `~/.claude/settings.json`:' -> 'The plugin registers this hook itself via `hooks/hooks.json`; for a manual insta'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/SKILL.md — '        "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"' -> '        "command": "$ECC_PLUGIN_ROOT/skills/continuous-learning/evaluate-session'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/config.json — '  "learned_skills_path": "~/.claude/skills/learned/",' -> '  "learned_skills_path": "~/.cursor/ecc/skills/learned/",'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — '# Hook config (in ~/.claude/settings.json):' -> "# Hook config (registered via the plugin's hooks/hooks.json):"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — '#         "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"' -> '#         "command": "$ECC_PLUGIN_ROOT/skills/continuous-learning/evaluate-sessi'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — '# Extracted skills saved to: ~/.claude/skills/learned/' -> '# Extracted skills saved to: ~/.cursor/ecc/skills/learned/'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — 'LEARNED_SKILLS_PATH="${HOME}/.claude/skills/learned"' -> 'LEARNED_SKILLS_PATH="${HOME}/.cursor/ecc/skills/learned"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — '    LEARNED_SKILLS_PATH=$(jq -r \'.learned_skills_path // "~/.claude/skills/learn' -> '    LEARNED_SKILLS_PATH=$(jq -r \'.learned_skills_path // "~/.cursor/ecc/skills/l'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning/evaluate-session.sh — '  transcript_path="${CLAUDE_TRANSCRIPT_PATH:-}"' -> '  transcript_path="${ECC_TRANSCRIPT_PATH:-}"'
+- skills/continuous-learning — paths re-pointed to ~/.cursor/ecc/skills/learned
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — '| Storage | Global (`~/.claude/homunculus/`) | Project-scoped (`${XDG_DATA_HOME:' -> '| Storage | Global (`~/.local/share/ecc-homunculus/`) | Project-scoped (`${XDG_D'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — '1. **`CLAUDE_PROJECT_DIR` env var** (highest priority) -- honored as an explicit' -> '1. **`CURSOR_PROJECT_DIR` env var** (highest priority) -- honored as an explicit'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — 'Existing users with data at `~/.claude/homunculus` can migrate once:\n\n```bash\nba' -> ''
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — 'If you previously copied `observe.sh` into `~/.claude/settings.json`, remove tha' -> 'If you previously copied `observe.sh` into a host settings file, remove that dup'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — regex '"command": "~/\\.claude/skills/continuous-learning-v2/hooks/observe\\.sh"' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — '- Existing global instincts can be migrated from `~/.claude/homunculus/instincts' -> ''
+- skills/continuous-learning-v2/SKILL.md — paths/env re-pointed; migration lines removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/detect-project.sh — regex '\\bCLAUDE_PROJECT_DIR\\b' (8x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/instinct-cli.py — regex '\\bCLAUDE_PROJECT_DIR\\b' (3x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/instinct-cli.py — '    _warn_legacy_data()\n' -> ''
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/instinct-cli.py — 'def _warn_legacy_data() -> None:\n    """Warn if legacy ~/.claude/homunculus/ con' -> ''
+- skills/continuous-learning-v2/scripts/instinct-cli.py — CURSOR_PROJECT_DIR; legacy-data warning removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/test_parse_instinct.py — regex '\\bCLAUDE_PROJECT_DIR\\b' (5x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/scripts/test_parse_instinct.py — '    homunculus = tmp_path / ".claude" / "homunculus"' -> '    homunculus = tmp_path / ".ecc" / "homunculus"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — '# Can also be registered manually in ~/.claude/settings.json.' -> '# Can also be registered manually in a host settings file.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — '  case "${CLAUDE_HOOK_EVENT_NAME:-}" in' -> '  case "${ECC_HOOK_EVENT_NAME:-}" in'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — '    export CLAUDE_PROJECT_DIR="$_GIT_ROOT"' -> '    export CURSOR_PROJECT_DIR="$_GIT_ROOT"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — '    unset CLAUDE_PROJECT_DIR' -> '    unset CURSOR_PROJECT_DIR'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — 'case "${CLAUDE_CODE_ENTRYPOINT:-cli}" in\n  cli|sdk-ts|sdk-cli|claude-desktop|cla' -> 'case "${ECC_ENTRYPOINT:-cli}" in\n  cli|sdk-ts|sdk-cli|cursor) ;;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — '_ECC_SKIP_PATHS="${ECC_OBSERVE_SKIP_PATHS:-observer-sessions,.claude-mem}"' -> '_ECC_SKIP_PATHS="${ECC_OBSERVE_SKIP_PATHS:-observer-sessions,.ecc-mem}"'
+- skills/continuous-learning-v2/hooks/observe.sh — Cursor env names
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/session-guardian.sh — '#   OBSERVER_LAST_RUN_LOG        default: ~/.claude/observer-last-run.log' -> '#   OBSERVER_LAST_RUN_LOG        default: ~/.cursor/ecc/observer-last-run.log'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/session-guardian.sh — 'LOG_PATH="${OBSERVER_LAST_RUN_LOG:-$HOME/.claude/observer-last-run.log}"' -> 'LOG_PATH="${OBSERVER_LAST_RUN_LOG:-$HOME/.cursor/ecc/observer-last-run.log}"'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/start-observer.sh — '# to prevent claude CLI failures from killing the observer loop.' -> '# to prevent agent CLI failures from killing the observer loop.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/observer-loop.sh — regex '# `claude` CLI, which has no Cursor equivalent\\.' (1x)
+- skills/ecc-recipes/SKILL.md — regex '[^\\n]*multi-plan[^\\n]*\\n' (1x)
+- skills/ecc-recipes/SKILL.md — regex '[^\\n]*santa-loop[^\\n]*\\n' (2x)
+- commands/plan.md — 'for a dual-model (Codex/Antigravity) plan use /multi-plan' -> 'for a second deep-reasoner verification pass, dispatch a fresh deep-reasoner sub'
+- rules/common-git-workflow.mdc — 'describes Claude Code installs' -> 'describes Cursor installs'
+- rules/common-hooks.mdc — regex '[^\\n]*\\.claude/settings\\.json[^\\n]*\\n' (1x)
+- skills/strategic-compact/SKILL.md — 'Fable 5, Mythos 5 and newer models' -> 'current models and newer'
+- skills/continuous-learning/SKILL.md — regex '`~/.claude/skills/learned/`' (2x)
+- skills/continuous-learning-v2/SKILL.md — regex '`~/.claude/skills/learned/`' (1x)
+- manifests/install-modules.json:commands-core paths trimmed (8 -> 5)
+- manifests/install-modules.json:workflow-quality paths trimmed (46 -> 43)
+- manifests/install-modules.json — all module targets narrowed to ['cursor']
+- manifests/pi-core.json:skills.exclude:council-multi-model removed
+- manifests/pi-core.json:skills.exclude:skill-comply removed
+- manifests/pi-core.json:skills.exclude:config-gc removed
+- manifests/pi-core.json:skills.exclude:claude-devfleet removed
+- manifests/pi-core.json:commands.exclude:multi-backend.md removed
+- manifests/pi-core.json:commands.exclude:multi-execute.md removed
+- manifests/pi-core.json:commands.exclude:multi-frontend.md removed
+- manifests/pi-core.json:commands.exclude:multi-plan.md removed
+- manifests/pi-core.json:commands.exclude:multi-workflow.md removed
+- manifests/pi-core.json:commands.exclude:santa-loop.md removed
+- manifests/pi-core.json:commands.exclude:cost-report.md removed
+- manifests/pi-core.json:commands.exclude:skill-host-compat.md removed
+- manifests/pi-core.json:commands.exclude:loop-status.md removed
+- manifests/pi-core.json — deleted-feature entries removed; 'Cursor-Code-only' prefixes stripped; astra-review reason reworded to Grok review
+- schemas/provenance.schema.json — 'Required in ~/.claude/skills/learned/* and ~/.claude/skills/imported/*' -> 'Required in ~/.cursor/ecc/skills/learned/* and ~/.cursor/ecc/skills/imported/*'
+- schemas/context-carrier.schema.json — schema enum narrowed to ['cursor']
+- schemas/context-carrier.schema.json — schema enum host entries dropped: ['pi-package@1', 'opencode-project@1', 'cursor-project@1']
+- schemas/context-carrier.schema.json — schema enum host entries dropped: ['package.json']
+- schemas/context-carrier.schema.json — schema enum narrowed to ['cursor']
+- schemas/ecc-install-config.schema.json — schema enum narrowed to ['cursor']
+- schemas/install-modules.schema.json — schema enum narrowed to ['cursor']
+- schemas/install-state.schema.json — schema update-claude-settings conditional removed
+- schemas/install-state.schema.json — schema update-claude-settings conditional removed
+- generic pass — 189 files changed by mechanical rules
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — '// Config file path (host-aware agent data home: ~/.cursor/ecc in Cursor,\n// ~/.' -> '// Config file path (host-aware agent data home: ~/.cursor/ecc —\n// see scripts/'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — ' * Tries the host-aware config path first, then the explicit Cursor\n * (~/.curso' -> ' * Tries the host-aware config path first, then the explicit Cursor\n * (~/.curso'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — ' * 1. Environment variable CURSOR_PACKAGE_MANAGER (Cursor) or\n *    CLAUDE_PACKA' -> ' * 1. Environment variable CURSOR_PACKAGE_MANAGER\n * 2. Project-specific config '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — '  // 1. Check environment variable (Cursor first, then Cursor)\n  const envPm = p' -> '  // 1. Check environment variable\n  const envPm = process.env.CURSOR_PACKAGE_MA'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — " * Set user's preferred package manager (global). Saved to the host-aware\n * con" -> " * Set user's preferred package manager (global). Saved to the host-aware\n * con"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — " * Set project's preferred package manager.\n * Saved to .cursor/package-manager." -> " * Set project's preferred package manager.\n * Saved to .cursor/package-manager."
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.js — "  message += '  - Global: Set CURSOR_PACKAGE_MANAGER (Cursor) or CLAUDE_PACKAGE_" -> "  message += '  - Global: Set CURSOR_PACKAGE_MANAGER environment variable\\n';\n  "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/setup-package-manager.js — '                  ~/.cursor/ecc/package-manager.json in Cursor,\n                ' -> '                  ~/.cursor/ecc/package-manager.json;\n                  ~/.curso'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/tdd-workflow/SKILL.md — 'It resolves the package manager (npm / pnpm / yarn / bun) from, in order: `CURSO' -> 'It resolves the package manager (npm / pnpm / yarn / bun) from, in order: `CURSO'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/setup-pm.md — '1. **Environment variable**: `CURSOR_PACKAGE_MANAGER` (Cursor) or `CLAUDE_PACKAG' -> '1. **Environment variable**: `CURSOR_PACKAGE_MANAGER`'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/setup-pm.md — '5. **Global config**: host-aware config path (`~/.cursor/ecc/package-manager.jso' -> '5. **Global config**: host-aware config path (`~/.cursor/ecc/package-manager.jso'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/setup-pm.md — '// Cursor: ~/.cursor/ecc/package-manager.json\n// (also read from ~/.cursor/packa' -> '// Cursor: ~/.cursor/ecc/package-manager.json\n// (also read from ~/.cursor/packa'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/setup-pm.md — '// Cursor: .cursor/package-manager.json\n// (an existing .ecc/package-manager.jso' -> '// Cursor: .cursor/package-manager.json\n'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/setup-pm.md — 'Set `CURSOR_PACKAGE_MANAGER` (Cursor) or `CLAUDE_PACKAGE_MANAGER` (Cursor\nCode) ' -> 'Set `CURSOR_PACKAGE_MANAGER` to override all other detection methods:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/references/gate.md — 'command is one POSIX `sh` line (Git Bash on Windows, `sh` on macOS and Linux) th' -> 'command is one POSIX `sh` line (Git Bash on Windows, `sh` on macOS and Linux) th'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — 'description: Share durable, inspectable context and handoffs between Cursor, Cod' -> 'description: Share durable, inspectable context and handoffs between Cursor agen'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/unified-memory/SKILL.md — '- Hand work from Cursor to Codex, Hermes to Cursor, or any other harness pair.' -> '- Hand work between Cursor agents in the same project.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/context-budget/SKILL.md — 'description: Routes live context checks to the native Codex or Cursor meter with' -> 'description: Routes live context checks to the native Cursor meter without scann'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/context-budget/SKILL.md — 'These commands are documented in the [Codex command reference](https://developer' -> 'These commands are documented in the Cursor command reference.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/app-scaffold/SKILL.md — "- **Reuse across projects:** copy this `app-scaffold/` folder into any project's" -> "- **Reuse across projects:** copy this `app-scaffold/` folder into any project's"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/skill-scout/SKILL.md — '# Cursor (this skill also works there) — same searches under ~/.claude\nfind ~/.c' -> '# Cursor — same searches under ~/.cursor\nfind ~/.cursor/skills -maxdepth 2 -name'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/codehealth-mcp/SKILL.md — '**Cursor** (`~/.claude.json` → `mcpServers`):' -> '**Cursor** (`~/.cursor/mcp.json` → `mcpServers`):'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/SKILL.md — "(Cursor only — this skill uses Cursor's SessionStart hook and ~/.claude/ck stora" -> "(Cursor only — this skill uses Cursor's SessionStart hook and ~/.cursor/ecc/ck s"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/SKILL.md — "> **Cursor only** — this skill uses Cursor's SessionStart hook and ~/.claude/ck " -> "> **Cursor only** — this skill uses Cursor's SessionStart hook and ~/.cursor/ecc"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/strategic-compact/SKILL.md — "- `CLAUDE_CODE_AUTO_COMPACT_WINDOW` — Cursor's native auto-compact trigger, whic" -> '- `ECC_CONTEXT_WINDOW_TOKENS` — an explicit override for the context window, use'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/strategic-compact/SKILL.md — '- Same rules in both `~/.claude/rules/` and project `.ecc/rules/`' -> '- Same rules in both `~/.cursor/rules/` and project `.ecc/rules/`'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — "Continuous-learning-v2 stores observer data outside `~/.claude` so Cursor's sens" -> 'Continuous-learning-v2 stores observer data under `~/.local/share/ecc-homunculus'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/SKILL.md — '**If installed manually in Cursor** to `~/.claude/skills`, add this to your `~/.' -> '**If installed manually** to `~/.cursor/skills`, add this to your hook config:'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/hooks/observe.sh — "# wrapper's positional phase argument, but Cursor still exposes the hook\n# event" -> "# wrapper's positional phase argument, but the hook event name is\n# available in"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/session-guardian.sh — '# Called by observer-loop.sh before spawning any Cursor session.' -> '# Called by observer-loop.sh before spawning any agent session.'
+- skills/security-scan/SKILL.md — Deep Analysis section removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/gan-style-harness/SKILL.md — '- Quick single-file fixes (Cursor only — use standard `claude -p` there; in this' -> '- Quick single-file fixes (use the Cursor agent loop, never a CLI subprocess)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/gan-style-harness/SKILL.md — "Based on Anthropic's published results:" -> "Based on the upstream harness paper's published results:"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/gan-style-harness/SKILL.md — '- [Anthropic: Harness Design for Long-Running Apps](https://www.anthropic.com/en' -> '- Harness Design for Long-Running Apps (upstream multi-agent harness design pape'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/gan-style-harness/SKILL.md — '- [Epsilla: The GAN-Style Agent Loop](https://www.epsilla.com/blogs/anthropic-ha' -> '- Epsilla: The GAN-Style Agent Loop — Architecture deconstruction'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-planner.md — regex 'the upstream `claude -p` path is Cursor only and is never executed here' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-generator.md — regex 'the upstream `claude -p` path is Cursor only and is never executed here' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-gan-evaluator.md — regex 'the upstream `claude -p` path is Cursor only and is never executed here' (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/laravel-plugin-discovery/SKILL.md — 'In Cursor, add the same entry to your `~/.claude.json` `mcpServers`' -> 'In Cursor, add the same entry to your `~/.cursor/mcp.json` `mcpServers`'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/council/SKILL.md — 'Do **not** write ad-hoc notes to `~/.claude/notes` or other shadow paths from th' -> "Do **not** write ad-hoc notes to the agent's notes directory or other shadow pat"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/mcp-health-check.js — '// `~/.claude-work` resolves to one place rather than two.' -> '// `~/some-dir` resolves to one place rather than two.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/commands/init.mjs — regex '\\bclaudeMd\\b' (7x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/commands/shared.mjs — "resolve(homedir(), '.claude', 'ck')" -> "resolve(homedir(), '.cursor', 'ecc', 'ck')"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/commands/shared.mjs — "resolve(homedir(), '.claude', 'projects', encoded, 'memory')" -> "resolve(homedir(), '.cursor', 'ecc', 'projects', encoded, 'memory')"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — "resolve(homedir(), '.claude', 'ck')" -> "resolve(homedir(), '.cursor', 'ecc', 'ck')"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — '// Resolve SKILL.md next to this hook, so plugin installs work as well as ~/.cla' -> '// Resolve SKILL.md next to this hook, so plugin installs work as well as ~/.cur'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — regex '\\bextractClaudeMdGoal\\b' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — regex '\\bclaudeMdGoal\\b' (4x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — '// The host does not expand ${CLAUDE_SKILL_DIR} in hook output, so fill it in he' -> '// The host does not expand ${ECC_PLUGIN_ROOT}/skills/ck in hook output, so fill'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ck/hooks/session-start.mjs — ".replaceAll('${CLAUDE_SKILL_DIR}', () => shellSkillDir)" -> ".replaceAll('${ECC_PLUGIN_ROOT}/skills/ck', () => shellSkillDir)"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/agents/ecc-opensource-packager.md — 'claude    # Start Cursor — reads AGENTS.md automatically' -> '# Start Cursor in this project — it reads AGENTS.md automatically'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/evolve.md — '   - Legacy data under `~/.claude/homunculus/` is not read; migrate it once with' -> '   - Legacy homunculus data is not read (the migration script was removed in fix'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/sessions.md — '- Aliases are stored in `~/.claude/session-aliases.json` (Cursor only)' -> '- Aliases are stored in `~/.cursor/ecc/session-aliases.json` (Cursor only)'
+- skills/design-taste-frontend/references/gate.md — Codex hooks section removed
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install/apply.js — deleted function preflightQwenAgentOperations
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install/apply.js — regex '  preflightQwenAgentOperations\\(plan\\);\\n' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install/apply.js — "// 'remove-claude-settings-hooks' removal both targeted host" -> '// settings-hooks removal both targeted host'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install-lifecycle.js — '  // update-claude-settings operations, which Cursor installs never' -> '  // host settings-update operations, which Cursor installs never'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/demo.html — regex '<span class="ic-chip" title="(anthropic|claude|claude-code|codex)">.*?</span>' (4x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/design-taste-frontend/assets/icons/demo.html — 'AI <span class="muted">53</span>' -> 'AI <span class="muted">49</span>'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/plankton-code-quality/SKILL.md — '| Model routing | Manual (`/model opus`) | Automatic (violation complexity → tie' -> '| Model routing | Manual (`/model grok-4.7-high`) | Automatic (violation complex'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/plankton-code-quality/SKILL.md — '      "haiku":  { "timeout": 120, "max_turns": 10 },\n      "sonnet": { "timeout"' -> '      "cursor-grok-4.6-high-fast": { "timeout": 300, "max_turns": 10 },\n      "g'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/auto-update.js — "// 'everything-claude-code' is the legacy 1.x package name, kept for existing ch" -> ''
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/auto-update.js — "const ECC_PACKAGE_NAMES = new Set(['ecc-universal', 'everything-claude-code']);" -> "const ECC_PACKAGE_NAMES = new Set(['ecc-universal']);"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/hook-flags.js — '  const raw = env.ECC_HOOKS_ENABLED !== undefined\n    ? env.ECC_HOOKS_ENABLED\n  ' -> '  const raw = env.ECC_HOOKS_ENABLED !== undefined\n    ? env.ECC_HOOKS_ENABLED\n  '
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/hook-flags.js — '  const selected = env.ECC_HOOK_PROFILE !== undefined\n    ? env.ECC_HOOK_PROFILE' -> '  const selected = env.ECC_HOOK_PROFILE !== undefined\n    ? env.ECC_HOOK_PROFILE'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/schemas/context-carrier.schema.json — '              "enum": [\n                "pi-package@1",\n                "opencod' -> '              "enum": [\n                "cursor-project@1"\n              ]'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/schemas/context-carrier.schema.json — '              "enum": [\n                "skills",\n                ".opencode/ski' -> '              "enum": [\n                ".cursor/skills"\n              ]'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/schemas/context-carrier.schema.json — '              "enum": [\n                null,\n                ".ecc-plugin/plugi' -> '              "enum": [\n                null\n              ]'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/session-adapters/registry.js — '// fix #16 (D10/F2): session adapters are dmux-tmux only. The Cursor-history,\n//' -> '// fix #16 (D10/F2): session adapters are dmux-tmux only. The other host\n// adap'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install-targets/helpers.js — "const PLATFORM_SOURCE_PATH_OWNERS = Object.freeze({\n  '.claude-plugin': 'claude'" -> "const PLATFORM_SOURCE_PATH_OWNERS = Object.freeze({\n  '.cursor': 'cursor',\n});"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install-targets/helpers.js — '// Source paths that home installs must never copy into a harness home\n// direct' -> '// Source paths that home installs must never copy into a harness home\n// direct'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install-targets/helpers.js — '  planClaudeHooksOperations,\n' -> ''
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/harness-adapter-compliance.js — '// rules/common/, .claude-plugin/plugin.json,' -> '// rules/common/,'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/agent-tool-map.js — regex '\\bclaudeTool\\b' (3x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install/guarded-write.js — '// claude-settings-lock module; it is a generic dev+ino comparison.' -> '// file-lock module; it is a generic dev+ino comparison.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/resolve-ecc-root.js — '  // otherwise a scripts-only ~/.claude short-circuits and every skill path' -> '  // otherwise a scripts-only agent-data short-circuits and every skill path'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/resolve-ecc-root.js — '  // is no ~/.claude and no ECC_PLUGIN_ROOT, so all the probing above' -> '  // is no agent data home and no ECC_PLUGIN_ROOT, so all the probing above'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-turn-scan.js — "/** Transcript path from the hook payload or CLAUDE_TRANSCRIPT_PATH; '' when non" -> "/** Transcript path from the hook payload or ECC_TRANSCRIPT_PATH; '' when none. "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-turn-scan.js — 'process.env.CLAUDE_TRANSCRIPT_PATH' -> 'process.env.ECC_TRANSCRIPT_PATH'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — "const INSTRUCTION_BASENAMES = new Set([\n  'claude.md',\n  'agents.md',\n  'agent.m" -> "const INSTRUCTION_BASENAMES = new Set([\n  'agents.md',\n  'agent.md',\n  'skill.md"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — "const INSTRUCTION_DIRS = new Set(['.claude', 'agents', 'commands', 'skills', 'ru" -> "const INSTRUCTION_DIRS = new Set(['agents', 'commands', 'skills', 'rules', 'hook"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — 'const WORKTREE_PREFIX_PATTERN = /^\\.claude\\/worktrees\\/([^/]+)\\//;' -> 'const WORKTREE_PREFIX_PATTERN = /^\\.ecc\\/worktrees\\/([^/]+)\\//;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — regex 'process\\.env\\.CLAUDE_PROJECT_DIR' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — "  return fs.existsSync(paths.join(rootNative, '.claude', 'worktrees', name, '.gi" -> "  return fs.existsSync(paths.join(rootNative, '.ecc', 'worktrees', name, '.git')"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-target-class.js — "  loader: 'Name the harness/loader that reads this file (Cursor, Codex, Cursor, " -> "  loader: 'Name the harness/loader that reads this file (Cursor, …) and when it "
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/gateguard-search-evidence.js — 'process.env.CLAUDE_PROJECT_DIR' -> 'process.env.CURSOR_PROJECT_DIR'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/gateguard-fact-force.js — regex 'process\\.env\\.CLAUDE_PROJECT_DIR' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/gateguard-fact-force.js — 'const transcriptPath = (data && (data.transcript_path || data.transcriptPath)) |' -> 'const transcriptPath = (data && (data.transcript_path || data.transcriptPath)) |'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/gateguard-fact-force.js — 'function isClaudeSettingsPath(filePath) {\n  const normalized = normalizeForMatch' -> 'function isAgentSettingsPath(filePath) {\n  const normalized = normalizeForMatch('
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/gateguard-fact-force.js — regex '\\bisClaudeSettingsPath\\b' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/gateguard-fact-force.js — "  if (isAgentSettingsPath(filePath)) return 'claude-settings';" -> "  if (isAgentSettingsPath(filePath)) return 'agent-settings';"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/context-selection.js — regex "target = 'codex'" (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/context-profiles.js — regex "target = 'codex'" (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/context-profile-support.js — regex "target = 'codex'" (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/context-pack-registry.js — regex "target = 'codex'" (1x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/utils.d.ts — ' * Defaults to ~/.claude; override with ECC_AGENT_DATA_HOME (e.g. ~/.cursor/ecc)' -> ' * Defaults to ~/.cursor/ecc; override with ECC_AGENT_DATA_HOME.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/session-manager.d.ts — ' * ~/.claude/session-data/ with legacy read compatibility for ~/.claude/sessions' -> ' * ~/.cursor/ecc/session-data/ with legacy read compatibility for ~/.cursor/ecc/'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/session-aliases.d.ts — ' * Manages named aliases for session files, stored in $ECC_AGENT_DATA_HOME/sessi' -> ' * Manages named aliases for session files, stored in $ECC_AGENT_DATA_HOME/sessi'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.d.ts — ' * 1. CLAUDE_PACKAGE_MANAGER environment variable' -> ' * 1. CURSOR_PACKAGE_MANAGER environment variable'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.d.ts — ' * 5. Global user preference (~/.claude/package-manager.json)' -> ' * 5. Global user preference (~/.cursor/package-manager.json)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.d.ts — ' * Saves to ~/.claude/package-manager.json.' -> ' * Saves to ~/.cursor/package-manager.json.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/package-manager.d.ts — ' * Saves to <projectDir>/.claude/package-manager.json.' -> ' * Saves to <projectDir>/.cursor/package-manager.json.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/suggest-compact.js — regex 'claude-tool-count-' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/suggest-compact.js — regex 'claude-context-bucket-' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/stop-format-typecheck.js — "  const roots = [path.join(cwd, '.claude', 'plugins')];" -> "  const roots = [path.join(cwd, '.cursor', 'plugins')];"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/stop-format-typecheck.js — "  if (homeDir) roots.push(path.join(homeDir, '.claude', 'plugins'));" -> "  if (homeDir) roots.push(path.join(homeDir, '.cursor', 'plugins'));"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/skill-run-tracker.js — ' * ~/.claude/state/skill-runs.jsonl was never written and' -> ' * ~/.cursor/ecc/state/skill-runs.jsonl was never written and'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/session-end.js — '  const envTranscriptPath = process.env.CLAUDE_TRANSCRIPT_PATH;' -> '  const envTranscriptPath = process.env.ECC_TRANSCRIPT_PATH;'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/session-end.js — ' * Without this, a parent session and any `claude -p ...` subprocess spawned by' -> ' * Without this, a parent session and any CLI subprocess spawned by'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/session-activity-tracker.js — ' * ~/.claude/metrics/tool-usage.jsonl for ECC2 metric sync.' -> ' * ~/.cursor/ecc/metrics/tool-usage.jsonl for ECC2 metric sync.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/session-activity-tracker.js — '  // Cursor does not set CLAUDE_HOOK_EVENT_NAME for hook subprocesses.' -> '  // Cursor does not set ECC_HOOK_EVENT_NAME for hook subprocesses.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/session-activity-tracker.js — "    input?.hook_event_name || env.CLAUDE_HOOK_EVENT_NAME || ''" -> "    input?.hook_event_name || env.ECC_HOOK_EVENT_NAME || ''"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/pre-compact.js — ' * written here was removed in fix #16: it needed `claude -p` and has no' -> ' * written here was removed in fix #16: it needed a CLI subprocess and has no'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/post-bash-command-log.js — '// `~/.claude-work` resolves to one place rather than two.' -> '// `~/some-dir` resolves to one place rather than two.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/plan-canvas-sessions.js — '// `~/.claude-work` resolves to one place rather than two.' -> '// `~/some-dir` resolves to one place rather than two.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/plan-canvas-pending.js — '// `~/.claude-work` resolves to one place rather than two.' -> '// `~/some-dir` resolves to one place rather than two.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/mcp-health-check.js — "  const eventName = process.env.CLAUDE_HOOK_EVENT_NAME || 'PreToolUse';" -> "  const eventName = process.env.ECC_HOOK_EVENT_NAME || 'PreToolUse';"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/insaits-security-monitor.py — '            session_name="claude-code-hook",' -> '            session_name="ecc-hook",'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/insaits-security-monitor.py — '            sender_id="claude-code",' -> '            sender_id="cursor",'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/governance-capture.js — "  const hookPhase = process.env.CLAUDE_HOOK_EVENT_NAME || 'unknown';" -> "  const hookPhase = process.env.ECC_HOOK_EVENT_NAME || 'unknown';"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/hooks/before-shell-execution.js — regex '\\bclaudeRaw\\b' (3x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/doc-file-warning.js — 'const STRUCTURED_DIRS = /(^|\\/)(docs|\\.claude|\\.github|commands|skills|benchmark' -> 'const STRUCTURED_DIRS = /(^|\\/)(docs|\\.cursor|\\.github|commands|skills|benchmark'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/skill-create.md — 'a global skill uses `~/.cursor/skills/` or `~/.claude/skills/`.' -> 'a global skill uses `~/.cursor/skills/`.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/save-session.md — 'mkdir -p ~/.claude/session-data' -> 'mkdir -p ~/.cursor/ecc/session-data'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/resume-session.md — 'SESSION LOADED: /Users/you/.claude/session-data/2024-01-15-abc123de-session.tmp' -> 'SESSION LOADED: /Users/you/.cursor/ecc/session-data/2024-01-15-abc123de-session.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/promote.md — '   Legacy data under `~/.claude/homunculus/` is not read; migrate it once with `' -> '   Legacy homunculus data is not read (the migration script was removed in fix #'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/projects.md — '   Legacy data under `~/.claude/homunculus/` is not read; migrate it once with `' -> '   Legacy homunculus data is not read (the migration script was removed in fix #'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/instinct-status.md — '   Legacy data under `~/.claude/homunculus/` is not read; migrate it once with `' -> '   Legacy homunculus data is not read (the migration script was removed in fix #'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/instinct-import.md — '   - Legacy data under `~/.claude/homunculus/` is not read; migrate it once with' -> '   - Legacy homunculus data is not read (the migration script was removed in fix'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/instinct-status.md — 'while a legacy `~/.claude/skills/continuous-learning-v2/` directory still' -> 'while a legacy `~/.cursor/skills/continuous-learning-v2/` directory still'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/project-init.md — '/project-init --target claude' -> '/project-init --target cursor'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/project-init.md — 'If `AGENTS.md`, `.ecc/settings.local.json`, `.cursor/`, `.codex/`, `.gemini/`, `' -> 'If `AGENTS.md`, `.ecc/settings.local.json`, or `.cursor/` already exists, inspec'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/project-init.md — '1. Identify the target harness. Default to `claude` unless the user asks for `cu' -> '1. Identify the target harness. Default to `cursor`.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/astra-review.md — '(The Astra/Codex backend was removed in fix #16; review now runs via Grok review' -> '(The Astra review backend was removed in fix #16; review now runs via Grok revie'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/astra-review.md — '> The Astra/Codex backend was removed in fix #16.' -> '> The Astra review backend was removed in fix #16.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/polish-pass/reference/impeccable-detector-rules.json — '    "id": "codex-grid-background",' -> '    "id": "grid-background",'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/orchestrate/SKILL.md — 'they invoked external Codex/Gemini CLIs.' -> 'they invoked external model CLIs.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/ai-regression-testing/SKILL.md — '- AI agent (Cursor, Cursor, Codex) has modified API routes or backend logic' -> '- AI agent (Cursor) has modified API routes or backend logic'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/frontend-design-direction/SKILL.md — 'Note: ECC intentionally does not rebundle the canonical Anthropic\n`frontend-desi' -> 'Note: ECC intentionally does not rebundle the canonical upstream\n`frontend-desig'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/documentation-lookup/SKILL.md — 'Applies across harnesses that have the Context7 MCP configured (e.g. Cursor, Cur' -> 'Applies in Cursor when the Context7 MCP is configured.'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/continuous-learning-v2/agents/observer-loop.sh — '  # `claude` CLI, which has no Cursor equivalent. Observations are' -> '  # a CLI subprocess, which has no Cursor equivalent. Observations are'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/lib/install/apply.js — '  const preparedClaudeSettings = preflightClaudeSettingsOperations(appliedPlan);' -> ''
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/skills/context-budget/SKILL.md — '[`/context` and `/usage` commands (Cursor only; `/cost` is an alias)](https://co' -> '`/context` and `/usage` commands (Cursor only; `/cost` is an alias)'
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/scripts/hooks/hookify-runtime.js — "  const configured = String(env.CLAUDE_PROJECT_DIR || '').trim();" -> "  const configured = String(env.CURSOR_PROJECT_DIR || '').trim();"
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/resume-session.md — regex '~/\\.claude/session-data/' (6x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/resume-session.md — regex '~/\\.claude/sessions/' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/save-session.md — regex '~/\\.claude/session-data/' (3x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/sessions.md — regex '~/\\.claude/session-data/' (2x)
+- /home/hatch/workspace/hackathon-plugin/hackathon-ecc/commands/sessions.md — regex '~/\\.claude/sessions/' (2x)
+
+## Removals (87)
+- scripts/astra-review.js
+- scripts/gan-harness.sh
+- scripts/lib/install-targets/adal-project.js
+- scripts/lib/install-targets/antigravity-project.js
+- scripts/lib/install-targets/claude-home.js
+- scripts/lib/install-targets/claude-project.js
+- scripts/lib/install-targets/codebuddy-project.js
+- scripts/lib/install-targets/codex-home.js
+- scripts/lib/install-targets/copilot-project.js
+- scripts/lib/install-targets/gemini-project.js
+- scripts/lib/install-targets/hermes-home.js
+- scripts/lib/install-targets/joycode-project.js
+- scripts/lib/install-targets/kimi-project.js
+- scripts/lib/install-targets/openclaw-home.js
+- scripts/lib/install-targets/opencode-home.js
+- scripts/lib/install-targets/qwen-home.js
+- scripts/lib/install-targets/zed-project.js
+- scripts/lib/install/antigravity-agent.js
+- scripts/lib/install/antigravity-legacy-migration.js
+- scripts/lib/install/antigravity-rule.js
+- scripts/lib/install/claude-settings-lock.js
+- scripts/lib/install/claude-settings.js
+- scripts/lib/install/claude-skill-migration.js
+- scripts/lib/install/codex-user-config.js
+- scripts/lib/install/copilot-agent.js
+- scripts/lib/install/copilot-rule.js
+- scripts/lib/install/opencode-install-lock.js
+- scripts/lib/install/opencode-legacy-migration.js
+- scripts/lib/install/opencode-script-boundary.js
+- scripts/lib/claude-plugin-setup.js
+- scripts/lib/codex-plugin-setup.js
+- scripts/lib/codex-legacy-sync.js
+- scripts/lib/claude-scope-migration.js
+- scripts/lib/claude-dry-run-sandbox.js
+- scripts/lib/claude-commit-attribution.js
+- scripts/lib/multi-harness-setup.js
+- scripts/lib/session-adapters/claude-history.js
+- scripts/lib/session-adapters/codex-worktree.js
+- scripts/lib/session-adapters/opencode.js
+- scripts/ci/validate-skill-host-compat.js
+- commands/skill-host-compat.md
+- scripts/qwen-adapt-agents.js
+- scripts/hooks/cost-tracker.js
+- scripts/lib/llm-summary.js
+- commands/cost-report.md
+- skills/continuous-learning-v2/scripts/migrate-homunculus.sh
+- commands/santa-loop.md
+- commands/multi-backend.md
+- commands/multi-plan.md
+- commands/multi-execute.md
+- commands/multi-frontend.md
+- commands/multi-workflow.md
+- commands/loop-status.md
+- scripts/lib/context-profile-native.js
+- scripts/lib/context-profile-native-executable.js
+- scripts/lib/context-profile-native-discovery.js
+- scripts/lib/context-profile-interactive.js
+- scripts/lib/context-profile-launch.js
+- scripts/lib/context-profile-proposal.js
+- scripts/lib/astra-review
+- skills/skill-comply
+- skills/council-multi-model
+- skills/config-gc
+- scripts/lib/mcp-inventory
+- commands/astra-review.md — Astra review step + Codex delegate removed; review continues via Grok reviewers (D5). Loss: Codex-backed review; the `--consent-to-openai` / `codex login` / `ECC_ASTRA_MODEL` / MCP-Codex paths are gone.
+- skills/gan-style-harness/SKILL.md — 'Via Shell Script', 'Via Claude Code' and 'Evolution Across Model Capabilities' sections removed (D6). Loss: the shell wrapper and the Anthropic-model-history narrative; the loop now runs only via /gan-build + ecc-gan-* Cursor subagents.
+- skills/continuous-learning-v2/agents/observer-loop.sh — claude spawn, watchdog, and process helpers removed (D13). Loss: background instinct extraction; observations accumulate unanalyzed.
+- skills/plankton-code-quality/SKILL.md — claude -p auto-fix delegation removed (D13). Loss: Claude-powered auto-fixes; Plankton now reports violations instead of auto-fixing.
+- scripts/lib/llm-summary.js + call sites (D12). Loss: LLM-generated session summaries at pre-compact and session-end (and the context-low trigger that gated them); mechanical session summaries still run. scripts/hooks/cost-tracker.js + commands/cost-report.md removed with the same decision: no verified Cursor cost source exists.
+- scripts/lib/resolve-ecc-root.js — legacy everything-claude-code migration branch removed (D11). Loss: legacy everything-claude-code installs are no longer auto-detected/migrated; resolution is ECC_PLUGIN_ROOT -> ~/.cursor/plugins scan -> selfRoot.
+- install/content-transform.js host branches removed (D10/D14). Loss: Claude manual-plugin namespace projection, Qwen/Antigravity/Copilot frontmatter adaptation, OpenCode hook disabling — all host-specific, unused by Cursor plans.
+- install/ownership-guard.js codex-user-config guard removed (D10). Loss: refusing to overwrite a user-edited Codex user config during install/repair (no Codex config exists in a Cursor-only install).
+- scripts/lib/install/inventory.js
+- scripts/lib/install/inventory.js deleted (round 2). Loss: the manual/managed Claude install discovery helpers (findManualClaudePlugin / findManagedClaudeInstalls / resolveClaudePaths) — nothing in the plugin called them; the Cursor install is discovered via the plugin root, not a Claude config dir.
+- install/apply.js: commit-attribution preference write removed (D12/D15). Loss: the installer no longer writes the commit-attribution preference into the host settings file (default attribution behavior applies). The Claude-settings module it ran through is deleted and no verified Cursor settings path was invented for it.
+- install/apply.js: legacy Claude-skill migration removed (D13). Loss: migrating legacy Claude flat skills into the install — replaced by the disabled-migration shape (plan operations only), so a Cursor install never moves legacy skill files.
+- install-lifecycle.js: Claude settings repair/uninstall/inspect handlers removed (D12). Loss: doctor/repair/uninstall of update-claude-settings operations (Cursor installs never produce them; Cursor hooks live in the plugin's hooks.json).
+- install-lifecycle.js: legacy OpenCode/Antigravity discovery + repair removed (D10). Loss: discovering/repairing legacy multi-host installs; doctor/repair now cover Cursor installs only.
+- session-adapters: Claude-history / Codex-worktree / OpenCode adapters + their canonical-session normalizers removed (D10/F2). Loss: reading Claude/Codex/OpenCode session transcripts and worktrees as orchestrated sessions; dmux-tmux sessions are unaffected.
+- context-profile native execution removed (D20). Loss: native isolated execution (Codex/Claude CLI sandboxing, interactive native sessions, `run` launching, prepare/rollback/recover native commands); the carrier/resolve/routing-index machinery for Cursor remains.
+- design-taste-frontend brand icons (anthropic/claude/claude-code/codex) — removed from assets/icons/index.json + demo/icons-credits.json; the heroes.json 'from' attribution drops Anthropic (fix #16)
+- harness-capabilities.js + harness-adapter-compliance.js non-Cursor entries — the cross-harness capability/compliance catalogs are now Cursor-only; the DeepSeek DSH bridge record goes with them (fix #16)
+- unified-memory cross-host transfer — handoff flags now take cursor only; the Codex/Hermes/OpenCode paths are gone (fix #16)
+- browser-qa claude-in-chrome MCP — not a Cursor MCP; Playwright / Puppeteer remain (fix #16)
+- continuous-learning-v2 homunculus migration — migrate-homunculus.sh was deleted (D13); there is no migration path from the old `~/.claude/homunculus` location (fix #16)
+- pi-core.json catalog entries for the deleted skills (council-multi-model, skill-comply, config-gc, claude-devfleet) and commands (multi-*, santa-loop, cost-report, skill-host-compat, loop-status)
+- skills/security-scan/SKILL.md 'Grok 4.7 High Deep Analysis' section — the ANTHROPIC_API_KEY / npx ecc-agentshield scan --opus pipeline has no verified Grok equivalent; the rest of the skill is unchanged (fix #16)
+
+## Self-check
+
+```
+BANNED composer-2\.5: 0
+BANNED claude: 0
+BANNED codex: 0
+BANNED anthropic: 0
+OPUS (list individually; may false-positive): 0
+GEMINI/GPT- in model-pin contexts: 0
+JS SYNTAX FAILURES: 0
+JSON FAILURES: 0
+INSTALL REGISTRY SMOKE: rc=0 stdout='getInstallTargetAdapter,listInstallTargetAdapters,planInstallTargetScaffold\n[object Object]' stderr=''
+commands/gan-build.md: grok-4.7-high x2, claude-opus-5 x0, composer-2.5 x0
+commands/gan-design.md: grok-4.7-high x3, claude-opus-5 x0, composer-2.5 x0
+TOTAL BANNED-TERM HITS: 0
+```
+
+
+ERRORS: 0  NOTES: 11  CHANGES: 625  REMOVALS: 87
+skills: 166
+agents: 72
+rules: 123
+commands: 87
+hooks: 15
+plugin.json: hackathon-ecc 1.0.0
+marketplace.json: hackathon-ecc-marketplace hackathon-ecc hackathon-ecc
+build complete: /home/hatch/workspace/hackathon-plugin/hackathon-ecc
+BUILD4 RC=0

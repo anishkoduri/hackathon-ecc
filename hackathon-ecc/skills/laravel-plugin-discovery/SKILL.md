@@ -30,7 +30,7 @@ add it to your `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project)
 }
 ```
 
-In Claude Code, add the same entry to your `~/.claude.json` `mcpServers`
+In Cursor, add the same entry to your `~/.cursor/mcp.json` `mcpServers`
 instead.
 
 No API key required — the server is free for the Laravel community.

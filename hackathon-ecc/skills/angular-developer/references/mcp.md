@@ -50,6 +50,8 @@ Create a file named `.antigravity/mcp.json` in your project's root:
 
 ### Gemini CLI
 
+> Not a Cursor path: the Gemini CLI is a separate Google tool, not a Cursor MCP server — this section documents the upstream Angular setup, not a plugin install step.
+
 Create `.gemini/settings.json` in the project root:
 
 ```json

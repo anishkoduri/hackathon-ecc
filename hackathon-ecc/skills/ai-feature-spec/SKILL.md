@@ -4,8 +4,7 @@ description: Use when specifying one AI-powered feature end to end, including mo
 metadata:
   portable: true
   compatible_with:
-  - claude-code
-  - codex
+  - cursor
 ---
 
 # AI Feature Specification
@@ -119,6 +118,7 @@ Produce a complete, implementation-ready blueprint for one AI-powered feature. T
 
 ### 10. UX Integration
 [Where result appears, loading state, streaming vs batch, feedback mechanism]
+**Design-decision pointer:** D19/F6/X1 as relevant (UX states are the component's experience — what the user feels) — design-package rule — Taste step 4a / orchestrate.
 ```
 
 ---

@@ -16,7 +16,6 @@ Use with caution:
 - Enable for trusted, well-defined plans
 - Disable for exploratory work
 - Never use dangerously-skip-permissions flag
-- Configure Cursor permissions in the project's Cursor settings instead of Claude Code's `~/.claude/settings.json`.
 
 ## Progress Tracking
 

@@ -28,8 +28,8 @@ Translucent plastic and daylight: warm morning paper with a fine fibre grain, wi
   --p-mon: oklch(85% 0.052 22); --p-tue: oklch(87.5% 0.058 64); --p-wed: oklch(91.5% 0.064 98); --p-thu: oklch(86.5% 0.075 160);
   --p-fri: oklch(87% 0.048 210); --p-sat: oklch(84% 0.045 270); --p-sun: oklch(84% 0.048 322);
   --light: oklch(99.4% 0.016 84); --glint: oklch(100% 0 0);
-  --font-display: "Schibsted Grotesk", ui-sans-serif, sans-serif; --font-body: "Instrument Sans", ui-sans-serif, sans-serif;
-  --font-outlier: "DM Mono", ui-monospace, monospace;
+  --font-display: "Schibsted Grotesk"; --font-body: "Instrument Sans";
+  --font-outlier: "DM Mono";
   --radius-card: 14px; --radius-input: 10px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 1px 2px oklch(30% 0.03 165 / 0.08), 0 24px 48px -24px oklch(40% 0.08 165 / 0.35);
   --shadow-lift: 0 1px 1px oklch(30% 0.03 165 / 0.10), 8px 18px 28px -14px oklch(36% 0.06 165 / 0.32), 18px 40px 60px -30px oklch(40% 0.08 165 / 0.30);
@@ -60,6 +60,7 @@ Committed: the paper is warm, the green tints and the plastic carry the colour, 
 - **A record as labels:** the photograph beside two pharmacy labels, one stamped given in green, one missed in grey, each stating the dose, time and person.
 - **Statement on the ink band:** one plain sentence in Schibsted 700 at `--text-display`, one line in mint beneath it.
 - **A first step in a tray:** the form on a sunken plastic tray, choices as plastic keys, the product's screen beside it answering live.
+- **Liquid Glass (TRENDS_F22 E15):** glass only as this theme's own translucent tinted plastic, never a generic blur wash.
 
 ## Controls
 

@@ -9,8 +9,8 @@ every chat in that project uses it.
 ## What is inside
 
 - **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools, playwright, and codebase-memory MCP servers. ECC process applies in full: plan first, TDD, code review
-  while building. With the 25 hackathon additions below, the plugin ships
-  169 skills, 72 agents, 123 rules, and 96 commands in total.
+  while building. With the hackathon additions below, the plugin ships
+  166 skills, 72 agents, 123 rules, and 87 commands in total (69 agents as-shipped + 3 staged orchestrate agents; 121 rules as-shipped + 2 new rules — `hackathon-mode`, `ponytail`; skill and command totals per build.sh STEP 5 counts).
   Install profiles: the `hackathon` module (those 25 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
 - **Grill-me first** — after your first hackathon project prompt, the
   plugin asks one question at a time until every decision is recorded, and
@@ -33,15 +33,15 @@ every chat in that project uses it.
 
 ## How this compares
 
-**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, codebase-memory MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 169 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
+**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP, codebase-memory MCP, and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 166 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
 
-**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 169 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
+**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 166 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
 
-**vs plain Cursor:** The edge is structured process — 169 skills, 72 agents, 96 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates require rebuilding from `build.sh`, and 56 MB is loaded into a project that may only need a tenth of it.
+**vs plain Cursor:** The edge is structured process — 166 skills, 72 agents, 87 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates follow the Updating section below (git pull for a local clone, rebuild + re-copy for a copy install), and 56 MB is loaded into a project that may only need a tenth of it.
 
-## Commands (highlights — 3 of 96)
+## Commands (highlights — 3 of 87)
 
-- `/demo` — generate a narrated 1:30–1:50 product demo video of the app
+- `/demo` — generate a narrated product demo video, under 2:10, of the app
   (films the real app with Playwright; rebuilds in ~2 minutes after a
   frontend change; opt-in montage and explainer modes via OpenMontage). `/demo <path>`, `/demo --rebuild`, `/demo --script`,
   `/demo --render`.
@@ -65,8 +65,8 @@ a feature mid-build (stock ECC rules/commands such as `/quality-gate`, `/securit
   downloads the Playwright browser. The `/demo` skill also needs a MiniMax
   key for good narration (or record the narration yourself).
 - **Taste** needs Node 22+ and Chrome/Edge/Chromium for its finish gate (run the gate explicitly — it does not auto-run on stop in Cursor).
-- **Before the first build — Grok 4.7 High in the model picker:** the plugin pins its design role to `grok-4.7-high`. Cursor's subagent model allowlist is coupled to the model-picker dropdown, so select **Grok 4.7 High** in Cursor's model picker before the first build, or the design pin may silently fall back to another model. This is a one-time setup note, not a mid-build ask. File-level pin only — whether it holds is decided by the live smoke test (`LIVE_SMOKE_TEST.md` §14).
-- The plugin's Node scripts (`/harness-audit`, `/skill-host-compat`, the
+- **Before the first build — Grok 4.7 High in the model picker:** select Grok 4.7 High in Cursor's model picker before the first build; see the picker note in `skills/orchestrate/SKILL.md` step 4. Task agents pin to Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`); the orchestrator and the design/implementation roles pin to Grok 4.7 High (`grok-4.7-high`).
+- The plugin's Node scripts (`/harness-audit`, the
   `/epic-*` commands, `validate-skills.js`) ship with their dependencies
   vendored in `node_modules/` (~4.9 MB after pruning unused sql.js builds);
   no install step is needed.
@@ -81,11 +81,18 @@ a feature mid-build (stock ECC rules/commands such as `/quality-gate`, `/securit
    **project scope** (in a hackathon project) or **user scope**.
    Then restart Cursor or run **Developer: Reload Window** and start a
    new chat. (Team marketplaces require a Teams or Enterprise plan — on a solo free plan, use step 2, the local install, instead.)
-2. Or test it locally: copy this `hackathon-ecc` directory to
-   `~/.cursor/plugins/local/hackathon-ecc` (copy it — do not symlink it
-   in from elsewhere), then restart Cursor or run **Developer: Reload
+2. Or test it locally: clone the repo directly into `~/.cursor/plugins/local/hackathon-ecc` (clone it — do not symlink it in from elsewhere, and do not copy it: a plain copy has no `.git`, so it cannot be updated with `git pull` — see Updating below), then restart Cursor or run **Developer: Reload
    Window**, and open **Customize** to confirm the plugin's rules,
    skills, agents, commands, and MCP servers appear.
+
+## Updating
+
+This is the single authoritative update path — every other mention of updating in the plugin points here.
+
+- **Local clone (the normal install):** the plugin lives as a git clone at `~/.cursor/plugins/local/hackathon-ecc`. Update it with `git pull` inside that directory, then run **Developer: Reload Window** in Cursor. No rebuild, no re-copy.
+- **Copy install:** if the plugin dir is a plain copy (no `.git` inside it), `git pull` cannot work there — update by rebuilding from the source repo (`bash ~/workspace/hackathon-plugin/build.sh`) and re-copying the rebuilt `hackathon-ecc/` directory over the installed one, then **Developer: Reload Window**.
+- **Delta bundles:** for an incremental update without a full re-clone, the maintainer can ship a bundle (`git bundle create update.bundle main ^<prev-commit>`); apply it with `git fetch <bundle> main` + `git merge --ff-only FETCH_HEAD` (the positive side must be a branch name, not a bare SHA), then **Developer: Reload Window**.
+- **Never symlink** a plugin directory in from elsewhere — Cursor skips symlinks pointing outside `~/.cursor/plugins/local/`. If a repo-link copy of the plugin is also installed, remove it first: a repo-link copy takes precedence over the local one.
 
 ## Rebuild
 

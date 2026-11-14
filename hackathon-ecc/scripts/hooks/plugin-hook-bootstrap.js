@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Plugin hook bootstrap — Claude Code-only (not wired in this Cursor plugin — Cursor has no hook events that invoke it).
+ * Plugin hook bootstrap — Upstream-only (not wired in this Cursor plugin — Cursor has no hook events that invoke it).
  */
 'use strict';
 
@@ -176,7 +176,7 @@ function spawnNode(rootDir, relPath, raw, args, options = {}) {
   ensureAgentDataHomeEnv();
   const hookEnv = {
     ...process.env,
-    CLAUDE_PLUGIN_ROOT: rootDir,
+    ECC_PLUGIN_ROOT: rootDir,
     ECC_PLUGIN_ROOT: rootDir,
     ECC_HOOK_INPUT_MAX_BYTES: String(options.maxStdin),
     ECC_HOOK_INPUT_TRUNCATED_UPSTREAM: options.truncated ? '1' : '0',
@@ -209,7 +209,7 @@ function spawnShell(rootDir, relPath, raw, args, options = {}) {
   ensureAgentDataHomeEnv();
   const hookEnv = {
     ...process.env,
-    CLAUDE_PLUGIN_ROOT: rootDir,
+    ECC_PLUGIN_ROOT: rootDir,
     ECC_PLUGIN_ROOT: rootDir,
     ECC_HOOK_INPUT_MAX_BYTES: String(options.maxStdin),
     ECC_HOOK_INPUT_TRUNCATED_UPSTREAM: options.truncated ? '1' : '0',
@@ -269,7 +269,7 @@ async function main() {
   contextScanner.push(contextDecoder.end());
   const hookContext = contextScanner.context;
   const rootDir = normalizePluginRootForPlatform(
-    process.env.QODER_PLUGIN_ROOT || process.env.CLAUDE_PLUGIN_ROOT || process.env.ECC_PLUGIN_ROOT
+    process.env.QODER_PLUGIN_ROOT || process.env.ECC_PLUGIN_ROOT || process.env.ECC_PLUGIN_ROOT
   );
 
   if (!mode || !relPath || !rootDir) {

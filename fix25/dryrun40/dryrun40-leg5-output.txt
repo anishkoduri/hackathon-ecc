@@ -1,0 +1,50 @@
+STATIC-OK  counts:agents -- map=72 tree=72
+STATIC-OK  counts:commands -- map=87 tree=87
+STATIC-OK  counts:hooks -- map=15 tree=15
+STATIC-OK  counts:rules -- map=123 tree=123
+STATIC-OK  counts:skills -- map=166 tree=166
+STATIC-OK  counts:triggers -- map=64 tree=64
+BROKEN     cmd:epic-unblock -- unresolvable dispatch: command:/loop-status
+STATIC-OK  cmd-review:evolve:command:/adding-tests -- non-dispatch mention, verified by reading: evolve.md:95 documents these as illustrative example names, not shipped commands
+STATIC-OK  cmd-review:learn:skill:learned -- non-dispatch mention, verified by reading: placeholder path skills/learned/<name>.md, not a skill dir
+STATIC-OK  cmd-review:learn-eval:skill:learned -- non-dispatch mention, verified by reading: placeholder path skills/learned/<name>.md, not a skill dir
+STATIC-OK  cmd-review:react-review:command:/api -- non-dispatch mention, verified by reading: code path, not a command (followed by /)
+STATIC-OK  cmd-review:save-session:command:/api -- non-dispatch mention, verified by reading: code path, not a command (followed by /)
+STATIC-OK  cmd-review:skill-create:command:/skill-creator -- non-dispatch mention, verified by reading: GitHub App slash command (github.com/apps/skill-creator), external service, not a plugin command
+STATIC-OK  cmd-review:vue-review:command:/api -- non-dispatch mention, verified by reading: code path, not a command (followed by /)
+STATIC-OK  cmd:all-resolve -- 86/87 command files resolve every named skill/agent/command (+1 documented MINOR alias, see cmd:epic-unblock)
+STATIC-OK  cmd:live-execution -- command files are agent instructions; dispatch resolved statically (86 files clean, 7 reviewed non-dispatch refs, 1 broken — see cmd:all-resolve) — live execution is OWED to the smoke test
+STATIC-OK  skills:all-load -- 166/166 skills have a non-empty SKILL.md with frontmatter
+STATIC-OK  skills:live-invocation -- skills are invoked by the agent at run time; live invocation of each on-request skill is OWED to the smoke test
+STATIC-OK  skills:map-agrees -- map skills=166 tree skills=166; diff=[]
+EXERCISED  hook:afterFileEdit -- exit=0 stdout=37B json=True stderr=
+EXERCISED  hook:afterMCPExecution -- exit=0 stdout=31B json=True stderr=[ECC] MCP result: unknown/unknown - OK 
+EXERCISED  hook:afterShellExecution -- exit=0 stdout=38B json=True stderr=
+EXERCISED  hook:afterTabFileEdit -- exit=0 stdout=37B json=True stderr=
+EXERCISED  hook:beforeMCPExecution -- exit=0 stdout=31B json=True stderr=[ECC] MCP invocation: unknown/unknown 
+EXERCISED  hook:beforeReadFile -- exit=0 stdout=42B json=True stderr=
+EXERCISED  hook:beforeShellExecution -- exit=0 stdout=38B json=True stderr=
+EXERCISED  hook:beforeSubmitPrompt -- exit=0 stdout=19B json=True stderr=
+EXERCISED  hook:beforeTabFileRead -- exit=0 stdout=42B json=True stderr=
+EXERCISED  hook:preCompact -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:sessionEnd -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:sessionStart -- exit=0 stdout=7573B json=True stderr=[cursor-session-env] Set ECC_AGENT_DATA_HOME=/home/hatch/workspace/hackathon-plugin/fix25/dryrun40/fake-home/.cursor/ecc
+EXERCISED  hook:stop -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:subagentStart -- exit=0 stdout=31B json=True stderr=[ECC] Agent spawned: unknown 
+EXERCISED  hook:subagentStop -- exit=0 stdout=31B json=True stderr=[ECC] Agent completed: unknown 
+EXERCISED  hook:ck-wire -- session-start output carries the ck (Context Keeper) brief via hooks/session-start.js -> skills/ck/hooks/session-start.mjs
+STATIC-OK  wire:prp-commit -- prp-commit Phase 3 + orchestrate step 6 name the skill and the agent; both resolve; live commit drafting is OWED
+STATIC-OK  wire:ecc-recipes -- RECIPES_F25 lookup in orchestrate; ecc-recipes resolves; 8 epic/prune commands named by the lookup; live lookup OWED
+DORMANT    wire:epic-dormant-in-use -- the 8 epic/prune commands are reachable through the recipes lookup but dormant IN USE (need a genuine multi-week epic run); not executed here by decision
+EXERCISED  wire:test-coverage -- /test-coverage Steps 1-2 run on the scratch pytest project: coverage 68.2%; files below 80% listed in the exercise log
+DORMANT    uncalled:count -- uncalled=52 (skills 24, agents 21, commands 7, rules 0, hooks 0, triggers 0); map expects 52
+DORMANT    uncalled:zero-invokers -- every uncalled element has zero invokers in the map
+DORMANT    second-order:count -- second-order orphans=13 (skills 8, agents 4, commands 1); map expects 13
+DORMANT    second-order:invokers-uncalled -- orphan invokers are uncalled elements or reference files
+STATIC-OK  triggers:count -- skill-triggers@1.json holds 64 keys (map expects 64)
+STATIC-OK  triggers:entry-point -- no live Cursor entry point for the trigger consumer (parent decision item, unchanged) — live firing OWED, never claimed
+
+LEG 5 summary: {'STATIC-OK': 22, 'BROKEN': 1, 'EXERCISED': 17, 'DORMANT': 5}
+BROKEN: 1
+  BROKEN cmd:epic-unblock -- unresolvable dispatch: command:/loop-status
+MINOR (adjudicated, not a leg failure): cmd:epic-unblock /loop-status alias has no command file

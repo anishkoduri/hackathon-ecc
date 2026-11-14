@@ -11,7 +11,7 @@ Testing patterns specifically designed for AI-assisted development, where the sa
 
 ## When to Activate
 
-- AI agent (Claude Code, Cursor, Codex) has modified API routes or backend logic
+- AI agent (Cursor) has modified API routes or backend logic
 - A bug was found and fixed — need to prevent re-introduction
 - Project has a sandbox/mock mode that can be leveraged for DB-free testing
 - Running the bug-check workflow below after code changes

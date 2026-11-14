@@ -31,7 +31,7 @@ Money software at the calm end of the day: a real photograph of land at dusk beh
   --glass: oklch(22% 0.018 268 / 0.58); --glass-blur: 22px;
   --glass-hi: inset 0 1px 0 oklch(100% 0 0 / 0.10), inset 0 0 0 1px oklch(100% 0 0 / 0.06);
   --shadow-card: 0 1px 0 oklch(100% 0 0 / 0.06) inset, 0 40px 80px -32px oklch(8% 0.02 268 / 0.7);
-  --font-display: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif; --font-body: "Wix Madefor Text", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Wix Madefor Display"; --font-body: "Wix Madefor Text";
   --radius-card: 18px; --radius-inner: 10px; --radius-pill: 999px; --rule-hair: 1px;
   --tracking-display: -0.022em; --display-weight: 500;
 }
@@ -65,6 +65,7 @@ Three dials, each stated in the stamp (`dusk: fog/periwinkle-apricot/glass`); tw
 - **A tour as a list beside one pane:** four jobs in a ruled list, the chosen one marked by a periwinkle dot and opened to one line, one glass pane beside it that changes with it.
 - **A month as a strip of nights:** one slim rounded bar a day in periwinkle, its height the work done, a flagged day marked by an apricot dot above its bar, the open day in apricot, days still to come hatched; a ruled tally of four figures under it.
 - **A hand-off in a well:** the note or message the product sends, set as the real card on bone.
+- **Dark gradient heroes (TRENDS_F22 E7):** the hero's own dusk light, never a synthetic wash.
 
 ## Controls
 

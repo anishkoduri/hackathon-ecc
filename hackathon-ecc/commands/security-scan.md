@@ -84,7 +84,7 @@ Use AgentShield in GitHub Actions for enforced gates:
 ## Links
 
 - Skill: `skills/security-scan/SKILL.md`
-- Agent: `agents/ecc-security-reviewer.md`
+- Agent: `security-reviewer` (`agents/ecc-security-reviewer.md`)
 - Scanner: <https://github.com/affaan-m/agentshield>
 
 ## Arguments

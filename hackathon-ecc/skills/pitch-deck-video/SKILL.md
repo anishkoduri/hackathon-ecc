@@ -1,6 +1,6 @@
 ---
 name: pitch-deck-video
-description: "Use when the user wants a demo video, launch video, product walkthrough, hackathon submission video, or screen recording of a local web app — especially if they say the video must be re-doable after the UI changes. Generates a narrated 1:30–1:50 product demo by driving the real app with Playwright and cutting the edit from measured narration, so a rebuild after a frontend change takes ~2 minutes and one command. Also offers two opt-in OpenMontage modes on request: montage (real archival and stock footage cuts) and explainer (scripted animated scenes). Film stays the default."
+description: "Use when the user wants a demo video, launch video, product walkthrough, hackathon submission video, or screen recording of a local web app — especially if they say the video must be re-doable after the UI changes. Generates a narrated product demo, under 2:10, by driving the real app with Playwright and cutting the edit from measured narration, so a rebuild after a frontend change takes ~2 minutes and one command. Also offers two opt-in OpenMontage modes on request: montage (real archival and stock footage cuts) and explainer (scripted animated scenes). Film stays the default."
 ---
 
 # /demo
@@ -72,6 +72,10 @@ silently swap in a different wow. Do not write narration from the source code.
 You are writing about what a judge will see, and only the screenshots tell you
 that.
 
+Before storyboarding, enumerate the feature list: every must-have from `docs/scope.md`'s must-have list, plus every route screenshotted above (a route with no must-have feature behind it is not a feature). Write the list into `shots.json` as a `features` array — `[{name, beat}]`, one entry per must-have feature, `beat` being the shot id that shows it — and a `cuts` array — `[{name, reason}]` for any must-have feature deliberately left out of the video. A feature is 'shown' only if it is visible on camera AND named (narration or on-screen caption) in its beat. If the feature count would push the video past the 2:10 cap (step 4), cut the least important features into the `cuts` array with a reason — a feature cut from the video is a reported decision, never a silent omission.
+
+Use the screenshots to pick the best state per beat, not only to verify the wow: for each beat, the shot's state is the best-looking state that shows the claim — populated data, the prettiest route, the wow at its best. Never put an empty state on camera to stand for a full one (the Don't below stays: never describe a screen as full when this account's version of it is empty).
+
 ```js
 // one-off script; Playwright comes with the template
 for (const r of routes) {
@@ -86,18 +90,30 @@ Note the scroll heights: anything past 1080 needs a `scroll` action or it never
 appears on camera.
 
 ### 4 · Write `shots.json`
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 
 Start from `template/shots.example.json`. See `references/shots-reference.md`
 for every field and action.
 
-Pull the `theme.colors` from the app's own design tokens so the cards and the
-footage read as one piece. Fill `cards.arch.nodes` with the real architecture —
-which boxes are model calls and which are deterministic code. That beat is what
-separates a demo from a wrapper, and judges look for it.
+Pull the `theme.colors` from the app's own design tokens so the cards and the footage read as one piece, and record the token source (file + values) in `shots.json` as `theme.source` — the QA step fails the video if the theme is still the seed theme with no recorded source. Fill `cards.arch.nodes` with the real architecture — which boxes are model calls and which are deterministic code — and give each node its `stack` label: the concrete framework / model / service / infra that box runs on (e.g. `"Next.js 15"`, `"GPT-5"`, `"Supabase"`), taken from the app's `package.json` + `docs/decision-record.md` / `docs/scope.md`, never invented. That beat is what separates a demo from a wrapper, and judges look for it. Its narration must name the stack in one spoken phrase ("Built on Next.js, GPT-5, and Supabase") — one phrase, not a list read aloud (the 'Never list' rule stays). If the app has no recorded stack, the arch beat says the framework only and notes the gap in the final report.
 
 Narration rules that matter:
 
-- **12–16 beats; the video is 1:30–1:50 total.** Under a 2:00 cap, leave 10 seconds of room. Lengths by artefact: the video is 1:30–1:50; the live demo storyboard is 2–4 min; the pitch storyboard is <90s. Do not mix them up — the video cap governs this skill, the longer live-demo storyboard and the shorter pitch storyboard belong to the pitch, not the video.
+- **12–16 beats; the video is under 2:10 (130 seconds) — hard rule.** The total is computed from the MEASURED narration durations (`src/vo-durations.json`), plus `gapMs` per beat and the card durations — never from estimates. Over 2:10 is a BLOCKING finding in QA: re-cut (shorten lines, drop a low-priority feature beat into the `cuts` array, tighten a beat). Absolute max 2:30 (150 seconds), never exceeded — no approval, no exception, no 'one more beat' may push a video past it; if a storyboard would exceed 2:30 even after cutting, re-cut it (fewer features, shorter lines), never extend it. Leave ~10 seconds of room. Lengths by artefact: the video is under 2:10; the live demo storyboard is 2–4 min; the pitch storyboard is <90s. Do not mix them up — the video cap governs this skill, the longer live-demo storyboard and the shorter pitch storyboard belong to the pitch, not the video.
+**Write the time budget before writing the lines.** Before writing `shots.json`, write the section budget first, then write lines to fit it — never the reverse (writing lines and discovering the total afterwards). The 130-second budget is divided across the arc by importance, not evenly (times are narration + gaps for that section, in seconds):
+
+| Section | Beats | Seconds | Why |
+| --- | --- | --- | --- |
+| Problem | 1 | 8–10 | The pain, in the user's words — short, sharp |
+| Wow | 1–2 | 14–18 | The opening, the reason to keep watching — deserves time |
+| Edge (uniqueness) | 1 | 8–10 | One sentence, the differentiator |
+| How / features | 6–9 | 55–65 | The LARGEST share — every feature shown, the program proved |
+| Proof (arch + stack) | 1–2 | 12–15 | Credibility beat, stack named aloud |
+| Close | 1 | 6–8 | One sentence left on screen |
+| Unallocated room | — | ~10 | The existing leave-room rule, kept |
+
+Totals: 103–126s of content + ~10s room ≈ under 2:10. The features' share is the largest because the spare beats go to features (step 3). If a section's lines would exceed its budget, shorten the lines or move a feature to `cuts`; do not borrow from another section's budget without recording it in the final report.
+
 - **One idea per beat.** The beat ends when the idea does.
 - **Say the number.** "Six people scored, Priya wins" beats "it picks someone."
 - **Never narrate the UI.** Not "here we click Approve" — say what it means.
@@ -105,6 +121,7 @@ Narration rules that matter:
 - **Close on one sentence** you want left on screen.
 
 ### Storyboard craft — lead with the wow moment
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 
 The storyboard is the video's argument, and it opens with the single most
 captivating moment of the product — the scoped wow moment from `docs/scope.md` (step 3), not a new one derived from the screenshots. Before writing any other beat, name it in one concrete sentence:
@@ -117,22 +134,18 @@ twelve.
 
 The arc after the wow moment, in order:
 
-1. **Problem** — one beat, in the user's words, before the product name
-   exists. The pain, not the category.
-2. **Wow** — the opening shot above: the product doing the impossible
-   thing, live, with the number said out loud.
-3. **How** — two to four beats along the golden path: one user, one task,
-   each beat one action and one outcome. Never two features in one beat.
-4. **Proof** — the arch card beat: which boxes are model calls and which
-   are deterministic code. This is the credibility beat; judges look for
-   it, and it is what separates a demo from a wrapper.
-5. **Close** — one sentence left on screen (the tagline, said out loud).
+1. **Problem** — one beat, in the user's words, before the product name exists. The pain, not the category.
+2. **Wow** — the opening shot above: the product doing the impossible thing, live, with the number said out loud.
+3. **Edge** — one beat, one sentence: the one thing no alternative does, in the user's words, with the alternative named or clearly implied ("unlike X, this…"). Shown live where possible — a `focus` on the differentiating element, or the wow footage carrying it. The Edge claim comes from `docs/decision-record.md` / `docs/scope.md` (the wow test: "does this make a judge stop and stare?") or from the user. If none is recorded, ask for one line; never invent a competitor claim — the fallback is stating the wow's distinguishing fact, not a fabricated comparison.
+4. **How** — two to four beats along the golden path: one user, one task, each beat one action and one outcome. Never two features in one beat. PLUS one beat per remaining must-have feature from the `features` array (step 3), drawn from the 12–16 beat budget — the budget's spare beats go to features, not to padding the golden path. A feature counts as shown only if it is visible on camera AND named in its beat.
+5. **Proof** — the arch card beat: which boxes are model calls and which are deterministic code, each node labelled with its stack, and the stack named aloud in one phrase. This is the credibility beat; judges look for it, and it is what separates a demo from a wrapper.
+6. **Close** — one sentence left on screen (the tagline, said out loud).
 
 Shot design per beat: one beat is one screen (or one `focus` move within
 a screen). If a beat needs two screens, it is two beats. Any text that
 would be illegible at 1080p gets a `focus` — a dense list, a side panel,
 a drawer — and a `{"focus": null}` before navigating away. Pacing: at
-12–16 beats over 90–110 seconds, a beat averages 7–9 seconds; a beat
+12–16 beats under 2:10, a beat averages 7–9 seconds; a beat
 whose line runs past ~12 seconds is two ideas and must be split. Cut
 setup out of every beat with `{"cut": true}` after the navigation and
 loading steps, so no beat opens on a spinner.
@@ -140,7 +153,13 @@ loading steps, so no beat opens on a spinner.
 ### 5 · Build
 
 ```sh
+# POSIX / Git Bash
 APP_DIR=/path/to/app npm run all
+```
+
+```powershell
+# PowerShell (Windows)
+$env:APP_DIR='/path/to/app'; npm run all
 ```
 
 Narration → recording → frames → render. It starts the dev server if nothing is serving `app.url`, reading the app's own
@@ -180,20 +199,317 @@ Then **read the sheets as images**. Scrubbing the video is slow and you will
 miss things; a contact sheet takes seconds and catches exactly the failures that
 matter.
 
-Check: **`capture/marks.json → warnings` is empty** (a missing selector is a
-warning, not a crash — you still get a video, and a list of what broke). Then:
-does each caption land on a frame that supports it? Any blank or white frames?
-Is small text legible, or does it need a `focus`?
+Check: **`capture/marks.json → warnings` is empty** (a missing selector is a warning, not a crash — you still get a video, and a list of what broke). Then read the `qa.mjs` printout and work through it in order:
+
+- **Coverage table complete** — every must-have feature has a beat or a recorded cut (`shots.json` `features` / `cuts`). A feature whose beat id is missing from `shots.json` or whose beat produced no footage is a BLOCKING finding.
+- **Per-beat A/V table** — for every shot, the claim in its `say` line against the stills: does the frame support it? Complete the table `qa.mjs` prints while reading the contact sheets and record it in the video project (qa notes). A 'no' is a BLOCKING finding: re-film or rewrite the line; the video does not ship with an unmatched claim. Kinetic type and camera moves go IN this table as rows of their own (a kinetic title is a claim the frame must support; a camera move is a claim about what the frame shows).
+- **Anti-slide checks** — the motion-graphics layer section below: one continuous world, a moving camera, a persistent subject, numbers inside the scene, at most two text levels, varied transitions, no text under 30px on a 1080-wide stage. A 'no' on any check is BLOCKING: re-cut the composition, never ship a slide deck with fades.
+- **Gorgeousness** — (a) no generic seed look: the cards read as the app's own palette/fonts, not the seed theme; (b) footage shows the app's best-looking states: populated data, the prettiest route, the wow at its best, chosen from the step-3 screenshots — never an empty state on camera; (c) vignette matches the app: `theme.vignette` 0 for light apps, recorded choice either way.
+- **Runtime** — `qa.mjs` prints the total from the measured narration; over 2:10 is BLOCKING (re-cut), and 2:30 is the absolute ceiling no version may cross.
+- **Mix** — listen to a 10-second sample from the middle of the video (where the music is `under` the voice) and confirm the narration is intelligible over the bed; record the check. `qa.mjs` warns if `music.gain.under` exceeds 0.20 — above that the bed risks burying the voice.
+- **Theme pulled, not seeded** — the theme check fails the QA if `shots.json` still carries the seed theme with no recorded `theme.source`.
+
+Then the stills themselves: does each caption land on a frame that supports it? Any blank or white frames? Is small text legible, or does it need a `focus`?
 
 `references/troubleshooting.md` has every failure this pipeline has actually hit
 and the fix for each. Read it before debugging from scratch.
+
+### 7 · Link the video into the README (fix #26 F-14, README_UPDATE_F26)
+
+A /demo run usually happens AFTER the first build's README and final report
+already exist — orchestrate step 6 writes the README before any video is
+filmed, because /demo runs only on explicit invocation (fix #22 gate). So
+the /demo run itself links the video into the README once QA passes and
+`out/demo.mp4` exists. No re-run of readme-writer, no re-run of the README
+step, no new gate, no approval: this is a mechanical edit inside /demo's
+own run, and /demo still runs only when the user invokes it explicitly.
+
+The video path is repo-relative from the project root:
+`<app-name>-video/out/demo.mp4` — the same path readme-writer reads from
+the ledger in a first build. The README links that file path (committed,
+it plays on the repo host); the video is never uploaded from here — the
+hosted-URL swap (YouTube/Vimeo, paste into Devpost) stays the user's step
+from the final-report handoff.
+
+1. **Record it in the ledger first.** Write (or update) the line
+   `demo video: <app-name>-video/out/demo.mp4` in
+   `.hackathon/run-ledger.md`, so a later readme-writer run reads the
+   video path from the ledger per its Step 2.
+2. **Update the README — first match wins, and the edit is idempotent:**
+   a. If the README already links this video path, do nothing.
+   b. Else if it carries a video placeholder — the
+      `<!-- 🎥 Demo video: ... -->` comment or a `TODO: add demo link` /
+      `TODO: add video` marker — replace the placeholder with the real
+      link, keeping the surrounding badge-button markup.
+   c. Else if it has the readme-writer house-style badge-button block
+      (`**Live demo:**` followed by a `<p align="center">` button row),
+      add a matching Demo Video button to that row:
+      ```html
+      <p align="center">
+        <a href="<app-name>-video/out/demo.mp4">
+          <img src="https://img.shields.io/badge/Demo%20Video-000000?style=for-the-badge" alt="Demo Video"/>
+        </a>
+      </p>
+      ```
+      plus the `<!-- 🎥 Demo video: <app-name>-video/out/demo.mp4 -->`
+      comment line beside it, per the readme-template convention.
+   d. Else insert a `## Demo video` section carrying the link, directly
+      after the title block (the first `# ` heading plus its tagline
+      blockquote, if any); if the README has no `# ` heading, put the
+      section at the top.
+3. **No README, no README written.** If no `README.md` exists at the
+   project root, do NOT write one — authoring a README is readme-writer's
+   job, not /demo's. Record the video path in the /demo return instead,
+   so the user can run readme-writer.
+4. **Re-cuts are a no-op.** `--rebuild`, `--script`, and `--render`
+   re-run this step too; the path is unchanged, so rule 2a applies and
+   the README is left untouched.
+5. **The final report is not rewritten here.** The report is
+   orchestrate-owned and point-in-time; the /demo return carries the
+   video path as the handoff input for it, but /demo does not edit
+   `docs/final-report.md`.
+
+## Motion-graphics layer — one continuous world, not slides (Bang Motion port, fix #22 §12)
+
+Ported — distilled, in English — from Bang Motion, an agent skill that turns a
+coding agent into a motion designer. **Source pin (verified live Nov 12,
+2026):** repo `https://github.com/bangtutorial/bang-motion`, MIT licence,
+commit `c1aa65e921c970d858705fcb4a53a8294d1a4131` (current HEAD; 3 commits, all
+dated Sep 15, 2026; created Sep 5, 2026; no GitHub release or tag — the
+`1.19.0` version exists only as a badge/manifest version). Upstream's own
+output loads GSAP 3.12.5 and Three.js 0.161.0 from jsDelivr and fonts from
+Google, and does not play offline. **Staleness caveat, not a blocker:** the
+repo has been quiet since Sep 15, 2026 — one open pull request (a second-output
+proposal, unmerged since Sep 23, 2026) and one open issue. The rules below are
+ported into this skill; the repo is not a live dependency and needs no upstream
+updates. **Language note:** upstream's README is in English; its SKILL.md
+(~39 KB, ~10k tokens), changelog, and most reference files are in Indonesian
+— the port is in English. **Explainer-count resolution:** upstream's subtitle
+says five explainer styles, but its README lists six, each with its own
+starter — six is the true count; the port lists six.
+
+**Boundary — film stays film.** `/demo` films the LOCAL app from the project
+directory via Playwright; the deployed-URL path stays removed. These rules
+govern the motion-graphics layer only: the opener, the transitions between
+beats, kinetic title/hero text, and the close. The How/features beats stay
+filmed footage of the real app, and motion graphics never replace feature
+coverage (FILM_F1). A composition that replaces filmed app footage with generated
+motion graphics FAILS QA.
+
+The ported rules below are grouped under six tokens: anti-slide checks (BANG_ANTISLIDE_F22), one-world / camera / persistent-subject architecture (BANG_ONEWORLD_F22), the style-direction menu (BANG_STYLES_F22), opener concepts (BANG_OPENERS_F22), kinetic typography (BANG_KINETIC_F22), and explainer styles (BANG_EXPLAINER_F22).
+
+**No second toolchain.** Bang Motion's output is a vanilla `index.html` plus
+GSAP and Three.js; this skill's output is Remotion (React) plus OpenMontage.
+Port the RULES into this skill's Remotion compositions (`template/src/scenes/`,
+`template/src/parts/`) — do not import a second video pipeline, and do not add
+a separate motion skill. (Upstream's own Remotion-output proposal has sat
+unmerged since Sep 23, 2026 — there is no upstream Remotion output to import.)
+
+**Pinned versions, never unpinned latest.** The plugin pins **GSAP 3.15.1** (GreenSock Standard "no charge" licence — free, all plugins included; NOT MIT) for all GSAP use, §11 and §12 alike — GSAP converges on this ONE pinned version. Bang's reference implementation used GSAP 3.12.5 / Three.js 0.161.0; those are Bang's versions as found, not the plugin pins. Three.js is scoped, not single-version: Vanta scenes pin `three@0.134.0` (the README-documented pair), general hand-written three.js scenes keep the existing pin `three@0.185.1`; Bang's 0.161.0 is recorded here as Bang's version only, not a plugin pin (this supersedes the earlier alignment flag expecting one three.js version — see fix22 integrator report: the scoped pins are deliberate per §11, libraries-report D3–D4). Vendor locally where the build is offline-first, and keep fonts self-hosted and static (fix #19/#21) — no unpinned CDN loads in the video project.
+
+### Anti-slide checks (BANG_ANTISLIDE_F22)
+
+Structural checks the agent verifies in its own composition code, alongside
+the `qa.mjs` checks in step 6. A 'no' on any check is BLOCKING.
+
+1. **One continuous world** — the video is one world, not slides with fades.
+   Beats change because the world or the camera moves, never because a section
+   fades out and another fades in.
+2. **A camera that actually moves** — push-through → glide → settle, or a
+   flowing world with parallax. A static frame with a fade is a slide.
+3. **A subject that persists** — the hero (the product, or its hero element)
+   stays on screen across scenes; it is carried through the transitions, not
+   replaced by a new frame.
+4. **Numbers live inside the scene** — a stat is part of the world (on the
+   device, in the environment, attached to the subject), never a floating
+   overlay on top of it.
+5. **At most two text levels per frame** — a headline plus at most one
+   supporting line. A third level means the beat is two ideas: split it.
+6. **Varied transitions, never the same fade twice** — at least two transition
+   types across the video, one of them with real depth (a camera move through
+   depth, not a flat block wiping the frame). The background is layered, never
+   flat. Motion runs every second — no dead stills between beats.
+7. **No text under 30px on a 1080-wide stage** — the smallest on-screen text
+   in the motion-graphics layer is 30px at 1920×1080 render width. Smaller
+   text gets a `focus` (step 4) or is cut.
+
+D19 reason — Motion: a moving camera and a persistent subject are what make
+the video read as a film rather than a deck; Theme: the world is built from
+the app's own theme, so continuity is brand continuity; Texture: none — these
+checks govern structure, not surface treatment; Visuals: numbers inside the
+scene and two text levels keep every frame readable at a glance; Techniques:
+checks are verified in composition code, the same standing as the `qa.mjs`
+checks; Colors: none — no color decision is made by these checks.
+
+### One-world / camera / persistent-subject architecture (BANG_ONEWORLD_F22)
+
+Build the Remotion composition as **one world the camera travels through**,
+not a sequence of independent slides. The opener, Edge, and close beats are
+built this way: the camera pushes through the opening world, glides to the
+Edge claim, and settles on the close sentence, with the product (or its hero
+element) persisting as the subject throughout. The filmed How/features beats
+stay filmed footage — the one-world architecture governs how the composition
+moves *between and around* them (the camera carries the viewer out of the
+opener into the first filmed beat and back out to the close), not the footage
+itself. If a beat cannot be reached by a camera move from the previous beat,
+the composition is slides: re-block it.
+
+D19 reason — Motion: one world plus a travelling camera is the architecture
+that makes the anti-slide checks pass structurally instead of by inspection;
+Theme: the world is the app's theme made spatial, so the theme deal decides
+its look; Texture: none — texture is a surface decision inside the world, not
+the architecture; Visuals: a persistent subject gives the eye one thing to
+follow across the whole video; Techniques: implemented in the Remotion
+composition (`template/src/scenes/`), camera moves driven by measured
+element boxes where the filmed app is involved; Colors: none — the palette
+comes from the theme, not the architecture.
+
+### Style-direction menu, 10 (BANG_STYLES_F22)
+
+A menu, never defaults. The look comes from the build's brand and theme deal
+(fix #20 B1 + Taste), never from a template or a starter. Consult the menu;
+the theme decides. Each direction is a skin: background, typography, signature
+motion.
+
+| Direction | Signature motion |
+| --- | --- |
+| Cinematic dark | push-through, light in front of the lens |
+| Poster color-block | block wipes, text slamming the frame edge |
+| Editorial light | calm slides, lines that draw |
+| Paper & print | objects flying in and landing |
+| Retro / analog | controlled glitch, rough zoom, freeze |
+| Brutalist mono | hard cuts, shifting blocks, blinking cursor |
+| Pastel playful | elastic bounce, blooming shapes |
+| Luxury dark | slow motion, sweeping light, depth |
+| Flat pop with photos | cutouts popping in, brand fields snapping on the beat |
+| Grainy gradient | layers opening, camera travelling through the shapes |
+
+A composition that uses a style direction with no theme/brand reason FAILS
+QA — the direction must be traceable to the dealt theme in
+`docs/design-tokens.md`, with a D19 reason.
+
+D19 reason — Motion: each direction carries its signature motion, so the
+choice of look is also a choice of how the video moves; Theme: the direction
+is chosen to match the dealt theme, never because it is trending; Texture:
+none — texture treatments come from less-flat-ui, not from the style menu;
+Visuals: the menu keeps ten distinct looks apart so videos stop looking the
+same; Techniques: menu entry recorded as a directive (direction + exact
+tokens), per §10; Colors: the palette is derived from the brand, never
+inherited from a starter.
+
+### Opener concepts, 19 (BANG_OPENERS_F22)
+
+A concept menu for the opener (Wow) beat — chosen through the design package,
+theme-matched, with a D19 reason recorded. One line each; the concept is a
+structure, never a script to copy.
+
+1. One continuous shot — the camera never cuts through the opening.
+2. Pure typography — the tagline carries the opener alone.
+3. Problem → gone — the pain, then it vanishes.
+4. Before / after — the old way, then the product way.
+5. Journey inside the UI — travel through the app's own interface.
+6. Product macro — extreme close-up on the product or its craft.
+7. Object metaphor — an object stands in for the idea (security, cloud,
+   finance).
+8. Living number — a milestone or performance figure, alive in the scene.
+9. One feature, fully demoed — the single clear edge, shown end to end.
+10. Diegetic question → answer — a question asked inside the world, answered
+    by the product.
+11. Rhythmic collage — cuts on the beat, music-led.
+12. Logo as stage — the logo shape is the stage the opener plays on.
+13. Object relay — an object passed along a chain (delivery, marketplaces).
+14. Brand system showcase — the brand's own system on display.
+15. Claim → how → result — the claim, the mechanism, the payoff.
+16. Living UI ecosystem — the product's workflows as one living system.
+17. Flat pop with photos — photo cutouts and brand fields, campaign energy.
+18. Through the gradient shapes — travel through glowing shapes.
+19. Product tour with claims — the tour, with each claim said out loud.
+
+D19 reason — Motion: the concept decides how the opener moves before a frame
+is built; Theme: the concept must fit the dealt theme — a brutalist concept
+on a luxury theme fails the match; Texture: none — texture is applied inside
+the chosen concept, not chosen by it; Visuals: a concept menu stops every
+opener from being the same push-in on a logo; Techniques: concept recorded as
+a directive (concept + exact beats and timings), per §10; Colors: none — the
+palette comes from the theme, not the concept.
+
+### Kinetic typography (BANG_KINETIC_F22)
+
+Kinetic type for title/hero text in the video: text that moves as part of the
+scene, not static titles. Direct it per §10 — every kinetic moment is a
+directive with effect + exact parameters, never prose: effect name, duration,
+easing, distance or scale, and a settle hold. Techniques, distilled:
+
+- **Word slam on the beat** — a word lands on a music beat (scale 1.15 →
+  1.0, 120ms, ease-out), then holds still.
+- **Split-text reveal** — the line splits into words; words enter staggered
+  40ms apart from below (24px rise, 200ms, ease-out).
+- **Mask reveal** — the line is uncovered by a moving mask (300ms,
+  ease-in-out), left to right.
+- **Scale pop** — the key word pops (scale 0.9 → 1.0, 180ms, ease-out) while
+  the rest of the line stays put.
+- **Letter stagger** — letters enter one by one (30ms stagger, 12px rise)
+  for the close sentence only, never for a line the viewer must read fast.
+
+Rules: kinetic type only on title/hero text — the opener, the Edge claim,
+the close sentence. Text **settles fully still before its hold** so it can be
+read; a line that is still moving while the viewer reads it fails. Never
+kinetic type over filmed footage while the narration carries a claim — the
+footage is the claim there. Every kinetic move and every camera move goes IN
+the per-beat A/V table (FILM_F5). The opener is a beat inside the 130-second cap,
+never extra runtime (FILM_F6): a Bang-style opener earns its seconds from the Wow
+budget in step 4, it does not extend the video.
+
+D19 reason — Motion: kinetic type is motion applied to the words themselves,
+so the title is part of the scene's movement; Theme: the effect and its
+parameters match the dealt theme's motion character (a luxury theme does not
+slam words); Texture: none — kinetic type is type in motion, not a surface
+treatment; Visuals: type that moves on the beat is what the eye remembers
+after the video ends; Techniques: directed per §10 (effect + exact
+parameters), verified in the A/V table; Colors: none — the type color comes
+from the theme palette, not the effect.
+
+### Explainer styles (BANG_EXPLAINER_F22)
+
+Six styles, each with its own upstream starter. They inform the motion
+treatment of the explainer/How beats — how a how-it-works beat moves — not a
+second output format. `/demo` stays Remotion; no explainer is ever built as a
+separate video.
+
+| Style | How it treats a How beat |
+| --- | --- |
+| Continuous action | one subject that never leaves; the camera changes viewpoint instead of cutting |
+| Cartoon collage | flat cutouts and handwriting on cream paper; the beat is assembled, not filmed |
+| Visual journalism | real photos with source tags, highlighter, dashed annotations — evidence on screen |
+| White catalog | white grid, product cutouts, mixed typography — the feature as a catalogue entry |
+| Vintage sketch | sepia paper, engraving art, classic serifs — the story as history |
+| Cartoon stage | one living stage per scene, jointed characters, no captions — the beat is played, not told |
+
+Use a style only where the beat is an idea being explained (the arch/proof
+beat, a concept beat) — never to restage filmed app footage. The style choice
+is theme-matched with a D19 reason, like every other motion decision.
+
+D19 reason — Motion: each style is a way of moving through an explanation,
+so the style is a motion decision; Theme: the style must match the dealt
+theme — visual journalism on a pastel playful theme fails the match;
+Texture: none — texture treatments come from less-flat-ui, not the explainer
+style; Visuals: the styles keep explanatory beats from all looking like the
+same card carousel; Techniques: style recorded as a directive (style +
+which beats it governs), per §10; Colors: none — the palette comes from the
+theme, not the style.
 
 ## Re-cutting after the UI changes
 
 This is the point of the whole thing.
 
 ```sh
+# POSIX / Git Bash
 APP_DIR=/path/to/app npm run all
+```
+
+```powershell
+# PowerShell (Windows)
+$env:APP_DIR='/path/to/app'; npm run all
 ```
 
 Most changes need nothing else — moved elements, restyled pages, new copy. What
@@ -524,7 +840,7 @@ voice. The `shots.json` block and the fallback chain are in
   credit alone does not meet it. If the video will be monetised or used
   commercially, use a paid plan instead.
 - If the quota is exhausted or no key is set, the script falls back to
-  local Piper TTS: the `piper` binary, zero keys (`pip install piper-tts`,
+  local Piper TTS: the `piper` binary, zero keys (`pip install piper-tts==1.8.0` — POSIX; on Windows PowerShell: `py -m pip install piper-tts==1.8.0` or `.tools\Scripts\pip install piper-tts==1.8.0` —
   then download a voice model; default `en_US-lessac-medium`). Piper is
   the no-key fallback on Windows, where macOS `say` does not exist. If
   Piper is missing too, it falls through to `say` (macOS only); with no

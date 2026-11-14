@@ -30,7 +30,7 @@ Invoke the `orch-refine-code` skill with `$ARGUMENTS` as the request. The skill
    characterization tests first if coverage is thin. Plan the restructure. → **GATE 1** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
 3. Restructure in small steps, re-running tests after each (no new behavior
    tests — the existing suite proves behavior is unchanged). Dead-code/dup sweeps
-   delegate to `refactor-cleaner`.
+   delegate to `refactor-cleaner` agent (`agents/ecc-refactor-cleaner.md`).
 4. `code-reviewer`, then commit as `refactor:` (the diff must be behavior-neutral). → **GATE 2** (auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
 
 Honor both gates — do not write implementation before Gate 1, do not commit before Gate 2 — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting.

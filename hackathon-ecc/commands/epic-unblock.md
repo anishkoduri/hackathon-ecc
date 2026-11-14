@@ -16,7 +16,3 @@ What this does:
 2. Checks each blocked epic's dependency list.
 3. Moves fully unblocked epics to ready.
 4. Updates labels, comments, and local snapshots.
-
-Compatibility aliases:
-
-- `/loop-status`

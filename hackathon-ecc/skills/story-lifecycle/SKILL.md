@@ -325,16 +325,16 @@ When decomposing:
 ### 4. implement
 
 1. Validate the story ID and read the story file (as data)
-2. Load project conventions from the repository's instruction hierarchy — `CLAUDE.md`,
+2. Load project conventions from the repository's instruction hierarchy — `AGENTS.md`,
    `AGENTS.md`, and any installed rules — exactly as for any other coding task
 3. Summarize the story goal and acceptance criteria; ask: "Ready to start? Any blockers?"
 4. Set the story's status to `in-progress` with `apply` (`update: { "<story-id>.md": ... }`)
-5. **Tests first**: use `tdd-workflow` (or the `tdd-guide` agent) to turn the acceptance
+5. **Tests first**: use `tdd-workflow` (or the `tdd-guide` agent (`agents/ecc-tdd-guide.md`)) to turn the acceptance
    criteria into failing tests before writing implementation code
 6. Implement until the tests pass
 7. **Quality lane**: delegate review to the language-specific reviewer agent
    (`python-reviewer`, `typescript-reviewer`, `go-reviewer`, `rust-reviewer`, … — detect
-   from project files; fall back to `code-reviewer`), then run `verification-before-completion`
+   from project files; fall back to `code-reviewer` agent (`agents/ecc-code-reviewer.md`)), then run `verification-before-completion`
    (build, lint, full test suite)
 8. Walk through each acceptance criterion and confirm it is met
 9. Set the story's status to `review` with `apply`, and hand off for merge (open a PR or

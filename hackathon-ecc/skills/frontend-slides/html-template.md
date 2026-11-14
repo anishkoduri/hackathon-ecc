@@ -321,7 +321,7 @@ exportFile() {
 
 If user chose "No images" in Phase 1, skip this entirely. If images were provided, process them before generating HTML.
 
-**Dependency:** `pip install Pillow`
+**Dependency:** `pip install Pillow==13.0.0`
 
 ### Image Processing
 

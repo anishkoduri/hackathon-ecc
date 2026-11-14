@@ -7,9 +7,11 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 ### 1. Accessibility (CRITICAL)
 
 - `color-contrast` - Minimum 4.5:1 ratio for normal text (large text 3:1); Material Design
+- `color-contrast-polish` - Text-contrast failures found in a polish pass are fixed against the polish-pass craft floor (Contrast ≥4.5:1, ≥3:1 large text, in light AND dark, in every state) — see UNSLOP_F22 D15 (fix #22); this rule states the ratio, the craft floor is the check
 - `focus-states` - Visible focus rings on interactive elements (2–4px; Apple HIG, MD)
 - `alt-text` - Descriptive alt text for meaningful images
 - `aria-labels` - aria-label for icon-only buttons; accessibilityLabel in native (Apple HIG)
+- `vercel-a11y-check` - Accessibility, focus, and form rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): labels, keyboard handlers, semantic elements, alt text, live regions, focus visibility, autocomplete, paste, spellcheck, error placement (V-A1–V-A12, V-F1–V-F5, V-FO1–V-FO11) — this skill states the patterns, the checklist is the check (fix #22)
 - `icon-context` - Semantics depend on use: decorative icons beside visible text are hidden from the accessibility tree; meaningful icons need a text alternative; icon controls need an accessible name and applicable state
 - `keyboard-nav` - Tab order matches visual order; full keyboard support (Apple HIG)
 - `form-labels` - Use label with for attribute
@@ -35,6 +37,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 ### 2. Touch & Interaction (CRITICAL)
 
 - `touch-target-size` - Min 44×44pt (Apple) / 48×48dp (Material); extend hit area beyond visual bounds if needed
+- `vercel-touch-check` - Touch, safe-area, and drag rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): touch-action, tap highlight, overscroll, drag alternatives, autoFocus, safe-area insets (V-TO1–V-TO7, V-S1–V-S3) — this skill states the sizes, the checklist is the check (fix #22)
 - `touch-spacing` - Minimum 8px/8dp gap between touch targets (Apple HIG, MD)
 - `hover-vs-tap` - Use click/tap for primary interactions; don't rely on hover alone
 - `loading-buttons` - Disable button during async operations; show spinner or progress
@@ -89,6 +92,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `system-controls` - Prefer native/system controls over fully custom ones; only customize when branding requires it (Apple HIG)
 - `blur-purpose` - Use blur to indicate background dismissal (modals, sheets), not as decoration (Apple HIG)
 - `primary-action` - Each screen should have only one primary CTA; secondary actions visually subordinate (Apple HIG)
+- `cta-emphasis` - The one primary CTA is emphasized by size, weight, fill, and the accent (H1, ACCENT_F22); secondary actions stay subordinate. Emphasis detail lives in polish-pass (UNSLOP_F22 D10 — Emphasize the CTA) (fix #22)
 
 ### 5. Layout & Responsive (HIGH)
 
@@ -108,6 +112,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `orientation-support` - Keep layout readable and operable in landscape mode
 - `content-priority` - Show core content first on mobile; fold or hide secondary content
 - `visual-hierarchy` - Establish hierarchy via size, spacing, contrast — not color alone
+- `headline-specific` - Headlines name the specific outcome or value (what it does, for whom, to what end), not a generic claim; a vague headline is fixed in polish-pass (UNSLOP_F22 D9 — Make headlines specific), never by restyling here (fix #22)
 - `compact-label-overflow` - Choose badge, status tag, filter chip, or removable value from its semantics; keep essential labels available and disclose unavoidable truncation to pointer and keyboard users
 - `chip-collection-reflow` - Wrap the collection before shrinking labels; make a `+n` overflow summary an operable disclosure instead of hiding values
 
@@ -127,8 +132,12 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `truncation-strategy` - Prefer wrapping over truncation; when truncating use ellipsis and provide full text via tooltip/expand (Apple HIG)
 - `letter-spacing` - Respect default letter-spacing per platform; avoid tight tracking on body text (HIG, MD)
 - `number-tabular` - Use tabular/monospaced figures for data columns, prices, and timers to prevent layout shift
+- `vercel-type-check` - Typography and copy rules are checked in a polish pass against the pinned Vercel checklist (VERCEL_F22): ellipsis, curly quotes, non-breaking spaces, loading ellipsis, tabular figures, balanced headings, active voice, Title Case, numerals, specific labels, error next-steps (V-T1–V-T6, V-CC1–V-CC7) — this skill states the type scale, the checklist is the check (fix #22)
+- `tabular-polish` - Tabular figures are applied in a polish pass wherever digits change or align (counters, prices, tables) — see UNSLOP_F22 D18 (fix #22); the same value also lives in make-interfaces-feel-better (tabular-nums rule)
 - `whitespace-balance` - Use whitespace intentionally to group related items and separate sections; avoid visual clutter (Apple HIG)
+- `spacing-group-polish` - Grouping with spacing is applied in a polish pass (related items tight, distinct groups at least 2 spacing steps apart; spacing, not dividers or borders, does the grouping) — see UNSLOP_F22 D8 (fix #22); this skill owns the spacing scale (`spacing-scale`)
 - `heading-line-balance` - Use balanced wrapping on short headings as a progressive, user-agent-controlled heuristic; keep natural wrapping readable and never force final words together with blanket nonbreaking spaces
+- `headline-wrap-polish` - Headline wrapping is fixed in a polish pass against the craft floor (headings use `text-wrap: balance`, no orphans, no mid-phrase breaks) — see UNSLOP_F22 D16 (fix #22)
 - `long-token-wrapping` - Let URLs, IDs, and user content reflow with `overflow-wrap: anywhere` and a shrinkable flex/grid text child; do not apply `word-break: break-all` to normal prose
 
 ### 7. Animation (MEDIUM)
@@ -143,7 +152,7 @@ Load this file when doing a UI review/audit pass, or when you need the full chec
 - `continuity` - Page/screen transitions should maintain spatial continuity (shared element, directional slide) (Apple HIG)
 - `parallax-subtle` - Use parallax sparingly; must respect reduced-motion and not cause disorientation (Apple HIG)
 - `spring-physics` - Prefer spring/physics-based curves over linear or cubic-bezier for natural feel (Apple HIG fluid animations)
-- `exit-faster-than-enter` - Exit animations shorter than enter (~60–70% of enter duration) to feel responsive (MD motion)
+- `exit-faster-than-enter` - Exit animations shorter than enter (~60–70% of enter duration) to feel responsive (MD motion). Defers to `motionTokens.exitFactor` (B15, 0.8×) as the single source of truth per motion-foundations Rule 8 (fix #24 adjudication).
 - `stagger-sequence` - Stagger list/grid item entrance by 30–50ms per item; avoid all-at-once or too-slow reveals (MD)
 - `shared-element-transition` - Use shared element / hero transitions for visual continuity between screens (MD, HIG)
 - `interruptible` - Animations must be interruptible; user tap/gesture cancels in-progress animation immediately (Apple HIG)

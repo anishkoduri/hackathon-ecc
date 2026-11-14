@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ECC Context Monitor — Claude Code-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event)
+ * ECC Context Monitor — Upstream-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event)
  *
  * Reads bridge file from ecc-metrics-bridge.js and injects agent-facing
  * warnings when thresholds are crossed: context exhaustion, high cost,
@@ -214,7 +214,7 @@ function run(rawInput) {
   try {
     const input = rawInput.trim() ? JSON.parse(rawInput) : {};
 
-    const sessionId = sanitizeSessionId(input.session_id) || sanitizeSessionId(process.env.ECC_SESSION_ID) || sanitizeSessionId(process.env.CLAUDE_SESSION_ID);
+    const sessionId = sanitizeSessionId(input.session_id) || sanitizeSessionId(process.env.ECC_SESSION_ID) || sanitizeSessionId(process.env.ECC_SESSION_ID);
 
     if (!sessionId) return rawInput;
 

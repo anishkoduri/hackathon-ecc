@@ -146,8 +146,8 @@ function truncatedInputResult(hookId, maxStdin) {
 }
 
 function getPluginRoot() {
-  if (process.env.CLAUDE_PLUGIN_ROOT && process.env.CLAUDE_PLUGIN_ROOT.trim()) {
-    return process.env.CLAUDE_PLUGIN_ROOT;
+  if (process.env.ECC_PLUGIN_ROOT && process.env.ECC_PLUGIN_ROOT.trim()) {
+    return process.env.ECC_PLUGIN_ROOT;
   }
   return path.resolve(__dirname, '..', '..');
 }
@@ -323,7 +323,7 @@ async function main() {
     encoding: 'utf8',
     env: {
       ...process.env,
-      CLAUDE_PLUGIN_ROOT: pluginRoot,
+      ECC_PLUGIN_ROOT: pluginRoot,
       ECC_PLUGIN_ROOT: pluginRoot,
       ECC_HOOK_ID: hookId,
       ECC_HOOK_INPUT_TRUNCATED: truncated ? '1' : '0',

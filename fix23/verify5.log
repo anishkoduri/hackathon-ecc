@@ -1,0 +1,215 @@
+PASS INVENTORY_F23: 4 lines in the built tree
+PASS INVENTORY_F23 in orchestrate SKILL.md + dispatch-prompt + design-inventory.md
+PASS inventory file exists in the built tree
+PASS inventory covers SS1 groups 1-10
+PASS inventory currency rule: future fixes update it in the same change
+PASS inventory usage rule: record cites USED vs CONSIDERED-AND-REJECTED
+PASS orchestrate: inventory READ at the design-package step BEFORE deciding
+PASS dispatch-prompt references the inventory (INVENTORY_F23)
+PASS AMBITION_F23: 6 lines / 7 occurrences in the built tree
+PASS ambition: design package records USED vs CONSIDERED-AND-REJECTED
+PASS ambition: blanket 'we considered everything' is not a reason, fails
+PASS ambition: small slice without recorded specific reasons FAILS
+PASS ambition: design usable without the package fails
+PASS ambition: MORE elements, MORE motion, MORE decisions -- not louder
+PASS ambition: F6 is the PRIMARY gate in orchestrate step 3 + step-6 extension
+PASS inventory ui-ux-pro-max styles: 89 csv rows (header 80 recorded, csv is source)
+PASS inventory ui-ux-pro-max palettes 192 / pairings 74 / guidelines 120 / icons 105
+PASS inventory ui-ux-pro-max GSAP presets 17 / chart types 25 / stacks 22
+PASS inventory ui-ux-pro-max app-interface 32 / landing 34 / products 192 rows
+PASS inventory Taste moments: 18 in the index, 13 dealt, 5 retired (kinds 4/4/1/7/2)
+PASS inventory Taste palettes 64 / type 39 (json catalogs)
+PASS inventory Hallmark: 50 themes in index.json, 50 theme .md files (+ README)
+PASS inventory Hallmark sloplint scripts + hero/finish reviews exist
+PASS inventory Impeccable: 62 detector rules in the json
+PASS inventory Impeccable craft floor file exists
+PASS inventory less-flat-ui: all 23 treatments present in the built copy
+PASS inventory motion: principles A1-A12 + laws A13-A20 in motion-foundations
+PASS inventory motion: B11-B19 rules in motion-patterns
+PASS inventory motion: 17 motion-advanced code examples
+PASS inventory polish-pass: slop checklist C1-C20 (20 checks)
+PASS inventory polish-pass: unslop fixes D1-D20 (20 fixes)
+PASS inventory polish-pass: Vercel 16 groups / 104 rules (pinned snapshot)
+PASS inventory polish-pass: accent checks + one-WebGL rule + orb check + depth check
+PASS inventory design-system: Modes 1-3 + daisyUI component menu
+PASS inventory make-interfaces-feel-better: 9 core principles + motion set M1-M6
+PASS inventory fix22 glossary: 20 terms G1-G20
+PASS inventory fix22 H1/H2 accents + Mobbin + direct-don't-describe named
+PASS inventory fix22 asset library/tool named: Lenis
+PASS inventory fix22 asset library/tool named: GSAP
+PASS inventory fix22 asset library/tool named: Vanta
+PASS inventory fix22 asset library/tool named: React Bits
+PASS inventory fix22 asset library/tool named: react-three-fiber
+PASS inventory fix22 asset library/tool named: liquid-glass-js
+PASS inventory fix22 asset library/tool named: ShaderGradient
+PASS inventory fix22 asset library/tool named: liquid-logo
+PASS inventory fix22 asset library/tool named: Casberry
+PASS inventory fix22 asset library/tool named: OriginKit
+PASS inventory fix22 asset library/tool named: daisyUI
+PASS inventory fix22 running total: 11 libraries/tools (4+4+3)
+PASS inventory fix22 Bang: 10 style directions + 19 opener concepts
+PASS inventory fix22 Depth tokens: perspective 1000, parallax, tilt 6, elevation
+PASS inventory fix22 Thinking Orb: 9 states, no 'thinking' state
+PASS inventory fix22 daisyUI component count agrees with design-system + fix22/MANIFEST.md (68; the 65 in the §17 research count was corrected to the plugin's recorded 68)
+PASS inventory Taste sections library: 45 recipes
+PASS inventory Taste backgrounds reference: 111 lines
+PASS MEMORABLE_F23: 4 lines / 5 occurrences in the built tree
+PASS CORE: memorable is the bar above F6, impressive is the floor
+PASS CORE: a build the user would forget the next day FAILS, however rule-correct
+PASS CORE: browser-qa judges memorability as the TOP criterion
+PASS CORE: memorability is dynamic + over the top + wow / striking / stunning
+PASS CORE: over the top is ambition/impact, not loudness; more-not-bolder governs
+PASS CORE: a build can be over the top and quiet in palette; cannot be forgettable
+PASS CORE: orchestrate cross-references AMBITION/MOTION/HERO/FUNC/DYNAMIC without restating
+PASS CORE: browser-qa memorability verdict (MEMORABLE-BQA-01) + report row (MEMORABLE-BQA-02)
+PASS CORE: memorability verdict is browser-qa's alone
+PASS CORE: polish-pass memorability candidates (MEMORABLE_F23 x2 on one line)
+PASS MOTION_F23: 9 lines / 10 occurrences in the built tree
+PASS motion default in motion-foundations (MOTION_F23)
+PASS motion default in motion-foundations: a build that feels static fails
+PASS motion default in motion-foundations: reduced-motion fallback carried
+PASS motion default in motion-patterns (MOTION_F23)
+PASS motion default in motion-patterns: a build that feels static fails
+PASS motion default in motion-patterns: reduced-motion fallback carried
+PASS motion default in motion-advanced (MOTION_F23)
+PASS motion default in motion-advanced: a build that feels static fails
+PASS motion default in motion-advanced: reduced-motion fallback carried
+PASS motion default in make-interfaces-feel-better (MOTION_F23)
+PASS motion default in make-interfaces-feel-better: a build that feels static fails
+PASS motion default in make-interfaces-feel-better: reduced-motion fallback carried
+PASS motion default in ui-ux-pro-max (MOTION_F23)
+PASS motion default in ui-ux-pro-max: a build that feels static fails
+PASS motion default in ui-ux-pro-max: reduced-motion fallback carried
+PASS motion default in orchestrate (MOTION_F23)
+PASS motion routed through fix22 tokens (stagger 30ms, press scale 0.97, dropdowns 150-250ms)
+PASS motion recorded with D19 reason + token values, directed per SS10
+PASS motion scope guard: Taste landing pages keep the scroll ban
+PASS motion sub-ids MOTION-01..05 each occur exactly once as a tuple in build.sh
+PASS motion sub-ids MOTION-01..05 occur 0x in the built tree (by design)
+PASS TYPEAUDIT_F23: 14 lines / 18 occurrences in the built tree
+PASS type audit home in the typeset lens (TYPEAUDIT_F23)
+PASS type audit measures visual share = size x visible characters per face
+PASS type audit records distinct faces, per-face shares, trio-vs-previous-build
+PASS T1a: body face <= 40% of build visual share
+PASS T1b: body face <= 55% on any single primary screen
+PASS T1c: display/important faces combined >= 25% of build visual share
+PASS T1d: on the hero/home surface, display share exceeds body share
+PASS T2: trio identical to the previous build's trio FAILS without a recorded reuse reason
+PASS T3: variety floor max(3, ceil(N/20)), each counted face >= 5% share
+PASS type-audit clearance: T1a/T1b only by scoped exception, T1c still binding
+PASS type-audit clearance: T1c/T1d/T3 have no clearance
+PASS type audit can FAIL a build: a hit with no clearance is a FAIL
+PASS slop checklist carries the type-audit section with T1a-T3 + clearance
+PASS polish-pass SKILL.md wires the type audit (non-negotiable 5 + harmony)
+PASS browser-qa type-audit verdict (BQA-TYPEAUDIT): defaulted typography fails
+PASS browser-qa type verdict restates the thresholds (40/55/25/hero/variety)
+PASS TRIO_F23: 1 line in the built tree (orchestrate design-package step)
+PASS orchestrate: Type list feeds the type audit, trio re-dealt per build
+PASS F7VAR_F23: 2 lines in the built tree (ui-ux-pro-max + slop checklist)
+PASS F7 strengthened: variety across the build, trio is a pattern not a default
+PASS orch-build-mvp fix23 static checks: type-audit table + trio line + variety floor
+PASS F4 stands: body face is long body text and small incidental text only
+PASS D19_RULE text NOT rewritten: fix19 verbatim text still in Taste + orchestrate
+PASS D19 seventh-dimension extension line intact (fix22, not a rewrite)
+PASS F2 stack labels unchanged: F2_RULE still verbatim in Taste (covered, no edit)
+PASS HERO_F23: 8 lines / 9 occurrences in the built tree
+PASS hero: dealt amazing moment (moment + composition + motion) in the decision record
+PASS hero: highest-weight browser-qa surface; merely adequate fails F6
+PASS hero calibration: app home/feed surface IS the hero surface, bar fits the job
+PASS hero: amazing never means a generic hero section pasted onto an app
+PASS hero-moment line written to the Picks block (Hero-moment row)
+PASS hero review judges the hero against the dealt moment (review-hero.md)
+PASS hero checklist: first screen carries the dealt moment
+PASS hero static checks in Taste step 6 (completeness only, verdict is browser-qa's)
+PASS orchestrate: dealt hero moment recorded per UI slice brief; brief without one not ready
+PASS HERO-BQA_F23: 3 lines in the built tree
+PASS browser-qa hero verdict: highest weight, merely adequate FAILS F6, calibration
+PASS browser-qa hero verdict is browser-qa's alone
+PASS FUNC_F23: 8 lines / 9 occurrences in the built tree
+PASS functionality: mechanism shown early, first-class, theme-matched
+PASS functionality: R2 strengthened -- mechanism visible on hero or first screen after it
+PASS functionality: mechanism must be THIS build's (own names, real figures)
+PASS functionality: decision record states the functionality story
+PASS functionality: a build that hides what the thing does fails
+PASS FUNC-DIAG_F23: 4 lines in the built tree (diagrams.md + pointers)
+PASS FUNC-BQA_F23: 2 lines in the built tree (browser-qa + Taste)
+PASS browser-qa functionality check: HOW it works early, THIS build's stack, fails if hidden
+PASS FUNC-UIPRO_F23: 1 line in the built tree (ui-ux-pro-max pointer)
+PASS ui-ux-pro-max functionality pointer: full rule lives in design-taste-frontend
+PASS orchestrate: functionality story named per UI slice brief; brief without one not ready
+PASS Taste step 6 static checks cover functionality (completeness only)
+PASS ALIGN_F23: 15 lines / 16 occurrences in the built tree
+PASS alignment checklist file exists (polish-pass reference/alignment.md)
+PASS alignment checklist is candidate evidence, never a verdict
+PASS alignment assertion ALIGN_F23_OVERFLOW in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_CENTER in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_NAV in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_GRID in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_CLIP in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_LABELS in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_ACTIONS in polish-pass alignment.md
+PASS alignment assertion ALIGN_F23_PANELS in polish-pass alignment.md
+PASS browser-qa alignment assertions: all 8 prose assertions (a)-(h) present
+PASS alignment tolerances: 0px overflow, <=2px centering/grid/spacing
+PASS alignment measurement model: getBoundingClientRect on the live page
+PASS alignment: no horizontal overflow (scrollWidth - innerWidth == 0)
+PASS alignment: hero/phone frame centered <= 2px; mid-band hero GROUP centered
+PASS alignment: declared intentional bleed is the only escape (page overflow still 0)
+PASS COVER_F23: 4 lines in the built tree
+PASS coverage: three widths 1440 / mid 900 (band 768-1100) / mobile 390
+PASS coverage: new widths supersede the old 375/768/1440 breakpoints
+PASS coverage: EVERY flow state measured + screenshotted, not just happy path
+PASS coverage: breakpoint +-1 probe + mid full-page shot in the matrix
+PASS BLOCK_F23: 5 lines in the built tree
+PASS blocking gap: unverified width/state is NOT shippable, DO NOT SHIP
+PASS blocking gap: empty matrix cell is never SHIP / SHIP WITH FIXES / INCONCLUSIVE-as-pass
+PASS browser-qa Alignment report section + coverage row
+PASS orchestrate alignment coverage gate (BLOCK_F23 + COVER_F23)
+PASS polish-pass runs the alignment checklist as candidate evidence
+PASS alignment sub-ids ALIGN_F23-A..E each occur exactly once as a tuple in build.sh
+PASS DYNAMIC_F23: 8 lines / 9 occurrences in the built tree
+PASS dynamic in motion-foundations: state changes choreographed, no-motion gap
+PASS dynamic in motion-patterns: interactive depth, sortable/filterable/expandable/draggable
+PASS dynamic in motion-advanced: live and interactive pieces
+PASS dynamic: state change with no motion is a gap
+PASS dynamic: reduced-motion fallback stays complete in the motion skills
+PASS browser-qa dynamic live check (DYNAMIC-BQA-01): interacts, confirms response live
+PASS browser-qa dynamic live check FAILS a build whose controls do not respond
+PASS browser-qa dynamic live check: undrivable interaction recorded as unverified, never a silent pass (M1)
+PASS browser-qa Dynamic report row (DYNAMIC-BQA-02)
+PASS orchestrate dynamic story per surface: what changes, what triggers it, how it moves
+PASS polish-pass reads the dynamic story from the decision record (DYNAMIC_F23 x2)
+PASS SS9-vs-SS2 distinction stated: SS2 is motion-presence, SS9 is state-change/interactivity
+PASS dynamic sub-ids DYNAMIC-01/02/03 + DYNAMIC-BQA-01 each occur once as a tuple in build.sh
+PASS DYNAMIC-BQA-02: one tuple + trailing comment + CORE header mention (3 total)
+PASS dynamic sub-ids occur 0x in the built tree (by design)
+FAIL build.sh is 24,030 lines, md5 9af8562b6b4a342525f529a00a79e9ea (post-fix23)
+FAIL diff vs build.sh.before-fix23 is additions only (+256/-0)
+PASS fix23 build.sh blocks present: W1 + SS3 + W3 + SS6 + SS9 + CORE
+PASS fix23 block order: SS9 block < CORE block < STEP 5 Counts
+PASS 17 files carry _F23 tokens in the built tree
+PASS counts 166/72/123/87/15 (unchanged -- no new skill/command/trigger)
+PASS trigger keys still 64 (no new trigger from this fix)
+PASS every trigger key still resolves to a real skill dir
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast absent (Grok pins only)
+PASS Grok pins: grok-4.7-high in 26 files, cursor-grok-4.6-high-fast in 85
+PASS DEMOGATE tokens present at every site (O4/O9, B2S1, B3S1, H1/H2)
+PASS zero 'demo' mentions inside the fix23 build.sh blocks
+PASS no new auto-invocation wording inside the fix23 build.sh blocks
+PASS narration-key prompt fires ONLY when the user asked for a demo video
+PASS first-build sequence intact: /demo never part of the order
+PASS MEMORABLE-BQA-01: one tuple + trailing comment (2 total); MEMORABLE-BQA-02: + CORE header mention (3 total)
+PASS BQA-TYPEAUDIT / UIPRO-F7VAR / ORCH-TYPEAUDIT: one tuple + trailing comment each (2 total)
+PASS BQA sub-ids occur 0x in the built tree (by design)
+PASS fix15 verifier: only expected fails, tail is 42/44 checks pass (expected 42/44 checks pass)
+PASS fix17 verifier: only expected fails, tail is 58/60 checks pass (expected 58/60 checks pass)
+PASS fix18 verifier: only expected fails, tail is 69/72 checks pass (expected 69/72 checks pass)
+PASS fix19 verifier: only expected fails, tail is 71/76 checks pass (expected 71/76 checks pass)
+PASS fix20 verifier: only expected fails, tail is 164/169 checks pass (expected 164/169 checks pass)
+PASS fix21 verifier: only expected fails, tail is 96/102 checks pass (expected 96/102 checks pass)
+PASS fix22 verifier: only expected fails, tail is 368/369 checks pass (expected 368/369 checks pass)
+FAIL fix23/MANIFEST.md exists and records build.sh lines + md5 (OWED -- fails until the manifest worker writes it)
+
+209/212 checks pass
+excluding the manifest check, which is owed: 209/211 checks pass

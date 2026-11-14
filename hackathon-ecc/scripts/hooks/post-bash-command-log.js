@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Command logger — Claude Code-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
+ * Command logger — Upstream-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
  */
 'use strict';
 
@@ -41,17 +41,17 @@ function appendLine(filePath, line) {
   fs.appendFileSync(filePath, `${line}\n`, 'utf8');
 }
 
-// Resolve the Claude profile directory the same way everywhere.
+// Resolve the Cursor profile directory the same way everywhere.
 //
 // Duplicated rather than imported on purpose: hooks ship in managed installs
 // that carry top-level `scripts/` without `scripts/lib/` (see #3259), so a
 // require into lib/ would make the hook unloadable there. `~` is expanded the
 // way `scripts/lib/agent-data-home.js` expands it, so a profile written as
-// `~/.claude-work` resolves to one place rather than two.
-function claudeConfigDir() {
-  const configured = process.env.CLAUDE_CONFIG_DIR;
+// `~/some-dir` resolves to one place rather than two.
+function agentDataHome() {
+  const configured = process.env.ECC_AGENT_DATA_HOME;
   const trimmed = configured ? String(configured).trim() : '';
-  if (!trimmed) return path.join(os.homedir(), '.claude');
+  if (!trimmed) return path.join(os.homedir(), '.cursor', 'ecc');
   if (trimmed.startsWith('~')) {
     const remainder = trimmed.slice(1).replace(/^[/\\]+/, '');
     return remainder ? path.join(os.homedir(), remainder) : os.homedir();
@@ -66,7 +66,7 @@ function run(rawInput, mode = 'audit') {
     if (config) {
       const input = String(rawInput || '').trim() ? JSON.parse(String(rawInput)) : {};
       const command = sanitizeCommand(input.tool_input?.command || '?');
-      appendLine(path.join(claudeConfigDir(), config.fileName), config.format(command));
+      appendLine(path.join(agentDataHome(), config.fileName), config.format(command));
     }
   } catch {
     // Logging must never block the calling hook.

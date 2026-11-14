@@ -2,9 +2,9 @@
 'use strict';
 
 /**
- * MCP health-check hook — Claude Code-only (not wired in this Cursor plugin — Cursor has no PreToolUse/PostToolUseFailure hook events).
+ * MCP health-check hook — Upstream-only (not wired in this Cursor plugin — Cursor has no PreToolUse/PostToolUseFailure hook events).
  *
- * Compatible with Claude Code's existing hook events:
+ * Compatible with Cursor's existing hook events:
  * - PreToolUse: probe MCP server health before MCP tool execution
  * - PostToolUseFailure: mark unhealthy servers, attempt reconnect, and re-probe
  *
@@ -25,7 +25,7 @@ const DEFAULT_TIMEOUT_MS = 5000;
 const DEFAULT_BACKOFF_MS = 30 * 1000;
 const MAX_BACKOFF_MS = 10 * 60 * 1000;
 // The preflight HTTP probe only checks reachability; it does not have access to
-// Claude Code's stored OAuth bearer token. Treat auth-gated responses as
+// Cursor's stored OAuth bearer token. Treat auth-gated responses as
 // reachable so the real MCP client can attempt the authenticated call. A
 // Streamable HTTP MCP server can also return 406 to a bare GET that omits
 // Accept: text/event-stream; that still proves the endpoint is alive. Some
@@ -47,17 +47,17 @@ function envNumber(name, fallback) {
   return Number.isFinite(value) && value >= 0 ? value : fallback;
 }
 
-// Resolve the Claude profile directory the same way everywhere.
+// Resolve the Cursor profile directory the same way everywhere.
 //
 // Duplicated rather than imported on purpose: hooks ship in managed installs
 // that carry top-level `scripts/` without `scripts/lib/` (see #3259), so a
 // require into lib/ would make the hook unloadable there. `~` is expanded the
 // way `scripts/lib/agent-data-home.js` expands it, so a profile written as
-// `~/.claude-work` resolves to one place rather than two.
-function claudeConfigDir() {
-  const configured = process.env.CLAUDE_CONFIG_DIR;
+// `~/some-dir` resolves to one place rather than two.
+function agentDataHome() {
+  const configured = process.env.ECC_AGENT_DATA_HOME;
   const trimmed = configured ? String(configured).trim() : '';
-  if (!trimmed) return path.join(os.homedir(), '.claude');
+  if (!trimmed) return path.join(os.homedir(), '.cursor', 'ecc');
   if (trimmed.startsWith('~')) {
     const remainder = trimmed.slice(1).replace(/^[/\\]+/, '');
     return remainder ? path.join(os.homedir(), remainder) : os.homedir();
@@ -69,7 +69,7 @@ function stateFilePath() {
   if (process.env.ECC_MCP_HEALTH_STATE_PATH) {
     return path.resolve(process.env.ECC_MCP_HEALTH_STATE_PATH);
   }
-  return path.join(claudeConfigDir(), 'mcp-health-cache.json');
+  return path.join(agentDataHome(), 'mcp-health-cache.json');
 }
 
 function configPaths() {
@@ -85,10 +85,8 @@ function configPaths() {
   const home = os.homedir();
 
   return [
-    path.join(cwd, '.claude.json'),
-    path.join(cwd, '.claude', 'settings.json'),
-    path.join(home, '.claude.json'),
-    path.join(home, '.claude', 'settings.json')
+    path.join(cwd, '.cursor', 'mcp.json'),
+    path.join(home, '.cursor', 'mcp.json')
   ];
 }
 
@@ -552,23 +550,21 @@ async function probeServer(serverName, resolvedConfig) {
   const config = resolvedConfig.config;
 
   // SECURITY: cloning a malicious repo must not auto-execute its MCP servers.
-  // Workspace configs (cwd .claude.json / .claude/settings.json) are untrusted
-  // by default; only probe them with explicit operator opt-in.
-  // Home configs (~/.claude.json) and explicit ECC_MCP_CONFIG_PATH remain allowed.
+  // Workspace configs (cwd .cursor/mcp.json) are untrusted by default; only
+  // probe them with explicit operator opt-in.
+  // Home configs (~/.cursor/mcp.json) and explicit ECC_MCP_CONFIG_PATH remain allowed.
   try {
     const src = String(resolvedConfig.source || '');
     const cwd = process.cwd();
     const home = require('os').homedir();
     const pathMod = require('path');
-    // A config file in the user's home directory (~/.claude.json or
-    // ~/.claude/settings.json) is always trusted regardless of cwd.
-    const isHomeSource = src === pathMod.join(home, '.claude.json')
-      || src === pathMod.join(home, '.claude', 'settings.json')
-      || src.startsWith(pathMod.join(home, '.claude') + pathMod.sep);
+    // A config file in the user's home directory (~/.cursor/mcp.json) is
+    // always trusted regardless of cwd.
+    const isHomeSource = src === pathMod.join(home, '.cursor', 'mcp.json')
+      || src.startsWith(pathMod.join(home, '.cursor') + pathMod.sep);
     if (!isHomeSource) {
-      const isWorkspaceSource = src === pathMod.join(cwd, '.claude.json')
-        || src === pathMod.join(cwd, '.claude', 'settings.json')
-        || src.startsWith(cwd + pathMod.sep + '.claude' + pathMod.sep);
+      const isWorkspaceSource = src === pathMod.join(cwd, '.cursor', 'mcp.json')
+        || src.startsWith(cwd + pathMod.sep + '.cursor' + pathMod.sep);
       if (isWorkspaceSource && !/^(1|true|yes)$/i.test(String(process.env.ECC_MCP_ALLOW_WORKSPACE_PROBE || ''))) {
         return {
           ok: false,
@@ -784,7 +780,7 @@ async function handlePreToolUse(rawInput, input, target, statePathValue, now) {
     ? ` Reconnect attempt: ${reconnect.success ? 'ok' : reconnect.reason}.`
     : '';
   logs.push(
-    `[MCPHealthCheck] ${target.server} is unavailable (${probe.reason}). Blocking ${target.tool || 'tool'} so Claude can fall back to non-MCP tools.${reconnectSuffix}`
+    `[MCPHealthCheck] ${target.server} is unavailable (${probe.reason}). Blocking ${target.tool || 'tool'} so Cursor can fall back to non-MCP tools.${reconnectSuffix}`
   );
 
   return { rawInput, exitCode: shouldFailOpen() ? 0 : 2, logs };
@@ -862,7 +858,7 @@ async function main() {
     return;
   }
 
-  const eventName = process.env.CLAUDE_HOOK_EVENT_NAME || 'PreToolUse';
+  const eventName = process.env.ECC_HOOK_EVENT_NAME || 'PreToolUse';
   const now = Date.now();
   const statePathValue = stateFilePath();
 

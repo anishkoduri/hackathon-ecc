@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Auto-Tmux Dev Hook — Claude Code-only (not wired in this Cursor plugin — Cursor has no PreToolUse event) — start dev servers in tmux/cmd automatically
+ * Auto-Tmux Dev Hook — Upstream-only (not wired in this Cursor plugin — Cursor has no PreToolUse event) — start dev servers in tmux/cmd automatically
+ * fix #24: unwired and dead in this plugin — the POSIX tmux path (`which`, `2>/dev/null`) never runs under Cursor-on-Windows/PowerShell, and the Windows cmd path is likewise unwired; kept as reference only.
  *
  * macOS/Linux: Runs dev server in a named tmux session (non-blocking).
  *              Falls back to original command if tmux is not installed.
@@ -10,7 +11,7 @@
  * transforms it to run in a detached session.
  *
  * Benefits:
- * - Dev server runs detached (doesn't block Claude Code)
+ * - Dev server runs detached (doesn't block Cursor)
  * - Session persists (can run `tmux capture-pane -t <session> -p` to see logs on Unix)
  * - Session name matches project directory (allows multiple projects simultaneously)
  *

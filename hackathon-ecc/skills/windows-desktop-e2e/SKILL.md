@@ -26,7 +26,7 @@ End-to-end testing for Windows native desktop applications using **pywinauto** b
 
 ## Core Concepts
 
-All Windows desktop automation relies on **UI Automation (UIA)**, a Windows-built-in accessibility API. Every supported framework exposes a tree of UIA elements with properties Claude can read and act on:
+All Windows desktop automation relies on **UI Automation (UIA)**, a Windows-built-in accessibility API. Every supported framework exposes a tree of UIA elements with properties Cursor can read and act on:
 
 ```
 Your test (Python)
@@ -52,7 +52,7 @@ Your test (Python)
 
 ```bash
 # Python 3.8+, Windows only
-pip install pywinauto pytest pytest-html Pillow pytest-timeout
+pip install pywinauto==0.6.9 pytest==9.2.0 pytest-html==4.2.0 Pillow==13.0.0 pytest-timeout==2.5.0
 # Optional: screen recording
 # Install ffmpeg and add to PATH: https://ffmpeg.org/download.html
 ```
@@ -648,7 +648,7 @@ jobs:
         with: { python-version: "3.11" }
 
       - name: Install deps
-        run: pip install pywinauto pytest pytest-html Pillow
+        run: pip install pywinauto==0.6.9 pytest==9.2.0 pytest-html==4.2.0 Pillow==13.0.0
 
       - name: Build app
         run: cmake --build build --config Release  # adjust to your build system
@@ -752,7 +752,7 @@ print(cell.window_text())
 When a control is not reachable via UIA (self-drawn, third-party, game engine):
 
 ```bash
-pip install pyautogui Pillow opencv-python
+pip install pyautogui==0.9.54 Pillow==13.0.0 opencv-python==5.0.0.93
 ```
 
 ```python
@@ -877,7 +877,7 @@ pytest tests/test_login.py -v
 APP_PATH="C:\build\Release\MyApp.exe" APP_TITLE="MyApp" pytest tests/ -v
 
 # Detect flaky tests (repeat each 5 times)
-pip install pytest-repeat
+pip install pytest-repeat==0.9.4
 pytest tests/test_login.py --count=5 -v
 ```
 

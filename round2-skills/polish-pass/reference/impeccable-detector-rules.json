@@ -560,7 +560,7 @@
     "advisory": true
   },
   {
-    "id": "codex-grid-background",
+    "id": "grid-background",
     "name": "Decorative grid-line background",
     "category": "slop",
     "severity": "advisory",

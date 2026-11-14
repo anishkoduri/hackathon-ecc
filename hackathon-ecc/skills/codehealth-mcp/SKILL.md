@@ -39,7 +39,7 @@ Same triggers as **When to Use** above — this heading is what ECC uses for ski
 
 Copy the `codescene` entry inlined below (the upstream `mcp-configs/mcp-servers.json` file is not shipped in this plugin) into your harness MCP config.
 
-**Claude Code** (`~/.claude.json` → `mcpServers`):
+**Cursor** (`~/.cursor/mcp.json` → `mcpServers`):
 
 ```json
 "codescene": {
@@ -110,7 +110,7 @@ Result: Code Health **4.82 → 9.1** (free standalone token only).
 
 ### Example: AGENTS.md enforcement block
 
-Paste into the project `AGENTS.md` or `CLAUDE.md`:
+Paste into the project `AGENTS.md`:
 
 ```md
 ## Code Health (CodeScene MCP)

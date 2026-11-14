@@ -10,7 +10,7 @@ globs:
 
 > This file extends [common-hooks.mdc](common-hooks.mdc) with Nuxt specific content.
 
-These were Claude Code harness hooks for Nuxt work; in Cursor, wire them as `afterFileEdit` entries in `hooks/hooks.json`, following the existing dispatcher pattern in `hooks/after-file-edit.js`.
+These were Cursor harness hooks for Nuxt work; in Cursor, wire them as `afterFileEdit` entries in `hooks/hooks.json`, following the existing dispatcher pattern in `hooks/after-file-edit.js`.
 
 ## Typecheck
 

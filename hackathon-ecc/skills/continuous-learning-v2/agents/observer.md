@@ -1,12 +1,12 @@
 ---
 name: observer
-description: Background agent that analyzes session observations to detect patterns and create instincts. Uses Haiku for cost-efficiency. v2.1 adds project-scoped instincts.
-model: haiku
+description: Background agent that analyzes session observations to detect patterns and create instincts. Uses Grok 4.6 High Fast for cost-efficiency. v2.1 adds project-scoped instincts.
+model: cursor-grok-4.6-high-fast
 ---
 
 # Observer Agent
 
-A background agent that analyzes observations from Claude Code sessions to detect patterns and create instincts.
+A background agent that analyzes observations from Cursor sessions to detect patterns and create instincts.
 
 ## When to Run
 
@@ -32,7 +32,7 @@ Reads observations from the **project-scoped** observations file:
 Look for these patterns in observations:
 
 ### 1. User Corrections
-When a user's follow-up message corrects Claude's previous action:
+When a user's follow-up message corrects Cursor's previous action:
 - "No, use X instead of Y"
 - "Actually, I meant..."
 - Immediate undo/redo patterns

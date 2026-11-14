@@ -5,7 +5,9 @@ import { C, FONT } from '../theme';
 
 // The slide judges always ask for: which boxes are model calls and which are
 // not. Nodes come from shots.json -> cards.arch.nodes.
-type Node = { label: string; note: string; kind: 'in' | 'llm' | 'code' | 'out' };
+// Each node may carry a `stack` label (the concrete framework / model /
+// service that box runs on), rendered under the node label in mono.
+type Node = { label: string; note: string; kind: 'in' | 'llm' | 'code' | 'out'; stack?: string };
 
 export const Arch: React.FC<{ dur: number }> = ({ dur }) => {
   const t = useCurrentFrame() / FPS;
@@ -36,6 +38,7 @@ export const Arch: React.FC<{ dur: number }> = ({ dur }) => {
                   {label(n.kind)}
                 </div>
                 <div style={{ fontFamily: FONT.serif, fontSize: 34, color: C.text, marginTop: 14, lineHeight: 1.05 }}>{n.label}</div>
+                {n.stack ? <div style={{ fontFamily: FONT.mono, fontSize: 15, letterSpacing: '0.08em', color: C.accent, marginTop: 8 }}>{n.stack}</div> : null}
                 <div style={{ fontFamily: FONT.sans, fontSize: 17, color: C.textMuted, marginTop: 10, lineHeight: 1.35 }}>{n.note}</div>
               </div>
             </React.Fragment>

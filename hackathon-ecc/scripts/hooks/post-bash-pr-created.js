@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PR-created handler — Claude Code-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
+ * PR-created handler — Upstream-only PostToolUse hook (not wired in this Cursor plugin — Cursor has no PostToolUse event).
  */
 'use strict';
 

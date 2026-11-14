@@ -1,6 +1,6 @@
 ---
 name: ck
-description: "Persistent per-project memory for Claude Code (Context Keeper) driven by deterministic Node.js /ck commands: init, save, resume, info, list, forget, and v1-to-v2 migrate, plus a SessionStart hook that injects a compact project brief. Use when context must survive across sessions, saving session state with next steps and decisions, resuming where a previous session left off, or picking up a project without re-explaining it. (Claude Code only — this skill uses Claude Code's SessionStart hook and ~/.claude/ck storage; it does not work in Cursor.)"
+description: "Persistent per-project memory for Cursor (Context Keeper) driven by deterministic Node.js /ck commands: init, save, resume, info, list, forget, and v1-to-v2 migrate, plus a SessionStart hook that injects a compact project brief. Use when context must survive across sessions, saving session state with next steps and decisions, resuming where a previous session left off, or picking up a project without re-explaining it. (Cursor only — this skill uses Cursor's SessionStart hook and ~/.cursor/ecc/ck storage.)"
 metadata:
   version: 2.0.0
   origin: community
@@ -10,14 +10,14 @@ repo: https://github.com/sreedhargs89/context-keeper
 
 # ck — Context Keeper
 
-> **Claude Code only** — this skill uses Claude Code's SessionStart hook and ~/.claude/ck storage; it does not work in Cursor.
+> **Cursor only** — this skill uses Cursor's SessionStart hook and ~/.cursor/ecc/ck storage.
 
 You are the **Context Keeper** assistant. When the user invokes any `ck:*` command,
 run the corresponding Node.js script and present its stdout to the user verbatim.
 Scripts live in the `commands/` directory next to this SKILL.md (for example
 `skills/ck/commands/` in this plugin for a manual install, or the ck skill inside the ECC
-plugin). The commands below refer to the skill directory as `${CLAUDE_SKILL_DIR}`,
-which Claude Code fills in; in other hosts, replace it with the absolute path of the
+plugin). The commands below refer to the skill directory as `${ECC_PLUGIN_ROOT}/skills/ck`,
+which Cursor fills in; in other hosts, replace it with the absolute path of the
 directory containing this SKILL.md. Run the scripts from the project directory; do not
 `cd` into the skill directory, because the scripts use the current directory as the
 project path.
@@ -40,7 +40,7 @@ project path.
 
 ### `ck:init` — Register a Project
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/init.mjs"
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/init.mjs"
 ```
 The script outputs JSON with auto-detected info. Present it as a confirmation draft:
 ```
@@ -56,7 +56,7 @@ Wait for user approval. Apply any edits. Then pass the confirmed JSON to save.mj
 through a quoted heredoc (never `echo '...'`: an apostrophe in any field would end the
 quoted string and hand the rest to the shell):
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/save.mjs" --init <<'CK_JSON'
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/save.mjs" --init <<'CK_JSON'
 <confirmed-json>
 CK_JSON
 ```
@@ -76,7 +76,7 @@ Confirmed JSON schema: `{"name":"...","path":"...","description":"...","stack":[
 Show a draft summary to the user: `"Session: '<summary>' — save this? (yes / edit)"`
 Wait for confirmation. Then pass the JSON to save.mjs through a quoted heredoc:
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/save.mjs" <<'CK_JSON'
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/save.mjs" <<'CK_JSON'
 <json>
 CK_JSON
 ```
@@ -87,7 +87,7 @@ Display the script's stdout confirmation verbatim.
 
 ### `ck:resume [name|number]` — Full Briefing
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/resume.mjs" [arg]
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/resume.mjs" [arg]
 ```
 Display output verbatim. Then ask: "Continue from here? Or has anything changed?"
 If user reports changes → run `ck:save` immediately.
@@ -96,7 +96,7 @@ If user reports changes → run `ck:save` immediately.
 
 ### `ck:info [name|number]` — Quick Snapshot
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/info.mjs" [arg]
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/info.mjs" [arg]
 ```
 Display output verbatim. No follow-up question.
 
@@ -104,7 +104,7 @@ Display output verbatim. No follow-up question.
 
 ### `ck:list` — Portfolio View
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/list.mjs"
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/list.mjs"
 ```
 Display output verbatim. If user replies with a number or name → run `ck:resume`.
 
@@ -115,7 +115,7 @@ First resolve the project name (run `ck:list` if needed).
 Ask: `"This will permanently delete context for '<name>'. Are you sure? (yes/no)"`
 If yes:
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/forget.mjs" [name]
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/forget.mjs" [name]
 ```
 Display confirmation verbatim.
 
@@ -123,11 +123,11 @@ Display confirmation verbatim.
 
 ### `ck:migrate` — Convert v1 Data to v2
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/migrate.mjs"
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/migrate.mjs"
 ```
 For a dry run first:
 ```bash
-node "${CLAUDE_SKILL_DIR}/commands/migrate.mjs" --dry-run
+node "${ECC_PLUGIN_ROOT}/skills/ck/commands/migrate.mjs" --dry-run
 ```
 Display output verbatim. Migrates all v1 CONTEXT.md + meta.json files to v2 context.json.
 Originals are backed up as `meta.json.v1-backup` — nothing is deleted.
@@ -154,8 +154,10 @@ Use `$HOME`, not `~`: the shell does not expand `~` inside double quotes. If ck 
 elsewhere (for example inside the ECC plugin), use the absolute path of its
 `hooks/session-start.mjs` instead.
 
-The hook injects ~100 tokens per session (compact 5-line summary). It also detects
-unsaved sessions, git activity since last save, and goal mismatches vs CLAUDE.md.
+In this plugin the hook is already wired — no manual registration needed: `hooks/session-start.js` runs `skills/ck/hooks/session-start.mjs` on every session start (fix #25 §1) and merges its brief into the session output. The JSON block above is for a manual install only.
+
+The hook injects ~1k tokens per session (the full SKILL.md plus the compact 5-line summary). It also detects
+unsaved sessions, git activity since last save, and goal mismatches vs AGENTS.md.
 
 ---
 

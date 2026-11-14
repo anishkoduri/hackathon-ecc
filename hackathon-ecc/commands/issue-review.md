@@ -33,7 +33,7 @@ Follow the nine phases below:
 4. **VERIFY**: read the named code path in full, confirm or refute the claim, check `git log` and merged PRs for an existing fix, reproduce only through the project's own tooling.
 5. **DUPLICATES**: search open and closed issues by root cause, not symptom.
 6. **ASSESS**: severity (CRITICAL, HIGH, MEDIUM, LOW) and decision (VALID, NEEDS-INFO, DUPLICATE, ALREADY-FIXED, NOT-A-BUG, OUT-OF-SCOPE).
-7. **REPORT**: write `.claude/reviews/<OWNER>/<REPO>/issue-<NUMBER>-review.md` with evidence, completeness table, related items, suggested labels, and a draft reply.
+7. **REPORT**: write `.ecc/reviews/<OWNER>/<REPO>/issue-<NUMBER>-review.md` with evidence, completeness table, related items, suggested labels, and a draft reply.
 8. **PUBLISH**: only with `--comment` or `--label`, and only after showing the exact text or labels.
 9. **OUTPUT**: one-screen summary with decision, severity, confidence, missing items, and artifact paths.
 
@@ -52,7 +52,7 @@ Missing: <checklist items or "nothing">
 Related: <#N duplicate | #N fixed by PR #M | none>
 
 Artifacts:
-  Review: .claude/reviews/<OWNER>/<REPO>/issue-<NUMBER>-review.md
+  Review: .ecc/reviews/<OWNER>/<REPO>/issue-<NUMBER>-review.md
   GitHub: <issue URL> (draft only, nothing posted)
 ```
 

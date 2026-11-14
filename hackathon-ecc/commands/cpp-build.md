@@ -169,5 +169,5 @@ The agent will stop and report if:
 
 ## Related
 
-- Agent: `agents/ecc-cpp-build-resolver.md`
+- Agent: `cpp-build-resolver` (`agents/ecc-cpp-build-resolver.md`)
 - Skill: `skills/cpp-coding-standards/`

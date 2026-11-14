@@ -4,35 +4,32 @@ const {
   hookEnabled,
   readStdin,
   runExistingHook,
-  transformToClaude,
+  transformToHookPayload,
 } = require('./adapter');
 readStdin().then(raw => {
   const input = JSON.parse(raw || '{}');
-  const claudeInput = transformToClaude(input);
+  const hookInput = transformToHookPayload(input);
   const sharedOptions = {
-    env: claudeInput.session_id
-      ? { CLAUDE_SESSION_ID: claudeInput.session_id }
+    env: hookInput.session_id
+      ? { ECC_SESSION_ID: hookInput.session_id }
       : {},
   };
 
   if (hookEnabled('stop:session-end', ['minimal', 'standard', 'strict'])) {
-    runExistingHook('session-end.js', claudeInput, sharedOptions);
+    runExistingHook('session-end.js', hookInput, sharedOptions);
   }
   if (hookEnabled('stop:evaluate-session', ['minimal', 'standard', 'strict'])) {
-    runExistingHook('evaluate-session.js', claudeInput, sharedOptions);
-  }
-  if (hookEnabled('stop:cost-tracker', ['minimal', 'standard', 'strict'])) {
-    runExistingHook('cost-tracker.js', claudeInput, sharedOptions);
+    runExistingHook('evaluate-session.js', hookInput, sharedOptions);
   }
   if (hookEnabled('stop:format-typecheck', ['standard', 'strict'])) {
     runExistingHook(
       'stop-format-typecheck.js',
-      claudeInput,
+      hookInput,
       createStopFormatTypecheckOptions(sharedOptions.env)
     );
   }
   if (hookEnabled('stop:check-console-log', ['standard', 'strict'])) {
-    runExistingHook('check-console-log.js', claudeInput, {
+    runExistingHook('check-console-log.js', hookInput, {
       ...sharedOptions,
       forwardStderr: true,
     });

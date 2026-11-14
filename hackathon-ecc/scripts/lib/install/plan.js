@@ -9,9 +9,6 @@ const { getInstallTargetAdapter } = require('../install-targets/registry');
 const { resolveInvocationEnvironment } = require('../invocation-environment');
 const { disableUnselectedOpenCodeHooks } = require('./hook-consent');
 const { readHooksConfig } = require('../hooks-config');
-const {
-  materializeManagedHooks,
-} = require('./claude-settings');
 
 const EXCLUDED_GENERATED_SOURCE_SUFFIXES = ['/ecc-install-state.json', '/ecc/install-state.json'];
 const IGNORED_DIRECTORY_NAMES = new Set([
@@ -107,11 +104,8 @@ function buildCopyFileOperation({
   // Agent frontmatter and workflow transforms are textual Markdown projections.
   // Their directories may also contain binary assets and executable helpers,
   // which must keep their bytes intact.
-  const applicableTransform = (contentTransform === 'copilot-workflow-paths'
-    || contentTransform === 'copilot-agent-frontmatter'
-    || contentTransform === 'antigravity-agent-frontmatter'
-    || contentTransform === 'qwen-agent-frontmatter')
-    && !/\.md$/i.test(sourceRelativePath) ? undefined : contentTransform;
+  // Cursor-only: no host frontmatter/workflow transform applies.
+  const applicableTransform = contentTransform;
   return {
     kind: 'copy-file',
     moduleId,
@@ -140,32 +134,7 @@ function readJsonObject(filePath, label) {
   return parsed;
 }
 
-function materializeClaudeSettingsOperation(sourceRoot, operation) {
-  const sourcePath = path.join(sourceRoot, operation.sourceRelativePath);
-  if (!fs.existsSync(sourcePath)) {
-    return [];
-  }
-
-  // Stable ids and descriptions live in hooks/hooks.metadata.json; readHooksConfig
-  // merges them back so managed settings entries keep their ids.
-  const hooksConfig = readHooksConfig(sourcePath, operation.sourceRelativePath);
-  const managedHooks = materializeManagedHooks(
-    hooksConfig,
-    path.dirname(operation.destinationPath)
-  );
-
-  return [{
-    ...operation,
-    sourcePath,
-    scaffoldOnly: false,
-    managedHooks,
-  }];
-}
-
 function materializeScaffoldOperation(sourceRoot, operation) {
-  if (operation.kind === 'update-claude-settings') {
-    return materializeClaudeSettingsOperation(sourceRoot, operation);
-  }
 
   if (operation.kind === 'merge-json') {
     return [
@@ -222,20 +191,10 @@ function materializeScaffoldOperation(sourceRoot, operation) {
   });
 }
 
-function isSelectedAntigravityLegacyRule(operation, ruleLanguages) {
-  const normalizedSourcePath = String(operation.sourceRelativePath || '').replace(/\\/g, '/');
-  if (!normalizedSourcePath.startsWith('rules/')) {
-    return true;
-  }
-
-  const namespace = normalizedSourcePath.split('/')[1];
-  return namespace === 'common' || ruleLanguages.includes(namespace);
-}
-
 function dedupeCopyFileOperations(operations) {
   // A `copy-file` operation fully overwrites its destination, so when several
   // of them target the same path (e.g. a generic `commands/<name>.md` shadowed
-  // by an OpenCode `.opencode/commands/<name>.md` override) only the last one
+  // by a later override) only the last one
   // actually determines the installed content. Recording the shadowed earlier
   // writes in install-state makes `doctor` report perpetual drift and drives
   // `repair` to clobber the override with the generic source (issue #2414).
@@ -261,7 +220,7 @@ function dedupeCopyFileOperations(operations) {
 function createManifestInstallPlan(options = {}) {
   const sourceRoot = options.sourceRoot || getSourceRoot();
   const projectRoot = options.projectRoot || process.cwd();
-  const target = options.target || 'claude';
+  const target = options.target || 'cursor';
   const legacyLanguages = Array.isArray(options.legacyLanguages) ? [...options.legacyLanguages] : [];
   const requestProfileId = Object.hasOwn(options, 'requestProfileId') ? options.requestProfileId : options.profileId || null;
   const requestModuleIds = Object.hasOwn(options, 'requestModuleIds') ? [...options.requestModuleIds] : Array.isArray(options.moduleIds) ? [...options.moduleIds] : [];
@@ -291,24 +250,11 @@ function createManifestInstallPlan(options = {}) {
   const materializedOperations = plan.operations.flatMap(operation => (
     materializeScaffoldOperation(sourceRoot, operation)
   )).map(operation => {
-    // Persist this projection so install, doctor and repair compare the same
-    // native component names rather than restoring plugin-only references.
-    if (['claude', 'claude-project'].includes(target)
-      && operation.kind === 'copy-file'
-      && /\.(md|mdx|markdown)$/i.test(operation.destinationPath)
-      && !operation.contentTransform) {
-      return { ...operation, contentTransform: 'claude-manual-plugin-namespace' };
-    }
+    // Cursor-only: operations pass through unchanged (no host projection).
     return operation;
   });
   const ruleLanguages = Array.isArray(options.ruleLanguages) ? [...options.ruleLanguages] : [];
-  const operations = dedupeCopyFileOperations(
-    options.legacyMode && target === 'antigravity'
-      ? materializedOperations.filter(operation => (
-        isSelectedAntigravityLegacyRule(operation, ruleLanguages)
-      ))
-      : materializedOperations
-  );
+  const operations = dedupeCopyFileOperations(materializedOperations);
   const source = {
     repoVersion: getPackageVersion(sourceRoot),
     repoCommit: getRepoCommit(sourceRoot),

@@ -25,7 +25,7 @@ const {
 
 function showHelp() {
   console.log(`
-Package Manager Setup for Cursor (also works in Claude Code)
+Package Manager Setup for Cursor (also works in Cursor)
 
 Usage:
   node scripts/setup-package-manager.js [options] [package-manager]
@@ -33,11 +33,9 @@ Usage:
 Options:
   --detect        Detect and show current package manager
   --global <pm>   Set global preference (saves to the host-aware config path:
-                  ~/.cursor/ecc/package-manager.json in Cursor,
-                  ~/.claude/package-manager.json in Claude Code;
+                  ~/.cursor/ecc/package-manager.json;
                   ~/.cursor/package-manager.json is also read as a fallback)
-  --project <pm>  Set project preference (saves to .cursor/package-manager.json;
-                  an existing .claude/package-manager.json is still honoured)
+  --project <pm>  Set project preference (saves to .cursor/package-manager.json)
   --list          List available package managers
   --help          Show this help message
 
@@ -78,7 +76,7 @@ function detectAndShow() {
   console.log('Detection results:');
   console.log(`  From package.json: ${fromPkg || 'not specified'}`);
   console.log(`  From lock file: ${fromLock || 'not found'}`);
-  console.log(`  Environment var: ${process.env.CURSOR_PACKAGE_MANAGER || process.env.CLAUDE_PACKAGE_MANAGER || 'not set'}`);
+  console.log(`  Environment var: ${process.env.CURSOR_PACKAGE_MANAGER || 'not set'}`);
   console.log('');
 
   console.log('Available package managers:');
@@ -133,7 +131,7 @@ function setGlobal(pmName) {
     setPreferredPackageManager(pmName);
     console.log(`\n✓ Global preference set to: ${pmName}`);
     console.log(`  Saved to: ${getConfigPath()}`);
-    console.log('  (Also read from ~/.cursor/package-manager.json and ~/.claude/package-manager.json)');
+    console.log('  (Also read from ~/.cursor/package-manager.json)');
     console.log('');
   } catch (err) {
     console.error(`Error: ${err.message}`);
@@ -152,7 +150,6 @@ function setProject(pmName) {
     setProjectPackageManager(pmName);
     console.log(`\n✓ Project preference set to: ${pmName}`);
     console.log('  Saved to: .cursor/package-manager.json');
-    console.log('  (An existing .claude/package-manager.json is still honoured on read)');
     console.log('');
   } catch (err) {
     console.error(`Error: ${err.message}`);

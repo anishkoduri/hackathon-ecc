@@ -624,7 +624,7 @@ python analyze_dlls.py dist/你的软件名.dist
 **如果用了 OpenCV** → 改用无头版
 ```bash
 pip uninstall opencv-python
-pip install opencv-python-headless
+pip install opencv-python-headless==5.0.0.93
 ```
 
 **如果用了 Qt** → 排除不需要的模块

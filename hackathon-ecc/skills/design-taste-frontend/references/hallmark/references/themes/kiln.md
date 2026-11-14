@@ -26,8 +26,8 @@ A dark workshop with the kiln door open a crack: a near-black ground, cream ink,
   --color-accent: oklch(70% 0.2 45); --color-accent-ink: oklch(14% 0.02 40); --color-focus: oklch(76% 0.19 56);
   --heat-0: oklch(12% 0.012 40); --heat-1: oklch(22% 0.07 22); --heat-2: oklch(40% 0.16 27); --heat-3: oklch(60% 0.21 36);
   --heat-4: oklch(76% 0.19 56); --heat-5: oklch(89% 0.14 78); --heat-6: oklch(98% 0.04 95);
-  --font-display: "Boska", "Iowan Old Style", Georgia, serif; --font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Boska", "Iowan Old Style", Georgia; --font-body: "Geist";
+  --font-outlier: "Geist Mono";
   --radius-card: 28px; --radius-well: 16px; --radius-pill: 999px; --rule-hair: 1px;
   --shadow-card: 0 50px 90px -30px oklch(8% 0.01 40 / 0.5);
   --tracking-display: -0.02em; --display-weight: 500;

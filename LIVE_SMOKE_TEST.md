@@ -14,7 +14,7 @@ Run this in your own Cursor install to verify the plugin works at runtime. Stati
 - [ ] Open Cursor → **Customize** (sidebar) → **Plugins**.
 - [ ] Install the plugin from the local directory (use the local-folder / "Add plugin" option if shown; otherwise push the repo to GitHub first and install via **Dashboard → Plugins & MCPs → Team Marketplaces → Add Marketplace → Import from Repo** with the repo URL — team marketplaces need a Teams or Enterprise plan).
 - [ ] Confirm the plugin appears in the installed list as **hackathon-ecc 1.0.0**.
-- [ ] Confirm the plugin's skills, rules, agents, and commands are listed under its details (counts should read 168 skills, 72 agents, 123 rules, 96 commands).
+- [ ] Confirm the plugin's skills, rules, agents, and commands are listed under its details (counts should read 166 skills, 72 agents, 123 rules, 87 commands).
 
 **If install fails:** note the exact error. A missing or malformed `.cursor-plugin/plugin.json` is the usual cause.
 
@@ -67,23 +67,23 @@ Does Cursor resolve agents by **frontmatter `name:`** or by **filename**?
 - [ ] In a chat, ask Cursor to use the `code-reviewer` agent (the frontmatter short name) for a code review.
 - [ ] In another chat, ask Cursor to use the `ecc-code-reviewer` agent (the filename, `agents/ecc-code-reviewer.md`).
 - [ ] Note which form Cursor accepts / which one it says it cannot find.
-- [ ] Check the `deep-reasoner` agent: ask for a reasoning-heavy task and see if the agent that runs reports itself as `deep-reasoner` with model `claude-opus-5`.
+- [ ] Check the `deep-reasoner` agent: ask for a reasoning-heavy task and see if the agent that runs reports itself as `deep-reasoner` with model `grok-4.7-high`.
 
 **Record the answer here:** Cursor resolves agents by ____________________ (frontmatter name / filename / both / neither — it ignored the name).
 
 This decides whether the `agents/<name>.md` path fixes and the frontmatter-name normalization are correct, or whether the agent files need renaming.
 
-## 7. Agent `model:` bracket syntax
+## 7. Agent `model:` slug-form pins
 
-The agents pin models with Claude Code-style bracket syntax (e.g. `model: claude-opus-5`, `model: composer-2.5[fast=false]`).
+The agents pin models with slug-form pins (e.g. `model: grok-4.7-high`, `model: cursor-grok-4.6-high-fast`).
 
-- [ ] Ask for a reasoning-heavy task (should use deep-reasoner → `claude-opus-5`).
-- [ ] Ask for a fast task (should use fast-worker → `composer-2.5[fast=false]`).
-- [ ] Note whether Cursor honors the model pin, ignores it, or errors on the bracket syntax.
+- [ ] Ask for a reasoning-heavy task (should use deep-reasoner → `grok-4.7-high`).
+- [ ] Ask for a fast task (should use fast-worker → `cursor-grok-4.6-high-fast`).
+- [ ] Note whether Cursor honors the model pin, ignores it, or errors on the pin.
 
-**Record:** Cursor ____________________ (honors the model pin / ignores it / errors on the bracket syntax).
+**Record:** Cursor ____________________ (honors the model pin / ignores it / errors on the pin).
 
-If Cursor errors on or ignores the bracket syntax, the `model:` lines need to be rewritten in Cursor's syntax (or removed).
+If Cursor errors on or ignores the slug-form pin, the `model:` lines need to be rewritten or removed.
 
 ## 8. Hooks fire
 
@@ -110,9 +110,7 @@ If Cursor errors on or ignores the bracket syntax, the `model:` lines need to be
 
 ## 11. Runtime items that static audit cannot verify
 
-- [ ] **ccg-workflow (multi-* commands):** try a multi-* command (e.g. `/multi-plan`). It needs the external `npx ccg-workflow` runtime. Note whether it works or fails, and the error if it fails.
-- [ ] **Codex CLI (council-multi-model):** if you use the council skill, note whether the Codex CLI adapter works in Cursor.
-- [ ] **Plugin root resolution:** the scripts resolve the plugin root via `CLAUDE_PLUGIN_ROOT` / `ECC_PLUGIN_ROOT` env vars, falling back to a path relative to the script. Confirm the hooks work (step 8) — if they do, the fallback is working. If they fail with a "cannot find" error, the root resolution is the cause.
+- [ ] **Plugin root resolution:** the scripts resolve the plugin root via the `ECC_PLUGIN_ROOT` env var, falling back to a path relative to the script. Confirm the hooks work (step 8) — if they do, the fallback is working. If they fail with a "cannot find" error, the root resolution is the cause.
 - [ ] **`/demo`:** run `/demo` on the test app and confirm it produces a demo video (or a clear error telling you what is missing, e.g. Playwright browsers or a TTS voice).
 
 ## 12. The 6 fixed skills load (after the Audit #2 YAML fix)
@@ -129,13 +127,28 @@ Audit #2 found 6 skills with invalid YAML frontmatter (their `description:` cont
 - [ ] **Hallmark render tier:** on a Taste landing build, confirm `sloplint --render` runs: it needs `puppeteer-core@25.17.0` (`npm i -g puppeteer-core@25.17.0` if missing) + Chrome. If Chrome is not found, set `CHROME_PATH` to the Chrome install. Note whether the render tier ran or fell back to static-only.
 - [ ] **Hallmark theme deal:** ask Cursor to build a landing page and confirm the deal picks a theme from the 50-theme catalog (theme name + material in the report) rather than inventing a direction.
 
-## 14. Grok 4.7 High handles design (fix program #13)
+## 14. Grok pins hold — 4.7 High design, 4.6 High Fast task tier (fix programs #13, #16)
 
 - [ ] **Picker selection:** before the first build, select **Grok 4.7 High** in Cursor's model picker. The plugin pins its design role to `grok-4.7-high` (slug form only — no bracket syntax), but Cursor's subagent model allowlist is coupled to the picker dropdown, so the pin can silently fall back to another model if Grok 4.7 High is not selected.
-- [ ] **Design role runs on Grok 4.7 High:** on a build with UI work, confirm the design lead (the agent/skill doing design direction — Taste theme deal, ui-ux-pro-max direction, polish-pass) actually runs on Grok 4.7 High, not on Opus or another model. Note what it ran on and any error or fallback.
+- [ ] **Design role runs on Grok 4.7 High:** on a build with UI work, confirm the design lead (the agent/skill doing design direction — Taste theme deal, ui-ux-pro-max direction, polish-pass) actually runs on Grok 4.7 High, not on another model. Note what it ran on and any error or fallback.
+- [ ] **Fast tier runs on Grok 4.6 High Fast:** on a mechanical task, confirm the fast-worker / scout actually runs on Grok 4.6 High Fast (`cursor-grok-4.6-high-fast` — the `cursor-` prefix is part of the pin), not on another model. Note what it ran on and any error or fallback.
 - [ ] **"High" cost note:** "High" is a reasoning effort, not a price tier — higher effort generates more reasoning tokens and burns the Cursor weekly usage pool faster. Note whether usage feels materially higher; this does not change the model choice.
 
-**Record the answer here:** the design role ran on ____________________ (Grok 4.7 High / another model — which one / fell back silently).
+**Record the answer here:** the design role ran on ____________________ (Grok 4.7 High / another model — which one / fell back silently). The fast tier ran on ____________________ (Grok 4.6 High Fast / another model — which one / fell back silently).
+
+## 15. Fix #24 Cursor-readiness — live-only items static audit cannot settle
+
+Fix #24 made the plugin robust to either outcome on each item below; this step records which outcome is real. Cross-references: step 6 (agent resolution), step 8 (hooks fire), step 11 (runtime items), step 14 (pins).
+
+- [ ] **D-6 Stop / SessionStart events exist?** `hooks.json` registers both `stop` and `sessionStart`, but four hook headers say "Cursor has no Stop/SessionStart hook event". Run a build to a stop and confirm: does the Stop hook fire (desktop-notify, ecc-statusline)? Does anything fire on session start? Record which side is right — do not pick one from the docs alone.
+- [ ] **C-5 Stop-hook timeout unit:** `hooks.json` sets `timeout: 300` on the `stop` event with the unit unstated. Confirm whether 300 means seconds or milliseconds in practice (does a slow stop hook get cut off, and after how long?).
+- [ ] **C-6 Hook runtime shape:** confirm hooks run with cwd = the plugin root, `node` on PATH, and the registered event names (`sessionStart`, `beforeShellExecution`, `afterFileEdit`, `stop`, …) matching what Cursor actually emits.
+- [ ] **D-9 `.ecc/settings.json` pickup:** confirm whether Cursor picks up the plugin's `.ecc/settings.json` at all (if not, note it — the file is then documentation only).
+- [ ] **E-7 Taste gate hook without Git Bash:** the Taste gate Stop hook is one POSIX `sh` line (Git Bash on Windows). If Git Bash is NOT installed, does the hook fire, fail silently, or error? Record the behavior.
+- [ ] **C-1 block-no-verify on PowerShell/cmd:** run each of these as a shell command and record blocked vs allowed: `powershell -Command "git commit --no-verify"`, `pwsh -c "git commit --no-verify"`, `cmd /c git commit --no-verify`, a `-EncodedCommand` base64 bypass attempt, a `-File` script bypass attempt, and a clean `powershell -Command "echo hi"` (must be allowed). Any bypass that gets through is a FAIL — report the exact command.
+- [ ] **General-subagent fallback pin:** dispatch a task to a `general subagent` (the fallback where no named agent resolves — see step 6) and confirm which model it runs on, and whether the Grok 4.7 High picker selection (step 14) holds for it.
+
+**Record the answers here:** Stop/SessionStart fire: ____________________. Timeout 300 = ____________________. Hook cwd/node/events: ____________________. `.ecc/settings.json` picked up: yes / no. Gate hook without Git Bash: ____________________. C-1 PowerShell cases: ____________________. General-subagent model: ____________________.
 
 ## Results
 
@@ -144,5 +157,5 @@ Audit #2 found 6 skills with invalid YAML frontmatter (their `description:` cont
 - Overall: PASS / FAIL (circle one)
 - Steps that failed (list): _______________
 - Agent resolution answer (step 6): _______________
-- Model bracket syntax answer (step 7): _______________
+- Model pin answer (step 7): _______________
 - Notes: _______________

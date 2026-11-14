@@ -4,7 +4,7 @@
 /**
  * ECC Agent IR — parser.
  *
- * Reads ECC's canonical agent files (Claude frontmatter markdown) and emits
+ * Reads ECC's canonical agent files (frontmatter markdown) and emits
  * harness-neutral IR objects validated against `schemas/agent.schema.json`.
  *
  * Design constraints:
@@ -25,7 +25,7 @@ const AGENTS_DIR = path.join(__dirname, '..', '..', 'agents');
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'schemas', 'agent.schema.json');
 
 const IR_SCHEMA_CONST = 'ecc.agent-ir.v1';
-const VALID_MODELS = ['haiku', 'sonnet', 'opus'];
+const VALID_MODELS = ['cursor-grok-4.6-high-fast', 'grok-4.7-high'];
 
 let _ajv = null;
 function ajv() {
@@ -49,7 +49,7 @@ function splitFrontmatter(content) {
 
 /**
  * Normalize a frontmatter `tools` value to a string[].
- * Claude agents use comma-separated strings (e.g. `Read, Grep, Glob`).
+ * Agents use comma-separated strings (e.g. `Read, Grep, Glob`).
  * Non-string scalars and non-string array entries are rejected.
  */
 function normalizeTools(value, filename) {
@@ -105,7 +105,7 @@ function parseAgentFile(filePath) {
 
   const model = raw.model;
   if (model !== undefined && !VALID_MODELS.includes(model)) {
-    throw new Error(`${filename}: invalid model tier '${model}' (expected haiku, sonnet, or opus)`);
+    throw new Error(`${filename}: invalid model tier '${model}' (expected cursor-grok-4.6-high-fast or grok-4.7-high)`);
   }
 
   const ir = {

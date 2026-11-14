@@ -111,6 +111,6 @@ Verdict: BLOCK — HIGH issues must be fixed before merge.
 
 ## Related
 
-- Agent: `agents/ecc-flutter-reviewer.md`
+- Agent: `flutter-reviewer` (`agents/ecc-flutter-reviewer.md`)
 - Skill: `skills/flutter-dart-code-review/`
 - Rules: `rules/dart-*.mdc`

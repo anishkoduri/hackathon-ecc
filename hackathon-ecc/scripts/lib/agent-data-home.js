@@ -17,8 +17,6 @@ const path = require('path');
 const { assertWithinTrustedRoot } = require('./path-safety');
 
 const AGENT_DATA_HOME_ENV = 'ECC_AGENT_DATA_HOME';
-const CLAUDE_CONFIG_DIR_ENV = 'CLAUDE_CONFIG_DIR';
-const DEFAULT_CLAUDE_DIR_NAME = '.claude';
 const DEFAULT_CURSOR_ECC_DIR_SEGMENTS = ['.cursor', 'ecc'];
 const PROJECT_CONFIG_RELATIVE = path.join('.cursor', 'ecc-agent-data.json');
 
@@ -28,7 +26,7 @@ const PROJECT_CONFIG_RELATIVE = path.join('.cursor', 'ecc-agent-data.json');
  * Intentionally mirrors `getHomeDir()` in `scripts/lib/utils.js` (HOME/USERPROFILE,
  * then `os.homedir()`). Do not import `utils.getHomeDir` here: `utils.js` already
  * requires this module (`resolveAgentDataHome`), which would create a circular
- * dependency and risk divergent defaults for `~/.cursor/ecc` vs `~/.claude`.
+ * dependency and risk divergent defaults.
  *
  * If consolidation is needed later, prefer one of:
  *
@@ -92,18 +90,10 @@ function getDefaultCursorAgentDataHome() {
   return path.join(getHomeDirFromEnv(), ...DEFAULT_CURSOR_ECC_DIR_SEGMENTS);
 }
 
-function getDefaultClaudeAgentDataHome() {
-  // Launcher-owned CLAUDE_CONFIG_DIR moves the Claude trusted root with its
-  // profile. Project-provided paths must still remain inside that root.
-  const fromClaudeConfigDir = expandHomePath(process.env[CLAUDE_CONFIG_DIR_ENV]);
-  if (fromClaudeConfigDir) return fromClaudeConfigDir;
-  return path.join(getHomeDirFromEnv(), DEFAULT_CLAUDE_DIR_NAME);
-}
-
 function warnUnsafeProjectConfig() {
   console.error(
     '[ECC] Ignoring unsafe agent data project config: agentDataHome must stay ' +
-    'within the default Cursor or Claude data directories. Use ' +
+    'within the default Cursor data directory. Use ' +
     'ECC_AGENT_DATA_HOME for an explicit trusted override.'
   );
 }
@@ -118,9 +108,6 @@ function isSafeProjectConfigSyntax(candidate) {
 function resolveAllowedProjectConfigHome(candidate) {
   const allowedRoots = [
     getDefaultCursorAgentDataHome(),
-    getDefaultClaudeAgentDataHome(),
-    // Keep ~/.claude eligible when CLAUDE_CONFIG_DIR points elsewhere.
-    path.join(getHomeDirFromEnv(), DEFAULT_CLAUDE_DIR_NAME),
   ];
 
   for (const allowedRoot of allowedRoots) {
@@ -174,7 +161,6 @@ function readProjectConfig(projectDir) {
 function resolveProjectDir() {
   const candidates = [
     process.env.CURSOR_PROJECT_DIR,
-    process.env.CLAUDE_PROJECT_DIR,
     process.cwd(),
   ];
 
@@ -200,11 +186,10 @@ function resolveAgentDataHome(options = {}) {
   const fromProject = readProjectConfig(projectDir);
   if (fromProject) return fromProject;
 
-  if (options.preferCursorDefault === true || isCursorHookRuntime()) {
-    return getDefaultCursorAgentDataHome();
-  }
-
-  return getDefaultClaudeAgentDataHome();
+  // Cursor-only: the default agent data home is ~/.cursor/ecc.
+  // (preferCursorDefault / isCursorHookRuntime are kept as accepted
+  // options for callers that pass them; they no longer change the answer.)
+  return getDefaultCursorAgentDataHome();
 }
 
 /**
@@ -235,15 +220,12 @@ function getCursorSessionEnvPayload(options = {}) {
 
 module.exports = {
   AGENT_DATA_HOME_ENV,
-  CLAUDE_CONFIG_DIR_ENV,
-  DEFAULT_CLAUDE_DIR_NAME,
   DEFAULT_CURSOR_ECC_DIR_SEGMENTS,
   PROJECT_CONFIG_RELATIVE,
   expandHomePath,
   resolveProjectRootFromConfigPath,
   isCursorHookRuntime,
   getDefaultCursorAgentDataHome,
-  getDefaultClaudeAgentDataHome,
   readProjectConfig,
   readProjectConfigAt,
   resolveProjectDir,

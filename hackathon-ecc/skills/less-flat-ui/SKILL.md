@@ -1,17 +1,20 @@
 ---
 name: less-flat-ui
-description: Make the UI more striking with 22 textured treatments (felt, fluted glass, thermal gradients, halftone, grainy gradients, blueprint grids, contour lines, pixel mosaics, iridescent shapes, ASCII/pixel art, and more). Apply every treatment that fits the project, layering compatible ones on backgrounds, cards, buttons, dividers, and headings. Use when flat surfaces look dull; keep text readable. Invoke by asking to make the UI less flat. Inside a design-taste-frontend build, apply the texture layer only where its page system leaves a surface unstyled — never over its hero, dealt moments, or shader scenes.
+description: Make the UI more striking with 23 textured treatments (felt, fluted glass, thermal gradients, halftone, grainy gradients, blueprint grids, contour lines, pixel mosaics, iridescent shapes, ASCII/pixel art, and more). Apply every treatment that fits the project, layering compatible ones on backgrounds, cards, buttons, dividers, and headings. Use when flat surfaces look dull; keep text readable. Invoke by asking to make the UI less flat. Inside a design-taste-frontend build, apply the texture layer only where its page system leaves a surface unstyled — never over its hero, dealt moments, or shader scenes.
 ---
 
 # Less Flat UI
 
-Source of the 22 treatments: Instagram reel by @charles.unemployed, "22 Backgrounds to Make Designs Less Flat (In under 30 seconds)". The reel frames them as backgrounds, but each one is a texture/pattern treatment that can go on any surface: page backgrounds, cards, buttons, dividers, headings, modals, nav.
+Source of the 23 treatments: Instagram reel by @charles.unemployed, "22 Backgrounds to Make Designs Less Flat (In under 30 seconds)"; plus Instagram reel by @lnunesdesigns, "How to make your design feel less flat in under 10 seconds" — 9 of its 10 treatments were already covered (thermal gradients, blueprint grids, water ripples, speckled graphite, fluted glass, contour lines, grainy gradients, single-hue landscapes, grass texture); Soft Shadow is the new one from it. The reels frame them as backgrounds, but each one is a texture/pattern treatment that can go on any surface: page backgrounds, cards, buttons, dividers, headings, modals, nav.
 
 ## When to use
 
 Apply treatments when the UI looks flat or dull: heroes, landing pages, empty states, cards, buttons, dividers, headings, modals. Apply EVERY treatment that fits the project's mood, not just one. The picker table below is a menu, not a single choice.
 
-**Check every surface, on every UI build or change.** First build, one-prompt change, redesign, small component, UI fix, or removal flow that rebuilds a surface — for each surface, ask: is it dull or flat, and would a treatment keep text readable (4.5:1)? If yes, a fitting treatment is REQUIRED, not optional. A surface is left flat only when it fits one of the Do NOT cases below (dense dashboard, form, or data table; strong brand background; photo-led design; treatment fights the content) — and then say so in one line. Never skip the check because a surface is small. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface unstyled — never over the hero, dealt moments, or shader scenes. A flat-colour section IS part of the page system — do not texture it.
+**Check every surface, on every UI build or change.** First build, one-prompt change, redesign, small component, UI fix, or removal flow that rebuilds a surface — for each surface, ask: is it dull or flat, and would a treatment keep text readable (4.5:1)? If yes, a fitting treatment is REQUIRED, not optional. A surface is left flat only when it fits one of the Do NOT cases below (dense dashboard, form, or data table; strong brand background; photo-led design; treatment fights the content) — and then say so in one line. Never skip the check because a surface is small.
+**Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate. On app/dashboard surfaces, at least TWO DISTINCT treatment kinds must be recorded per screen, or "none — <reason>" per untreated surface (fix #15 R3 — baseline: 2 treatment applications, both Soft Shadow, one kind). The second kind must be theme-matched (rule A governs the choice) — do not hard-code which kind, only that a second distinct kind is required. A theme-matched handmade surface treatment — tape, perforation, washi, a hand-drawn ink mark — counts as a treatment kind (fix #17): the kind is the treatment application on one surface, not the catalogue entry; the 23-entry catalogue is the vocabulary, not the limit. On a landing page built with design-taste-frontend, apply treatments only where the Taste page system leaves a surface unstyled — never over the hero, dealt moments, or shader scenes. A flat-colour section IS part of the page system — do not texture it.
+
+**Element variety, all theme-matched.** Every build applies design elements across a wide variety of kinds — treatments, moments, effects, diagrams, components, motion, and type moments — never all of one kind: a build whose new elements are all one kind has not met this rule. Every element, of whatever kind, must match the dealt theme (its material, tokens, palette balance, and do-nots): theme-match is a precondition, not a preference — an element that clashes with the theme is not applied, and the reason is recorded in `docs/design-tokens.md` with the element. Every element application is recorded per surface in `docs/design-tokens.md` (surface → elements applied, kind, theme-fit).
 
 A treatment fits when:
 
@@ -41,7 +44,7 @@ Rules:
 | Project mood | Best treatments |
 |---|---|
 | Technical, engineering, dev tools | Blueprint grids, contour lines, ASCII and pixels, halftone, square-dot grids |
-| Premium, soft, wellness, beauty | Paper texture, cloud sky, felt texture, grainy gradients |
+| Premium, soft, wellness, beauty | Paper texture, cloud sky, felt texture, grainy gradients, soft shadow |
 | Bold, playful, consumer | Pixel mosaics, thermal gradients, iridescent shapes, dithered images |
 | Photo-led, editorial | Blurred photos, impressionist paintings, single-hue landscapes |
 | Dark, moody, gaming | Speckled graphite, lens distortion, stippled gradients, fluted glass |
@@ -58,11 +61,11 @@ Backgrounds are the default surface, but the same treatments work on components:
 
 | Surface | Treatments that work well |
 |---|---|
-| Cards and panels | Felt, paper, fluted glass, grainy gradients, speckled graphite |
-| Buttons and CTAs | Thermal gradients, iridescent shapes, grainy gradients |
+| Cards and panels | Felt, paper, fluted glass, grainy gradients, speckled graphite, soft shadow |
+| Buttons and CTAs | Thermal gradients, iridescent shapes, grainy gradients, soft shadow |
 | Section dividers | Contour lines, halftone strip, square-dot grid strip, ASCII divider |
 | Headings and display type | Grainy gradients (text fill via background-clip), halftone behind type, dithered images |
-| Modals and overlays | Fluted glass, blurred photos |
+| Modals and overlays | Fluted glass, blurred photos, soft shadow |
 | Nav and sidebars | Blueprint grids (subtle), square-dot grids, felt |
 | Badges, tags, chips | Pixel mosaics, halftone, stippled gradients |
 | Empty states and illustrations | Single-hue landscapes, cloud sky, impressionist dabs, pixel mosaics |
@@ -97,7 +100,7 @@ Scrim for text over busy backgrounds:
 .scrim > * { position: relative; z-index: 2; }
 ```
 
-## The 22 treatments
+## The 23 treatments
 
 Re-tint every example below to the project's dealt palette and tokens before using it — the hex values are placeholders, not the palette. Never copy a purple/violet gradient onto a landing page (Hallmark gate 2a and Taste §6 Never ban it); the craft floor's purple-blue-gradient ban applies the same way on app surfaces.
 
@@ -138,6 +141,45 @@ Best for: frosted panels, cards over imagery, premium overlays.
 ```
 
 Needs something behind it to frost (a photo or gradient). On a flat color it does nothing.
+
+**Liquid glass — real refraction (fix #22 §15, LIQGLASS_F22).** Fluted
+glass (#2 above) is a frosted-blur approximation. Where a build needs
+REAL refraction — Apple-style liquid glass with edge highlights, blur,
+and masking through WebGL 2.0 shaders, not just `backdrop-filter` blur —
+the approved implementation is liquid-glass-js (dashersw/liquid-glass-js,
+repo commit `78cb6ccb0b9987bb60a88b14ccbd13a9e6e8ab2a`, MIT; NO npm package
+— copy `container.js`, `button.js`, `glass.css` into the project; vanilla
+JS, all stacks, no build step). Use for nav bars, floating cards, modals,
+and CTA buttons over rich backgrounds. Directed per §10 (class + exact
+parameters, from the library's own API): `new Container({ type: 'pill',
+borderRadius: 24, tintOpacity: 0.3 })` for a nav pill, `new Button({
+text: '<label>', size: 28, type: 'pill', tintOpacity: 0.4, warp: true,
+onClick: <handler> })` for a glass CTA; global glass parameters via
+`window.glassControls` (`edgeIntensity: 0.02, rimIntensity: 0.08,
+blurRadius: 7.0, tintOpacity: 0.3` — the directed defaults, do not tune
+per component). Shape types: `'rounded'` / `'circle'` / `'pill'`
+(defaults: `borderRadius: 48`, `tintOpacity: 0.2`, `size: 48` for Button).
+Performance note (from the README): the library samples the page with
+html2canvas (`html2canvas@1.4.1`) — that sampling is the cost; keep glass
+to one surface per screen by default and never stack it with another
+WebGL-heavy effect (one WebGL-heavy effect per surface, WEBGL_ONE_F22 —
+see the `polish-pass` slop checklist). Fallback: under
+`prefers-reduced-motion: reduce`, on mobile/low-power, or whenever WebGL
+is unavailable, the glass renders as frosted blur — treatment #2 fluted
+glass above — never as a missing element. Text over glass keeps 4.5:1
+contrast. Cross-reference, do not duplicate: Group E trend "Liquid Glass"
+(E15, in `design-taste-frontend`) is the MENU item; this library is the
+IMPLEMENTATION. Record the treatment per surface in
+`docs/design-tokens.md` like every other treatment, with its seven fix #19
+D19 dimension lines.
+
+(D19 — Motion: none — the glass does not move (its refraction is light,
+not motion); Theme: the glass is the theme's own material, never a generic
+blur wash; Texture: the glass IS the surface's texture layer (real
+refraction, not a flat treatment); Visuals: the glass panel stays legible
+— 4.5:1 over it, content above it; Techniques: vendored file copies at
+the pinned commit, html2canvas@1.4.1 for page sampling, no npm package;
+Colors: the glass tint is the theme's own tint, never a new colour.)
 
 ### 3. Thermal gradients
 
@@ -482,9 +524,52 @@ el.textContent = out;
 
 Characters cluster into a soft radial blob. Keep opacity low; ASCII is texture, not content, so it must never be readable as text or selectable.
 
+### 23. Soft shadow
+
+Best for: cards, buttons, modals, floating panels — any raised surface that needs depth without a pattern. The quietest treatment on this list: it adds dimension while leaving the surface itself untouched.
+
+```css
+.soft-shadow {
+  background-color: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(30, 30, 60, 0.06),
+    0 8px 16px -4px rgba(30, 30, 60, 0.10),
+    0 24px 48px -12px rgba(30, 30, 60, 0.18);
+}
+```
+
+Three layers, not one: a tight contact shadow grounds the element, a mid shadow lifts it, and a large soft shadow (24–48px blur, low opacity) sells the height. One shadow alone reads flat; three at different blurs read as real depth. Tint the shadow color to the surface: warm brown-gray (`rgba(60, 40, 30, ...)`) on warm surfaces, cool blue-gray (`rgba(30, 40, 80, ...)`) on cool ones — a neutral black shadow on a warm page looks dirty.
+
+Smaller variant for buttons and chips (tighter, closer to the surface):
+
+```css
+.soft-shadow-sm {
+  box-shadow:
+    0 1px 2px rgba(30, 30, 60, 0.08),
+    0 4px 10px -2px rgba(30, 30, 60, 0.14);
+}
+```
+
+Larger variant for modals and floating panels (float higher, spread wider):
+
+```css
+.soft-shadow-lg {
+  box-shadow:
+    0 2px 4px rgba(30, 30, 60, 0.06),
+    0 16px 32px -8px rgba(30, 30, 60, 0.14),
+    0 48px 80px -24px rgba(30, 30, 60, 0.25);
+}
+```
+
+On dark surfaces, flip it: use a faint light glow instead of a dark shadow (`0 8px 32px rgba(255, 255, 255, 0.08)`), or a shadow tinted to the surface hue at very low opacity — a black shadow is invisible on black. Never use a hard-edged shadow (small blur, high opacity); that reads as a 2010s drop shadow, not depth.
+
+Layers with everything: a shadow is a depth cue, not a pattern, so it stacks on top of any other treatment without competing.
+
+**Depth and texture are different axes (fix #22 §13, DEPTH_F22).** This skill owns texture — the 23 treatments. The z-axis is owned by the depth rules (`ui-ux-pro-max` depth rules, DEPTH_F22) and the depth tokens (`motion-foundations` depth tokens, DEPTH_F22): layers, elevation, perspective, parallax, occlusion. Overlap, recorded once here and not duplicated: Soft Shadow #23 is BOTH — a texture treatment in this catalogue AND a depth cue (its three layered shadows sell elevation). A shadow used as a depth cue still needs its depth strategy named in the design package (orchestrate step 3, DEPTH_F22); a treatment with no depth intent is texture only, and its Depth dimension line records `flat by choice — <reason>` or `none — <reason>` for the z-axis. (D19 — Motion: none — a shadow does not move; Theme: the shadow tint follows the dealt theme's surface; Texture: the shadow IS the texture treatment; Visuals: layered blurs read as real height where one shadow reads flat; Techniques: the three-layer `box-shadow` above, never two separate drop shadows; Colors: the shadow tint is the surface's own hue at low opacity; Depth: the shadow is the elevation cue — its blur is the height.) Never put two separate drop shadows on one element (the layered single `box-shadow` above is the treatment; a second one reads as a mistake).
+
 ## Record what you applied
 
-Record every treatment applied, per surface, in `docs/design-tokens.md`: append a Treatments list (surface → treatments applied, or "none — <Do NOT reason>" for a surface deliberately left flat), so the polish-pass harmony check can verify the texture layer against the recorded direction. Never rewrite the direction line at the top of `docs/design-tokens.md` (the named direction from `ui-ux-pro-max`, or the dealt Hallmark theme from `design-taste-frontend`) — treatments are recorded under it, not instead of it.
+Record every treatment applied, per surface, in `docs/design-tokens.md`: append a Treatments list (surface → treatments applied, or "none — <Do NOT reason>" for a surface deliberately left flat), so the polish-pass harmony check can verify the texture layer against the recorded direction. Never rewrite the direction line at the top of `docs/design-tokens.md` (the named direction from `ui-ux-pro-max`, or the dealt Hallmark theme from `design-taste-frontend`) — treatments are recorded under it, not instead of it. Per screen, record the page-only elements alongside the treatments (surface → page-only elements, kind, theme-fit); a screen with none records `none — <reason>` (fix #17 U1, app/dashboard count). Handmade surface treatments (tape, perforation, washi, hand-drawn ink marks) record the same way and count toward the two-distinct-kinds check. Treatment choices are UI decisions under fix #19 D19: each recorded treatment carries the six dimension lines (Motion / Theme / Texture / Visuals / Techniques / Colors), each a reason or an explicit `none — <reason>`; a treatment recorded with only a layout/structure reason does not satisfy the rule.
 
 ## Tailwind notes
 

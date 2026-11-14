@@ -40,7 +40,7 @@
       Place (people come to it) ..................................... place
   tech, software and gaming take display 500 and a mono face (the UI fragments use it as --font-mono).
   A product page prints a mono only with --mono (an app or code is shown); service and place never.
-  Every face is on Google Fonts and every printed value comes from type.json: keep the block as printed.
+  Every face is on Google Fonts and every printed value comes from type.json: keep the block as printed, except the font delivery — the printed Google Fonts link is the generation source only (fix #19 F2): instance the dealt faces to static files (Taste step 4a) and ship those, never the CDN link.
   Weights: display 400 (500 on tech, software and gaming), text 400, 500 for buttons, labels, card titles
   and strong; 600 is loaded only for the nav's initial tile (system.css), never 700 or 800. A static face
   such as Instrument Serif has one weight: set that tile in var(--display-weight). --kind is the same
@@ -254,24 +254,31 @@ const inferPage = t => (t.place && !Object.values(t.kinds || {}).some(n => n > 0
 const DEFAULT_MONO = { family: 'JetBrains Mono', w: [400, 500] };
 const monoOf = t => (!placePage && !opt('no-mono') && (techPage || opt('mono'))) ? (t.mono || DEFAULT_MONO) : null;
 
-// the Google Fonts CSS2 link: one request, the exact axes, display=swap
-const axisVal = r => (r[0] === r[1] ? String(r[0]) : r[0] + '..' + r[1]);
-const isLower = x => x[0] === x[0].toLowerCase();
-const axisOrder = (a, b) => (isLower(a) !== isLower(b) ? (isLower(a) ? -1 : 1) : (a < b ? -1 : a > b ? 1 : 0));
+// the Google Fonts CSS2 link: one request, EXPLICIT static weights only (fix #19 F2) — never a variable `..` axis range; display=swap
+// expand a weight range to its explicit static weights: 100-steps from the
+// low end up to (not including) the high end, plus both end weights, so
+// [400,700] -> 400;500;600;700 and [400,400] -> 400 (fix #19 F2).
+const expandWeights = r => {
+  const out = new Set([r[0], r[1]]);
+  for (let w = Math.ceil(r[0] / 100) * 100; w < r[1]; w += 100) out.add(w);
+  return [...out].sort((a, b) => a - b);
+};
 function fontLink(t) {
   const letters = !placePage && t.display.letters;
   const fam = new Map();
   const add = (f, isDisplay) => {
     if (!f) return;
-    const e = fam.get(f.family) || { axes: {}, statics: new Set(), variable: false };
+    const e = fam.get(f.family) || { statics: new Set() };
     fam.set(f.family, e);
     if (f.w) {
-      e.variable = true;
       // the letters moment lifts the weight by 200 on a face with a weight axis: load 700 for it
       const w = isDisplay && letters === 'wght' ? [f.w[0], 700] : f.w;
-      const put = (k, r) => { const c = e.axes[k]; e.axes[k] = c ? [Math.min(c[0], r[0]), Math.max(c[1], r[1])] : r; };
-      put('wght', w);
-      for (const k of ['wdth', 'opsz', 'SOFT', 'WONK']) if (f[k]) put(k, f[k]);
+      // a weight range is EXPANDED to its explicit 100-step weights (plus its
+      // end weight) — the link requests static instances, never a variable
+      // range. Any non-weight axis (wdth/opsz/SOFT/WONK) is left out of the
+      // link: its value is baked in when the build instances the face to
+      // static files (Taste step 4a, instancing step).
+      expandWeights(w).forEach(x => e.statics.add(x));
     } else if (f.s && f.s.length) f.s.forEach(x => e.statics.add(x));
   };
   add(t.display, true); add(t.text, false);
@@ -279,16 +286,13 @@ function fontLink(t) {
   const parts = [];
   for (const [name, e] of fam) {
     const nm = name.replace(/ /g, '+');
-    if (e.variable) {
-      const keys = Object.keys(e.axes).sort(axisOrder);
-      parts.push(`${nm}:${keys.join(',')}@${keys.map(k => axisVal(e.axes[k])).join(',')}`);
-    } else if (e.statics.size) parts.push(`${nm}:wght@${[...e.statics].sort().join(';')}`);
+    if (e.statics.size) parts.push(`${nm}:wght@${[...e.statics].sort((a, b) => a - b).join(';')}`);
     else parts.push(nm);
   }
   return 'https://fonts.googleapis.com/css2?' + parts.map(p => 'family=' + p).join('&') + '&display=swap';
 }
 
-const stack = (f, serif) => `"${f.family}", ${serif ? 'Georgia, serif' : 'system-ui, sans-serif'}`;
+const stack = (f, serif) => `"${f.family}"${serif ? ', Georgia' : ''}`;
 function typeVars(t) {
   const clamp = v => Math.max(-0.045, Math.min(0, v));
   const w = Math.max(400, Math.min(techPage ? 500 : 400, weightOf(t) || 400));
@@ -298,7 +302,7 @@ function typeVars(t) {
     stretch: placePage ? '100%' : (t.display.stretch || '100%'), axes: t.display.axes || '',
     scale: placePage ? 1 : (t.display.scale || 1),
     display: stack(t.display, serif), text: stack(t.text, false),
-    mono: monoOf(t) ? `"${monoOf(t).family}", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` : '',
+    mono: monoOf(t) ? `"${monoOf(t).family}"` : '',
     link: fontLink(t),
   };
 }

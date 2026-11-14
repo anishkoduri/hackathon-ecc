@@ -1,7 +1,7 @@
 /**
- * Session Manager Library for Claude Code.
+ * Session Manager Library for Cursor.
  * Provides CRUD operations for session files stored as markdown in
- * ~/.claude/session-data/ with legacy read compatibility for ~/.claude/sessions/.
+ * ~/.cursor/ecc/session-data/ with legacy read compatibility for ~/.cursor/ecc/sessions/.
  */
 
 /** Parsed metadata from a session filename */

@@ -24,7 +24,7 @@ A small-press run from two drums and nothing else: bright uncoated stock, a medi
   --color-ink: oklch(40% 0.165 265); --color-ink-2: oklch(45% 0.15 265); --color-muted: oklch(50% 0.115 265);
   --color-rule: oklch(85% 0.045 265);
   --color-accent: oklch(68% 0.235 356); --color-accent-ink: oklch(27% 0.13 265); --color-focus: oklch(44% 0.2 265);
-  --font-display: "Cabinet Grotesk", ui-sans-serif, sans-serif; --font-body: "Literata", ui-serif, Georgia, serif;
+  --font-display: "Cabinet Grotesk"; --font-body: "Literata", Georgia;
   --radius-card: 2px; --radius-pill: 2px; --rule-hair: 1px;
   --shadow-card: none; --texture-opacity: 0.08;
   --tracking-display: -0.025em; --display-weight: 800;

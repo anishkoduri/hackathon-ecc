@@ -20,7 +20,7 @@ function canonicalPathKey(filePath, data) {
 /** Resolve a target to the file the tool will touch. */
 // see docs/gateguard/design-notes.md#target-resolution
 function resolveTargetPath(filePath, data) {
-  const base = (data && data.cwd) || process.env.CLAUDE_PROJECT_DIR || process.cwd();
+  const base = (data && data.cwd) || process.env.CURSOR_PROJECT_DIR || process.cwd();
   if (typeof base !== 'string' || typeof filePath !== 'string') return null;
   const isWin = WINDOWS_PATH_PATTERN.test(base) || WINDOWS_PATH_PATTERN.test(filePath);
   const paths = isWin ? path.win32 : path.posix;
@@ -31,17 +31,13 @@ function resolveTargetPath(filePath, data) {
 // --- Target classes ---
 
 const INSTRUCTION_BASENAMES = new Set([
-  'claude.md',
   'agents.md',
   'agent.md',
-  'gemini.md',
   'skill.md',
-  'copilot-instructions.md',
-  '.cursorrules',
-  '.windsurfrules'
+  '.cursorrules'
 ]);
 const INSTRUCTION_ANYWHERE_EXTS = new Set(['.mdc']);
-const INSTRUCTION_DIRS = new Set(['.claude', 'agents', 'commands', 'skills', 'rules', 'hooks', '.cursor', '.codex', '.opencode']);
+const INSTRUCTION_DIRS = new Set(['agents', 'commands', 'skills', 'rules', 'hooks', '.cursor', '.ecc']);
 const INSTRUCTION_EXTS = new Set(['.md', '.mdx', '.txt']);
 const TEST_DIRS = new Set(['tests', 'test', '__tests__']);
 const TEST_BASENAME_PATTERN = /\.(test|spec)\.|^test_.*\.py$|_test\.(py|go)$/;
@@ -69,7 +65,7 @@ function classifyTarget(filePath) {
   }
 }
 
-const WORKTREE_PREFIX_PATTERN = /^\.claude\/worktrees\/([^/]+)\//;
+const WORKTREE_PREFIX_PATTERN = /^\.ecc\/worktrees\/([^/]+)\//;
 
 function isHostPathStyle(isWin) {
   return isWin === (process.platform === 'win32');
@@ -81,7 +77,7 @@ function foldKey(nativePath, isWin) {
 }
 
 function canonicalProjectRoot(data) {
-  const root = process.env.CLAUDE_PROJECT_DIR || (data && data.cwd) || process.cwd();
+  const root = process.env.CURSOR_PROJECT_DIR || (data && data.cwd) || process.cwd();
   if (typeof root !== 'string') return null;
   const isWin = WINDOWS_PATH_PATTERN.test(root);
   const paths = isWin ? path.win32 : path.posix;
@@ -94,7 +90,7 @@ function canonicalProjectRoot(data) {
 function isRealWorktree(rootNative, isWin, name) {
   if (!isHostPathStyle(isWin)) return false;
   const paths = isWin ? path.win32 : path.posix;
-  return fs.existsSync(paths.join(rootNative, '.claude', 'worktrees', name, '.git'));
+  return fs.existsSync(paths.join(rootNative, '.ecc', 'worktrees', name, '.git'));
 }
 
 const STREAM_MARKER = '::$';
@@ -158,7 +154,7 @@ const QUESTION_TEXT = Object.freeze({
     'If this file reads/writes data files, show field names, structure, and date format (use redacted or synthetic values, not raw production data)',
   'external-contract':
     'Name what outside this repository decides the format, units, timezone or protocol semantics here (the consumer, the producer, or a stated convention), or state that the choice is unconstrained',
-  loader: 'Name the harness/loader that reads this file (Claude Code, Codex, Cursor, OpenCode, …) and when it loads it',
+  loader: 'Name the harness/loader that reads this file (Cursor, …) and when it loads it',
   'behaviour-change': 'Describe what agent behaviour changes as a result',
   'no-duplicate-instruction': `Confirm no existing instruction, skill, or agent file already covers this ${SEARCH_THE_TREE}`,
   'under-test': 'Name what behaviour is under test and which module/function it exercises',

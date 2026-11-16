@@ -24,7 +24,7 @@ outcome is forbidden.
 **Theme-match precondition:** every clearance requires the instance to match the
 dealt theme (its material, tokens, palette balance, and do-nots). An element
 that clashes with the theme is not applied, and the reason is recorded with the
-element. A flag with no D19 reason and no theme-fit stays a finding.
+element. A flag with no D19 reason and no theme-fit stays a finding. A D19-recorded departure satisfies the fit criterion (fix #27, THEME-START_F27).
 
 **Relation to the craft-floor bans:** where a ban in
 [craft-floor.md](craft-floor.md) (or the Impeccable craft floor) already covers

@@ -45,6 +45,10 @@ The storytelling reference is the playbook's Section 29, and its claim is that j
 - **Shape the arc.** Setup, tension, rising action, climax, resolution, call to action.
   Without the low, the high does not land, so the problem gets real time before the product appears.
 - **Three specifics per sixty seconds.** Numbers, names, places.
+
+**CHECK-THE-SOURCE (CHECKSRC_F27).** Every scoring, timing, or logistics claim in a final report, reply, or deliverable prompt cites the source document it was read from (spec section, invite, rubric) with the value as written there. An estimate is labelled an estimate with its basis; a measured value replaces the estimate in the record the moment it is measured. Never restate a remembered number as a fact. Final-report checklist line: "Scoring/timing/logistics claims — source cited per claim, or the claim is removed."
+
+**AUDIT-AS-GUIDE (AUDITGUIDE_F27).** An audit (sloplint, reviewer, or any checklist pass) is a guide, never the source. The source is the spec / the rendered screen / the measured run. Where an audit and the source disagree, the source wins and the disagreement is recorded. Every number in a deliverable prompt or submission cites the exact spec section and uses only exact verified numbers — no rounded, remembered, or inferred figures.
 - **The demo is a scene, not a tour.** Narrate the character through it, show the transformation and not the setup, end on an emotional beat, keep it under sixty seconds, and never run it without a backup.
 - **Close on the story.** The callback close returns to the character, the vision close paints the future, the emotional close lands one moment.
   No new information, no feature list, no "in conclusion".

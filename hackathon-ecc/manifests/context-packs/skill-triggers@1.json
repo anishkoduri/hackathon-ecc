@@ -1,476 +1,369 @@
 {
-  "coverage": {
-    "skills": 166,
-    "withTriggers": 64
-  },
-  "generatedAt": "2026-10-30T00:01:34.569Z",
-  "notes": "END-ONLY deferred skills — their trigger phrases below are end-of-project-only, so only an end-of-project request routes to them. SchemaVersion 1 has no per-key deferral flag and the router matches on trigger text only, so this note documents the deferral; it does not enforce it. Deferred: production-audit, delivery-gate, codehealth-mcp, santa-method, security-scan, verification-loop.",
-  "id": "skill-triggers@1",
-  "model": {
-    "effort": null,
-    "id": "hand-seeded",
-    "source": "manual-curation-pending-regeneration"
-  },
-  "registryDigest": "6f213dc845937b4093bc018d041b25b538d88d78451b9d799ad614989b360ee4",
-  "schemaVersion": 1,
-  "triggers": {
-    "skill:accessibility": [
-      "make this accessible",
-      "wcag compliance",
-      "accessibility audit",
-      "aria labels"
-    ],
-    "skill:ai-feature-spec": [
-      "spec an ai feature",
-      "ai feature spec",
-      "specify the ai feature"
-    ],
-    "skill:api-design": [
-      "rest endpoint design",
-      "pagination api",
-      "status codes",
-      "api versioning",
-      "rate limiting api",
-      "resource naming",
-      "filtering api",
-      "api error responses",
-      "offset pagination",
-      "limit query parameter",
-      "pagination defaults"
-    ],
-    "skill:api-integration": [
-      "call this api",
-      "wire up the api",
-      "rest client setup"
-    ],
-    "skill:app-scaffold": [
-      "scaffold the app",
-      "set up auth and database"
-    ],
-    "skill:backend-patterns": [
-      "express api",
-      "node backend architecture",
-      "nextjs api routes",
-      "server side patterns",
-      "data access layer",
-      "static file server",
-      "url path handling",
-      "file server"
-    ],
-    "skill:brainstorming": [
-      "brainstorm features",
-      "more ideas for this feature",
-      "ideate on this feature"
-    ],
-    "skill:browser-qa": [
-      "deployed feature test",
-      "visual regression screenshots",
-      "core web vitals check",
-      "ship do not ship",
-      "staging verification"
-    ],
-    "skill:click-path-audit": [
-      "button does nothing",
-      "click doesn't work",
-      "button not working",
-      "click does nothing"
-    ],
-    "skill:code-tour": [
-      "onboarding walkthrough",
-      "explain subsystem",
-      "architecture tour",
-      "pr walkthrough",
-      "rca tour"
-    ],
-    "skill:codebase-memory": [
-      "who calls this function",
-      "what does this function call",
-      "trace the call chain",
-      "find callers of",
-      "where is this feature implemented",
-      "dead code",
-      "unused functions",
-      "impact of changing",
-      "what breaks if i change",
-      "explore the codebase",
-      "understand the codebase",
-      "find where a feature lives"
-    ],
-    "skill:codehealth-mcp": [
-      "end of project code health review",
-      "final code health check before launch",
-      "code health review at the end of the project",
-      "verify code health score at the end of the project"
-    ],
-    "skill:coding-standards": [
-      "code review standards",
-      "naming conventions",
-      "readability review",
-      "immutability conventions",
-      "fix naming typo",
-      "export naming",
-      "consistent exports"
-    ],
-    "skill:council": [
-      "should we do x or y",
-      "go or no-go",
-      "help us decide",
-      "which approach should we take"
-    ],
-    "skill:database-migrations": [
-      "zero downtime migration",
-      "schema change production",
-      "add column large table",
-      "backfill data",
-      "expand contract",
-      "concurrent index",
-      "migration rollback",
-      "prisma migration",
-      "django migration"
-    ],
-    "skill:delivery-gate": [
-      "end of project delivery gate",
-      "final delivery gate before finishing",
-      "delivery gate at the end of the project",
-      "block declaring work finished at the end of the project"
-    ],
-    "skill:deploy-fast": [
-      "deploy this",
-      "ship it live",
-      "put it online",
-      "deploy to vercel",
-      "make it live"
-    ],
-    "skill:design-system": [
-      "design tokens",
-      "visual consistency audit",
-      "css custom properties",
-      "ui audit",
-      "design system bootstrap"
-    ],
-    "skill:design-taste-frontend": [
-      "design a landing page",
-      "redesign the landing page",
-      "landing page design",
-      "company page design"
-    ],
-    "skill:devpost-autofiller": [
-      "devpost submission",
-      "submit to devpost",
-      "fill in devpost"
-    ],
-    "skill:django-patterns": [
-      "django orm",
-      "drf api",
-      "django rest framework",
-      "django caching",
-      "django signals",
-      "django middleware"
-    ],
-    "skill:error-handling": [
-      "error types",
-      "retry logic",
-      "circuit breaker",
-      "user facing errors",
-      "exception handling patterns",
-      "typed errors",
-      "error boundaries",
-      "go error handling",
-      "custom error class",
-      "error codes",
-      "config validation"
-    ],
-    "skill:feature-expansion": [
-      "expand this",
-      "flesh it out",
-      "make it much better",
-      "what else should this have",
-      "take it further",
-      "expand the product",
-      "add more features",
-      "make this product better"
-    ],
-    "skill:frontend-a11y": [
-      "aria attributes",
-      "screen reader support",
-      "focus management",
-      "semantic html",
-      "form labeling",
-      "keyboard navigation react",
-      "a11y lint errors",
-      "axe accessibility audit"
-    ],
-    "skill:frontend-slides": [
-      "pitch deck slides",
-      "make slides for the pitch",
-      "slide deck"
-    ],
-    "skill:gan-style-harness": [
-      "gan build",
-      "generator evaluator loop",
-      "build with the gan harness"
-    ],
-    "skill:git-workflow": [
-      "merge vs rebase",
-      "commit conventions",
-      "resolve merge conflict",
-      "branching strategy",
-      "clean up commits",
-      "pull request cleanup",
-      "git history tidy"
-    ],
-    "skill:grill-me": [
-      "grill me",
-      "ask me questions about my idea",
-      "question me about my project",
-      "interview me about my idea",
-      "first hackathon idea",
-      "what should i build"
-    ],
-    "skill:hackathon-pitch": [
-      "pitch script",
-      "demo script",
-      "judge q&a",
-      "what do we say to the judges",
-      "pitch rehearsal"
-    ],
-    "skill:hackathon-scope": [
-      "scope the mvp",
-      "minimum viable demo",
-      "what is the mvp",
-      "cut scope",
-      "demo-first",
-      "winnable category",
-      "time budget for hackathon"
-    ],
-    "skill:hexagonal-architecture": [
-      "ports and adapters",
-      "dependency injection boundaries",
-      "decouple domain from io"
-    ],
-    "skill:hookify-rules": [
-      "final hook configuration audit before launch",
-      "hook rule audit",
-      "review hook config"
-    ],
-    "skill:less-flat-ui": [
-      "add texture to the ui",
-      "less flat ui",
-      "depth and texture"
-    ],
-    "skill:make-interfaces-feel-better": [
-      "make it feel better",
-      "motion design",
-      "interaction feel"
-    ],
-    "skill:mcp-dependency-review": [
-      "end of project mcp server audit",
-      "mcp config review",
-      "review mcp server config"
-    ],
-    "skill:mobile-ship": [
-      "ship a testable mobile build",
-      "package the mobile app"
-    ],
-    "skill:motion-advanced": [
-      "advanced motion",
-      "drag and drop animation",
-      "gesture animation"
-    ],
-    "skill:motion-foundations": [
-      "motion tokens",
-      "spring animation",
-      "motion presets"
-    ],
-    "skill:motion-patterns": [
-      "animate this component",
-      "button animation",
-      "page transition",
-      "modal animation"
-    ],
-    "skill:orch-add-feature": [
-      "add a feature",
-      "add voting",
-      "make it better",
-      "add capability",
-      "build a new feature",
-      "add a new capability"
-    ],
-    "skill:orch-build-mvp": [
-      "build an mvp",
-      "bootstrap mvp from spec",
-      "turn this spec into an mvp",
-      "build mvp from design doc",
-      "sdd to mvp"
-    ],
-    "skill:orch-change-feature": [
-      "change a feature",
-      "change how this works",
-      "adjust behavior",
-      "instead of sorting",
-      "remove a feature",
-      "remove this feature"
-    ],
-    "skill:orch-fix-defect": [
-      "fix a bug",
-      "broken behavior",
-      "regression fix",
-      "reproduce bug",
-      "defect repair"
-    ],
-    "skill:orch-refine-code": [
-      "refactor",
-      "restructure code",
-      "remove dead code",
-      "extract module",
-      "clean up code structure",
-      "behavior preserving refactor"
-    ],
-    "skill:orchestrate": [
-      "orchestrate",
-      "delegate to subagents",
-      "fan out",
-      "act as tech lead",
-      "split design work from grunt work",
-      "use worker subagents"
-    ],
-    "skill:pitch-deck-video": [
-      "demo video",
-      "film the demo",
-      "pitch video",
-      "submission video"
-    ],
-    "skill:polish-pass": [
-      "polish the ui",
-      "fix the spacing",
-      "make it look cleaner",
-      "ui consistency fixes"
-    ],
-    "skill:postgres-patterns": [
-      "slow postgres query",
-      "query optimization",
-      "index design",
-      "rls policies",
-      "supabase schema",
-      "postgres indexing",
-      "database performance",
-      "schema design postgres",
-      "postgres driver",
-      "node postgres",
-      "query planner"
-    ],
-    "skill:production-audit": [
-      "end of project production readiness audit",
-      "final production readiness audit before launch",
-      "production readiness audit at the end of the project",
-      "what breaks in prod at the end of the project"
-    ],
-    "skill:python-patterns": [
-      "pythonic code",
-      "pep 8",
-      "type hints python",
-      "python code review",
-      "idiomatic python"
-    ],
-    "skill:python-testing": [
-      "pytest fixtures",
-      "mocking python",
-      "parametrized tests",
-      "coverage python",
-      "tdd python"
-    ],
-    "skill:readme-writer": [
-      "write the readme",
-      "readme for this project"
-    ],
-    "skill:redis-patterns": [
-      "cache aside pattern",
-      "distributed lock",
-      "redis rate limiting",
-      "cache invalidation"
-    ],
-    "skill:rust-patterns": [
-      "rust ownership",
-      "borrow checker",
-      "rust error handling",
-      "traits rust",
-      "rust concurrency",
-      "idiomatic rust"
-    ],
-    "skill:santa-method": [
-      "end of project adversarial verification",
-      "final adversarial review before shipping",
-      "santa method at the end of the project",
-      "multi-agent verification at the end of the project"
-    ],
-    "skill:security-review": [
-      "security audit",
-      "authentication review",
-      "sanitize user input",
-      "secrets handling",
-      "payment security checklist",
-      "prevent injection attacks",
-      "secure api endpoints",
-      "authn authz review",
-      "vulnerability checklist",
-      "input validation security",
-      "parameterized queries",
-      "sql injection"
-    ],
-    "skill:security-scan": [
-      "end of project security scan",
-      "final security audit before submission",
-      "security scan at the end of the project",
-      "final agentshield scan before launch"
-    ],
-    "skill:systematic-debugging": [
-      "find the root cause",
-      "why is this broken",
-      "debug this",
-      "unknown bug cause"
-    ],
-    "skill:tdd-workflow": [
-      "write test first",
-      "failing test",
-      "red green refactor",
-      "test driven development",
-      "regression test first",
-      "write a regression test"
-    ],
-    "skill:track-picker": [
-      "which track should we enter",
-      "pick a sponsor track"
-    ],
-    "skill:typescript-patterns": [
-      "strict typescript compiler configuration",
-      "fix cascading type errors",
-      "remove any and tighten types",
-      "design discriminated unions",
-      "narrow unknown at api boundary",
-      "review typescript pull request",
-      "refactor to strict mode",
-      "generics for caller dependent types",
-      "async error handling patterns",
-      "validate config with type guards",
-      "bounded concurrency mapper",
-      "module boundary exports"
-    ],
-    "skill:ui-ux-pro-max": [
-      "design the dashboard",
-      "redesign the app ui",
-      "dashboard design",
-      "app interface design"
-    ],
-    "skill:verification-before-completion": [
-      "check my work before i finish",
-      "verify everything works"
-    ],
-    "skill:verification-loop": [
-      "end of project verification",
-      "final verification before launch",
-      "verification at the end of the project",
-      "final quality gate before launch"
-    ]
-  },
-  "triggersDigest": "953728cb51ef7726f8a4969efecaec294d37772fcddf8544cd9ee45bff4945ee"
+ "coverage": {
+  "skills": 67,
+  "withTriggers": 49
+ },
+ "generatedAt": "2026-10-30T00:01:34.569Z",
+ "notes": "END-ONLY deferred skills \u2014 their trigger phrases below are end-of-project-only, so only an end-of-project request routes to them. SchemaVersion 1 has no per-key deferral flag and the router matches on trigger text only, so this note documents the deferral; it does not enforce it. Deferred: verification-loop, production-audit, delivery-gate. (DEFER3_F27)",
+ "id": "skill-triggers@1",
+ "model": {
+  "effort": null,
+  "id": "hand-seeded",
+  "source": "manual-curation-pending-regeneration"
+ },
+ "registryDigest": "6f213dc845937b4093bc018d041b25b538d88d78451b9d799ad614989b360ee4",
+ "schemaVersion": 1,
+ "triggers": {
+  "skill:ai-feature-spec": [
+   "spec an ai feature",
+   "ai feature spec",
+   "specify the ai feature"
+  ],
+  "skill:api-design": [
+   "rest endpoint design",
+   "pagination api",
+   "status codes",
+   "api versioning",
+   "rate limiting api",
+   "resource naming",
+   "filtering api",
+   "api error responses",
+   "offset pagination",
+   "limit query parameter",
+   "pagination defaults"
+  ],
+  "skill:api-integration": [
+   "call this api",
+   "wire up the api",
+   "rest client setup"
+  ],
+  "skill:app-scaffold": [
+   "scaffold the app",
+   "set up auth and database"
+  ],
+  "skill:backend-patterns": [
+   "express api",
+   "node backend architecture",
+   "nextjs api routes",
+   "server side patterns",
+   "data access layer",
+   "static file server",
+   "url path handling",
+   "file server"
+  ],
+  "skill:browser-qa": [
+   "deployed feature test",
+   "visual regression screenshots",
+   "core web vitals check",
+   "ship do not ship",
+   "staging verification"
+  ],
+  "skill:click-path-audit": [
+   "button does nothing",
+   "click doesn't work",
+   "button not working",
+   "click does nothing"
+  ],
+  "skill:council": [
+   "should we do x or y",
+   "go or no-go",
+   "help us decide",
+   "which approach should we take"
+  ],
+  "skill:delivery-gate": [
+   "end of project delivery gate",
+   "final delivery gate before finishing",
+   "delivery gate at the end of the project",
+   "block declaring work finished at the end of the project"
+  ],
+  "skill:deploy-fast": [
+   "deploy this",
+   "ship it live",
+   "put it online",
+   "deploy to vercel",
+   "make it live"
+  ],
+  "skill:design-system": [
+   "design tokens",
+   "visual consistency audit",
+   "css custom properties",
+   "ui audit",
+   "design system bootstrap"
+  ],
+  "skill:design-taste-frontend": [
+   "design a landing page",
+   "redesign the landing page",
+   "landing page design",
+   "company page design"
+  ],
+  "skill:devpost-autofiller": [
+   "devpost submission",
+   "submit to devpost",
+   "fill in devpost"
+  ],
+  "skill:error-handling": [
+   "error types",
+   "retry logic",
+   "circuit breaker",
+   "user facing errors",
+   "exception handling patterns",
+   "typed errors",
+   "error boundaries",
+   "go error handling",
+   "custom error class",
+   "error codes",
+   "config validation"
+  ],
+  "skill:feature-expansion": [
+   "expand this",
+   "flesh it out",
+   "make it much better",
+   "what else should this have",
+   "take it further",
+   "expand the product",
+   "add more features",
+   "make this product better"
+  ],
+  "skill:frontend-a11y": [
+   "aria attributes",
+   "screen reader support",
+   "focus management",
+   "semantic html",
+   "form labeling",
+   "keyboard navigation react",
+   "a11y lint errors",
+   "axe accessibility audit"
+  ],
+  "skill:frontend-slides": [
+   "pitch deck slides",
+   "make slides for the pitch",
+   "slide deck"
+  ],
+  "skill:gan-style-harness": [
+   "gan build",
+   "generator evaluator loop",
+   "build with the gan harness"
+  ],
+  "skill:git-workflow": [
+   "merge vs rebase",
+   "commit conventions",
+   "resolve merge conflict",
+   "branching strategy",
+   "clean up commits",
+   "pull request cleanup",
+   "git history tidy"
+  ],
+  "skill:grill-me": [
+   "grill me",
+   "ask me questions about my idea",
+   "question me about my project",
+   "interview me about my idea",
+   "first hackathon idea",
+   "what should i build"
+  ],
+  "skill:hackathon-pitch": [
+   "pitch script",
+   "demo script",
+   "judge q&a",
+   "what do we say to the judges",
+   "pitch rehearsal"
+  ],
+  "skill:hackathon-scope": [
+   "scope the mvp",
+   "minimum viable demo",
+   "what is the mvp",
+   "cut scope",
+   "demo-first",
+   "winnable category",
+   "time budget for hackathon"
+  ],
+  "skill:less-flat-ui": [
+   "add texture to the ui",
+   "less flat ui",
+   "depth and texture"
+  ],
+  "skill:make-interfaces-feel-better": [
+   "make it feel better",
+   "motion design",
+   "interaction feel"
+  ],
+  "skill:mobile-ship": [
+   "ship a testable mobile build",
+   "package the mobile app"
+  ],
+  "skill:motion-advanced": [
+   "advanced motion",
+   "drag and drop animation",
+   "gesture animation"
+  ],
+  "skill:motion-foundations": [
+   "motion tokens",
+   "spring animation",
+   "motion presets"
+  ],
+  "skill:motion-patterns": [
+   "animate this component",
+   "button animation",
+   "page transition",
+   "modal animation"
+  ],
+  "skill:orch-add-feature": [
+   "add a feature",
+   "add voting",
+   "make it better",
+   "add capability",
+   "build a new feature",
+   "add a new capability"
+  ],
+  "skill:orch-build-mvp": [
+   "build an mvp",
+   "bootstrap mvp from spec",
+   "turn this spec into an mvp",
+   "build mvp from design doc",
+   "sdd to mvp"
+  ],
+  "skill:orch-change-feature": [
+   "change a feature",
+   "change how this works",
+   "adjust behavior",
+   "instead of sorting",
+   "remove a feature",
+   "remove this feature"
+  ],
+  "skill:orch-fix-defect": [
+   "fix a bug",
+   "broken behavior",
+   "regression fix",
+   "reproduce bug",
+   "defect repair"
+  ],
+  "skill:orch-refine-code": [
+   "refactor",
+   "restructure code",
+   "remove dead code",
+   "extract module",
+   "clean up code structure",
+   "behavior preserving refactor"
+  ],
+  "skill:orchestrate": [
+   "orchestrate",
+   "delegate to subagents",
+   "fan out",
+   "act as tech lead",
+   "split design work from grunt work",
+   "use worker subagents"
+  ],
+  "skill:pitch-deck-video": [
+   "demo video",
+   "film the demo",
+   "pitch video",
+   "submission video"
+  ],
+  "skill:polish-pass": [
+   "polish the ui",
+   "fix the spacing",
+   "make it look cleaner",
+   "ui consistency fixes"
+  ],
+  "skill:postgres-patterns": [
+   "slow postgres query",
+   "query optimization",
+   "index design",
+   "rls policies",
+   "supabase schema",
+   "postgres indexing",
+   "database performance",
+   "schema design postgres",
+   "postgres driver",
+   "node postgres",
+   "query planner"
+  ],
+  "skill:production-audit": [
+   "end of project production readiness audit",
+   "final production readiness audit before launch",
+   "production readiness audit at the end of the project",
+   "what breaks in prod at the end of the project"
+  ],
+  "skill:python-patterns": [
+   "pythonic code",
+   "pep 8",
+   "type hints python",
+   "python code review",
+   "idiomatic python"
+  ],
+  "skill:python-testing": [
+   "pytest fixtures",
+   "mocking python",
+   "parametrized tests",
+   "coverage python",
+   "tdd python"
+  ],
+  "skill:readme-writer": [
+   "write the readme",
+   "readme for this project"
+  ],
+  "skill:security-review": [
+   "security audit",
+   "authentication review",
+   "sanitize user input",
+   "secrets handling",
+   "payment security checklist",
+   "prevent injection attacks",
+   "secure api endpoints",
+   "authn authz review",
+   "vulnerability checklist",
+   "input validation security",
+   "parameterized queries",
+   "sql injection"
+  ],
+  "skill:systematic-debugging": [
+   "find the root cause",
+   "why is this broken",
+   "debug this",
+   "unknown bug cause"
+  ],
+  "skill:tdd-workflow": [
+   "write test first",
+   "failing test",
+   "red green refactor",
+   "test driven development",
+   "regression test first",
+   "write a regression test"
+  ],
+  "skill:track-picker": [
+   "which track should we enter",
+   "pick a sponsor track"
+  ],
+  "skill:typescript-patterns": [
+   "strict typescript compiler configuration",
+   "fix cascading type errors",
+   "remove any and tighten types",
+   "design discriminated unions",
+   "narrow unknown at api boundary",
+   "review typescript pull request",
+   "refactor to strict mode",
+   "generics for caller dependent types",
+   "async error handling patterns",
+   "validate config with type guards",
+   "bounded concurrency mapper",
+   "module boundary exports"
+  ],
+  "skill:ui-ux-pro-max": [
+   "design the dashboard",
+   "redesign the app ui",
+   "dashboard design",
+   "app interface design"
+  ],
+  "skill:verification-before-completion": [
+   "check my work before i finish",
+   "verify everything works"
+  ],
+  "skill:verification-loop": [
+   "end of project verification",
+   "final verification before launch",
+   "verification at the end of the project",
+   "final quality gate before launch"
+  ]
+ },
+ "triggersDigest": "953728cb51ef7726f8a4969efecaec294d37772fcddf8544cd9ee45bff4945ee"
 }

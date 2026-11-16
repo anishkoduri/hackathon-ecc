@@ -214,7 +214,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
 # only the opus bracket pin was removed; cursor-grok-4.6-high-fast remains
 # the fast-worker pin.
-for s in grill-me feature-expansion integration design-taste-frontend codebase-memory; do
+for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
 done
 # orchestrate: skill (SKILL.md + references) to skills/, agents to agents/,
@@ -24075,6 +24075,18 @@ python3 "$PLUGIN_ROOT/fix25/fix25.py" "$PLUGIN_DIR"
 # Runs after fix25, before STEP 5. Exits non-zero on anchor errors (set -euo
 # pipefail stops the build); the run log lands in fix26/fix26-patch-log.md.
 python3 "$PLUGIN_ROOT/fix26/fix26.py" "$PLUGIN_DIR"
+
+# --- fix #27: debloat + weekend lessons (removals + build-time patches) ---
+# fix27/fix27.py patches the built tree in place, same pattern as fix26/fix26.py:
+# removes 100 CUT skills, 27 companion agents, 32 CUT-only commands; prunes
+# 15 trigger keys (64 -> 49); updates README counts to 67/45/123/55; text
+# patches: delivery-gate :97, browser-qa single-capture rule, verification-
+# before-completion claim row, hackathon-pitch CHECK-THE-SOURCE + AUDIT-AS-
+# GUIDE, no-Co-authored-by rule, orchestrate git-workflow re-route,
+# security-review dispatch removal, deferred lists six -> three.
+# Runs after fix26, before STEP 5. Exits non-zero on anchor errors (set -euo
+# pipefail stops the build); the run log lands in fix27/fix27-patch-log.md.
+python3 "$PLUGIN_ROOT/fix27/fix27.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

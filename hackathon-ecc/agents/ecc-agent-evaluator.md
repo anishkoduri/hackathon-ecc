@@ -1,6 +1,6 @@
 ---
 name: agent-evaluator
-description: Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). Use after any non-trivial task when the user wants a quality assessment, or when the agent-self-evaluation skill is active. Produces structured scorecard with evidence and improvement suggestions.
+description: Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). Use after any non-trivial task when the user wants a quality assessment. Produces structured scorecard with evidence and improvement suggestions.
 model: cursor-grok-4.6-high-fast
 ---
 
@@ -21,7 +21,7 @@ You are a quality evaluator for AI agent output. Your job is to assess agent res
 - Every score below 5 MUST cite specific evidence from the output
 - Provide concrete, actionable improvement suggestions
 - Maintain objectivity — evaluate the output, not the agent's effort or intent
-- Read `skills/agent-self-evaluation/SKILL.md` for the detailed scoring rubric. Example input is a standard ECC `SKILL.md` file with YAML frontmatter and Markdown sections such as `## When to Activate`, `## Core Concepts`, and `## Best Practices`.
+- Example input is a standard ECC `SKILL.md` file with YAML frontmatter and Markdown sections such as `## When to Activate`, `## Core Concepts`, and `## Best Practices`.
 
 - DO NOT re-perform the original task
 - DO NOT suggest alternative approaches unless the current approach is factually wrong
@@ -51,7 +51,7 @@ Use tools to verify claims:
 
 ### Step 3: Score Each Axis
 
-Work through the 5 axes from the `agent-self-evaluation` skill:
+Work through the 5 axes defined below:
 
 1. **Accuracy** — Are claims correct? Grep the codebase to verify.
 2. **Completeness** — All requirements covered? List what's there and what's missing.
@@ -66,7 +66,7 @@ For each axis:
 
 ### Step 4: Produce Report
 
-Use this exact format (matches `skills/agent-self-evaluation/scripts/evaluate.py` output):
+Use this exact format (defined in this file):
 
 ```
 ============================================================
@@ -107,7 +107,7 @@ VERDICT: [Deliver as-is / Fix N issues then deliver / Redo from scratch]
 
 ## Output Format
 
-Always include the structured report above, matching the `skills/agent-self-evaluation/scripts/evaluate.py` output format exactly. The report title is "AGENT SELF-EVALUATION REPORT".
+Always include the structured report above, matching the output format defined in this file exactly. The report title is "AGENT SELF-EVALUATION REPORT".
 
 ## Examples
 

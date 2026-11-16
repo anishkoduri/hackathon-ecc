@@ -25,7 +25,7 @@ Fire on any one signal:
 - **Unverifiable check.** deep-reasoner answered, and you need an independent check on a claim you cannot cheaply verify (no test, no ground truth).
 - **You are looping.** Two or more rounds have circled the same framing or repeated the same wrong fix. A fresh-context second pass breaks the fixation.
 - **Disputed, expensive-to-undo design.** API shape, schema, concurrency model, or migration strategy where reasonable engineers disagree and being wrong is costly.
-- **High-stakes parallel path (row 4).** High blast radius *and* hard to verify: launch two deep-reasoner passes blind, then reconcile.
+- **High-stakes parallel path (row 4).** High blast radius *and* hard to verify: launch two deep-reasoner passes blind, then reconcile — only when the gate above is met (first pass flagged genuine uncertainty, or two genuinely different priors exist) (fix #27, W2_F27).
 - **"Am I framing this wrong?"** You suspect your own decomposition, not the answer within it.
 - **Adversarial cross-review.** Have each model attack the other's output; ask a second deep-reasoner to *falsify* a confident first-pass conclusion, not merely review it.
 

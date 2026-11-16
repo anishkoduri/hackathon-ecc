@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Use when a bug's root cause is unknown and no more specific debugging skill applies — after symptom inspection rules out an agent failure (agent-introspection-debugging) and broken-button state bugs (click-path-audit). Debugging order — `browser-qa` detects deployed-UI failures and `systematic-debugging` diagnoses them. Requires finding root cause before attempting any fixes. Do NOT use when the user asks to fix a bug through the fix pipeline — orch-fix-defect owns that; use this skill only to find an unknown root cause.
+description: Use when a bug's root cause is unknown and no more specific debugging skill applies — after symptom inspection rules out an agent failure and broken-button state bugs (click-path-audit). Debugging order — `browser-qa` detects deployed-UI failures and `systematic-debugging` diagnoses them. Requires finding root cause before attempting any fixes. Do NOT use when the user asks to fix a bug through the fix pipeline — orch-fix-defect owns that; use this skill only to find an unknown root cause.
 ---
 
 # Systematic Debugging

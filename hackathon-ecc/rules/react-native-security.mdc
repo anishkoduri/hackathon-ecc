@@ -40,4 +40,4 @@ Treat everything shipped in the app as readable by an attacker. A mobile binary 
 ## Dependencies
 
 - Run `expo-doctor` regularly; keep the Expo SDK and native deps current. (`npm audit` is END-ONLY — end of project or on explicit ask, see hackathon-mode §3)
-- Use `/security-scan` (AgentShield, END-ONLY — end of project or on explicit ask) on the agent configuration itself.
+- Use the `security-review` skill (END-ONLY — end of project or on explicit ask) on the agent configuration itself.

@@ -64,6 +64,7 @@ credentials/tokens/PII before saving any screenshot.
 
 Widths (fix #23 §6, COVER_F23): 1440 desktop, 900 mid-band default probe (band 768–1100), 390 mobile — these three widths supersede the 375 / 768 / 1440 breakpoints in step 1 above for alignment coverage. If a layout breakpoint falls inside 768–1100, probe at the breakpoint ± 1 as well and take a mid full-page composition shot.
 2. Compare against committed baseline screenshots — when `polish-pass` ran first, use `.polish-pass/captures/after/capture.json` + its PNGs as the committed baseline — no baseline ⇒ report INCONCLUSIVE, never a silent PASS
+Single capture run (CAPTURE1_F27): `polish-pass` captures once; `browser-qa` consumes those captures and shoots only what the capture matrix lacks — never re-shoot a state/width the polish-pass captures already cover.
 3. Flag layout shifts > 5px, missing elements, overflow
 
 Coverage is MANDATORY for EVERY flow state, not just the happy path (COVER_F23): enumerate all screens × all reachable states — error / wrong-code, empty, success / delivered, accepted, scrolled positions — and measure + screenshot each at all three widths. A build with an unverified width or an unverified flow state is NOT shippable (BLOCK_F23, see the verdict rule below).

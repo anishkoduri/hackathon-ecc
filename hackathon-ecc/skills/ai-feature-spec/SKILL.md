@@ -1,6 +1,6 @@
 ---
 name: ai-feature-spec
-description: Use when specifying one AI-powered feature end to end, including model choice, prompt and context contracts, output schema, fallbacks, human oversight, UX states, and evaluation. For non-AI features use intent-driven-development; for API contracts use contract-first. This skill owns only the AI-specific parts (model, prompt, fallbacks, eval).
+description: Use when specifying one AI-powered feature end to end, including model choice, prompt and context contracts, output schema, fallbacks, human oversight, UX states, and evaluation. For non-AI features use hackathon-scope; for API contracts use contract-first. This skill owns only the AI-specific parts (model, prompt, fallbacks, eval).
 metadata:
   portable: true
   compatible_with:

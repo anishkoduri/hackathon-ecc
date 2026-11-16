@@ -15,8 +15,8 @@ Outputs:
     full per-element evidence, for verify25 and later workers)
 
 Exit code: 0 only if the counts agree with the tree
-(166 skills / 72 agents / 123 rules / 87 commands / 15 hooks /
-64 trigger keys). Any mismatch fails loudly.
+(67 skills / 45 agents / 123 rules / 55 commands / 15 hooks /
+49 trigger keys). Any mismatch fails loudly.
 
 Evidence tiers (per element, per invoker file):
   STRONG - backticked `name`, `skill:name`, path `skills/<name>/` or
@@ -97,14 +97,14 @@ PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 BUILT = os.path.join(PLUGIN_ROOT, "hackathon-ecc")
 STAGED_DIRS = ["new-skills", "round2-skills", "rewritten-skills", "new-rules"]
 
-EXPECTED = {"skills": 166, "agents": 72, "rules": 123,
-            "commands": 87, "hooks": 15, "triggers": 64}
+EXPECTED = {"skills": 67, "agents": 45, "rules": 123,
+            "commands": 55, "hooks": 15, "triggers": 49}
 
 # Skills whose dispatch is deferred to end-of-project (orchestrate
 # SKILL.md + skill-triggers@1.json notes). Their flow path is
 # "end-of-project only", whatever their invoker is.
-DEFERRED_SKILLS = {"production-audit", "delivery-gate", "codehealth-mcp",
-                    "verification-loop", "santa-method", "security-scan"}
+DEFERRED_SKILLS = {"production-audit", "delivery-gate",
+                    "verification-loop"}
 
 TEXT_EXTS = {".md", ".mdc", ".js", ".json", ".mjs", ".txt"}
 SKIP_DIRS = {"node_modules", ".git", "__pycache__"}
@@ -828,10 +828,10 @@ def render_map(inv, ev, data):
             L.append(f"| `{keyfn(key, e)}`{mark} | {inv_txt} | {flow_txt} |")
         L.append("")
 
-    section("Skills (166)", "skills", lambda k, e: k)
-    section("Agents (72)", "agents", lambda k, e: k)
+    section("Skills (67)", "skills", lambda k, e: k)
+    section("Agents (45)", "agents", lambda k, e: k)
     section("Rules (123)", "rules", lambda k, e: k)
-    section("Commands (87)", "commands", lambda k, e: "/" + k)
+    section("Commands (55)", "commands", lambda k, e: "/" + k)
 
     L.append("## Hooks (15)")
     L.append("")
@@ -850,9 +850,9 @@ def render_map(inv, ev, data):
              "Cursor hooks.")
     L.append("")
 
-    L.append("## Trigger keys (64)")
+    L.append("## Trigger keys (49)")
     L.append("")
-    L.append("Each key routes user phrasing to its target skill. All 64 keys "
+    L.append("Each key routes user phrasing to its target skill. All 49 keys "
              "resolve to a real skill dir. Liveness caveat: see blind spot B6 — "
              "the router chain has no live Cursor entry point, so these are "
              "defined routes, not live ones.")

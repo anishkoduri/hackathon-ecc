@@ -17,6 +17,3 @@ What this does:
 3. Writes a fresh local snapshot for each epic issue.
 4. Keeps the SQLite cache aligned with GitHub.
 
-Compatibility aliases:
-
-- `/projects`

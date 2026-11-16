@@ -1,11 +1,11 @@
 {
  "counts": {
-  "agents": 72,
-  "commands": 87,
+  "agents": 45,
+  "commands": 55,
   "hooks": 15,
   "rules": 123,
-  "skills": 166,
-  "triggers": 64
+  "skills": 67,
+  "triggers": 49
  },
  "elements": {
   "agents": {
@@ -100,9 +100,15 @@
     "weak_only": false
    },
    "ecc-agent-evaluator": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
+    "called": true,
+    "flow": [
+     "deploy"
+    ],
+    "invokers": {
+     "hackathon-ecc/skills/delivery-gate/SKILL.md": [
+      "strong"
+     ]
+    },
     "name": "agent-evaluator",
     "weak_only": false
    },
@@ -141,15 +147,6 @@
      "hackathon-ecc/rules/common-development-workflow.mdc": [
       "weak"
      ],
-     "hackathon-ecc/skills/architecture-decision-records/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
      ],
@@ -168,9 +165,6 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/start.mjs": [
       "weak"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
@@ -178,9 +172,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/design-taste-frontend/references/hallmark/references/themes/blueprint.md": [
@@ -203,13 +194,6 @@
      ]
     },
     "name": "architect",
-    "weak_only": false
-   },
-   "ecc-bengali-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "bengali-reviewer",
     "weak_only": false
    },
    "ecc-build-error-resolver": {
@@ -261,9 +245,6 @@
      "hackathon-ecc/commands/feature-dev.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
@@ -284,6 +265,9 @@
      "build (expansion)"
     ],
     "invokers": {
+     "hackathon-ecc/README.md": [
+      "strong"
+     ],
      "hackathon-ecc/agents/ecc-spec-miner.md": [
       "strong"
      ],
@@ -293,7 +277,7 @@
      "hackathon-ecc/commands/orch-fix-defect.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
@@ -306,6 +290,9 @@
       "strong"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
+      "strong"
+     ],
+     "new-rules/hackathon-mode.mdc": [
       "strong"
      ],
      "new-skills/feature-expansion/SKILL.md": [
@@ -359,13 +346,7 @@
      "hackathon-ecc/rules/common-development-workflow.mdc": [
       "weak"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/council/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
@@ -378,9 +359,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/feature-expansion/SKILL.md": [
@@ -439,68 +417,6 @@
     "name": "commit-reviewer",
     "weak_only": false
    },
-   "ecc-conversation-analyzer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/hookify.md": [
-      "strong"
-     ]
-    },
-    "name": "conversation-analyzer",
-    "weak_only": false
-   },
-   "ecc-cpp-build-resolver": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ]
-    },
-    "name": "cpp-build-resolver",
-    "weak_only": false
-   },
-   "ecc-cpp-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ]
-    },
-    "name": "cpp-reviewer",
-    "weak_only": false
-   },
-   "ecc-csharp-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "csharp-reviewer",
-    "weak_only": false
-   },
-   "ecc-dart-build-resolver": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ]
-    },
-    "name": "dart-build-resolver",
-    "weak_only": false
-   },
    "ecc-database-reviewer": {
     "called": true,
     "flow": [
@@ -510,31 +426,11 @@
      "hackathon-ecc/agents/ecc-mle-reviewer.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/postgres-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
       "strong"
      ]
     },
     "name": "database-reviewer",
-    "weak_only": false
-   },
-   "ecc-django-build-resolver": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "django-build-resolver",
-    "weak_only": false
-   },
-   "ecc-django-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "django-reviewer",
     "weak_only": false
    },
    "ecc-doc-updater": {
@@ -548,9 +444,6 @@
      ],
      "hackathon-ecc/rules/common-agents.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "weak"
      ]
     },
     "name": "doc-updater",
@@ -599,29 +492,6 @@
      ]
     },
     "name": "fastapi-reviewer",
-    "weak_only": false
-   },
-   "ecc-flutter-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ]
-    },
-    "name": "flutter-reviewer",
-    "weak_only": false
-   },
-   "ecc-fsharp-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "fsharp-reviewer",
     "weak_only": false
    },
    "ecc-gan-evaluator": {
@@ -678,41 +548,6 @@
     "name": "gan-planner",
     "weak_only": false
    },
-   "ecc-go-build-resolver": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ]
-    },
-    "name": "go-build-resolver",
-    "weak_only": false
-   },
-   "ecc-go-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/common-code-review.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
-      "strong"
-     ]
-    },
-    "name": "go-reviewer",
-    "weak_only": false
-   },
    "ecc-harmonyos-app-resolver": {
     "called": false,
     "flow": [],
@@ -740,64 +575,11 @@
     "name": "homelab-architect",
     "weak_only": false
    },
-   "ecc-java-build-resolver": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "java-build-resolver",
-    "weak_only": false
-   },
-   "ecc-java-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "java-reviewer",
-    "weak_only": false
-   },
-   "ecc-kotlin-build-resolver": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ]
-    },
-    "name": "kotlin-build-resolver",
-    "weak_only": false
-   },
-   "ecc-kotlin-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ]
-    },
-    "name": "kotlin-reviewer",
-    "weak_only": false
-   },
    "ecc-loop-operator": {
     "called": false,
     "flow": [],
     "invokers": {},
     "name": "loop-operator",
-    "weak_only": false
-   },
-   "ecc-marketing-agent": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/marketing-campaign.md": [
-      "strong"
-     ]
-    },
-    "name": "marketing-agent",
     "weak_only": false
    },
    "ecc-mle-reviewer": {
@@ -834,48 +616,6 @@
     "name": "network-troubleshooter",
     "weak_only": false
    },
-   "ecc-opensource-forker": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/skills/opensource-pipeline/SKILL.md": [
-      "strong"
-     ]
-    },
-    "name": "opensource-forker",
-    "weak_only": false
-   },
-   "ecc-opensource-packager": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/skills/opensource-pipeline/SKILL.md": [
-      "strong"
-     ]
-    },
-    "name": "opensource-packager",
-    "weak_only": false
-   },
-   "ecc-opensource-sanitizer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/agents/ecc-opensource-forker.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/opensource-pipeline/SKILL.md": [
-      "strong"
-     ]
-    },
-    "name": "opensource-sanitizer",
-    "weak_only": false
-   },
    "ecc-performance-optimizer": {
     "called": true,
     "flow": [
@@ -887,19 +627,9 @@
      ],
      "hackathon-ecc/agents/ecc-rag-pipeline-reviewer.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
      ]
     },
     "name": "performance-optimizer",
-    "weak_only": false
-   },
-   "ecc-php-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "php-reviewer",
     "weak_only": false
    },
    "ecc-pr-test-analyzer": {
@@ -924,9 +654,6 @@
      "build"
     ],
     "invokers": {
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/agents/ecc-fastapi-reviewer.md": [
       "strong"
      ],
@@ -939,13 +666,7 @@
      "hackathon-ecc/rules/common-code-review.mdc": [
       "weak"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ]
     },
@@ -1040,53 +761,11 @@
      "hackathon-ecc/rules/common-agents.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-refine-code/SKILL.md": [
       "strong"
      ]
     },
     "name": "refactor-cleaner",
-    "weak_only": false
-   },
-   "ecc-ruby-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "ruby-reviewer",
-    "weak_only": false
-   },
-   "ecc-rust-build-resolver": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ]
-    },
-    "name": "rust-build-resolver",
-    "weak_only": false
-   },
-   "ecc-rust-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/common-code-review.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
-      "strong"
-     ]
-    },
-    "name": "rust-reviewer",
     "weak_only": false
    },
    "ecc-security-reviewer": {
@@ -1099,15 +778,6 @@
      "hackathon-ecc/agents/ecc-build-error-resolver.md": [
       "strong"
      ],
-     "hackathon-ecc/agents/ecc-flutter-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-kotlin-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/agents/ecc-mle-reviewer.md": [
       "strong"
      ],
@@ -1115,9 +785,6 @@
       "strong"
      ],
      "hackathon-ecc/agents/ecc-react-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
       "strong"
      ],
      "hackathon-ecc/commands/orch-add-feature.md": [
@@ -1133,12 +800,6 @@
       "strong"
      ],
      "hackathon-ecc/commands/react-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/security-scan.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
       "strong"
      ],
      "hackathon-ecc/rules/angular-security.mdc": [
@@ -1162,12 +823,6 @@
      "hackathon-ecc/scripts/harness-audit.js": [
       "strong"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "strong"
      ],
@@ -1184,9 +839,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/plankton-code-quality/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
@@ -1214,9 +866,6 @@
      ],
      "hackathon-ecc/commands/review-pr.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
      ]
     },
     "name": "silent-failure-hunter",
@@ -1230,26 +879,9 @@
     "invokers": {
      "hackathon-ecc/rules/common-agents.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
      ]
     },
     "name": "spec-miner",
-    "weak_only": false
-   },
-   "ecc-swift-build-resolver": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "swift-build-resolver",
-    "weak_only": false
-   },
-   "ecc-swift-reviewer": {
-    "called": false,
-    "flow": [],
-    "invokers": {},
-    "name": "swift-reviewer",
     "weak_only": false
    },
    "ecc-tdd-guide": {
@@ -1283,9 +915,6 @@
      "hackathon-ecc/rules/react-native-testing.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
       "strong"
      ],
@@ -1296,9 +925,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/react-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
@@ -1316,9 +942,6 @@
     "invokers": {
      "hackathon-ecc/commands/review-pr.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
      ]
     },
     "name": "type-design-analyzer",
@@ -1333,42 +956,17 @@
      "hackathon-ecc/agents/ecc-react-reviewer.md": [
       "strong"
      ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/react-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
       "strong"
      ],
      "hackathon-ecc/rules/common-code-review.mdc": [
       "weak"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ]
     },
     "name": "typescript-reviewer",
-    "weak_only": false
-   },
-   "ecc-vue-reviewer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/vue-review.md": [
-      "strong"
-     ]
-    },
-    "name": "vue-reviewer",
     "weak_only": false
    },
    "fast-worker": {
@@ -1445,9 +1043,6 @@
      "hackathon-ecc/scripts/lib/agent-proximity/distance.js": [
       "strong"
      ],
-     "hackathon-ecc/skills/codebase-memory/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
      ],
@@ -1473,9 +1068,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/pitch-deck-video/references/openmontage/montage.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
       "strong"
      ],
      "new-rules/hackathon-mode.mdc": [
@@ -1527,9 +1119,6 @@
     "invokers": {
      "hackathon-ecc/commands/aside.md": [
       "struct-command"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "weak"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
@@ -1594,6 +1183,9 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/gate.mjs": [
       "weak"
      ],
+     "hackathon-ecc/skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
+      "strong"
+     ],
      "new-skills/design-taste-frontend/assets/layout/heroes.json": [
       "strong"
      ],
@@ -1647,6 +1239,9 @@
      ],
      "new-skills/design-taste-frontend/scripts/gate.mjs": [
       "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
+      "strong"
      ]
     }
    },
@@ -1801,25 +1396,10 @@
      "hackathon-ecc/commands/code-review.md": [
       "struct-command"
      ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/epic-review.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/issue-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/marketing-campaign.md": [
       "strong"
      ],
      "hackathon-ecc/commands/plan.md": [
@@ -1846,12 +1426,6 @@
      "hackathon-ecc/commands/review-pr.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
-      "strong"
-     ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
@@ -1870,16 +1444,10 @@
      "hackathon-ecc/skills/design-taste-frontend/references/sections.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/frontend-a11y/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/inherit-legacy-style/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
@@ -1920,69 +1488,6 @@
      ]
     }
    },
-   "cpp-build": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/cpp-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "cpp-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "cpp-test": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
    "demo": {
     "called": true,
     "flow": [
@@ -2012,9 +1517,6 @@
      ],
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/content-engine/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/deploy-fast/SKILL.md": [
       "weak"
@@ -2184,9 +1686,6 @@
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/generating-python-installer/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "weak"
      ],
@@ -2213,9 +1712,6 @@
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/investor-materials/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/mobile-ship/SKILL.md": [
       "strong"
@@ -2559,30 +2055,22 @@
     }
    },
    "ecc-guide": {
-    "called": true,
+    "called": false,
     "flow": [
-     "build",
      "on-request (/<name>)"
     ],
     "invokers": {
      "hackathon-ecc/commands/ecc-guide.md": [
       "struct-command"
      ],
-     "hackathon-ecc/commands/project-init.md": [
-      "strong"
-     ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ]
     }
    },
    "epic-claim": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2593,13 +2081,7 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
@@ -2610,7 +2092,6 @@
    "epic-decompose": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2621,16 +2102,7 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
@@ -2641,7 +2113,6 @@
    "epic-publish": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2651,9 +2122,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
@@ -2666,7 +2134,6 @@
    "epic-review": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2676,9 +2143,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
@@ -2691,7 +2155,6 @@
    "epic-sync": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2702,13 +2165,7 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
@@ -2719,7 +2176,6 @@
    "epic-unblock": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2729,9 +2185,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
@@ -2744,7 +2197,6 @@
    "epic-validate": {
     "called": true,
     "flow": [
-     "build",
      "build (orchestrated dispatch)",
      "on-request (/<name>)"
     ],
@@ -2755,49 +2207,10 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "evolve": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/evolve.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/skill-create.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/skill-health.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/bun-runtime/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/agents/observer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/contract-first/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
       "strong"
      ]
     }
@@ -2837,69 +2250,6 @@
      ]
     }
    },
-   "flutter-build": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/flutter-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "flutter-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "flutter-test": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
    "gan-build": {
     "called": true,
     "flow": [
@@ -2929,9 +2279,6 @@
       "shipped"
      ],
      "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
@@ -2967,97 +2314,8 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
       "strong"
-     ]
-    }
-   },
-   "go-build": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/go-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "go-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "go-test": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "gradle-build": {
-    "called": false,
-    "flow": [
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/gradle-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
      ]
     }
    },
@@ -3097,186 +2355,6 @@
      ]
     }
    },
-   "hookify": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/agents/ecc-conversation-analyzer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify-configure.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify-help.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify-list.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/scripts/hooks/hookify-frontmatter.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/hookify-runtime.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/hookify-rules/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "hookify-configure": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/hookify-configure.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/hookify-help.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify-list.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/hookify-rules/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "hookify-help": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/hookify-help.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/hookify-rules/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "hookify-list": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/hookify-help.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/hookify-list.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/hookify.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/hookify-rules/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "instinct-export": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/instinct-export.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "instinct-import": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/instinct-import.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/skill-create.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "instinct-status": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/instinct-import.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/instinct-status.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/skill-create.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
    "issue-review": {
     "called": false,
     "flow": [
@@ -3291,69 +2369,6 @@
      ]
     }
    },
-   "kotlin-build": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "kotlin-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "kotlin-test": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
    "learn": {
     "called": true,
     "flow": [
@@ -3361,32 +2376,20 @@
      "on-request (/<name>)"
     ],
     "invokers": {
-     "hackathon-ecc/agents/ecc-marketing-agent.md": [
-      "weak"
-     ],
      "hackathon-ecc/commands/demo.md": [
       "weak"
      ],
-     "hackathon-ecc/commands/learn-eval.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/learn.md": [
       "struct-command"
+     ],
+     "hackathon-ecc/commands/skill-health.md": [
+      "strong"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/scripts/hooks/design-quality-check.js": [
       "weak"
-     ],
-     "hackathon-ecc/skills/codebase-memory/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/design-taste-frontend/references/copy-moves.md": [
       "weak"
@@ -3409,19 +2412,7 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
       "weak"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/generating-python-installer/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/growth-log/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/iterative-retrieval/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/mcp-dependency-review/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/motion-foundations/SKILL.md": [
@@ -3439,10 +2430,10 @@
      "hackathon-ecc/skills/polish-pass/reference/lenses/clarify.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/ui-ux-pro-max/data/data-provenance.json": [
-      "weak"
+     "hackathon-ecc/skills/strategic-compact/SKILL.md": [
+      "strong"
      ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
+     "hackathon-ecc/skills/ui-ux-pro-max/data/data-provenance.json": [
       "weak"
      ],
      "new-skills/codebase-memory/SKILL.md": [
@@ -3486,48 +2477,13 @@
      ]
     }
    },
-   "learn-eval": {
+   "loop-start": {
     "called": false,
     "flow": [
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/learn-eval.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "loop-start": {
-    "called": true,
-    "flow": [
-     "build",
      "on-request (/<name>)"
     ],
     "invokers": {
      "hackathon-ecc/commands/loop-start.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/loop-design-check/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "marketing-campaign": {
-    "called": false,
-    "flow": [
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/marketing-campaign.md": [
       "struct-command"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
@@ -3788,9 +2744,6 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "strong"
      ],
@@ -3917,7 +2870,7 @@
      "hackathon-ecc/rules/ponytail.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/accessibility/SKILL.md": [
+     "hackathon-ecc/scripts/lib/resolve-ecc-root.js": [
       "weak"
      ],
      "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
@@ -3934,12 +2887,6 @@
      ],
      "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dispatching-parallel-agents/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "weak"
@@ -3958,9 +2905,6 @@
      ],
      "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/hexagonal-architecture/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
       "weak"
@@ -4026,9 +2970,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/polish-pass/reference/slop-checklist.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/rails-patterns/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
@@ -4106,9 +3047,6 @@
      "hackathon-ecc/agents/ecc-architect.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-django-build-resolver.md": [
-      "weak"
-     ],
      "hackathon-ecc/agents/ecc-e2e-runner.md": [
       "weak"
      ],
@@ -4117,12 +3055,6 @@
      ],
      "hackathon-ecc/agents/ecc-homelab-architect.md": [
       "weak"
-     ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-marketing-agent.md": [
-      "strong"
      ],
      "hackathon-ecc/agents/ecc-mle-reviewer.md": [
       "weak"
@@ -4147,9 +3079,6 @@
      ],
      "hackathon-ecc/commands/loop-start.md": [
       "weak"
-     ],
-     "hackathon-ecc/commands/marketing-campaign.md": [
-      "strong"
      ],
      "hackathon-ecc/commands/orch-add-feature.md": [
       "strong"
@@ -4178,9 +3107,6 @@
      "hackathon-ecc/commands/pr.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/project-init.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/prp-implement.md": [
       "strong"
      ],
@@ -4189,9 +3115,6 @@
      ],
      "hackathon-ecc/commands/prp-prd.md": [
       "strong"
-     ],
-     "hackathon-ecc/commands/security-scan.md": [
-      "weak"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
@@ -4310,16 +3233,7 @@
      "hackathon-ecc/scripts/lib/worktree-lifecycle/lifecycle.js": [
       "weak"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/angular-developer/references/mcp.md": [
       "weak"
      ],
      "hackathon-ecc/skills/api-integration/SKILL.md": [
@@ -4328,25 +3242,10 @@
      "hackathon-ecc/skills/app-scaffold/reference/deployment.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/content-engine/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/conventional-commit-review/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/council/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/database-migrations/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/deploy-fast/SKILL.md": [
@@ -4475,16 +3374,7 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/start.mjs": [
       "weak"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/devpost-autofiller/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-verification/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
@@ -4505,18 +3395,6 @@
      "hackathon-ecc/skills/integration/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/investor-materials/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/jpa-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/loop-design-check/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/mobile-ship/SKILL.md": [
       "weak"
      ],
@@ -4526,10 +3404,10 @@
      "hackathon-ecc/skills/mobile-ship/references/monetization.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
+     "hackathon-ecc/skills/motionsites-web-builder/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
+     "hackathon-ecc/skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
       "weak"
      ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
@@ -4557,9 +3435,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/orchestrate/references/patterns.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/perl-testing/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/pitch-deck-video/SKILL.md": [
@@ -4595,9 +3470,6 @@
      "hackathon-ecc/skills/polish-pass/reference/polish.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/product-lens/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/production-audit/SKILL.md": [
       "weak"
      ],
@@ -4605,9 +3477,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/security-review/cloud-infrastructure-security.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/strategic-compact/SKILL.md": [
@@ -4763,6 +3632,12 @@
      "new-skills/integration/SKILL.md": [
       "weak"
      ],
+     "new-skills/motionsites-web-builder/SKILL.md": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
+      "weak"
+     ],
      "new-skills/orchestrate/SKILL.md": [
       "weak"
      ],
@@ -4838,9 +3713,6 @@
      "on-request (/<name>)"
     ],
     "invokers": {
-     "hackathon-ecc/commands/marketing-campaign.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/plan-prd.md": [
       "struct-command"
      ],
@@ -4852,12 +3724,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -4887,22 +3753,10 @@
      "hackathon-ecc/agents/ecc-agent-evaluator.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-packager.md": [
-      "weak"
-     ],
      "hackathon-ecc/agents/ecc-pr-test-analyzer.md": [
       "weak"
      ],
      "hackathon-ecc/agents/ecc-react-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-rust-reviewer.md": [
       "weak"
      ],
      "hackathon-ecc/agents/ecc-security-reviewer.md": [
@@ -4911,13 +3765,7 @@
      "hackathon-ecc/agents/ecc-spec-miner.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "weak"
-     ],
      "hackathon-ecc/agents/ecc-typescript-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
       "weak"
      ],
      "hackathon-ecc/commands/checkpoint.md": [
@@ -4928,12 +3776,6 @@
      ],
      "hackathon-ecc/commands/epic-publish.md": [
       "strong"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "weak"
      ],
      "hackathon-ecc/commands/issue-review.md": [
       "strong"
@@ -4968,16 +3810,10 @@
      "hackathon-ecc/commands/update-docs.md": [
       "weak"
      ],
-     "hackathon-ecc/commands/vue-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/hooks/after-shell-execution.js": [
       "weak"
      ],
      "hackathon-ecc/hooks/hooks.json": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "weak"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
@@ -5013,35 +3849,8 @@
      "hackathon-ecc/scripts/lib/install/hook-consent.js": [
       "weak"
      ],
-     "hackathon-ecc/skills/agent-self-evaluation/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/examples/high-score-example.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/examples/low-score-example.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/references/evaluation-criteria.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/templates/evaluation-report.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/architecture-decision-records/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/browser-qa/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codebase-onboarding/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/conventional-commit-review/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/design-system/SKILL.md": [
       "strong"
@@ -5076,49 +3885,19 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
       "weak"
      ],
-     "hackathon-ecc/skills/django-verification/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/git-workflow/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/growth-log/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/living-docs-governance/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/loop-design-check/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/make-interfaces-feel-better/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/plankton-code-quality/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/polish-pass/reference/lenses/consistency.md": [
       "weak"
      ],
      "hackathon-ecc/skills/production-audit/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/quarkus-verification/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rails-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/tdd-workflow/SKILL.md": [
@@ -5168,501 +3947,6 @@
      ]
     }
    },
-   "project-init": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/ecc-guide.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/project-init.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "projects": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/.cursor-plugin/plugin.json": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-code-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-cpp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-csharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-dart-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-fsharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-go-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-harmonyos-app-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-forker.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-php-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-python-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-react-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-react-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-rust-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-rust-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-swift-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-typescript-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/epic-sync.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/evolve.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/gradle-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/instinct-import.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/instinct-status.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/learn-eval.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/projects.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/promote.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/prp-implement.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/python-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/react-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/react-test.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/angular-coding-style.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/angular-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/common-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/kotlin-patterns.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/nuxt-coding-style.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/perl-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/python-fastapi.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/react-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/auto-tmux-dev.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/block-no-verify.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/pre-compact.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/lib/install-targets/helpers.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/lib/observer-sessions.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ai-regression-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/android-clean-architecture/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/angular-developer/references/angular-animations.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/angular-developer/references/tailwind-css.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/app-scaffold/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/app-scaffold/reference/deployment.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/bun-runtime/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/forget.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/init.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/list.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/migrate.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/save.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/commands/shared.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ck/hooks/session-start.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/click-path-audit/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/codebase-memory/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/compose-multiplatform-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/agents/observer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/cpp-coding-standards/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/cpp-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/csharp-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/deploy-fast/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/references/copy-moves.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/references/copy-tells.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/references/hallmark/scripts/theme.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/scripts/photos.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-tdd/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/e2e-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/git-workflow/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/golang-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/hackathon-pitch/references/storytelling.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/hackathon-pitch/references/win-secrets.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/inherit-legacy-style/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/java-coding-standards/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/kotlin-coroutines-flows/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/kotlin-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/laravel-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/laravel-plugin-discovery/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/laravel-tdd/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/laravel-verification/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/living-docs-governance/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/nextjs-turbopack/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/opensource-pipeline/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/perl-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/impeccable-onboard.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/python-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/quarkus-verification/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/readme-writer/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/readme-writer/references/readme-template.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/rust-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/skill-stocktake/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-baseline.json": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-cases.json": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/verification-loop/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/vite-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/vue-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "weak"
-     ],
-     "new-skills/codebase-memory/SKILL.md": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/references/copy-moves.md": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/references/copy-tells.md": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/references/hallmark/scripts/theme.mjs": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/scripts/consistency.mjs": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/scripts/photos.mjs": [
-      "weak"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "weak"
-     ],
-     "rewritten-skills/app-scaffold/SKILL.md": [
-      "weak"
-     ],
-     "rewritten-skills/app-scaffold/reference/deployment.md": [
-      "weak"
-     ],
-     "rewritten-skills/deploy-fast/SKILL.md": [
-      "weak"
-     ],
-     "rewritten-skills/readme-writer/SKILL.md": [
-      "weak"
-     ],
-     "rewritten-skills/readme-writer/references/readme-template.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/impeccable-onboard.md": [
-      "weak"
-     ]
-    }
-   },
-   "promote": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/promote.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/php-coding-style.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/ci/validate-skills.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/gateguard-fact-force.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/app-scaffold/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/app-scaffold/reference/best-practices.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/agents/observer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/deploy-fast/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mobile-ship/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/mobile-ship/references/android-store.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/unified-memory/SKILL.md": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/references/hallmark/scripts/sloplint.mjs": [
-      "weak"
-     ],
-     "rewritten-skills/app-scaffold/SKILL.md": [
-      "weak"
-     ],
-     "rewritten-skills/app-scaffold/reference/best-practices.md": [
-      "weak"
-     ],
-     "rewritten-skills/deploy-fast/SKILL.md": [
-      "weak"
-     ],
-     "round2-skills/mobile-ship/SKILL.md": [
-      "weak"
-     ],
-     "round2-skills/mobile-ship/references/android-store.md": [
-      "weak"
-     ]
-    }
-   },
    "prp-commit": {
     "called": true,
     "flow": [
@@ -5681,9 +3965,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -5708,9 +3989,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -5738,9 +4016,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -5768,9 +4043,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -5789,61 +4061,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "prune": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (orchestrated dispatch)",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/agents/ecc-opensource-sanitizer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/prune.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/scripts/auto-update.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/session-start.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/suggest-compact.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/lib/gateguard-search-filters.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/lib/tmux-worktree-orchestrator.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/app-scaffold/reference/troubleshooting.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/bun-runtime/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "rewritten-skills/app-scaffold/reference/troubleshooting.md": [
-      "weak"
      ]
     }
    },
@@ -5897,9 +4114,6 @@
      ],
      "hackathon-ecc/scripts/lib/resolve-formatter.js": [
       "weak"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/delivery-gate/SKILL.md": [
       "weak"
@@ -6071,69 +4285,6 @@
      ]
     }
    },
-   "rust-build": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/rust-build.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "rust-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "rust-test": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
    "save-session": {
     "called": true,
     "flow": [
@@ -6155,73 +4306,6 @@
      ],
      "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ]
-    }
-   },
-   "security-scan": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (orchestrated dispatch)",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/ecc-guide.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/fastapi-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/harness-audit.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/security-scan.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/react-native-security.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/scripts/harness-audit.js": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mcp-dependency-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/security-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/security-scan/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -6239,25 +4323,10 @@
      "hackathon-ecc/agents/ecc-fastapi-reviewer.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-forker.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-sanitizer.md": [
-      "weak"
-     ],
      "hackathon-ecc/agents/ecc-security-reviewer.md": [
       "weak"
      ],
      "hackathon-ecc/commands/fastapi-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/instinct-status.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/learn-eval.md": [
       "weak"
      ],
      "hackathon-ecc/commands/learn.md": [
@@ -6377,12 +4446,6 @@
      "hackathon-ecc/scripts/lib/utils.js": [
       "weak"
      ],
-     "hackathon-ecc/skills/architecture-decision-records/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/ck/SKILL.md": [
       "strong"
      ],
@@ -6396,15 +4459,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/ck/hooks/session-start.mjs": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/agents/observer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/delivery-gate/SKILL.md": [
@@ -6422,12 +4476,6 @@
      "hackathon-ecc/skills/design-taste-frontend/references/hallmark/references/themes/refract.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-patterns/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
       "weak"
      ],
@@ -6437,28 +4485,10 @@
      "hackathon-ecc/skills/hackathon-pitch/references/storytelling.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/living-docs-governance/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/mobile-ship/references/ios-store.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/springboot-verification/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/strategic-compact/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/tinystruct-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/tinystruct-patterns/references/system-usage.md": [
       "weak"
      ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
@@ -6533,9 +4563,6 @@
      "hackathon-ecc/commands/ecc-guide.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/instinct-status.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/skill-health.md": [
       "struct-command"
      ],
@@ -6603,24 +4630,6 @@
       "strong"
      ],
      "hackathon-ecc/commands/update-docs.md": [
-      "struct-command"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    }
-   },
-   "vue-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (/<name>)"
-    ],
-    "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
       "struct-command"
      ],
      "hackathon-ecc/manifests/pi-core.json": [
@@ -7103,12 +5112,6 @@
      ],
      "hackathon-ecc/rules/web-coding-style.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7350,9 +5353,6 @@
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
-     ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
      ]
@@ -7482,27 +5482,12 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/commands/cpp-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/cpp-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/cpp-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7566,23 +5551,11 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-csharp-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/csharp-testing.mdc": [
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/csharp-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7646,9 +5619,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/dart-testing.mdc": [
       "struct-rule-globs"
      ]
@@ -7714,20 +5684,11 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-fsharp-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/fsharp-testing.mdc": [
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7765,22 +5726,7 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-go-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-go-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/go-build.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/golang-coding-style.mdc": [
@@ -7789,9 +5735,6 @@
      "hackathon-ecc/rules/golang-patterns.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/golang-patterns/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7816,24 +5759,12 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/commands/go-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/golang-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/golang-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -7848,25 +5779,10 @@
      "hackathon-ecc/README.md": [
       "strong"
      ],
-     "hackathon-ecc/agents/ecc-go-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/commands/python-review.md": [
       "weak"
      ],
      "hackathon-ecc/commands/react-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-build.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
       "weak"
      ],
      "hackathon-ecc/rules/arkts-security.mdc": [
@@ -7914,9 +5830,6 @@
      "hackathon-ecc/skills/deploy-fast/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/django-verification/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "weak"
      ],
@@ -7931,9 +5844,6 @@
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/laravel-verification/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "weak"
@@ -7962,17 +5872,11 @@
      "hackathon-ecc/skills/polish-pass/reference/slop-checklist.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/quarkus-verification/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/readme-writer/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/security-review/SKILL.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/springboot-verification/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
       "strong"
@@ -8111,19 +6015,7 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-kotlin-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/kotlin-coding-style.mdc": [
@@ -8132,9 +6024,6 @@
      "hackathon-ecc/rules/kotlin-patterns.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/kotlin-patterns/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -8159,24 +6048,12 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/kotlin-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/kotlin-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -8282,18 +6159,12 @@
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
      ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
      "hackathon-ecc/rules/perl-coding-style.mdc": [
       "strong"
      ],
      "hackathon-ecc/rules/perl-patterns.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/perl-patterns/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -8307,9 +6178,6 @@
     "invokers": {
      "hackathon-ecc/rules/perl-security.mdc": [
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/perl-patterns/SKILL.md": [
-      "weak"
      ]
     }
    },
@@ -8324,15 +6192,9 @@
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
      ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
      "hackathon-ecc/rules/perl-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/perl-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -8495,9 +6357,6 @@
      ],
      "hackathon-ecc/skills/python-patterns/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/skill-stocktake/SKILL.md": [
-      "weak"
      ]
     }
    },
@@ -8537,9 +6396,6 @@
      "hackathon-ecc/rules/python-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/django-celery/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/python-testing/SKILL.md": [
       "strong"
@@ -8867,9 +6723,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/ruby-coding-style.mdc": [
       "struct-rule-globs"
      ]
@@ -8896,14 +6749,8 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/ruby-patterns.mdc": [
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/rails-patterns/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -8915,9 +6762,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/ruby-security.mdc": [
       "struct-rule-globs"
      ]
@@ -8931,9 +6775,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/ruby-testing.mdc": [
       "struct-rule-globs"
      ]
@@ -8973,28 +6814,7 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-rust-build-resolver.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-rust-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-build.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/rust-coding-style.mdc": [
@@ -9005,9 +6825,6 @@
       "struct-rule-globs"
      ],
      "hackathon-ecc/rules/rust-security.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rust-patterns/SKILL.md": [
       "strong"
      ]
     }
@@ -9033,24 +6850,12 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/commands/rust-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
      "hackathon-ecc/rules/rust-testing.mdc": [
       "strong",
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/rust-testing/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -9062,12 +6867,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-swift-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/swift-coding-style.mdc": [
       "struct-rule-globs"
      ]
@@ -9094,12 +6893,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-swift-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/swift-patterns.mdc": [
       "struct-rule-globs"
      ]
@@ -9113,12 +6906,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-swift-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/swift-security.mdc": [
       "struct-rule-globs"
      ]
@@ -9132,9 +6919,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-swift-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/swift-testing.mdc": [
       "struct-rule-globs"
      ]
@@ -9249,9 +7033,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/vue-coding-style.mdc": [
       "struct-rule-globs"
      ]
@@ -9265,9 +7046,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/vue-hooks.mdc": [
       "struct-rule-globs"
      ]
@@ -9281,26 +7059,14 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/manifests/install-components.json": [
       "shipped"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
      ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
      "hackathon-ecc/rules/vue-patterns.mdc": [
       "struct-rule-globs"
-     ],
-     "hackathon-ecc/skills/vue-patterns/SKILL.md": [
-      "strong"
      ]
     }
    },
@@ -9312,9 +7078,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/vue-security.mdc": [
       "struct-rule-globs"
      ]
@@ -9328,9 +7091,6 @@
     ],
     "globs": true,
     "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
      "hackathon-ecc/rules/vue-testing.mdc": [
       "struct-rule-globs"
      ]
@@ -9432,354 +7192,6 @@
    }
   },
   "skills": {
-   "accessibility": {
-    "called": true,
-    "flow": [
-     "build",
-     "design package",
-     "verify",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-a11y-architect.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-code-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-flutter-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-react-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-typescript-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/code-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/react-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/react-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/angular-patterns.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/ponytail.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/react-native-accessibility.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/react-native-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/react-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/react-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/rules/web-testing.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/angular-developer/references/angular-aria.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/angular-developer/references/define-routes.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/browser-qa/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/design-system/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/assets/icons/demo/icons-credits.json": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/flutter-dart-code-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/frontend-a11y/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/scripts/check-evidence.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/frontend-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/frontend-slides/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/frontend-slides/html-template.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/motion-foundations/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/motion-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/craft-floor.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/impeccable-critique.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/impeccable-extract.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/lenses/clarify.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/lenses/harden.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/lenses/optimize.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/lenses/polish-details.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/patterns/forms.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/scoring.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/polish-pass/reference/vercel-checklist.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-native-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/react-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-performance/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ui-to-vue/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/data/data-provenance.json": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/data/phosphor-icons-upstream.json": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/references/pro-rules.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/references/quick-reference.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-baseline.json": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-cases.json": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/vue-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "weak"
-     ],
-     "new-rules/ponytail.mdc": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/SKILL.md": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/assets/icons/demo/icons-credits.json": [
-      "weak"
-     ],
-     "new-skills/design-taste-frontend/assets/icons/index.json": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "weak"
-     ],
-     "new-skills/orchestrate/references/design-inventory.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/SKILL.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/craft-floor.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/impeccable-critique.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/impeccable-extract.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/lenses/clarify.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/lenses/harden.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/lenses/optimize.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/lenses/polish-details.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/patterns/forms.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/scoring.md": [
-      "weak"
-     ],
-     "round2-skills/polish-pass/reference/vercel-checklist.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "agent-introspection-debugging": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/systematic-debugging/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "agent-self-evaluation": {
-    "called": true,
-    "flow": [
-     "deploy",
-     "build",
-     "build (expansion)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-agent-evaluator.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/delivery-gate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "agent-sort": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "agents-md-generator": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
    "ai-feature-spec": {
     "called": true,
     "flow": [
@@ -9808,72 +7220,6 @@
     },
     "weak_only": false
    },
-   "ai-regression-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/contract-first/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "android-clean-architecture": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/compose-multiplatform-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/kotlin-coroutines-flows/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "angular-developer": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/angular-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/angular-testing.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "api-design": {
     "called": true,
     "flow": [
@@ -9896,9 +7242,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/backend-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
@@ -10011,47 +7354,6 @@
     },
     "weak_only": false
    },
-   "architecture-decision-records": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/council/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "article-writing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "backend-patterns": {
     "called": true,
     "flow": [
@@ -10082,97 +7384,14 @@
      "hackathon-ecc/rules/ruby-patterns.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/laravel-tdd/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/postgres-patterns/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/prisma-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rails-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
-      "strong"
      ]
     },
     "weak_only": false
-   },
-   "bengali-nlp": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "brainstorming": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (expansion)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/hackathon-pitch/references/win-secrets.md": [
-      "weak"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "brownfield-retrospective": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
    },
    "browser-qa": {
     "called": true,
@@ -10259,6 +7478,9 @@
      "hackathon-ecc/skills/make-interfaces-feel-better/SKILL.md": [
       "weak"
      ],
+     "hackathon-ecc/skills/motionsites-web-builder/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "strong"
      ],
@@ -10325,14 +7547,14 @@
      "hackathon-ecc/skills/polish-pass/reference/vercel-checklist.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/product-lens/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/systematic-debugging/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
       "strong"
+     ],
+     "hackathon-ecc/skills/verification-before-completion/SKILL.md": [
+      "weak"
      ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
@@ -10366,6 +7588,9 @@
      ],
      "new-skills/feature-expansion/SKILL.md": [
       "strong"
+     ],
+     "new-skills/motionsites-web-builder/SKILL.md": [
+      "weak"
      ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
@@ -10413,25 +7638,6 @@
       "strong"
      ],
      "round2-skills/polish-pass/reference/vercel-checklist.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "bun-runtime": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/tdd-workflow/SKILL.md": [
       "strong"
      ]
     },
@@ -10565,244 +7771,6 @@
     },
     "weak_only": false
    },
-   "clickhouse-io": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/postgres-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "code-tour": {
-    "called": true,
-    "flow": [
-     "build (expansion)",
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "codebase-memory": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "codebase-onboarding": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-spec-miner.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/agents-md-generator/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/living-docs-governance/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "codehealth-mcp": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (orchestrated dispatch)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "end-of-project only (deferred)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "coding-standards": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-typescript-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/conventional-commit-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/react-native-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/vue-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "compose-multiplatform-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/dart-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/android-clean-architecture/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/kotlin-coroutines-flows/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "content-engine": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-marketing-agent.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/marketing-campaign.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
-      "weak"
-     ]
-    },
-    "weak_only": false
-   },
    "context-budget": {
     "called": false,
     "flow": [],
@@ -10823,117 +7791,6 @@
     },
     "weak_only": true
    },
-   "continuous-learning": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/scripts/hooks/evaluate-session.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/observe-runner.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/posttooluse-dispatcher.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/iterative-retrieval/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/strategic-compact/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "weak"
-     ]
-    },
-    "weak_only": false
-   },
-   "continuous-learning-v2": {
-    "called": true,
-    "flow": [
-     "build",
-     "always-on (Cursor event)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/evolve.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/instinct-import.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/instinct-status.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/learn.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/project-init.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/projects.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/promote.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/prune.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/skill-create.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/scripts/harness-audit.js": [
-      "strong"
-     ],
-     "hackathon-ecc/scripts/hooks/observe-runner.js": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/hooks/posttooluse-dispatcher.js": [
-      "strong"
-     ],
-     "hackathon-ecc/scripts/lib/resolve-ecc-root.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/continuous-learning/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/skill-stocktake/SKILL.md": [
-      "weak"
-     ]
-    },
-    "weak_only": false
-   },
    "contract-first": {
     "called": true,
     "flow": [
@@ -10948,32 +7805,6 @@
       "shipped"
      ],
      "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "conventional-commit-review": {
-    "called": true,
-    "flow": [
-     "build (orchestrated dispatch)",
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/prp-commit.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
       "strong"
      ]
     },
@@ -11002,22 +7833,10 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "new-rules/hackathon-mode.mdc": [
@@ -11027,160 +7846,6 @@
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "cpp-coding-standards": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-cpp-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-cpp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/cpp-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/cpp-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/cpp-security.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "cpp-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/cpp-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/cpp-testing.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "csharp-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-csharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "dart-flutter-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mobile-ship/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "database-migrations": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-database-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/bengali-nlp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/prisma-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
       "strong"
      ]
     },
@@ -11307,8 +7972,8 @@
     "flow": [
      "build",
      "build (expansion)",
-     "build (orchestrated dispatch)",
      "design package",
+     "build (orchestrated dispatch)",
      "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
@@ -11323,14 +7988,11 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/accessibility/SKILL.md": [
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/android-clean-architecture/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "hackathon-ecc/skills/design-taste-frontend/references/hallmark/references/redesign.md": [
       "weak"
@@ -11383,9 +8045,6 @@
      "hackathon-ecc/skills/polish-pass/reference/unslop-fixes.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/product-lens/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
       "strong"
      ],
@@ -11398,8 +8057,11 @@
      "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-cases.json": [
       "strong"
      ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
      "new-skills/design-taste-frontend/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "new-skills/design-taste-frontend/references/hallmark/references/redesign.md": [
       "weak"
@@ -11476,9 +8138,6 @@
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "strong"
      ],
@@ -11490,6 +8149,9 @@
      ],
      "hackathon-ecc/skills/motion-patterns/SKILL.md": [
       "strong"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/SKILL.md": [
+      "weak"
      ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "strong"
@@ -11542,6 +8204,9 @@
      "new-skills/integration/SKILL.md": [
       "strong"
      ],
+     "new-skills/motionsites-web-builder/SKILL.md": [
+      "weak"
+     ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
      ],
@@ -11565,20 +8230,6 @@
      ]
     },
     "weak_only": false
-   },
-   "dev-team": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
    },
    "devpost-autofiller": {
     "called": true,
@@ -11626,139 +8277,6 @@
     },
     "weak_only": false
    },
-   "dispatching-parallel-agents": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (expansion)",
-     "build (orchestrated dispatch)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "weak"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "weak"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "django-celery": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "django-patterns": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-django-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/django-celery/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "django-tdd": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/django-celery/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "django-verification": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-django-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-django-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
    "documentation-lookup": {
     "called": true,
     "flow": [
@@ -11775,44 +8293,10 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/code-tour/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/laravel-plugin-discovery/SKILL.md": [
-      "strong"
-     ],
      "new-skills/integration/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "dotnet-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-csharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-fsharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
       "strong"
      ]
     },
@@ -11844,9 +8328,6 @@
      "hackathon-ecc/rules/react-testing.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/frontend-slides/SKILL.md": [
       "strong"
      ],
@@ -11857,31 +8338,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/react-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "ecc-recipes": {
-    "called": true,
-    "flow": [
-     "build (orchestrated dispatch)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
       "strong"
      ]
     },
@@ -11904,12 +8360,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/cpp-coding-standards/SKILL.md": [
-      "weak"
      ]
     },
     "weak_only": false
@@ -11995,52 +8445,27 @@
     },
     "weak_only": false
    },
-   "flutter-dart-code-review": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-dart-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-flutter-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/dart-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dart-flutter-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "frontend-a11y": {
     "called": true,
     "flow": [
-     "design package",
      "build",
+     "design package",
      "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
+     "hackathon-ecc/agents/ecc-a11y-architect.md": [
+      "strong"
+     ],
+     "hackathon-ecc/agents/ecc-react-reviewer.md": [
+      "strong"
+     ],
+     "hackathon-ecc/commands/react-review.md": [
+      "strong"
+     ],
+     "hackathon-ecc/commands/react-test.md": [
+      "strong"
+     ],
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
       "trigger"
@@ -12054,29 +8479,16 @@
      "hackathon-ecc/skills/polish-pass/reference/vercel-checklist.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/react-patterns/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/react-performance/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/react-testing/SKILL.md": [
+      "strong"
+     ],
      "round2-skills/polish-pass/reference/vercel-checklist.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "frontend-design-direction": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
       "strong"
      ]
     },
@@ -12131,18 +8543,6 @@
      "hackathon-ecc/rules/vue-testing.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/accessibility/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/coding-standards/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
       "strong"
      ],
@@ -12150,9 +8550,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/frontend-slides/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/i18n-sync/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/react-native-patterns/SKILL.md": [
@@ -12168,9 +8565,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/vite-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/vue-patterns/SKILL.md": [
       "strong"
      ]
     },
@@ -12200,30 +8594,8 @@
      "hackathon-ecc/skills/hackathon-pitch/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/investor-materials/SKILL.md": [
-      "strong"
-     ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "fsharp-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-fsharp-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
      ]
     },
     "weak_only": false
@@ -12270,28 +8642,18 @@
     },
     "weak_only": false
    },
-   "generating-python-installer": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
    "git-workflow": {
     "called": true,
     "flow": [
+     "build (orchestrated dispatch)",
      "build",
      "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
+     "hackathon-ecc/commands/prp-commit.md": [
+      "strong"
+     ],
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
       "trigger"
@@ -12302,66 +8664,7 @@
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
      ],
-     "hackathon-ecc/skills/conventional-commit-review/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "golang-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-go-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-go-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/golang-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/golang-patterns.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "golang-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/go-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/golang-testing.mdc": [
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
      ]
     },
@@ -12371,6 +8674,7 @@
     "called": true,
     "flow": [
      "build",
+     "build (expansion)",
      "build (orchestrated dispatch)",
      "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
@@ -12413,9 +8717,6 @@
      "hackathon-ecc/rules/ponytail.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/brainstorming/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/council/SKILL.md": [
       "weak"
      ],
@@ -12426,16 +8727,13 @@
       "weak"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "weak"
@@ -12504,7 +8802,7 @@
       "weak"
      ],
      "new-skills/feature-expansion/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "new-skills/integration/SKILL.md": [
       "weak"
@@ -12554,7 +8852,8 @@
    "growth-log": {
     "called": true,
     "flow": [
-     "deploy"
+     "deploy",
+     "build"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -12563,6 +8862,9 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
+     ],
+     "hackathon-ecc/scripts/harness-audit.js": [
+      "strong"
      ],
      "hackathon-ecc/skills/delivery-gate/SKILL.md": [
       "strong"
@@ -12596,9 +8898,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/investor-materials/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orch-change-feature/SKILL.md": [
@@ -12643,6 +8942,9 @@
      "hackathon-ecc/rules/ponytail.mdc": [
       "strong"
      ],
+     "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
@@ -12650,9 +8952,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
@@ -12663,9 +8962,6 @@
      ],
      "hackathon-ecc/skills/polish-pass/reference/impeccable-PROVENANCE.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/product-lens/SKILL.md": [
-      "strong"
      ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
@@ -12687,123 +8983,6 @@
      ],
      "round2-skills/polish-pass/reference/impeccable-PROVENANCE.md": [
       "weak"
-     ]
-    },
-    "weak_only": false
-   },
-   "hexagonal-architecture": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "hookify-rules": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/hookify.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "i18n-sync": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "inherit-legacy-style": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (expansion)",
-     "build (orchestrated dispatch)",
-     "design package"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/agents-md-generator/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-change-feature/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-fix-defect/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-refine-code/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/references/dispatch-prompt.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/orchestrate/references/dispatch-prompt.md": [
-      "strong"
      ]
     },
     "weak_only": false
@@ -12837,9 +9016,6 @@
      "hackathon-ecc/agents/ecc-healthcare-reviewer.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "weak"
-     ],
      "hackathon-ecc/agents/ecc-rag-pipeline-reviewer.md": [
       "strong"
      ],
@@ -12852,28 +9028,10 @@
      "hackathon-ecc/agents/ecc-tdd-guide.md": [
       "weak"
      ],
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/cpp-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/commands/feature-dev.md": [
       "weak"
      ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-review.md": [
-      "weak"
-     ],
      "hackathon-ecc/commands/harness-audit.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/learn-eval.md": [
       "weak"
      ],
      "hackathon-ecc/commands/learn.md": [
@@ -12897,16 +9055,7 @@
      "hackathon-ecc/commands/react-review.md": [
       "weak"
      ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "weak"
-     ],
      "hackathon-ecc/commands/skill-create.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
       "weak"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
@@ -12972,25 +9121,13 @@
      "hackathon-ecc/scripts/lib/control-pane/proximity.js": [
       "weak"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/examples/low-score-example.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/ai-regression-testing/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/api-integration/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/api-integration/references/API-PATTERNS.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/architecture-decision-records/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/backend-patterns/SKILL.md": [
@@ -13002,23 +9139,8 @@
      "hackathon-ecc/skills/click-path-audit/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/clickhouse-io/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/continuous-learning-v2/agents/observer.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/cpp-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/csharp-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dart-flutter-patterns/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/design-taste-frontend/references/hallmark/scripts/theme.mjs": [
       "weak"
@@ -13029,70 +9151,19 @@
      "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
       "weak"
      ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-celery/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-tdd/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/django-verification/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/e2e-testing/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/flutter-dart-code-review/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/fsharp-testing/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/git-workflow/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/golang-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/golang-testing/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/hackathon-pitch/references/win-secrets.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/hexagonal-architecture/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/i18n-sync/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/intent-driven-development/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/iterative-retrieval/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/java-coding-standards/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/kotlin-ktor-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/kotlin-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/market-research/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/mobile-ship/references/ios-store.md": [
@@ -13104,37 +9175,16 @@
      "hackathon-ecc/skills/motion-patterns/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
+     "hackathon-ecc/skills/motionsites-web-builder/references/review.md": [
       "weak"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/perl-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/perl-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/plankton-code-quality/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/product-lens/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/python-patterns/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/python-testing/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/quarkus-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/quarkus-tdd/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/quarkus-verification/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/react-patterns/SKILL.md": [
@@ -13146,41 +9196,8 @@
      "hackathon-ecc/skills/react-testing/SKILL.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/rust-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/rust-testing/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/santa-method/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/security-scan/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/springboot-tdd/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/springboot-verification/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/tdd-workflow/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/tinystruct-patterns/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/tinystruct-patterns/references/data-handling.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/tinystruct-patterns/references/testing.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/track-picker/SKILL.md": [
       "strong"
@@ -13195,9 +9212,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/verification-loop/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/windows-desktop-e2e/SKILL.md": [
       "weak"
      ],
      "new-rules/hackathon-mode.mdc": [
@@ -13217,6 +9231,9 @@
      ],
      "new-skills/grill-me/SKILL.md": [
       "strong"
+     ],
+     "new-skills/motionsites-web-builder/references/review.md": [
+      "weak"
      ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
@@ -13238,310 +9255,6 @@
      ]
     },
     "weak_only": false
-   },
-   "intent-driven-development": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (expansion)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "investor-materials": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "investor-outreach": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "iterative-retrieval": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "java-coding-standards": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/java-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "jpa-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/java-patterns.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "kotlin-coroutines-flows": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/android-clean-architecture/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/compose-multiplatform-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "kotlin-exposed-patterns": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "kotlin-ktor-patterns": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "kotlin-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-kotlin-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/kotlin-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/kotlin-patterns.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "kotlin-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/kotlin-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/kotlin-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "laravel-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-php-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/laravel-plugin-discovery/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/laravel-tdd/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "laravel-plugin-discovery": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "laravel-tdd": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-php-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/laravel-plugin-discovery/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "laravel-verification": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
    },
    "less-flat-ui": {
     "called": true,
@@ -13663,45 +9376,6 @@
     },
     "weak_only": false
    },
-   "living-docs-governance": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "loop-design-check": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "make-interfaces-feel-better": {
     "called": true,
     "flow": [
@@ -13807,74 +9481,6 @@
     },
     "weak_only": false
    },
-   "market-research": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-marketing-agent.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/marketing-campaign.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "mcp-dependency-review": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "mcp-server-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/integration/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mcp-dependency-review/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/integration/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "mobile-ship": {
     "called": true,
     "flow": [
@@ -13938,7 +9544,7 @@
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
       "inventory"
@@ -13953,7 +9559,7 @@
       "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "new-skills/orchestrate/references/design-inventory.md": [
       "strong"
@@ -14142,56 +9748,31 @@
     },
     "weak_only": false
    },
-   "mybatis-patterns": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "mysql-patterns": {
+   "motionsites-web-builder": {
     "called": true,
     "flow": [
-     "build"
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "nestjs-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/prisma-patterns/SKILL.md": [
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/typescript-patterns/SKILL.md": [
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
       "strong"
      ]
     },
@@ -14215,62 +9796,6 @@
      ],
      "hackathon-ecc/skills/vite-patterns/SKILL.md": [
       "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "nuxt4-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/nuxt-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/nuxt-hooks.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/nuxt-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/nuxt-security.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/nuxt-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "opensource-pipeline": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-opensource-forker.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-packager.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-opensource-sanitizer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
      ]
     },
     "weak_only": false
@@ -14512,9 +10037,6 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "weak"
      ],
-     "hackathon-ecc/skills/ecc-recipes/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/orch-add-feature/SKILL.md": [
       "strong"
      ],
@@ -14696,7 +10218,7 @@
      "hackathon-ecc/rules/ponytail.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/accessibility/SKILL.md": [
+     "hackathon-ecc/scripts/lib/resolve-ecc-root.js": [
       "weak"
      ],
      "hackathon-ecc/skills/ai-feature-spec/SKILL.md": [
@@ -14712,12 +10234,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dispatching-parallel-agents/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
@@ -14737,9 +10253,6 @@
      ],
      "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/hexagonal-architecture/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
       "weak"
@@ -14789,9 +10302,6 @@
      "hackathon-ecc/skills/polish-pass/reference/slop-checklist.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/rails-patterns/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
       "strong"
      ],
@@ -14827,47 +10337,6 @@
      ],
      "round2-skills/polish-pass/reference/slop-checklist.md": [
       "weak"
-     ]
-    },
-    "weak_only": false
-   },
-   "perl-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/perl-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/perl-patterns.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "perl-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/perl-testing.mdc": [
-      "strong"
      ]
     },
     "weak_only": false
@@ -14941,25 +10410,6 @@
     },
     "weak_only": false
    },
-   "plankton-code-quality": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "polish-pass": {
     "called": true,
     "flow": [
@@ -14995,9 +10445,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
@@ -15092,66 +10539,6 @@
      ],
      "hackathon-ecc/manifests/pi-core.json": [
       "shipped"
-     ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/prisma-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/redis-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "prisma-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/typescript-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "product-lens": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (expansion)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/feature-expansion/SKILL.md": [
-      "strong"
      ]
     },
     "weak_only": false
@@ -15182,7 +10569,7 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
+     "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
@@ -15229,9 +10616,6 @@
      ],
      "hackathon-ecc/rules/python-patterns.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/skill-stocktake/SKILL.md": [
-      "weak"
      ]
     },
     "weak_only": false
@@ -15259,86 +10643,6 @@
      ],
      "hackathon-ecc/rules/python-testing.mdc": [
       "strong"
-     ],
-     "hackathon-ecc/skills/django-celery/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "quarkus-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-java-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-patterns.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "quarkus-tdd": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "quarkus-verification": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "rails-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-ruby-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
      ]
     },
     "weak_only": false
@@ -15516,175 +10820,6 @@
     },
     "weak_only": false
    },
-   "redis-patterns": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "repo-scan": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "rules-distill": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "rust-patterns": {
-    "called": true,
-    "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-rust-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-rust-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/rust-coding-style.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/rust-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/rust-security.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "rust-testing": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/rust-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/rust-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "santa-method": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (orchestrated dispatch)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "end-of-project only (deferred)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/council/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/dev-team/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "security-review": {
     "called": true,
     "flow": [
@@ -15701,8 +10836,14 @@
      "hackathon-ecc/agents/ecc-security-reviewer.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/project-init.md": [
-      "weak"
+     "hackathon-ecc/commands/ecc-guide.md": [
+      "strong"
+     ],
+     "hackathon-ecc/commands/fastapi-review.md": [
+      "strong"
+     ],
+     "hackathon-ecc/commands/harness-audit.md": [
+      "strong"
      ],
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
@@ -15729,6 +10870,9 @@
      "hackathon-ecc/rules/nuxt-security.mdc": [
       "strong"
      ],
+     "hackathon-ecc/rules/react-native-security.mdc": [
+      "strong"
+     ],
      "hackathon-ecc/rules/ruby-security.mdc": [
       "strong"
      ],
@@ -15738,35 +10882,11 @@
      "hackathon-ecc/scripts/harness-audit.js": [
       "strong"
      ],
-     "hackathon-ecc/skills/agent-self-evaluation/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/backend-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/deploy-fast/SKILL.md": [
       "weak"
-     ],
-     "hackathon-ecc/skills/mcp-dependency-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mysql-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/opensource-pipeline/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
       "weak"
@@ -15778,9 +10898,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/react-native-patterns/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/security-scan/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/strategic-compact/SKILL.md": [
@@ -15795,204 +10912,11 @@
     },
     "weak_only": false
    },
-   "security-scan": {
-    "called": true,
-    "flow": [
-     "build",
-     "build (orchestrated dispatch)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "end-of-project only (deferred)"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/README.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/ecc-guide.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/fastapi-review.md": [
-      "weak"
-     ],
-     "hackathon-ecc/commands/harness-audit.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/security-scan.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/rules/react-native-security.mdc": [
-      "weak"
-     ],
-     "hackathon-ecc/scripts/harness-audit.js": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/mcp-dependency-review/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orch-build-mvp/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/security-review/SKILL.md": [
-      "strong"
-     ],
-     "new-rules/hackathon-mode.mdc": [
-      "strong"
-     ],
-     "new-skills/orchestrate/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "skill-scout": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/skill-create.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/integration/SKILL.md": [
-      "strong"
-     ],
-     "new-skills/integration/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "skill-stocktake": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/commands/skill-health.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/skill-scout/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "springboot-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-java-build-resolver.md": [
-      "strong"
-     ],
-     "hackathon-ecc/agents/ecc-java-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-patterns.mdc": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/mybatis-patterns/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "springboot-tdd": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/rules/java-testing.mdc": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
-   "springboot-verification": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
-   "story-lifecycle": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
    "strategic-compact": {
     "called": true,
     "flow": [
-     "build",
-     "build (expansion)"
+     "build (expansion)",
+     "build"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -16010,9 +10934,6 @@
      ],
      "hackathon-ecc/scripts/lib/transcript-context.js": [
       "weak"
-     ],
-     "hackathon-ecc/skills/agent-sort/SKILL.md": [
-      "strong"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
@@ -16048,16 +10969,10 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/browser-qa/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/click-path-audit/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codebase-memory/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/deploy-fast/SKILL.md": [
@@ -16107,18 +11022,6 @@
      "hackathon-ecc/agents/ecc-tdd-guide.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/plan-prd.md": [
       "strong"
      ],
@@ -16147,22 +11050,10 @@
      "hackathon-ecc/rules/ruby-testing.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/angular-developer/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/click-path-audit/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/contract-first/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/laravel-tdd/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
@@ -16180,9 +11071,6 @@
      "hackathon-ecc/skills/react-testing/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/strategic-compact/SKILL.md": [
       "weak"
      ],
@@ -16191,20 +11079,6 @@
      ]
     },
     "weak_only": false
-   },
-   "tinystruct-patterns": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
    },
    "track-picker": {
     "called": true,
@@ -16276,20 +11150,6 @@
     },
     "weak_only": false
    },
-   "ui-to-vue": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
-   },
    "ui-ux-pro-max": {
     "called": true,
     "flow": [
@@ -16336,9 +11196,6 @@
       "weak"
      ],
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/frontend-design-direction/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/integration/SKILL.md": [
@@ -16443,31 +11300,6 @@
     },
     "weak_only": false
    },
-   "unified-memory": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/rules-distill/SKILL.md": [
-      "strong"
-     ]
-    },
-    "weak_only": false
-   },
    "verification-before-completion": {
     "called": true,
     "flow": [
@@ -16485,27 +11317,6 @@
      "hackathon-ecc/commands/checkpoint.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/orch-build-mvp.md": [
       "strong"
      ],
@@ -16518,12 +11329,6 @@
      "hackathon-ecc/commands/react-test.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
-      "strong"
-     ],
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
       "trigger"
@@ -16534,20 +11339,8 @@
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/agent-self-evaluation/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/click-path-audit/SKILL.md": [
       "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
-      "weak"
      ],
      "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
@@ -16562,12 +11355,6 @@
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/plankton-code-quality/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/verification-loop/SKILL.md": [
@@ -16603,27 +11390,6 @@
      "hackathon-ecc/README.md": [
       "strong"
      ],
-     "hackathon-ecc/commands/cpp-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/cpp-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/flutter-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/go-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/kotlin-test.md": [
-      "strong"
-     ],
      "hackathon-ecc/commands/quality-gate.md": [
       "strong"
      ],
@@ -16631,12 +11397,6 @@
       "strong"
      ],
      "hackathon-ecc/commands/react-test.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-build.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/rust-test.md": [
       "strong"
      ],
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
@@ -16658,13 +11418,7 @@
      "hackathon-ecc/scripts/harness-audit.js": [
       "strong"
      ],
-     "hackathon-ecc/skills/agent-introspection-debugging/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/brownfield-retrospective/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/codehealth-mcp/SKILL.md": [
+     "hackathon-ecc/skills/council/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/delivery-gate/SKILL.md": [
@@ -16676,16 +11430,7 @@
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
      ],
-     "hackathon-ecc/skills/plankton-code-quality/SKILL.md": [
-      "weak"
-     ],
      "hackathon-ecc/skills/production-audit/SKILL.md": [
-      "strong"
-     ],
-     "hackathon-ecc/skills/santa-method/SKILL.md": [
-      "weak"
-     ],
-     "hackathon-ecc/skills/story-lifecycle/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/verification-before-completion/SKILL.md": [
@@ -16742,70 +11487,9 @@
      ]
     },
     "weak_only": false
-   },
-   "vue-patterns": {
-    "called": true,
-    "flow": [
-     "build"
-    ],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/agents/ecc-vue-reviewer.md": [
-      "strong"
-     ],
-     "hackathon-ecc/commands/vue-review.md": [
-      "strong"
-     ],
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": false
-   },
-   "windows-desktop-e2e": {
-    "called": false,
-    "flow": [],
-    "fm_name_mismatch": false,
-    "invokers": {
-     "hackathon-ecc/manifests/install-components.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/install-modules.json": [
-      "shipped"
-     ],
-     "hackathon-ecc/manifests/pi-core.json": [
-      "shipped"
-     ]
-    },
-    "weak_only": true
    }
   },
   "triggers": {
-   "accessibility": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:accessibility",
-    "phrases": [
-     "make this accessible",
-     "wcag compliance",
-     "accessibility audit",
-     "aria labels"
-    ],
-    "target_exists": true
-   },
    "ai-feature-spec": {
     "called": true,
     "flow": [
@@ -16908,24 +11592,6 @@
     ],
     "target_exists": true
    },
-   "brainstorming": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:brainstorming",
-    "phrases": [
-     "brainstorm features",
-     "more ideas for this feature",
-     "ideate on this feature"
-    ],
-    "target_exists": true
-   },
    "browser-qa": {
     "called": true,
     "flow": [
@@ -16965,94 +11631,6 @@
     ],
     "target_exists": true
    },
-   "code-tour": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:code-tour",
-    "phrases": [
-     "onboarding walkthrough",
-     "explain subsystem",
-     "architecture tour",
-     "pr walkthrough",
-     "rca tour"
-    ],
-    "target_exists": true
-   },
-   "codebase-memory": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:codebase-memory",
-    "phrases": [
-     "who calls this function",
-     "what does this function call",
-     "trace the call chain",
-     "find callers of",
-     "where is this feature implemented",
-     "dead code",
-     "unused functions",
-     "impact of changing",
-     "what breaks if i change",
-     "explore the codebase",
-     "understand the codebase",
-     "find where a feature lives"
-    ],
-    "target_exists": true
-   },
-   "codehealth-mcp": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:codehealth-mcp",
-    "phrases": [
-     "end of project code health review",
-     "final code health check before launch",
-     "code health review at the end of the project",
-     "verify code health score at the end of the project"
-    ],
-    "target_exists": true
-   },
-   "coding-standards": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:coding-standards",
-    "phrases": [
-     "code review standards",
-     "naming conventions",
-     "readability review",
-     "immutability conventions",
-     "fix naming typo",
-     "export naming",
-     "consistent exports"
-    ],
-    "target_exists": true
-   },
    "council": {
     "called": true,
     "flow": [
@@ -17069,30 +11647,6 @@
      "go or no-go",
      "help us decide",
      "which approach should we take"
-    ],
-    "target_exists": true
-   },
-   "database-migrations": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:database-migrations",
-    "phrases": [
-     "zero downtime migration",
-     "schema change production",
-     "add column large table",
-     "backfill data",
-     "expand contract",
-     "concurrent index",
-     "migration rollback",
-     "prisma migration",
-     "django migration"
     ],
     "target_exists": true
    },
@@ -17189,27 +11743,6 @@
      "devpost submission",
      "submit to devpost",
      "fill in devpost"
-    ],
-    "target_exists": true
-   },
-   "django-patterns": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:django-patterns",
-    "phrases": [
-     "django orm",
-     "drf api",
-     "django rest framework",
-     "django caching",
-     "django signals",
-     "django middleware"
     ],
     "target_exists": true
    },
@@ -17406,42 +11939,6 @@
     ],
     "target_exists": true
    },
-   "hexagonal-architecture": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:hexagonal-architecture",
-    "phrases": [
-     "ports and adapters",
-     "dependency injection boundaries",
-     "decouple domain from io"
-    ],
-    "target_exists": true
-   },
-   "hookify-rules": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:hookify-rules",
-    "phrases": [
-     "final hook configuration audit before launch",
-     "hook rule audit",
-     "review hook config"
-    ],
-    "target_exists": true
-   },
    "less-flat-ui": {
     "called": true,
     "flow": [
@@ -17475,24 +11972,6 @@
      "make it feel better",
      "motion design",
      "interaction feel"
-    ],
-    "target_exists": true
-   },
-   "mcp-dependency-review": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:mcp-dependency-review",
-    "phrases": [
-     "end of project mcp server audit",
-     "mcp config review",
-     "review mcp server config"
     ],
     "target_exists": true
    },
@@ -17832,65 +12311,6 @@
     ],
     "target_exists": true
    },
-   "redis-patterns": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:redis-patterns",
-    "phrases": [
-     "cache aside pattern",
-     "distributed lock",
-     "redis rate limiting",
-     "cache invalidation"
-    ],
-    "target_exists": true
-   },
-   "rust-patterns": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:rust-patterns",
-    "phrases": [
-     "rust ownership",
-     "borrow checker",
-     "rust error handling",
-     "traits rust",
-     "rust concurrency",
-     "idiomatic rust"
-    ],
-    "target_exists": true
-   },
-   "santa-method": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:santa-method",
-    "phrases": [
-     "end of project adversarial verification",
-     "final adversarial review before shipping",
-     "santa method at the end of the project",
-     "multi-agent verification at the end of the project"
-    ],
-    "target_exists": true
-   },
    "security-review": {
     "called": true,
     "flow": [
@@ -17915,25 +12335,6 @@
      "input validation security",
      "parameterized queries",
      "sql injection"
-    ],
-    "target_exists": true
-   },
-   "security-scan": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:security-scan",
-    "phrases": [
-     "end of project security scan",
-     "final security audit before submission",
-     "security scan at the end of the project",
-     "final agentshield scan before launch"
     ],
     "target_exists": true
    },
@@ -18080,11 +12481,10 @@
  },
  "flow_invisible_commands": [
   "astra-review",
+  "ecc-guide",
   "fastapi-review",
-  "gradle-build",
   "issue-review",
-  "learn-eval",
-  "marketing-campaign",
+  "loop-start",
   "pm2"
  ],
  "hooks_extra_files": [],
@@ -18092,114 +12492,47 @@
   "agents": [
    "ecc-docs-lookup",
    "ecc-fastapi-reviewer",
-   "ecc-marketing-agent",
    "ecc-mle-reviewer"
   ],
   "commands": [
-   "python-review"
-  ],
-  "skills": [
-   "django-tdd",
-   "django-verification",
-   "fsharp-testing",
-   "iterative-retrieval",
-   "laravel-tdd",
-   "mysql-patterns",
-   "rails-patterns",
-   "unified-memory"
+   "harness-audit",
+   "python-review",
+   "skill-create",
+   "skill-health"
   ]
  },
  "trigger_only": [],
  "uncalled": {
   "agents": [
-   "ecc-agent-evaluator",
-   "ecc-bengali-reviewer",
    "ecc-chief-of-staff",
-   "ecc-csharp-reviewer",
-   "ecc-django-build-resolver",
-   "ecc-django-reviewer",
-   "ecc-fsharp-reviewer",
    "ecc-harmonyos-app-resolver",
    "ecc-homelab-architect",
-   "ecc-java-build-resolver",
-   "ecc-java-reviewer",
    "ecc-loop-operator",
    "ecc-network-architect",
    "ecc-network-config-reviewer",
    "ecc-network-troubleshooter",
-   "ecc-php-reviewer",
    "ecc-rag-pipeline-reviewer",
-   "ecc-ruby-reviewer",
-   "ecc-seo-specialist",
-   "ecc-swift-build-resolver",
-   "ecc-swift-reviewer"
+   "ecc-seo-specialist"
   ],
   "commands": [
    "astra-review",
+   "ecc-guide",
    "fastapi-review",
-   "gradle-build",
    "issue-review",
-   "learn-eval",
-   "marketing-campaign",
+   "loop-start",
    "pm2"
   ],
   "hooks": [],
   "rules": [],
   "skills": [
-   "agents-md-generator",
-   "bengali-nlp",
-   "brownfield-retrospective",
-   "context-budget",
-   "dev-team",
-   "django-celery",
-   "generating-python-installer",
-   "i18n-sync",
-   "investor-materials",
-   "investor-outreach",
-   "kotlin-exposed-patterns",
-   "kotlin-ktor-patterns",
-   "laravel-plugin-discovery",
-   "laravel-verification",
-   "living-docs-governance",
-   "mybatis-patterns",
-   "quarkus-verification",
-   "repo-scan",
-   "rules-distill",
-   "springboot-verification",
-   "story-lifecycle",
-   "tinystruct-patterns",
-   "ui-to-vue",
-   "windows-desktop-e2e"
+   "context-budget"
   ],
   "triggers": []
  },
  "weak_only": {
   "agents": [],
   "skills": [
-   "agents-md-generator",
-   "bengali-nlp",
-   "brownfield-retrospective",
-   "context-budget",
-   "dev-team",
-   "django-celery",
-   "generating-python-installer",
-   "i18n-sync",
-   "investor-materials",
-   "investor-outreach",
-   "kotlin-exposed-patterns",
-   "kotlin-ktor-patterns",
-   "laravel-plugin-discovery",
-   "laravel-verification",
-   "living-docs-governance",
-   "mybatis-patterns",
-   "quarkus-verification",
-   "repo-scan",
-   "rules-distill",
-   "springboot-verification",
-   "story-lifecycle",
-   "tinystruct-patterns",
-   "ui-to-vue",
-   "windows-desktop-e2e"
+   "context-budget"
   ]
  }
 }

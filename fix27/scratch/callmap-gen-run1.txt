@@ -1,0 +1,20 @@
+counts skills: 66 (expected 66) OK
+counts agents: 45 (expected 45) OK
+counts rules: 123 (expected 123) OK
+counts commands: 60 (expected 60) OK
+counts hooks: 15 (expected 15) OK
+counts triggers: 49 (expected 49) OK
+corpus files scanned: 1506
+map written: new-skills/orchestrate/references/call-map.md
+data written: fix25/callmap/call-map-data.json
+uncalled skills: 1 -> context-budget
+uncalled agents: 10 -> ecc-agent-evaluator, ecc-chief-of-staff, ecc-harmonyos-app-resolver, ecc-homelab-architect, ecc-loop-operator, ecc-network-architect, ecc-network-config-reviewer, ecc-network-troubleshooter, ecc-rag-pipeline-reviewer, ecc-seo-specialist
+uncalled rules: 0
+uncalled commands: 7 -> astra-review, fastapi-review, issue-review, learn-eval, loop-start, pm2, promote
+uncalled hooks: 0
+uncalled triggers: 0
+second-order orphans agents: 3 -> ecc-docs-lookup, ecc-fastapi-reviewer, ecc-mle-reviewer
+second-order orphans commands: 2 -> learn, python-review
+trigger-only: 0 -> 
+weak-only skills (no strong evidence): context-budget
+weak-only agents (no strong evidence): none

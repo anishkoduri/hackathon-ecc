@@ -56,7 +56,7 @@ If nothing staged, stop: "No files matched your description."
 
 Craft a single-line commit message in imperative mood:
 
-> Draft the message with the `conventional-commit-review` skill (`skills/conventional-commit-review/SKILL.md`, fix #25 §1) — it reads the repo's own history norms (`git log --no-merges --format=%s -30`) for type, scope, and length instead of the generic table below; the table is the fallback when the skill cannot run. Then have the `ecc-commit-reviewer` agent (`agents/ecc-commit-reviewer.md`) check the drafted message against those norms before committing; it presents the message, it never runs `git commit` itself.
+> Draft the message with the `git-workflow` skill (`skills/git-workflow/SKILL.md`) — it reads the repo's own history norms (`git log --no-merges --format=%s -30`) for type, scope, and length instead of the generic table below; the table is the fallback when the skill cannot run. Then have the `ecc-commit-reviewer` agent (`agents/ecc-commit-reviewer.md`) check the drafted message against those norms before committing; it presents the message, it never runs `git commit` itself.
 
 ```
 {type}: {description}

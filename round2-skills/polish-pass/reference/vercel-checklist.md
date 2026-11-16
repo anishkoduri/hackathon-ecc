@@ -90,7 +90,7 @@ the top of this file.
   rules (labels, focus, contrast steps, safe areas) that make it usable, not
   whether it looks a certain way.
 - **Techniques:** the deliberate path for each flagged item runs through the
-  named skill (accessibility, motion-*, `ui-ux-pro-max`, the dealt theme) —
+  named skill (frontend-a11y, motion-*, `ui-ux-pro-max`, the dealt theme) —
   never a fresh default invented in this pass.
 - **Colors:** color rules are judged against the dealt palette; the contrast
   ratio itself is the plugin's 4.5:1 rule (craft floor), not a Vercel rule.
@@ -102,29 +102,29 @@ the top of this file.
 
 - **V-A1 — Icon-only buttons need `aria-label`.** Fix: add a descriptive
   `aria-label` naming the action ("Close dialog", not "Close"). Covered in
-  part by: `accessibility` skill (labeling).
+  part by: `frontend-a11y` skill (labeling).
 - **V-A2 — Form controls need `<label>` or `aria-label`.** Fix: add a
   `<label>` (or `aria-label` where no visible label exists). Covered in part
-  by: `accessibility` skill (primary-label table).
+  by: `frontend-a11y` skill (primary-label table).
 - **V-A3 — Interactive elements need keyboard handlers
   (`onKeyDown`/`onKeyUp`).** Fix: add the keyboard handler for the same
-  action the pointer handler performs. Covered in part by: `accessibility`
-  skill:43 (reachable via keyboard).
+  action the pointer handler performs. Covered in part by: `frontend-a11y`
+  skill (reachable via keyboard).
 - **V-A4 — `<button>` for actions, `<a>`/`<Link>` for navigation (not `<div
   onClick>`).** Fix: replace the `<div onClick>` with the native element.
-  Covered in part by: `accessibility` skill:119 ("Div-Buttons").
+  Covered in part by: `frontend-a11y` skill ("Div-Buttons").
 - **V-A5 — Images need `alt` (or `alt=""` if decorative).** Fix: add a
   meaningful `alt`, or `alt=""` for decorative images. Covered in part by:
-  `frontend-a11y` (alt); `accessibility` skill:122.
+  `frontend-a11y` (alt).
 - **V-A6 — Decorative icons need `aria-hidden="true"`.** Fix: add
   `aria-hidden="true"` to the decorative icon. Covered in part by:
-  `accessibility` skill:89; `frontend-a11y`.
+  `frontend-a11y`.
 - **V-A7 — Async updates (toasts, validation) need `aria-live="polite"`.**
   Fix: add `aria-live="polite"` to the live region. Covered in part by:
-  `accessibility` skill:55,78; `frontend-a11y`.
+  `frontend-a11y`.
 - **V-A8 — Use semantic HTML (`<button>`, `<a>`, `<label>`, `<table>`)
   before ARIA.** Fix: use the native element; add ARIA only where no native
-  element fits. Covered in part by: `accessibility` skill (semantic).
+  element fits. Covered in part by: `frontend-a11y` skill (semantic).
 - **V-A9 — Headings hierarchical `<h1>`–`<h6>`; include skip link for main
   content.** Fix: repair the heading order; add a "Skip to content" link.
   Covered in part by: Impeccable detector `skipped-heading`.
@@ -136,14 +136,14 @@ the top of this file.
   needs.
 - **V-A12 — Media controls need keyboard support; decorative media needs
   assistive-tech hiding.** Fix: make the controls keyboard-operable; hide
-  decorative media from assistive tech. Covered in part by: `accessibility`
+  decorative media from assistive tech. Covered in part by: `frontend-a11y`
   skill (keyboard support, general).
 
 ### Focus States
 
 - **V-F1 — Interactive elements need visible focus: `focus-visible:ring-*`
   or equivalent.** Fix: add a visible focus style. Covered in part by:
-  `accessibility` skill:43; `design-taste-frontend` SKILL.md:559.
+  `frontend-a11y` skill; `design-taste-frontend` SKILL.md:559.
 - **V-F2 — Never `outline-none` / `outline: none` without focus
   replacement.** Fix: restore a visible focus style or add a replacement.
 - **V-F3 — Use `:focus-visible` over `:focus` (avoid focus ring on
@@ -168,7 +168,7 @@ the top of this file.
   the paste block.
 - **V-FO4 — Labels clickable (`htmlFor` or wrapping control).** Fix: link
   the label with `htmlFor` or wrap the control. Covered in part by:
-  `accessibility` skill (label concept).
+  `frontend-a11y` skill (label concept).
 - **V-FO5 — Disable spellcheck on emails, codes, usernames
   (`spellCheck={false}`).** Fix: add `spellCheck={false}`.
 - **V-FO6 — Checkboxes/radios: label + control share single hit target (no

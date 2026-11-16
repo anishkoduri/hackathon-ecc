@@ -82,8 +82,7 @@ For a specific feature name:
 
 ## Related Commands
 
-- `/project-init` for stack-aware ECC onboarding of a target project
 - `/harness-audit` for deterministic repo readiness scoring
 - `/skill-health` for skill quality checks
 - `/skill-create` for extracting a new skill from local git history
-- `/security-scan` (END-ONLY) for agent configuration security review
+- `security-review` skill (END-ONLY) for agent configuration security review

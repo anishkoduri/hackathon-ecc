@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Mid-build security checklist (NOT one of the deferred end-only audits) — use when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns. For the end-of-project configuration audit, use security-scan.
+description: Mid-build security checklist (NOT one of the deferred end-only audits) — use when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
 metadata:
   origin: ECC
 ---

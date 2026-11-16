@@ -297,7 +297,7 @@ describe('Button Component', () => {
 
 ### Bun Native Test Pattern (`bun:test`)
 
-When the project uses Bun's built-in runner (see [Step 0](#step-0-detect-the-test-runner)), import from `bun:test` and run with `bun test` — not `bun run test`. The API is Jest-like, so `describe` / `it` / `expect` and most matchers carry over. See the `bun-runtime` skill for runtime, install, and bundler details.
+When the project uses Bun's built-in runner (see [Step 0](#step-0-detect-the-test-runner)), import from `bun:test` and run with `bun test` — not `bun run test`. The API is Jest-like, so `describe` / `it` / `expect` and most matchers carry over.
 
 ```typescript
 import { describe, it, expect, mock } from 'bun:test'

@@ -788,7 +788,9 @@
 
 ```
 BANNED composer-2\.5: 0
-BANNED claude: 0
+BANNED claude: 2
+  skills/motionsites-web-builder/SKILL.md:25: The 40 examples are NOT shipped in this plugin (© MotionSites, not redistributed). Fetch the index at use time: `https://raw.githubusercontent.com/Motionsites-A
+  skills/motionsites-web-builder/SKILL.md:38: 3. **The media shelf:** fetch `media/MEDIA.md` at use time from `https://raw.githubusercontent.com/Motionsites-AI/claude-skill/main/plugins/motionsites-web-buil
 BANNED codex: 0
 BANNED anthropic: 0
 BANNED sonnet: 0
@@ -800,5 +802,5 @@ JSON FAILURES: 0
 INSTALL REGISTRY SMOKE: rc=0 stdout='getInstallTargetAdapter,listInstallTargetAdapters,planInstallTargetScaffold\n[object Object]' stderr=''
 commands/gan-build.md: grok-4.7-high x2, claude-opus-5 x0, composer-2.5 x0
 commands/gan-design.md: grok-4.7-high x3, claude-opus-5 x0, composer-2.5 x0
-TOTAL BANNED-TERM HITS: 0
+TOTAL BANNED-TERM HITS: 2
 ```

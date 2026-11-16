@@ -586,7 +586,5 @@ function lazyFails(): Promise<never> {
 
 ## Related Skills
 
-- `nestjs-patterns` — NestJS architecture patterns for TypeScript backends (modules, controllers, providers, DTO validation)
 - `frontend-patterns` — React and Next.js component and state patterns
 - TypeScript rules (`rules/typescript-*.mdc`) — the "what" and "when" this skill implements as the "how"
-- `prisma-patterns` — database access patterns used in TypeScript applications

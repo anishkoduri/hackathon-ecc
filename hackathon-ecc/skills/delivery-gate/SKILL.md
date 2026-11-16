@@ -1,6 +1,6 @@
 ---
 name: delivery-gate
-description: End-of-project gate that blocks declaring work finished until quality checks pass. Detects rationalization patterns (surface text heuristics), stale learning logs (filesystem mtime), and low disk space. Complements agent-self-evaluation (the shipped equivalent of upstream self-audit, which is not shipped in this plugin) by mechanically enforcing learning capture habits. Use only at the very end of the project, when the work should be mechanically blocked from being declared finished before quality checks and learning capture actually pass. (Run explicitly — it is not wired to the stop hook in this plugin.) END-ONLY — run this skill only at the very end of the project or when the user explicitly asks for it — never during the build.
+description: End-of-project gate that blocks declaring work finished until quality checks pass. Detects rationalization patterns (surface text heuristics), stale learning logs (filesystem mtime), and low disk space. Complements the `ecc-agent-evaluator` agent (whose 5-axis rubric is defined in the agent file itself) by mechanically enforcing learning capture habits. Use only at the very end of the project, when the work should be mechanically blocked from being declared finished before quality checks and learning capture actually pass. (Run explicitly — it is not wired to the stop hook in this plugin.) END-ONLY — run this skill only at the very end of the project or when the user explicitly asks for it — never during the build.
 metadata:
   version: 1.1.1
   origin: ECC
@@ -10,9 +10,9 @@ metadata:
 
 An end-of-project gate that checks three things before the work is declared finished, using only **deterministic checks** — file modification timestamps, disk usage, and regex patterns on the transcript text. No AI inference.
 
-This is distinct from reasoning gates (like the shipped `agent-self-evaluation` skill — the upstream `self-audit` skill is not shipped in this plugin): delivery-gate checks machine-verifiable facts; agent-self-evaluation checks output quality across four reasoning dimensions. Together they form defense in depth:
+This is distinct from reasoning gates (like the former `agent-self-evaluation` skill — cut in fix #27; its 5-axis rubric now lives in the `ecc-agent-evaluator` agent file): delivery-gate checks machine-verifiable facts; the evaluator checks output quality across five reasoning dimensions. Together they form defense in depth:
 - **delivery-gate**: "Was the learning library touched today? Is disk space safe?"
-- **agent-self-evaluation** (shipped; upstream `self-audit` is not shipped in this plugin): "Is the file content correct, complete, and honest?"
+- **`ecc-agent-evaluator`** (reasoning-quality gate; the 5-axis rubric formerly in `agent-self-evaluation` now lives in the agent file itself): "Is the file content correct, complete, and honest?"
 
 This is the same pattern as CI pipeline gates — automated, deterministic checks that verify machine-readable facts rather than trusting self-reported status.
 
@@ -94,7 +94,7 @@ stderr: "Blocked: disk space at 12GB (<15GB). Free space before continuing."
 
 ## Limitations
 
-The hook enforces the **habit** of touching learning libraries, not the **quality** of what was recorded. On a complex task it passes only when `growth-log` was updated today and at most 2 libraries are stale; updating `output-index.md` alone still blocks. Without a project memory directory there is nothing to check, so it only warns. This is by design: mechanical gates check machine-verifiable facts. For content quality verification, pair with `agent-self-evaluation` (the shipped equivalent; upstream `self-audit` is not shipped in this plugin).
+The hook enforces the **habit** of touching learning libraries, not the **quality** of what was recorded. On a complex task it passes only when `growth-log` was updated today and at most 2 libraries are stale; updating `output-index.md` alone still blocks. Without a project memory directory there is nothing to check, so it only warns. This is by design: mechanical gates check machine-verifiable facts. For content quality verification, pair with a manual review of the recorded entries (the mechanical gate checks only that entries were touched, not their quality).
 
 ## Compatibility
 
@@ -108,6 +108,6 @@ This code went through 4 rounds of automated code review (CodeRabbit + Greptile)
 
 ## See Also
 
-- `agent-self-evaluation` — Reasoning quality gate (completeness/consistency/groundedness/honesty; shipped equivalent of upstream `self-audit`, which is not shipped in this plugin)
+- `ecc-agent-evaluator` — Reasoning quality gate (accuracy/completeness/clarity/actionability/conciseness; the 5-axis rubric formerly in `agent-self-evaluation` now lives in the agent file itself)
 - `verification-loop` — Code quality checks (build/type/lint/test)
 - `gateguard` — PreToolUse safety gate (not shipped in this plugin)

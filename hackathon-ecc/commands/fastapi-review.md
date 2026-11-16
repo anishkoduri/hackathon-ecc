@@ -36,4 +36,4 @@ Fix: Concrete change to make.
 - Agent: `fastapi-reviewer`
 - Skill: `fastapi-patterns`
 - Command: `/python-review`
-- Command: `/security-scan` (END-ONLY — end of project or on explicit ask)
+- Skill: `security-review` (END-ONLY — end of project or on explicit ask)

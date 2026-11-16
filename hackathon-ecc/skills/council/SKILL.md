@@ -34,10 +34,10 @@ Examples:
 
 | Instead of council | Use |
 | --- | --- |
-| Verifying whether output is correct | mid-build: `verification-before-completion`; at the end of the project: `santa-method` |
+| Verifying whether output is correct | mid-build: `verification-before-completion`; at the end of the project: `verification-loop` / `production-audit` |
 | Breaking a feature into implementation steps | `architect` |
 | Designing system architecture | `architect` |
-| Reviewing code for bugs or security | `code-reviewer` or, at the end of the project, `santa-method` |
+| Reviewing code for bugs or security | `code-reviewer` or, at the end of the project, `verification-loop` / `production-audit` |
 | Straight factual questions | just answer directly |
 | Obvious execution tasks | just do the task |
 
@@ -181,8 +181,6 @@ If the user wants another round:
 
 ## Related Skills
 
-- `santa-method` — adversarial verification (END-ONLY)
-- `architecture-decision-records` — formalize the outcome when the decision becomes long-lived system policy
 
 ## Example
 

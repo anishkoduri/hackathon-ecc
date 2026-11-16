@@ -36,6 +36,7 @@ BEFORE claiming any status:
 | Build succeeds | Build command: exit 0 | Linter passing |
 | Bug fixed | Test original symptom: passes | Code changed |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
+| UI verified | browser-qa verdict on the rendered screen (TESTNOTBQA_F27) | test suite passing, screenshots described but not inspected, agent report |
 
 ## Red Flags - STOP
 

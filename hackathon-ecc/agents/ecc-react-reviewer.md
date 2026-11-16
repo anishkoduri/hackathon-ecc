@@ -158,7 +158,7 @@ Always include the file path and line number. Quote the offending snippet when i
 
 - Agents: `typescript-reviewer` (generic TS/JS, invoked alongside on `.tsx`/`.jsx`), `security-reviewer` (project-wide audit)
 - Rules: `rules/react-coding-style.mdc`, `rules/react-hooks.mdc`, `rules/react-patterns.mdc`, `rules/react-security.mdc`, `rules/react-testing.mdc`
-- Skills: `skills/react-patterns/`, `skills/react-testing/`, `skills/accessibility/`
+- Skills: `skills/react-patterns/`, `skills/react-testing/`, `skills/frontend-a11y/`
 - Commands: `/react-review`, `/react-build`, `/react-test`
 
 ---

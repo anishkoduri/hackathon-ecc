@@ -20,9 +20,9 @@ const PLUGIN_ROOT_SEGMENTS = [
 // Checking "skills/ exists" is not enough — a user's own agent data directory's skills/ can
 // be present with none of ECC's skills — so we probe for a sentinel skill that
 // ships in every ECC root and is exactly what the failing skill commands need.
-// If that skill is ever renamed, move this sentinel with it.
+// If that skill is ever renamed, move this sentinel with it. (fix #27: sentinel moved from continuous-learning-v2 — cut — to orchestrate, which ships in every plugin root.)
 const DEFAULT_SCRIPT_PROBE = path.join('scripts', 'lib', 'utils.js');
-const DEFAULT_SKILL_PROBE = path.join('skills', 'continuous-learning-v2');
+const DEFAULT_SKILL_PROBE = path.join('skills', 'orchestrate');
 
 /**
  * Resolve the ECC source root directory.

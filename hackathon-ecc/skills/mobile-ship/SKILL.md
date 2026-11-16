@@ -6,7 +6,7 @@ description: >-
   "closed testing", "submit to the App Store / Play Store", "why was my app rejected", store
   rejections (2.1, 2.3, 4.3), "production .ipa won't run on the Simulator", or a mobile app that
   needs a testable build for demo day. Never for writing screens or features — building/editing code
-  belongs to react-native-patterns / dart-flutter-patterns. Also covers Flutter/xcodebuild archive, export and upload (including expired Xcode
+  belongs to react-native-patterns. Also covers Flutter/xcodebuild archive, export and upload (including expired Xcode
   accounts). Monetization (RevenueCat, in-app subscriptions, paywalls) is covered in a secondary
   section at the end — read it only if your app actually charges.
 ---

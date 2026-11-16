@@ -1,6 +1,6 @@
 ---
 name: skill-create
-description: Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App. Use to generate new skills from local git history on demand; check the skill-scout skill first to avoid duplicating an existing local, marketplace, or GitHub skill.
+description: Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App. Use to generate new skills from local git history on demand; check the plugin's own skill list (grep-and-read) first to avoid duplicating an existing local, marketplace, or GitHub skill.
 ---
 
 # /skill-create - Local Skill Generation
@@ -13,7 +13,6 @@ Analyze your repository's git history to extract coding patterns and generate SK
 /skill-create                    # Analyze current repo
 /skill-create --commits 100      # Analyze last 100 commits
 /skill-create --output ./skills  # Custom output; export-only unless configured
-/skill-create --instincts        # Also generate instincts for continuous-learning-v2
 ```
 
 ## What It Does
@@ -21,7 +20,6 @@ Analyze your repository's git history to extract coding patterns and generate SK
 1. **Parses Git History** - Analyzes commits, file changes, and patterns
 2. **Detects Patterns** - Identifies recurring workflows and conventions
 3. **Generates SKILL.md** - Creates valid Cursor skill files
-4. **Optionally Creates Instincts** - For the continuous-learning-v2 system
 
 ## Analysis Steps
 
@@ -136,29 +134,6 @@ candidate, prepare a corrected draft without writing, show the full path, and
 obtain fresh explicit approval. Do not report success until the temporary-write
 validation and atomic replacement both complete.
 
-### Step 4: Generate Instincts (if --instincts)
-
-For continuous-learning-v2 integration:
-
-```yaml
----
-id: {repo}-commit-convention
-trigger: "when writing a commit message"
-confidence: 0.8
-domain: git
-source: local-repo-analysis
----
-
-# Use Conventional Commits
-
-## Action
-Prefix commits with: feat:, fix:, chore:, docs:, test:, refactor:
-
-## Evidence
-- Analyzed {n} commits
-- {percentage}% follow conventional commit format
-```
-
 ## GitHub App Integration
 
 For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Creator GitHub App](https://github.com/apps/skill-creator):
@@ -166,12 +141,6 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 - Install: [github.com/apps/skill-creator](https://github.com/apps/skill-creator)
 - Comment `/skill-creator analyze` on any issue
 - Receives PR with generated skills
-
-## Related Commands
-
-- `/instinct-import` - Import generated instincts
-- `/instinct-status` - View learned instincts
-- `/evolve` - Cluster instincts into skills/agents
 
 ---
 

@@ -1,0 +1,40 @@
+PASS counts 66 skills / 45 agents / 123 rules / 60 commands
+PASS skills dir set is exactly the 66 KEPT skills
+PASS agents dir set is exactly the 45 KEPT agents
+PASS commands dir set is exactly the 60 KEPT commands
+PASS all 100 CUT skill dirs are ABSENT
+PASS growth-log is KEPT (not in the CUT list, dir present)
+PASS all 27 removed agents are ABSENT
+PASS all 27 dropped commands are ABSENT
+PASS trigger file parses as JSON and contains zero entries pointing at CUT skills
+PASS trigger keys: 64 -> 49 after the prune
+PASS trigger coverage: skills 66, withTriggers 49
+PASS README count line shows 66 skills, 45 agents, 123 rules, 60 commands
+PASS README comparison lines show the new counts (66 / 45 / 60)
+PASS README stock-ECC line untouched (144 skills, 69 agents is stock, not ours)
+PASS zero '166 skills' / '72 agents' / '87 commands' remain in the built tree
+PASS all 18 _F27 anchor tokens exist in the built tree
+PASS fix27-written token CHECKSRC_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token AUDITGUIDE_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token NOCOAUTHOR_F27 is in rules/common-git-workflow.mdc
+PASS fix27-written token CAPTURE1_F27 is in skills/browser-qa/SKILL.md
+PASS fix27-written token TESTNOTBQA_F27 is in skills/verification-before-completion/SKILL.md
+PASS fix27-written token DEFER3_F27 is in rules/hackathon-mode.mdc
+PASS fix27-written token REROUTE_F27 is in skills/feature-expansion/SKILL.md
+PASS fix27-written token TESTPASS_F27 is in skills/orchestrate/SKILL.md
+PASS usage-cut tokens W2/W3/W4_F27 are in skills/orchestrate/SKILL.md
+PASS banned terms 0 in built tree (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast count is 0 in the built tree
+PASS Grok pins present: grok-4.7-high and cursor-grok-4.6-high-fast occur
+   grok-4.7-high x56, cursor-grok-4.6-high-fast x74
+PASS delivery-gate :97 reword present x1, old agent-self-evaluation pointer gone
+PASS browser-qa single-capture rule present x1 (CAPTURE1_F27)
+PASS verification-before-completion UI-verified row present x1 (TESTNOTBQA_F27)
+PASS hackathon-pitch CHECK-THE-SOURCE + AUDIT-AS-GUIDE present x1 each
+PASS common-git-workflow no-Co-authored-by rule present x1 (NOCOAUTHOR_F27)
+PASS orchestrate commit-draft re-route to git-workflow present x1, old skill gone
+PASS security-review end-of-project security-scan dispatch removed
+PASS deferred lists shrunk to the three kept checks (DEFER3_F27)
+PASS fix27/fix27-patch-log.md exists with 0 errors and 100 skills removed
+
+37/37 checks pass

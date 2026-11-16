@@ -1,0 +1,5 @@
+voice preflight: available providers: none (no ELEVENLABS_API_KEY, no MiniMax credentials, no Piper, no say)
+! no voice provider available — building WITHOUT narration (music-only/silent). Install Piper or set ELEVENLABS_API_KEY and re-run `npm run script` for a narrated cut. Note the missing narration in the final report.
+
+voice: none — narration skipped, estimated beat lengths used
+narration total (with gaps, estimated): 81.7s

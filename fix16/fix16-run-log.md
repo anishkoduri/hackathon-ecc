@@ -491,12 +491,12 @@
 - manifests/pi-core.json:commands.exclude:loop-status.md removed
 - manifests/pi-core.json — deleted-feature entries removed; 'Cursor-Code-only' prefixes stripped; astra-review reason reworded to Grok review
 - schemas/provenance.schema.json — 'Required in ~/.claude/skills/learned/* and ~/.claude/skills/imported/*' -> 'Required in ~/.cursor/ecc/skills/learned/* and ~/.cursor/ecc/skills/imported/*'
+- schemas/install-modules.schema.json — schema enum narrowed to ['cursor']
 - schemas/context-carrier.schema.json — schema enum narrowed to ['cursor']
 - schemas/context-carrier.schema.json — schema enum host entries dropped: ['pi-package@1', 'opencode-project@1', 'cursor-project@1']
 - schemas/context-carrier.schema.json — schema enum host entries dropped: ['package.json']
 - schemas/context-carrier.schema.json — schema enum narrowed to ['cursor']
 - schemas/ecc-install-config.schema.json — schema enum narrowed to ['cursor']
-- schemas/install-modules.schema.json — schema enum narrowed to ['cursor']
 - schemas/install-state.schema.json — schema update-claude-settings conditional removed
 - schemas/install-state.schema.json — schema update-claude-settings conditional removed
 - generic pass — 181 files changed by mechanical rules

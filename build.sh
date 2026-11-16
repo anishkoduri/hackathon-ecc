@@ -22,7 +22,12 @@ PLUGIN_DIR="$PLUGIN_ROOT/hackathon-ecc"
 ECC_REPO="/tmp/ecc-repo-clean"
 ECC_INSTALL="/tmp/ecc-dev-install"
 ECC_SRC="$ECC_INSTALL/.cursor"
-MS_SRC="/tmp/hack-skills/skills"
+# MS_SRC follows MS_DIR (fix #28): MS_DIR is env-redirectable (default
+# /tmp/hack-skills) but MS_SRC was hardcoded to /tmp/hack-skills/skills,
+# so a redirected build died in the marketplace loop with
+# "cp: cannot stat ''" once /tmp/hack-skills was wiped. Deriving it here
+# keeps the default identical and the redirect working.
+MS_SRC="${MS_DIR:-/tmp/hack-skills}/skills"
 
 # --- Supply-chain pins (pinned Nov 10, 2026, on the Audit #35 zero-error tree) ---
 # Every upstream clone is pinned to the exact commit the audited plugin was
@@ -24087,6 +24092,20 @@ python3 "$PLUGIN_ROOT/fix26/fix26.py" "$PLUGIN_DIR"
 # Runs after fix26, before STEP 5. Exits non-zero on anchor errors (set -euo
 # pipefail stops the build); the run log lands in fix27/fix27-patch-log.md.
 python3 "$PLUGIN_ROOT/fix27/fix27.py" "$PLUGIN_DIR"
+
+# --- fix #28: cut remaining bloat (rules 123 -> 48, install manifests,
+# 135 dead scripts) + F1/F2/F4/react-patterns fixes ---
+# fix28/fix28.py patches the built tree in place, same pattern as
+# fix27/fix27.py: removes 75 CUT-language rules (68 clean + 7
+# NEEDS-DECISION on the misfire argument); prunes install-modules.json
+# (16 -> 14 modules, 184 -> 84 paths), install-components.json (57 -> 55),
+# install-profiles.json (research 8 -> 7, full 16 -> 14); removes 135 dead
+# scripts + the mcp.json codebase-memory-mcp entry; updates README count
+# lines to 67/45/48/55; text patches: sessions.md F1, evaluate-session.js
+# F2, react-patterns.mdc:194. Runs after fix27, before STEP 5. Exits
+# non-zero on anchor errors (set -euo pipefail stops the build); the run
+# log lands in fix28/fix28-patch-log.md.
+python3 "$PLUGIN_ROOT/fix28/fix28.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

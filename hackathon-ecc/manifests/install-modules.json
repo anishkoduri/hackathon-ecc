@@ -93,77 +93,26 @@
       "kind": "skills",
       "description": "Core framework, language, and application-engineering skills.",
       "paths": [
-        "skills/android-clean-architecture",
-        "skills/angular-developer",
         "skills/api-design",
         "skills/backend-patterns",
-        "skills/bengali-nlp",
-        "skills/coding-standards",
-        "skills/compose-multiplatform-patterns",
         "skills/contract-first",
-        "skills/csharp-testing",
-        "skills/fsharp-testing",
-        "skills/cpp-coding-standards",
-        "skills/cpp-testing",
-        "skills/dart-flutter-patterns",
-        "skills/django-patterns",
-        "skills/django-tdd",
-        "skills/django-verification",
-        "skills/dotnet-patterns",
         "skills/fastapi-patterns",
-        "skills/frontend-design-direction",
         "skills/frontend-patterns",
-        "skills/i18n-sync",
         "skills/frontend-slides",
         "skills/make-interfaces-feel-better",
-        "skills/golang-patterns",
-        "skills/golang-testing",
-        "skills/java-coding-standards",
-        "skills/kotlin-coroutines-flows",
-        "skills/kotlin-exposed-patterns",
-        "skills/kotlin-ktor-patterns",
-        "skills/kotlin-patterns",
-        "skills/kotlin-testing",
-        "skills/laravel-plugin-discovery",
-        "skills/laravel-patterns",
-        "skills/laravel-tdd",
-        "skills/laravel-verification",
-        "skills/mcp-server-patterns",
-        "skills/nestjs-patterns",
-        "skills/perl-patterns",
-        "skills/perl-testing",
         "skills/python-patterns",
         "skills/python-testing",
-        "skills/quarkus-patterns",
-        "skills/quarkus-tdd",
-        "skills/quarkus-verification",
-        "skills/rails-patterns",
         "skills/react-patterns",
         "skills/react-performance",
         "skills/react-testing",
-        "skills/rust-patterns",
-        "skills/rust-testing",
-        "skills/springboot-patterns",
-        "skills/springboot-tdd",
-        "skills/springboot-verification",
         "skills/typescript-patterns",
-        "skills/ui-to-vue",
-        "skills/vue-patterns",
-        "skills/accessibility",
-        "skills/bun-runtime",
         "skills/design-system",
-        "skills/django-celery",
-        "skills/flutter-dart-code-review",
         "skills/frontend-a11y",
-        "skills/generating-python-installer",
-        "skills/hexagonal-architecture",
         "skills/motion-advanced",
         "skills/motion-foundations",
         "skills/motion-patterns",
         "skills/nextjs-turbopack",
-        "skills/nuxt4-patterns",
         "skills/react-native-patterns",
-        "skills/tinystruct-patterns",
         "skills/vite-patterns"
       ],
       "targets": [
@@ -189,14 +138,7 @@
       "kind": "skills",
       "description": "Database and persistence-focused skills.",
       "paths": [
-        "skills/clickhouse-io",
-        "skills/database-migrations",
-        "skills/jpa-patterns",
-        "skills/mybatis-patterns",
-        "skills/mysql-patterns",
-        "skills/postgres-patterns",
-        "skills/prisma-patterns",
-        "skills/redis-patterns"
+        "skills/postgres-patterns"
       ],
       "targets": [
         "cursor"
@@ -209,77 +151,29 @@
       "stability": "stable"
     },
     {
-      "id": "skill-unified-memory",
-      "kind": "skills",
-      "description": "Single-skill unified-memory guidance; requires the separately installed ecc-universal CLI runtime.",
-      "paths": [
-        "skills/unified-memory"
-      ],
-      "targets": [
-        "cursor"
-      ],
-      "dependencies": [
-        "platform-configs"
-      ],
-      "defaultInstall": false,
-      "cost": "light",
-      "stability": "stable"
-    },
-    {
       "id": "workflow-quality",
       "kind": "skills",
-      "description": "Evaluation, TDD, verification, compaction, learning, and cross-harness memory skills, including the legacy continuous-learning v1 path. The unified-memory workflow requires the separately installed ecc-universal CLI runtime.",
+      "description": "Evaluation, TDD, verification, compaction, learning, and memory skills.",
       "paths": [
-        "skills/agent-sort",
-        "skills/agent-introspection-debugging",
-        "skills/ai-regression-testing",
-        "skills/code-tour",
-        "skills/continuous-learning",
-        "skills/continuous-learning-v2",
         "skills/council",
-        "skills/dev-team",
         "skills/e2e-testing",
         "skills/error-handling",
-        "skills/hookify-rules",
-        "skills/iterative-retrieval",
-        "skills/plankton-code-quality",
         "skills/production-audit",
-        "skills/skill-scout",
-        "skills/skill-stocktake",
-        "skills/story-lifecycle",
         "skills/strategic-compact",
         "skills/tdd-workflow",
         "skills/verification-loop",
-        "skills/windows-desktop-e2e",
-        "skills/agent-self-evaluation",
-        "skills/architecture-decision-records",
-        "skills/brownfield-retrospective",
         "skills/browser-qa",
         "skills/ck",
         "skills/click-path-audit",
-        "skills/codebase-onboarding",
-        "skills/codehealth-mcp",
         "skills/context-budget",
         "skills/delivery-gate",
-        "skills/ecc-recipes",
         "skills/growth-log",
-        "skills/inherit-legacy-style",
-        "skills/intent-driven-development",
-        "skills/living-docs-governance",
-        "skills/loop-design-check",
-        "skills/product-lens",
-        "skills/repo-scan",
-        "skills/rules-distill",
-        "skills/santa-method",
-        "skills/git-workflow",
-        "skills/conventional-commit-review"
+        "skills/git-workflow"
       ],
       "targets": [
         "cursor"
       ],
-      "dependencies": [
-        "skill-unified-memory"
-      ],
+      "dependencies": [],
       "defaultInstall": true,
       "cost": "medium",
       "stability": "stable"
@@ -289,9 +183,7 @@
       "kind": "skills",
       "description": "Security review and security-focused framework guidance.",
       "paths": [
-        "skills/mcp-dependency-review",
-        "skills/security-review",
-        "skills/security-scan"
+        "skills/security-review"
       ],
       "targets": [
         "cursor"
@@ -318,27 +210,6 @@
       ],
       "defaultInstall": false,
       "cost": "medium",
-      "stability": "stable"
-    },
-    {
-      "id": "business-content",
-      "kind": "skills",
-      "description": "Business, writing, market, and investor communication skills.",
-      "paths": [
-        "skills/article-writing",
-        "skills/content-engine",
-        "skills/investor-materials",
-        "skills/investor-outreach",
-        "skills/market-research"
-      ],
-      "targets": [
-        "cursor"
-      ],
-      "dependencies": [
-        "platform-configs"
-      ],
-      "defaultInstall": false,
-      "cost": "heavy",
       "stability": "stable"
     },
     {
@@ -369,7 +240,6 @@
       "description": "Agentic engineering, autonomous loops, agent harness construction, and LLM pipeline optimization skills.",
       "paths": [
         "skills/gan-style-harness",
-        "skills/opensource-pipeline",
         "skills/orch-add-feature",
         "skills/orch-build-mvp",
         "skills/orch-change-feature",
@@ -390,18 +260,14 @@
     {
       "id": "hackathon",
       "kind": "skills",
-      "description": "Hackathon workflow skills: scoping, brainstorming, orchestration, shipping, pitching, and demo-video production.",
+      "description": "Hackathon workflow skills: scoping, orchestration, shipping, pitching, and demo-video production.",
       "paths": [
-        "skills/agents-md-generator",
         "skills/ai-feature-spec",
         "skills/api-integration",
         "skills/app-scaffold",
-        "skills/brainstorming",
-        "skills/codebase-memory",
         "skills/deploy-fast",
         "skills/design-taste-frontend",
         "skills/devpost-autofiller",
-        "skills/dispatching-parallel-agents",
         "skills/feature-expansion",
         "skills/grill-me",
         "skills/hackathon-pitch",

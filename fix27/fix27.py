@@ -444,16 +444,12 @@ else:
 # the rest are ambiguous and are recorded OWED, NOT patched blindly.
 # Round 2 (§7) patches the OWED items this section recorded
 # (B1/B5/B7-B13/B15/M4/M6) — the OWED texts below are updated to match.
-# (a) orchestrate :101 drafts commit messages with the CUT
-# conventional-commit-review skill — re-route to the kept git-workflow
-# skill, which carries the commit conventions.
-_f = p("skills/orchestrate/SKILL.md")
-if exists(_f):
-    sub(_f,
-        "draft each commit message with the `conventional-commit-review` skill (`skills/conventional-commit-review/SKILL.md`)",
-        "draft each commit message with the `git-workflow` skill (`skills/git-workflow/SKILL.md`)")
-else:
-    ERRORS.append(f"orchestrate SKILL.md missing: {_f}")
+# (a) orchestrate :104 drafted commit messages with the CUT
+# conventional-commit-review skill — re-routed to the kept git-workflow
+# skill, which carries the commit conventions. FIX #28 (sweep #36-B1):
+# the staged source new-skills/orchestrate/SKILL.md now carries the
+# re-route, so this build-time patch is retired — the staged file IS the
+# shipped text. verify27.py still asserts the re-route in the built tree.
 # (b) security-review frontmatter dispatches the end-of-project config
 # audit to the CUT security-scan skill; no kept equivalent exists for the
 # AgentShield config audit, so the dispatch sentence is removed (the
@@ -473,19 +469,14 @@ else:
 # exact list sentences (each occurs once, in a distinct word order).
 # hackathon-mode.mdc §3 carries the same list in staged sources — the
 # staged-edits worker owns that file, not this script.
-_f = p("skills/orchestrate/SKILL.md")
-if exists(_f):
-    sub(_f,
-        "(`production-audit`, `delivery-gate`, `codehealth-mcp`, `verification-loop`, `santa-method`, and `security-scan`)",
-        "(`production-audit`, `delivery-gate`, and `verification-loop`) (DEFER3_F27)")
-    sub(_f,
-        "run the six deferred checks by name — `verification-loop`, `production-audit`, `delivery-gate`, `codehealth-mcp`, `santa-method`, `security-scan`",
-        "run the three deferred checks by name — `verification-loop`, `production-audit`, `delivery-gate`")
-    sub(_f,
-        "one line per deferred check (`verification-loop`, `production-audit`, `delivery-gate`, `codehealth-mcp`, `santa-method`, `security-scan`)",
-        "one line per deferred check (`verification-loop`, `production-audit`, `delivery-gate`)")
-else:
-    ERRORS.append(f"orchestrate SKILL.md missing: {_f}")
+# FIX #28 (sweep #36-B1): the orchestrate lists moved to the staged source
+# too; only the ECC-origin orch-build-mvp list is still patched here.
+# FIX #28 (sweep #36-B1): the orchestrate deferred lists above lived in
+# the staged source new-skills/orchestrate/SKILL.md, which now carries the
+# three kept checks, so these three build-time patches are retired — the
+# staged file IS the shipped text. verify27.py still asserts the three
+# kept checks (DEFER3_F27) in the built tree. The orch-build-mvp patch
+# below stays: orch-build-mvp is ECC-origin, not a staged source.
 _f = p("skills/orch-build-mvp/SKILL.md")
 if exists(_f):
     sub(_f,
@@ -701,22 +692,10 @@ else:
 # ---------------------------------------------------------------- 7g. B9 (audit #74): integration re-routes
 # skill-scout -> documentation-lookup / grep-and-read (the kept discovery
 # path); mcp-server-patterns -> hand-rolled client via api-integration.
-_f = p("skills/integration/SKILL.md")
-if exists(_f):
-    sub(_f,
-        "or for building an MCP server from scratch (that is `mcp-server-patterns`).",
-        "or for building an MCP server from scratch (hand-roll the client via `api-integration`) (fix #27, REROUTE_F27 — `mcp-server-patterns` was cut).")
-    sub(_f,
-        "1. **Check for an existing skill first.** Use `skill-scout` to search for a skill that already covers this integration (a vendor skill, an SDK skill, a sponsor skill).",
-        "1. **Check for an existing skill first.** Use `documentation-lookup` (grep-and-read over the plugin's own skill list) to search for a skill that already covers this integration (a vendor skill, an SDK skill, a sponsor skill). (fix #27, REROUTE_F27 — `skill-scout` was cut)")
-    sub(_f,
-        "Use `mcp-server-patterns` for the server setup and wiring, and treat the MCP tools as the adapter.",
-        "Use a hand-rolled client via `api-integration` for the server setup and wiring, and treat the MCP tools as the adapter. (fix #27, REROUTE_F27 — `mcp-server-patterns` was cut)")
-    sub(_f,
-        "This skill composes the plugin's own skills (`skill-scout`, `documentation-lookup`, `api-integration`, `hackathon-scope`, `verification-before-completion`, `hackathon-pitch`, `devpost-autofiller`, `ui-ux-pro-max`, `less-flat-ui`, `systematic-debugging`, `mcp-server-patterns`, `app-scaffold`)",
-        "This skill composes the plugin's own skills (`documentation-lookup`, `api-integration`, `hackathon-scope`, `verification-before-completion`, `hackathon-pitch`, `devpost-autofiller`, `ui-ux-pro-max`, `less-flat-ui`, `systematic-debugging`, `app-scaffold`) (fix #27, REROUTE_F27 — `skill-scout` and `mcp-server-patterns` were cut)")
-else:
-    ERRORS.append(f"integration SKILL.md missing: {_f}")
+# FIX #28 (sweep #36-B1): the four B9 re-routes above lived in the staged
+# source new-skills/integration/SKILL.md, which now carries them, so these
+# build-time patches are retired — the staged file IS the shipped text.
+# verify27.py still asserts the re-routes (REROUTE_F27) in the built tree.
 
 # ---------------------------------------------------------------- 7h. B10 (audit #74): ai-feature-spec re-route
 _f = p("skills/ai-feature-spec/SKILL.md")

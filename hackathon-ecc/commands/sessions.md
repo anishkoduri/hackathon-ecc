@@ -292,7 +292,7 @@ if (aliases.length === 0) {
 ## Operator Notes
 
 - Session files persist `Project`, `Branch`, and `Worktree` in the header so `/sessions info` can disambiguate parallel tmux/worktree runs.
-- For command-center style monitoring, combine `/sessions info`, `git diff --stat`, and the cost metrics emitted by `scripts/hooks/cost-tracker.js`.
+- For command-center style monitoring, combine `/sessions info` and `git diff --stat`.
 
 ## Arguments
 

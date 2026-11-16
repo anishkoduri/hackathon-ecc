@@ -1263,7 +1263,7 @@ function extractCommand(rawInput) {
 }
 
 /**
- * Exportable run() for in-process execution via run-with-flags.js.
+ * Exportable run() for in-process execution.
  *
  * @param {string} rawInput
  * @returns {{exitCode: number, stderr?: string}}

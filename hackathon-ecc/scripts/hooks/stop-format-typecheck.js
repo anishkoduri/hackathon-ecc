@@ -236,7 +236,7 @@ function main(sessionId) {
 }
 
 /**
- * Exported so run-with-flags.js uses require() instead of spawnSync,
+ * Exported for in-process execution (rather than spawnSync),
  * letting the 300s hooks.json timeout govern the full batch.
  *
  * @param {string} rawInput - Raw JSON string from stdin (Stop event payload)

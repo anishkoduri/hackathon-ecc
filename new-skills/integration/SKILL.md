@@ -18,7 +18,7 @@ An integration here means any outside system the product depends on: a REST API,
 - The user asks how to qualify for a sponsor track or prize.
 - The user names a tool the project should talk to (payments, email, maps, auth provider, AI API, database, storage, messaging).
 
-Do NOT use this skill for the project's own auth or database setup (that is `app-scaffold`), or for building an MCP server from scratch (that is `mcp-server-patterns`). If the tool exposes an MCP server, see Step 3 for the MCP route.
+Do NOT use this skill for the project's own auth or database setup (that is `app-scaffold`), or for building an MCP server from scratch (hand-roll the client via `api-integration`) (fix #27, REROUTE_F27 — `mcp-server-patterns` was cut). If the tool exposes an MCP server, see Step 3 for the MCP route.
 
 ## Step 0: Scope check, before any wiring
 
@@ -43,7 +43,7 @@ Gather four things, in one message if anything is missing:
 
 Do this before writing any integration code.
 
-1. **Check for an existing skill first.** Use `skill-scout` to search for a skill that already covers this integration (a vendor skill, an SDK skill, a sponsor skill). If one exists and is good, use it for the wiring details and skip to Step 3 with its guidance.
+1. **Check for an existing skill first.** Use `documentation-lookup` (grep-and-read over the plugin's own skill list) to search for a skill that already covers this integration (a vendor skill, an SDK skill, a sponsor skill). (fix #27, REROUTE_F27 — `skill-scout` was cut) If one exists and is good, use it for the wiring details and skip to Step 3 with its guidance.
 2. **Find the current docs.** Use `documentation-lookup` to fetch the official docs and quickstart for this exact tool. Verify the quickstart still matches what the docs say today. Never trust memory for SDK method names, endpoint paths, or auth flows: these change, and the marketing page will not list the gotchas (rate limits, missing SDKs, deprecated endpoints, free tiers that run out mid-demo).
 3. **Validate with a tiny proof of concept before wiring it in.** Run the quickstart hello-world end to end. If it works within about 30 minutes, the integration is viable. If it takes longer, needs manual approval, or the free tier cannot cover the demo, plan around that now instead of discovering it at hour 23.
 
@@ -57,7 +57,7 @@ Follow the `api-integration` skill for the wiring patterns. Do not re-derive the
 - **Retry and rate limits**: exponential backoff with jitter for retryable failures, honour `Retry-After` on 429s, and throttle client-side so the demo does not burn the free tier.
 - **Never trust external data.** Validate every response at the adapter boundary (missing fields, wrong types, unexpected formats) before it reaches the rest of the app. Treat API responses with the same suspicion as user input.
 - **Every external write must be idempotent or safely retryable.** If retrying a call can create a duplicate (a double charge, a double message), the integration has a critical bug. Use idempotency keys or check-before-write.
-- **MCP route**: if the tool exposes an MCP server, prefer it over a hand-rolled client. Use `mcp-server-patterns` for the server setup and wiring, and treat the MCP tools as the adapter.
+- **MCP route**: if the tool exposes an MCP server, prefer it over a hand-rolled client. Use a hand-rolled client via `api-integration` for the server setup and wiring, and treat the MCP tools as the adapter. (fix #27, REROUTE_F27 — `mcp-server-patterns` was cut)
 
 ## Step 4: Env vars, config, and the missing-key fallback
 
@@ -119,7 +119,7 @@ Any UI the integration touches goes through the plugin's UI skills: use `ui-ux-p
 
 ## Attribution
 
-This skill composes the plugin's own skills (`skill-scout`, `documentation-lookup`, `api-integration`, `hackathon-scope`, `verification-before-completion`, `hackathon-pitch`, `devpost-autofiller`, `ui-ux-pro-max`, `less-flat-ui`, `systematic-debugging`, `mcp-server-patterns`, `app-scaffold`) with structure drawn from these public sources:
+This skill composes the plugin's own skills (`documentation-lookup`, `api-integration`, `hackathon-scope`, `verification-before-completion`, `hackathon-pitch`, `devpost-autofiller`, `ui-ux-pro-max`, `less-flat-ui`, `systematic-debugging`, `app-scaffold`) (fix #27, REROUTE_F27 — `skill-scout` and `mcp-server-patterns` were cut) with structure drawn from these public sources:
 
 - `integrations` by Emmraan (github.com/Emmraan/agent-skills, MIT): the end-to-end integration lifecycle, the anti-corruption layer, and the cross-cutting rules (assume the external API will fail, never trust external data, never scatter calls, every write idempotent, concrete recommendations over option catalogs). Adapted and cut down to hackathon scale: the production phases (testing, compliance, vendor management, cost management, observability, framework design, deliverables) were dropped.
 - `sponsor-matchmaker` by asrayg (github.com/asrayg/hackathon-agent-skills, MIT): the sponsor prize scoring table and weighted formula, the criteria checklist, the demo moment, the pitch line, the 30% time buffer, and the Built-with tags rule. Adapted into the Sponsor tracks section.

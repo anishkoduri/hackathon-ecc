@@ -137,7 +137,7 @@ function maybeRunQualityGate(filePath) {
 }
 
 /**
- * Core logic — exported so run-with-flags.js can call directly.
+ * Core logic — exported for in-process use and testability.
  *
  * @param {string} rawInput - Raw JSON string from stdin
  * @returns {string} The original input (pass-through)

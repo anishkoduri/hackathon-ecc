@@ -1,0 +1,66 @@
+shot align-1440-home
+shot align-1440-home-bottom
+shot align-1440-detail
+shot align-1440-offer
+shot align-1440-offer-accepted
+shot align-1440-trip
+shot align-1440-trip-wrongcode
+1440 wrong-code error visible: true
+shot align-1440-trip-delivered
+1440 trip done visible: true
+shot align-1440-branches
+shot align-1440-trips
+shot align-1440-you
+shot align-1440-post
+shot align-1440-post-done
+shot align-900-home
+shot align-900-home-bottom
+shot align-900-detail
+shot align-900-offer
+shot align-900-offer-accepted
+shot align-900-trip
+shot align-900-trip-wrongcode
+900 wrong-code error visible: true
+shot align-900-trip-delivered
+900 trip done visible: true
+shot align-900-branches
+shot align-900-trips
+shot align-900-you
+shot align-900-post
+shot align-900-post-done
+shot align-900-fullpage
+shot align-900-panels
+shot align-768-home
+shot align-768-home-bottom
+shot align-768-detail
+shot align-768-offer
+shot align-768-offer-accepted
+shot align-768-trip
+shot align-768-trip-wrongcode
+768 wrong-code error visible: true
+shot align-768-trip-delivered
+768 trip done visible: true
+shot align-768-branches
+shot align-768-trips
+shot align-768-you
+shot align-768-post
+shot align-768-post-done
+shot align-390-home
+shot align-390-home-bottom
+shot align-390-detail
+shot align-390-offer
+shot align-390-offer-accepted
+shot align-390-trip
+shot align-390-trip-wrongcode
+390 wrong-code error visible: true
+shot align-390-trip-delivered
+390 trip done visible: true
+shot align-390-branches
+shot align-390-trips
+shot align-390-you
+shot align-390-post
+shot align-390-post-done
+CONSOLE ERRORS: []
+FAILED REQUESTS: []
+WROTE align-audit-results.json with 52 measurements
+ALIGN AUDIT DONE

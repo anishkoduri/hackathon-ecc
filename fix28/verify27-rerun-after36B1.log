@@ -1,0 +1,114 @@
+FAIL counts 67 skills / 45 agents / 123 rules / 55 commands
+   actual: 67 skills, 45 agents, 48 rules, 55 commands
+PASS skills dir set is exactly the 67 KEPT skills
+PASS agents dir set is exactly the 45 KEPT agents
+PASS commands dir set is exactly the 55 KEPT commands
+PASS all 100 CUT skill dirs are ABSENT
+PASS growth-log is KEPT (not in the CUT list, dir present)
+PASS all 27 removed agents are ABSENT
+PASS all 32 dropped commands are ABSENT
+PASS trigger file parses as JSON and contains zero entries pointing at CUT skills
+PASS trigger keys: 64 -> 49 after the prune
+PASS trigger coverage: skills 67, withTriggers 49
+FAIL README count line shows 67 skills, 45 agents, 123 rules, 55 commands
+PASS README comparison lines show the new counts (67 / 45 / 55)
+PASS README stock-ECC line untouched (144 skills, 69 agents is stock, not ours)
+PASS zero '166 skills' / '72 agents' / '87 commands' / '66 skills' / '60 commands' remain in the built tree
+PASS all 20 _F27 anchor tokens exist in the built tree
+PASS fix27-written token CHECKSRC_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token AUDITGUIDE_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token NOCOAUTHOR_F27 is in rules/common-git-workflow.mdc
+PASS fix27-written token CAPTURE1_F27 is in skills/browser-qa/SKILL.md
+PASS fix27-written token TESTNOTBQA_F27 is in skills/verification-before-completion/SKILL.md
+PASS fix27-written token DEFER3_F27 is in rules/hackathon-mode.mdc
+PASS fix27-written token REROUTE_F27 is in skills/feature-expansion/SKILL.md
+PASS fix27-written token TESTPASS_F27 is in skills/orchestrate/SKILL.md
+PASS fix27-written token MOTIONSITES_F27 is in skills/motionsites-web-builder/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in skills/design-taste-frontend/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in skills/orchestrate/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in rules/hackathon-mode.mdc
+PASS usage-cut tokens W2/W3/W4_F27 are in skills/orchestrate/SKILL.md
+PASS banned terms 0 in built tree except the motionsites fetch URLs + license title (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast count is 0 in the built tree
+PASS Grok pins present: grok-4.7-high and cursor-grok-4.6-high-fast occur
+   grok-4.7-high x50, cursor-grok-4.6-high-fast x70
+PASS delivery-gate :97 reword present x1, old agent-self-evaluation pointer gone
+PASS browser-qa single-capture rule present x1 (CAPTURE1_F27)
+PASS verification-before-completion UI-verified row present x1 (TESTNOTBQA_F27)
+PASS hackathon-pitch CHECK-THE-SOURCE + AUDIT-AS-GUIDE present x1 each
+PASS common-git-workflow no-Co-authored-by rule present x1 (NOCOAUTHOR_F27)
+PASS orchestrate commit-draft re-route to git-workflow present x1, old skill gone
+PASS security-review end-of-project security-scan dispatch removed
+PASS deferred lists shrunk to the three kept checks (DEFER3_F27)
+PASS B1 orch-add-feature: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-build-mvp: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-change-feature: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-fix-defect: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-refine-code: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 ui-ux-pro-max: legacy drift handled inside the design package (REROUTE_F27)
+PASS B2 orch-build-mvp: bound (2) relaxed + new-theme clause deleted + inversion sentence (THEME-START_F27)
+PASS B2 ui-ux-pro-max: bound (2) relaxed + new-theme clause deleted + inversion sentence (THEME-START_F27)
+PASS B5 prp-commit: commit draft re-routed to git-workflow
+PASS B6 skill-create: --instincts flag, Instincts step, Step 4, Related Commands gone; description re-routed (B15)
+PASS B6/B15 skill-health: /evolve re-routed to /learn; description re-routed
+PASS B6 ecc-guide: /project-init pointer removed
+PASS B6 epic-sync: /projects compatibility alias removed
+PASS B7 commands/ecc-guide.md: no /security-scan pointer remains
+PASS B7 commands/fastapi-review.md: no /security-scan pointer remains
+PASS B7 commands/harness-audit.md: no /security-scan pointer remains
+PASS B7 rules/react-native-security.mdc: no /security-scan pointer remains
+PASS B7 harness-audit.js: security-scan-command check re-pointed at security-review (id kept)
+PASS B7 harness-audit.js: memory-learning-skill check re-pointed at growth-log (id kept)
+PASS M-new-4 pi-core.json: skills.include has no CUT skills, commands.include has no dropped commands
+PASS B8 council: end-of-project verification re-routed to verification-loop / production-audit
+PASS B9 integration: skill-scout / mcp-server-patterns dispatches re-routed (REROUTE_F27)
+PASS B10 ai-feature-spec: non-AI features re-routed to hackathon-scope
+PASS B11 ecc-agent-evaluator: self-contained, no agent-self-evaluation references
+PASS B12 mobile-ship: screens/features belong to react-native-patterns alone
+PASS B13 systematic-debugging: agent-introspection-debugging reference removed
+PASS M3 trigger notes: deferred list is the three kept checks (DEFER3_F27)
+PASS M4 delivery-gate: agent-self-evaluation 'shipped' claims removed, evaluator pointed at
+PASS M5 README: marketplace list, codebase-memory line, deferred set updated
+PASS M6 contract-first: ai-regression-testing pointers removed
+PASS M6 ecc-database-reviewer: database-migrations pointer removed
+PASS M6 tdd-workflow / postgres-patterns / react-native-patterns pointers removed
+PASS M6 react-patterns: accessibility / angular-developer links removed
+PASS M6 typescript-patterns: nestjs / prisma pointers removed
+PASS M6 strategic-compact: continuous-learning re-pointed at /learn
+PASS M6 resolve-ecc-root.js: sentinel moved to orchestrate
+PASS fix27/fix27-patch-log.md exists with 0 errors, 100 skills and 32 commands accounted for
+   CUT-name sweep: 0 un-allow-listed, 46 allow-listed, 288 generic bare-word noise lines
+PASS CUT-name sweep: zero live dispatches to CUT skills/agents/commands (check-12 allow-list only)
+   check-12b hits (28):
+   ! rules/angular-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/angular-testing.mdc: allow-listed file missing from the built tree
+   ! rules/cpp-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/cpp-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/cpp-security.mdc: allow-listed file missing from the built tree
+   ! rules/cpp-testing.mdc: allow-listed file missing from the built tree
+   ! rules/dart-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/golang-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/golang-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/golang-testing.mdc: allow-listed file missing from the built tree
+   ! rules/java-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/java-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/java-testing.mdc: allow-listed file missing from the built tree
+   ! rules/kotlin-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/kotlin-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/kotlin-testing.mdc: allow-listed file missing from the built tree
+   ! rules/nuxt-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/nuxt-hooks.mdc: allow-listed file missing from the built tree
+   ! rules/nuxt-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/nuxt-security.mdc: allow-listed file missing from the built tree
+   ! rules/nuxt-testing.mdc: allow-listed file missing from the built tree
+   ! rules/perl-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/perl-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/perl-testing.mdc: allow-listed file missing from the built tree
+   ! rules/rust-coding-style.mdc: allow-listed file missing from the built tree
+   ! rules/rust-patterns.mdc: allow-listed file missing from the built tree
+   ! rules/rust-security.mdc: allow-listed file missing from the built tree
+   ! rules/rust-testing.mdc: allow-listed file missing from the built tree
+   check-12b: 28 imperative dispatch(es) hiding in allow-listed lines
+FAIL check 12b: no imperative dispatch to a CUT skill/agent/command hides in an allow-listed line
+
+76/79 checks pass

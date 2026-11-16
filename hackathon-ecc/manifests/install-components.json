@@ -60,7 +60,7 @@
     {
       "id": "lang:python",
       "family": "language",
-      "description": "Python and Django-oriented engineering guidance. Currently resolves through the shared framework-language module.",
+      "description": "Python engineering guidance. Currently resolves through the shared framework-language module.",
       "modules": [
         "framework-language"
       ]
@@ -68,7 +68,7 @@
     {
       "id": "lang:go",
       "family": "language",
-      "description": "Go-focused coding and testing guidance. Currently resolves through the shared framework-language module.",
+      "description": "Go-focused coding and testing guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -76,7 +76,7 @@
     {
       "id": "lang:java",
       "family": "language",
-      "description": "Java and Spring application guidance. Currently resolves through the shared framework-language module.",
+      "description": "Java and Spring application guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -84,7 +84,7 @@
     {
       "id": "framework:angular",
       "family": "framework",
-      "description": "Angular-focused engineering guidance and rules. Currently resolves through the shared framework-language module.",
+      "description": "Angular-focused engineering guidance and rules. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -100,7 +100,7 @@
     {
       "id": "framework:vue",
       "family": "framework",
-      "description": "Vue.js, Nuxt, Pinia, and Vue Router engineering guidance. Currently resolves through the shared framework-language module.",
+      "description": "Vue.js, Nuxt, Pinia, and Vue Router engineering guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -116,7 +116,7 @@
     {
       "id": "framework:django",
       "family": "framework",
-      "description": "Django-focused engineering guidance. Currently resolves through the shared framework-language module.",
+      "description": "Django-focused engineering guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -124,7 +124,7 @@
     {
       "id": "framework:springboot",
       "family": "framework",
-      "description": "Spring Boot-focused engineering guidance. Currently resolves through the shared framework-language module.",
+      "description": "Spring Boot-focused engineering guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -132,7 +132,7 @@
     {
       "id": "framework:quarkus",
       "family": "framework",
-      "description": "Quarkus-focused engineering guidance for REST, Panache, security, testing, and verification.",
+      "description": "Quarkus-focused engineering guidance for REST, Panache, security, testing, and verification. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language",
         "security"
@@ -163,14 +163,6 @@
       ]
     },
     {
-      "id": "capability:content",
-      "family": "capability",
-      "description": "Business, writing, market, investor communication, and reusable voice-system skills.",
-      "modules": [
-        "business-content"
-      ]
-    },
-    {
       "id": "capability:orchestration",
       "family": "capability",
       "description": "Worktree and tmux orchestration runtime and workflow docs.",
@@ -181,7 +173,7 @@
     {
       "id": "lang:cpp",
       "family": "language",
-      "description": "C++ coding standards and testing guidance. Currently resolves through the shared framework-language module.",
+      "description": "C++ coding standards and testing guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -189,7 +181,7 @@
     {
       "id": "lang:c",
       "family": "language",
-      "description": "C engineering guidance using the shared C/C++ standards and testing stack. Currently resolves through the shared framework-language module.",
+      "description": "C engineering guidance using the shared C/C++ standards and testing stack. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -197,7 +189,7 @@
     {
       "id": "lang:kotlin",
       "family": "language",
-      "description": "Kotlin, Ktor, Exposed, Coroutines, and Compose Multiplatform guidance. Currently resolves through the shared framework-language module.",
+      "description": "Kotlin, Ktor, Exposed, Coroutines, and Compose Multiplatform guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -205,7 +197,7 @@
     {
       "id": "lang:arkts",
       "family": "language",
-      "description": "HarmonyOS, ArkTS, and ArkUI development guidance including V2 state management, Navigation routing, and HarmonyOS API best practices.",
+      "description": "HarmonyOS, ArkTS, and ArkUI development guidance including V2 state management, Navigation routing, and HarmonyOS API best practices. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -213,7 +205,7 @@
     {
       "id": "lang:perl",
       "family": "language",
-      "description": "Modern Perl patterns, testing, and security guidance. Currently resolves through framework-language and security modules.",
+      "description": "Modern Perl patterns, testing, and security guidance. Currently resolves through framework-language and security modules. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language",
         "security"
@@ -222,7 +214,7 @@
     {
       "id": "lang:ruby",
       "family": "language",
-      "description": "Ruby and Rails coding, testing, and security guidance. Resolves through framework-language and security modules.",
+      "description": "Ruby and Rails coding, testing, and security guidance. Resolves through framework-language and security modules. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language",
         "security"
@@ -231,7 +223,7 @@
     {
       "id": "framework:rails",
       "family": "framework",
-      "description": "Rails 8 application guidance for MVC, Hotwire, Solid Queue/Cache/Cable, authentication, testing, and security.",
+      "description": "Rails 8 application guidance for MVC, Hotwire, Solid Queue/Cache/Cable, authentication, testing, and security. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language",
         "security"
@@ -240,7 +232,7 @@
     {
       "id": "lang:rust",
       "family": "language",
-      "description": "Rust patterns and testing guidance. Currently resolves through the shared framework-language module.",
+      "description": "Rust patterns and testing guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -248,7 +240,7 @@
     {
       "id": "lang:csharp",
       "family": "language",
-      "description": "C# coding standards and patterns guidance. Currently resolves through the shared framework-language module.",
+      "description": "C# coding standards and patterns guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -256,7 +248,7 @@
     {
       "id": "lang:fsharp",
       "family": "language",
-      "description": "F# functional patterns and testing guidance. Currently resolves through the shared framework-language module.",
+      "description": "F# functional patterns and testing guidance. Currently resolves through the shared framework-language module. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -264,7 +256,7 @@
     {
       "id": "framework:laravel",
       "family": "framework",
-      "description": "Laravel patterns, TDD, verification, and security guidance. Resolves through framework-language and security modules.",
+      "description": "Laravel patterns, TDD, verification, and security guidance. Resolves through framework-language and security modules. (Guidance for this language/framework was removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language",
         "security"
@@ -375,14 +367,6 @@
       ]
     },
     {
-      "id": "skill:unified-memory",
-      "family": "skill",
-      "description": "Cross-harness memory guidance that requires the separately installed ecc-universal CLI runtime.",
-      "modules": [
-        "skill-unified-memory"
-      ]
-    },
-    {
       "id": "skill:tdd-workflow",
       "family": "skill",
       "description": "Test-driven development workflow skill.",
@@ -393,7 +377,7 @@
     {
       "id": "skill:continuous-learning",
       "family": "skill",
-      "description": "Legacy v1 Stop-hook session pattern extraction skill; prefer continuous-learning-v2 for new installs.",
+      "description": "Legacy v1 Stop-hook session pattern extraction skill. (Removed in fix #27; resolves to the shared workflow-quality module.)",
       "modules": [
         "workflow-quality"
       ]
@@ -409,7 +393,7 @@
     {
       "id": "skill:windows-desktop-e2e",
       "family": "skill",
-      "description": "E2E testing for Windows native desktop apps with pywinauto and Windows UI Automation.",
+      "description": "E2E testing for Windows native desktop apps with pywinauto and Windows UI Automation. (Removed in fix #27; resolves to the shared workflow-quality module.)",
       "modules": [
         "workflow-quality"
       ]
@@ -425,7 +409,7 @@
     {
       "id": "skill:coding-standards",
       "family": "skill",
-      "description": "Language-agnostic coding standards and best practices.",
+      "description": "Language-agnostic coding standards and best practices. (Removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]
@@ -441,7 +425,7 @@
     {
       "id": "skill:vue-patterns",
       "family": "skill",
-      "description": "Vue.js 3 Composition API, reactivity, Pinia, Vue Router, and Nuxt SSR patterns.",
+      "description": "Vue.js 3 Composition API, reactivity, Pinia, Vue Router, and Nuxt SSR patterns. (Removed in fix #27; resolves to the shared framework-language module.)",
       "modules": [
         "framework-language"
       ]

@@ -8,9 +8,9 @@ every chat in that project uses it.
 
 ## What is inside
 
-- **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools, playwright, and codebase-memory MCP servers. ECC process applies in full: plan first, TDD, code review
+- **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools and playwright MCP servers. ECC process applies in full: plan first, TDD, code review
   while building. With the hackathon additions below, the plugin ships
-  67 skills, 45 agents, 123 rules, and 55 commands in total (42 agents as-shipped + 3 staged orchestrate agents; 121 rules as-shipped + 2 new rules — `hackathon-mode`, `ponytail`; skill and command totals per build.sh STEP 5 counts).
+  67 skills, 45 agents, 48 rules, and 55 commands in total (42 agents as-shipped + 3 staged orchestrate agents; 46 rules as-shipped + 2 new rules — `hackathon-mode`, `ponytail`; skill and command totals per build.sh STEP 5 counts).
   Install profiles: the `hackathon` module (those 25 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
 - **Grill-me first** — after your first hackathon project prompt, the
   plugin asks one question at a time until every decision is recorded, and
@@ -26,6 +26,7 @@ every chat in that project uses it.
   `devpost-autofiller`, plus the marketplace skills (systematic-debugging,
   verification-before-completion).
 - **Codebase memory** — `codebase-memory` was cut in fix #27 and is not shipped. Explore unfamiliar code with grep-and-read and the `ecc-code-explorer` agent instead: find where a feature lives, trace callers/callees, hunt dead code, and run impact analysis before a change.
+- **Fix #28 bloat cut (Nov 16, 2026)** — 75 cut-language rules, the stale install-manifest paths, and 135 dead scripts removed. Rules are now 48. (`CUTRULES_F28` `MANIFEST28_F28` `DEADSCRIPTS_F28` `README48_F28`)
 - **Orchestration** — `/orchestrate` runs a tiered scout / fast-worker /
   deep-reasoner team; on high-stakes work (high blast radius and hard to verify) two independent deep-reasoner passes verify in parallel, and a disagreement stops the run.
   Single-feature, single-bug, single-change, and single-refactor work belongs to the `/orch-*` pipelines; invoke `orchestrate` only for general delegation or work spanning several pieces at once. Trivial one-step work (a typo fix, a one-line change) can be done in the main context.

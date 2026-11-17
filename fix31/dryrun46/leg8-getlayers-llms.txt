@@ -1,0 +1,39 @@
+# GetLayers (GetLayers AI)
+
+> GetLayers is a curated library of web design assets that are copied as prompts. Every layer — a page template, a real-time 3D WebGL scene, an animated background, a page section or an interactive gradient — can be copied as a single prompt and rebuilt by an AI coding agent in any stack, or downloaded as source. Built and maintained by Textura, a design studio.
+
+## Library categories
+
+- [Templates](https://www.getlayers.ai/templates): 62 · Production-ready page and hero templates for animation-heavy marketing sites. Copy the prompt, rebuild it in your own stack.
+- [3D Scenes](https://www.getlayers.ai/3d-scenes): 222 · Interactive real-time 3D scenes — particles, fluid, terrain, galaxy and shader fields. Copy the prompt and build it into your site.
+- [Sections](https://www.getlayers.ai/sections): 54 · Drop-in animated page sections — features, cards, carousels, showcases, roadmaps and loaders. Each arrives with its own motion already wired.
+- [Backgrounds](https://www.getlayers.ai/backgrounds): 530 · Animated and static backdrops for web projects — landscape, abstract glass, particles, cosmic and molecular. Copy the prompt, drop it behind your build.
+- [Gradients](https://www.getlayers.ai/gradients): 1,088 · Hundreds of animated, pointer-interactive gradients drawn in pure WebGL — no libraries, no video, about a kilobyte each. Copy one as a prompt.
+
+## Core pages
+
+- [Library overview](https://www.getlayers.ai/): every category, with the newest layers from each.
+- [Pricing](https://www.getlayers.ai/pricing): three plans. Unlimited (every premium template, 3D scene and section prompt; yearly or lifetime), Unlimited Plus (adds premium backgrounds, premium gradients, live preview and tuning, the gradient roller and Figma designs; yearly or lifetime) and Full Stack (adds downloadable source code, the MCP server and private Discord support; lifetime only). A commercial licence is included in every plan.
+- [Docs](https://www.getlayers.ai/docs): how a prompt differs from source, what each category ships, and how to take a layer into Next.js, Vue, Astro or any other stack.
+- [MCP server](https://www.getlayers.ai/mcp): the remote Model Context Protocol server. Connect it and Claude Code, Cursor, ChatGPT or any MCP client builds directly from this library, and generates images, video and 3D models, textures and remeshes 3D models, upscales pictures and clips, and removes backgrounds on Studio credits.
+- [AI design tools](https://www.getlayers.ai/tools): 13 browser tools for making your own effects (text animation, custom cursors, ASCII art, SVG to 3D, holographic cloth, gradients and more). Every tool is free to run, tune, copy and download.
+- [Figma plugin](https://www.getlayers.ai/figma): brings the library into Figma — templates and sections as editable design, plus scenes, gradients and backgrounds. Available from the Figma Community; free layers are open to everyone, premium designs, clean backgrounds and gradient configuring come with Unlimited Plus and Full Stack on a yearly or lifetime plan.
+- [GetLayers Studio](https://studio.getlayers.ai/): a separate web app on its own subdomain for making your own assets for a website — custom 3D scenes (describe one or remix a premium scene from the library), AI images and video, upscaling of pictures and clips, and background removal. Its makers: [3D scene editor](https://studio.getlayers.ai/3d), [AI image generator](https://studio.getlayers.ai/image), [AI video generator](https://studio.getlayers.ai/video), [Upscaler](https://studio.getlayers.ai/upscale), [Remove background](https://studio.getlayers.ai/remove-background). Making things uses credits.
+- [About](https://www.getlayers.ai/about): who makes this and why.
+- [Affiliate program](https://www.getlayers.ai/programs/affiliate): earn a commission on referred sales.
+
+## Key facts
+
+- Product: a prompt-first library of web design assets, plus downloadable source.
+- Maker: Textura (https://textura.agency), a design studio.
+- Every layer is copyable as one self-contained prompt; the Full Stack plan adds source downloads (free layers included; a free layer's prompt is free for everyone, and free backgrounds' video files download for free).
+- Gradients are pure WebGL2 — no libraries and no video, roughly a kilobyte each.
+- 3D scenes are real-time WebGL, configurable in the browser before you copy them.
+- An MCP server exposes the library, your favourites and your saved tool looks to AI coding agents directly (Full Stack Lifetime plan).
+- Every layer, free ones included, comes with a commercial licence (no attribution).
+
+## Machine-readable
+
+- [Sitemap](https://www.getlayers.ai/sitemap.xml)
+- [Studio sitemap](https://studio.getlayers.ai/sitemap.xml)
+- Structured data: `Organization`, `WebSite` and the Studio's `WebApplication` on every page; `CollectionPage` + `ItemList` on each category; `CreativeWork` + `Offer` on each layer.

@@ -1,0 +1,80 @@
+PASS 7a-route-fast-row
+     mechanical row -> cursor-grok-4.6-high-fast
+PASS 7a-route-default-row
+     default row -> grok-4.7-extra-high
+PASS 7a-route-arch-row
+     architecture/deep-review row -> grok-4.7-extra-high
+PASS 7a-route-no-old-pin
+     model-route.md names the old pin 0x (ID and prose)
+PASS 7b-schema-enum
+     model enum == {cursor-grok-4.6-high-fast, grok-4.7-extra-high}
+PASS 7b-schema-new-validates
+     grok-4.7-extra-high is a valid enum value
+PASS 7b-schema-old-rejected
+     grok-4.7-high is NOT a valid enum value (a doc pinning it fails validation)
+PASS 7b-schema-old-prose-absent
+     schema file contains no old-prose mention
+PASS 7b-agents-all-pinned
+     45/45 agent files carry a model: frontmatter line (missing: none)
+PASS 7b-agents-enum-valid
+     45/45 frontmatter models are in the schema enum (invalid: none)
+PASS 7b-agents-extra-high-four
+     exactly 4 agents pin grok-4.7-extra-high: deep-reasoner.md, ecc-architect.md, ecc-healthcare-reviewer.md, ecc-spec-miner.md
+PASS 7b-agents-fast-forty-one
+     41 agents pin cursor-grok-4.6-high-fast; 41 + 4 = 45
+PASS 7c-orch-row
+     orchestrator row -> grok-4.7-extra-high
+PASS 7c-reasoner-row
+     deep-reasoner row -> grok-4.7-extra-high
+PASS 7c-designlead-row
+     design-lead row -> grok-4.7-extra-high
+PASS 7c-impl-tier-row
+     implementation tier row -> cursor-grok-4.6-high-fast
+PASS 7c-fallback-tiers
+     fallback paragraph pins deep-reasoner/design-lead to extra-high, fast-worker/scout to fast-worker (slug form only)
+PASS 7c-modelpin-ledger
+     MODEL-PIN ledger line names grok-4.7-extra-high
+PASS 7c-picker-sentence
+     picker sentence names Grok 4.7 Extra High exactly once
+PASS 7c-hierarchy
+     model hierarchy names Extra High as the deciding tier
+PASS 7c-orch-no-old-pin
+     orchestrate SKILL.md names the old pin 0x
+PASS 7d-trace-resolves
+     all 14 simulated steps resolve to a schema-enum model;
+  S0 grill-me + planning | orchestrator       | grok-4.7-extra-high    | OK
+  S0 MODEL-PIN ledger record | orchestrator       | grok-4.7-extra-high    | OK
+  S1 T1 planWeek algorithm decision | deep-reasoner      | grok-4.7-extra-high    | OK
+  S1 T6 redesign direction | design-lead        | grok-4.7-extra-high    | OK
+  S2 T1 implement planWeek() | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S2 T2 implement inventory load | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S2 T3 generate WeekView | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S2 T4 leftover remix | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S2 T5 cost tracker | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S2 T6 implement PlanPage | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S3 verify T3 WeekView | ecc-code-reviewer  | cursor-grok-4.6-high-fast | OK
+  S3 verify T1 planWeek | ecc-tdd-guide      | cursor-grok-4.6-high-fast | OK
+  S4 correction re-dispatch T1 | fast-worker tier   | cursor-grok-4.6-high-fast | OK
+  S5 fallback if a named agent is missing | general subagent   | either tier by role    | OK
+PASS 7d-trace-thinking-on-extra-high
+     every thinking step (orchestrator, MODEL-PIN, deep-reasoner, design-lead) resolves to grok-4.7-extra-high
+PASS 7d-trace-mechanical-on-fast
+     every fully-specified implementation/verification step resolves to cursor-grok-4.6-high-fast (no thinking work on a drone tier, no mechanical work on the orchestrator tier)
+PASS 7e-trace-no-old-pin
+     0 old-pin references in the 19 traced files (none)
+PASS 7e-tree-no-old-pin
+     tree-wide old pin: grok-4.7-high x0, 'Grok 4.7 High' x0 (built tree, excl. node_modules)
+PASS 7f-fast-worker-count
+     cursor-grok-4.6-high-fast x70 tree-wide (unchanged from #44)
+PASS 7f-fast-worker-no-bare
+     bare grok-4.6-high-fast x0 (substring count == cursor- prefixed count, so every occurrence carries the cursor- prefix)
+PASS 7g-id-census
+     grok-4.7-extra-high x49 (SPEC: 49)
+PASS 7g-prose-census
+     'Grok 4.7 Extra High' x22 (SPEC: 22)
+PASS 7g-patchlog-agrees
+     fix30-patch-log.md post census: extra-high x49, prose x22, old pin x0/x0, fast-worker x70 (unchanged)
+PASS 7g-patchlog-per-file-sums
+     per-file rename lines in the patch log sum to ID 49 + prose 22 (24 files listed)
+
+LEG 7 summary: 32 passed, 0 failed

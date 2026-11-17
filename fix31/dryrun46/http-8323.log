@@ -1,0 +1,7 @@
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /assets/fonts/DMMono-400.woff2 HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /app.js HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /assets/fonts/SchibstedGrotesk-700.woff2 HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /assets/fonts/Fraunces-400.woff2 HTTP/1.1" 200 -
+127.0.0.1 - - [17/Nov/2026 04:15:45] "GET /assets/fonts/DMMono-500.woff2 HTTP/1.1" 200 -

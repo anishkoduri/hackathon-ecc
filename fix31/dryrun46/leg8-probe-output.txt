@@ -1,0 +1,16 @@
+{
+  "errors": [],
+  "h1": "Your logs, finally in order.",
+  "h1Chars": 29,
+  "canvas": true,
+  "canvasSize": [
+    1440,
+    637
+  ],
+  "terminalSvg": true,
+  "terminalText": "It looks like the tool it isThe Terminal figure answers your pointer — the same way TidyLog answers a log line. Move acr",
+  "cta": "Try the CLI",
+  "features": 3,
+  "bodyText": "TIDYLOG — LOGS, READABLE\n\nYour logs, finally in order.\n\nTidyLog turns messy service logs into searchable timelines. Pipe stdin in, get the story out — no agents, no dashboards to babysit.\n\nTry the CLI"
+}
+LEG8 PROBE DONE

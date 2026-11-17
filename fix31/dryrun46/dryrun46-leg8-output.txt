@@ -1,0 +1,29 @@
+PASS 8a-layer-fetched-live -- llms.txt fetched live (curl, this session) + /gradients category page + /layer/soffit fetched live via browser.open; counts 62/222/54/530/1088
+PASS 8a-free-layer-picked -- Soffit, Gradients, Free, Shadow family, named in design-tokens.md
+PASS 8a-rebuilt-in-project -- src/components/SoffitGradient.tsx: own WebGL2 shader, cites the live layer URL in its header
+PASS 8a-restyled-to-palette -- shader re-tinted to ink #0b1020 + lime #b8f135 (brief palette, not stock)
+PASS 8a-used-in-app -- App.tsx renders <SoffitGradient> as the hero ground
+PASS 8a-prompt-limit-recorded -- direction record states plainly the verbatim prompt could not be copied (button-generated) and the rebuild uses the published description
+PASS 8b-pinned-version -- package.json gsap == 3.15.1 (exact, re-pinned after the shadcn add rewrote it to ^3.15.1)
+PASS 8b-installed-version -- node_modules/gsap/package.json version == 3.15.1
+PASS 8b-imports-gsap -- App.tsx imports gsap + ScrollTrigger
+PASS 8b-registers-scrolltrigger -- App.tsx registers ScrollTrigger
+PASS 8b-animation-code -- hero entrance timeline + ScrollTrigger section reveals in App.tsx
+PASS 8b-splittext-also-uses-gsap -- installed SplitText itself imports gsap (second GSAP consumer)
+PASS 8c-cli-install-ran -- npx shadcn@latest add @react-bits/SplitText-TS-TW exit 0; log records 'Created 1 file: src/components/SplitText.tsx'
+PASS 8c-component-exists -- src/components/SplitText.tsx exists (14714 bytes)
+PASS 8c-component-variant -- TS-TW variant: the CLI installed SplitText into the TS + Tailwind project (command recorded in the report); component imports gsap, the TS-TW implementation path
+PASS 8c-rendered -- App.tsx renders <SplitText> as the h1
+PASS 8c-registry-resolves -- https://reactbits.dev/r/SplitText-TS-TW.json returned HTTP 200 before install
+PASS 8d-pinned-version -- package.json @lucasmarkes/hairline == 0.5.1 (exact)
+PASS 8d-installed-version -- node_modules hairline version == 0.5.1, license MIT
+PASS 8d-figure-rendered -- App.tsx imports Terminal from @lucasmarkes/hairline/react and renders it
+PASS 8d-figure-in-build -- Terminal is one of the 33 exported figures in the installed package
+PASS 8e-direction-names-palette -- design-tokens.md names all four sources + components + tailoring
+PASS 8e-getlayers-used-cited -- direction cites Soffit USED with a D19 reason
+PASS 8e-getlayers-rejected-cited -- direction cites Tress + 3D scenes + templates CONSIDERED-AND-REJECTED, each with a D19 reason
+PASS 8e-getlayers-first -- GetLayers consulted FIRST in the palette inventory, per the weight update
+PASS 8f-build-passes -- npm run build exit 0 (tsc + vite)
+PASS 8f-render-probe -- headless probe of built dist: 0 console errors, h1 with 29 split spans, Soffit canvas 1440x637, Terminal SVG present
+
+LEG 8 summary: 27 passed, 0 failed

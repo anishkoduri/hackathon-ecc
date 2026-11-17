@@ -4,7 +4,7 @@
   "commands": 55,
   "hooks": 15,
   "rules": 48,
-  "skills": 67,
+  "skills": 72,
   "triggers": 49
  },
  "elements": {
@@ -3299,6 +3299,9 @@
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "weak"
      ],
+     "hackathon-ecc/skills/getlayers/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "strong"
      ],
@@ -3348,6 +3351,9 @@
       "weak"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
       "weak"
      ],
      "hackathon-ecc/skills/orchestrate/references/dispatch-prompt.md": [
@@ -3545,6 +3551,9 @@
      "new-skills/feature-expansion/SKILL.md": [
       "weak"
      ],
+     "new-skills/getlayers/SKILL.md": [
+      "weak"
+     ],
      "new-skills/grill-me/SKILL.md": [
       "strong"
      ],
@@ -3561,6 +3570,9 @@
       "weak"
      ],
      "new-skills/orchestrate/commands/orchestrate.md": [
+      "weak"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
       "weak"
      ],
      "new-skills/orchestrate/references/dispatch-prompt.md": [
@@ -3798,6 +3810,12 @@
      "hackathon-ecc/skills/growth-log/SKILL.md": [
       "weak"
      ],
+     "hackathon-ecc/skills/hairline-create/examples/terrain.js": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/hairline-create/kernel.js": [
+      "weak"
+     ],
      "hackathon-ecc/skills/make-interfaces-feel-better/SKILL.md": [
       "weak"
      ],
@@ -3847,6 +3865,12 @@
       "weak"
      ],
      "new-skills/design-taste-frontend/scripts/consistency.mjs": [
+      "weak"
+     ],
+     "new-skills/hairline-create/examples/terrain.js": [
+      "weak"
+     ],
+     "new-skills/hairline-create/kernel.js": [
       "weak"
      ],
      "round2-skills/polish-pass/reference/lenses/consistency.md": [
@@ -6956,8 +6980,8 @@
    "error-handling": {
     "called": true,
     "flow": [
-     "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
+     "build"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7234,6 +7258,45 @@
     },
     "weak_only": false
    },
+   "getlayers": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/README.md": [
+      "weak"
+     ],
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
+      "strong"
+     ]
+    },
+    "weak_only": false
+   },
    "git-workflow": {
     "called": true,
     "flow": [
@@ -7257,6 +7320,9 @@
       "shipped"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
       "strong"
      ]
     },
@@ -7464,6 +7530,159 @@
     },
     "weak_only": false
    },
+   "gsap": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/README.md": [
+      "weak"
+     ],
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/rules/web-performance.mdc": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/icons/demo/icons-credits.json": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/icons/index.json": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/scenes/lib.js": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/references/motion.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/scripts/shoot.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motion-foundations/SKILL.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motion-patterns/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/SKILL.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/references/spec-template.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/references/techniques/scroll.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/motionsites-web-builder/references/techniques/type-and-text-motion.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "hackathon-ecc/skills/pitch-deck-video/SKILL.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/polish-pass/reference/impeccable-PROVENANCE.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/polish-pass/reference/slop-checklist.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/polish-pass/scripts/detect.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/data/data-provenance.json": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-baseline.json": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-cases.json": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-thresholds.json": [
+      "weak"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/assets/icons/demo/icons-credits.json": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/assets/icons/index.json": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/assets/scenes/lib.js": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/references/motion.md": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/scripts/consistency.mjs": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/scripts/shoot.mjs": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/SKILL.md": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/spec-template.md": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/techniques/layout-and-ui.md": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/techniques/scroll.md": [
+      "weak"
+     ],
+     "new-skills/motionsites-web-builder/references/techniques/type-and-text-motion.md": [
+      "weak"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
+      "strong"
+     ],
+     "new-skills/pitch-deck-video/SKILL.md": [
+      "weak"
+     ],
+     "round2-skills/polish-pass/reference/impeccable-PROVENANCE.md": [
+      "weak"
+     ],
+     "round2-skills/polish-pass/reference/slop-checklist.md": [
+      "weak"
+     ],
+     "round2-skills/polish-pass/scripts/detect.mjs": [
+      "weak"
+     ]
+    },
+    "weak_only": false
+   },
    "hackathon-pitch": {
     "called": true,
     "flow": [
@@ -7575,6 +7794,84 @@
      ],
      "round2-skills/polish-pass/reference/impeccable-PROVENANCE.md": [
       "weak"
+     ]
+    },
+    "weak_only": false
+   },
+   "hairline-adopt": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
+      "strong"
+     ]
+    },
+    "weak_only": false
+   },
+   "hairline-create": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/hairline-adopt/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/hairline-adopt/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
+      "strong"
      ]
     },
     "weak_only": false
@@ -7719,6 +8016,9 @@
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/getlayers/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/git-workflow/SKILL.md": [
       "weak"
      ],
@@ -7790,6 +8090,9 @@
      ],
      "new-skills/feature-expansion/SKILL.md": [
       "strong"
+     ],
+     "new-skills/getlayers/SKILL.md": [
+      "weak"
      ],
      "new-skills/grill-me/SKILL.md": [
       "strong"
@@ -8161,6 +8464,9 @@
      "hackathon-ecc/skills/frontend-a11y/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/gsap/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
       "strong"
      ],
@@ -8202,6 +8508,9 @@
      ],
      "new-skills/design-taste-frontend/references/design-glossary.md": [
       "weak"
+     ],
+     "new-skills/gsap/SKILL.md": [
+      "strong"
      ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
@@ -8256,6 +8565,9 @@
      "hackathon-ecc/skills/frontend-a11y/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/gsap/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/make-interfaces-feel-better/SKILL.md": [
       "strong"
      ],
@@ -8280,6 +8592,9 @@
      "hackathon-ecc/skills/polish-pass/reference/vercel-checklist.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/react-bits/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/ui-ux-pro-max/SKILL.md": [
       "strong"
      ],
@@ -8292,10 +8607,16 @@
      "new-skills/design-taste-frontend/references/design-glossary.md": [
       "weak"
      ],
+     "new-skills/gsap/SKILL.md": [
+      "strong"
+     ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
      ],
      "new-skills/orchestrate/references/design-inventory.md": [
+      "strong"
+     ],
+     "new-skills/react-bits/SKILL.md": [
       "strong"
      ],
      "round2-skills/polish-pass/reference/slop-checklist.md": [
@@ -8808,7 +9129,7 @@
       "weak"
      ],
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "strong"
@@ -8844,7 +9165,7 @@
       "strong"
      ],
      "hackathon-ecc/skills/orch-pipeline/SKILL.md": [
-      "weak"
+      "strong"
      ],
      "hackathon-ecc/skills/orch-refine-code/SKILL.md": [
       "strong"
@@ -9204,6 +9525,51 @@
       "shipped"
      ],
      "hackathon-ecc/rules/python-testing.mdc": [
+      "strong"
+     ]
+    },
+    "weak_only": false
+   },
+   "react-bits": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/gsap/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/motion-patterns/SKILL.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/gsap/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/orchestrate/references/design-inventory.md": [
       "strong"
      ]
     },
@@ -9739,6 +10105,9 @@
      "hackathon-ecc/skills/feature-expansion/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/gsap/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/integration/SKILL.md": [
       "strong"
      ],
@@ -9793,6 +10162,9 @@
      "hackathon-ecc/skills/polish-pass/reference/vercel-checklist.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/react-bits/SKILL.md": [
+      "strong"
+     ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
      ],
@@ -9808,6 +10180,9 @@
      "new-skills/feature-expansion/SKILL.md": [
       "strong"
      ],
+     "new-skills/gsap/SKILL.md": [
+      "strong"
+     ],
      "new-skills/integration/SKILL.md": [
       "strong"
      ],
@@ -9818,6 +10193,9 @@
       "strong"
      ],
      "new-skills/orchestrate/references/dispatch-prompt.md": [
+      "strong"
+     ],
+     "new-skills/react-bits/SKILL.md": [
       "strong"
      ],
      "round2-skills/polish-pass/SKILL.md": [

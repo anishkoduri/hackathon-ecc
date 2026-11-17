@@ -10,7 +10,7 @@ every chat in that project uses it.
 
 - **ECC Developer profile as shipped** — 144 skills, 69 agents, 121 rules, 94 commands (stock Developer install is 140/71/121/98; +10 backfilled ECC skills, −6 guide skills, −2 agents, −4 commands — see build.sh), hooks (15 events covering session lifecycle, shell/file/MCP handling, secret guards, subagent logging, and a stop hook that formats, typechecks, and persists state), and the chrome-devtools and playwright MCP servers. ECC process applies in full: plan first, TDD, code review
   while building. With the hackathon additions below, the plugin ships
-  67 skills, 45 agents, 48 rules, and 55 commands in total (42 agents as-shipped + 3 staged orchestrate agents; 46 rules as-shipped + 2 new rules — `hackathon-mode`, `ponytail`; skill and command totals per build.sh STEP 5 counts).
+  72 skills, 45 agents, 48 rules, and 55 commands in total (42 agents as-shipped + 3 staged orchestrate agents; 46 rules as-shipped + 2 new rules — `hackathon-mode`, `ponytail`; skill and command totals per build.sh STEP 5 counts).
   Install profiles: the `hackathon` module (those 25 skills) is included in the `developer` and `full` profiles; `minimal` and `core` do not include it.
 - **Grill-me first** — after your first hackathon project prompt, the
   plugin asks one question at a time until every decision is recorded, and
@@ -26,6 +26,7 @@ every chat in that project uses it.
   `devpost-autofiller`, plus the marketplace skills (systematic-debugging,
   verification-before-completion).
 - **Codebase memory** — `codebase-memory` was cut in fix #27 and is not shipped. Explore unfamiliar code with grep-and-read and the `ecc-code-explorer` agent instead: find where a feature lives, trace callers/callees, hunt dead code, and run impact analysis before a change.
+- **Fix #31 design libraries (Nov 17, 2026)** — GetLayers (free set only), GSAP, React Bits, and Hairline illustrations added to the palette-first inventory. Skills are now 72. (`GETLAYERS_F31` `GSAP_F31` `REACTBITS_F31` `HAIRLINE_F31`)
 - **Fix #28 bloat cut (Nov 16, 2026)** — 75 cut-language rules, the stale install-manifest paths, and 135 dead scripts removed. Rules are now 48. (`CUTRULES_F28` `MANIFEST28_F28` `DEADSCRIPTS_F28` `README48_F28`)
 - **Orchestration** — `/orchestrate` runs a tiered scout / fast-worker /
   deep-reasoner team; on high-stakes work (high blast radius and hard to verify) two independent deep-reasoner passes verify in parallel, and a disagreement stops the run.
@@ -33,11 +34,11 @@ every chat in that project uses it.
 
 ## How this compares
 
-**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 67 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
+**vs stock ECC (Developer):** The edge is hackathon-specific: grill-me-first decision capture, MVP scoping, a deploy runbook, the UI stack, the `/demo` video pipeline, the `/orchestrate` team, Playwright MCP and the audit deferral that stops security gates blocking a feature mid-build. The risk is that the deferral means security issues surface only at the end, when there is little time left to fix them; the plugin is also a frozen ECC snapshot; a rebuild re-clones upstream when /tmp is wiped, so rebuilds are not frozen, 72 skills widen the routing surface, and the deferral relies on model judgment rather than enforcement.
 
-**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 67 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
+**vs the earlier curated plugin:** The edge is full ECC process — TDD, planning, code review, orchestration, and verification — so the output is more likely to actually work, and `/demo` plus the UI skills raise the presentation ceiling. The risk is weight: 56 MB and 72 skills against a minimal set means heavier context load, slower startup, and more misrouting surface, while planning, TDD, and review overhead tax hackathon time and grill-me adds an interrogation round before any building starts.
 
-**vs plain Cursor:** The edge is structured process — 67 skills, 45 agents, 55 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates follow the Updating section below (git pull for a local clone, rebuild + re-copy for a copy install), and 56 MB is loaded into a project that may only need a tenth of it.
+**vs plain Cursor:** The edge is structured process — 72 skills, 45 agents, 55 commands, deploy/demo/orchestration workflows, and MCP servers — where plain Cursor has none of that built in. The risk is that the plugin steers every chat through `alwaysApply` rules, so a bad routing decision can waste more time than a blank slate would; installation is manual with no official Cursor Marketplace listing, updates follow the Updating section below (git pull for a local clone, rebuild + re-copy for a copy install), and 56 MB is loaded into a project that may only need a tenth of it.
 
 ## Commands (highlights — 3 of 55)
 

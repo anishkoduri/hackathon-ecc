@@ -1,0 +1,13 @@
+PASS 1-convergence-same-position -- A="worldHELLO" B="worldHELLO" (concurrent inserts at pos 0 converge)
+PASS 2-out-of-order-delivery -- in-order 140 chars vs shuffled 140 chars; equal=true (180 typed - 40 deleted = 140)
+PASS 2b-out-of-order-matches-source -- shuffled == source-after-deletes (140 chars)
+PASS 3-offline-merge -- after reconnect A="[base {text} +B] +A" B="[base {text} +B] +A"; no edits lost=true
+PASS 4-cross-collaborator-undo -- after A undoes X: A="Y" B="Y" (Y survived, X gone, replicas agree)
+PASS 4b-undo-of-delete-restores -- after B undoes its delete: A="Y" B="Y"
+PASS 5-large-paste-plus-typing -- converged=true length=5019 (expect 5019); paste intact=true
+PASS 6a-burst-100-ops -- local insert 100 ops 1.7 ms; remote apply 0.3 ms (budget < 500 ms); converged=true
+PASS 6b-10k-doc -- build 10k chars 86.5 ms; merge 83.2 ms; converged, length 10000
+PASS 7-live-echo-latency -- 20 keystrokes echoed to B: n=20 median=2 ms p95=73 ms max=73 ms (budget < 150 ms); B doc="kkkkkkkkkkkkkkkkkkkk"
+PASS 7b-op-log-persisted -- ops.jsonl holds 20 ops (>= 20 typed) — a reloaded client re-syncs from the log
+
+11/11 collab checks passed

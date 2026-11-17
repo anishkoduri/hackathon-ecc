@@ -1,0 +1,20 @@
+counts skills: 72 (expected 72) OK
+counts agents: 45 (expected 45) OK
+counts rules: 48 (expected 48) OK
+counts commands: 55 (expected 55) OK
+counts hooks: 15 (expected 15) OK
+counts triggers: 49 (expected 49) OK
+corpus files scanned: 1354
+map written: new-skills/orchestrate/references/call-map.md
+data written: fix28/callmap/call-map-data.json
+uncalled skills: 2 -> context-budget, vite-patterns
+uncalled agents: 9 -> ecc-chief-of-staff, ecc-harmonyos-app-resolver, ecc-homelab-architect, ecc-loop-operator, ecc-network-architect, ecc-network-config-reviewer, ecc-network-troubleshooter, ecc-rag-pipeline-reviewer, ecc-seo-specialist
+uncalled rules: 0
+uncalled commands: 6 -> astra-review, ecc-guide, fastapi-review, issue-review, loop-start, pm2
+uncalled hooks: 0
+uncalled triggers: 0
+second-order orphans agents: 3 -> ecc-docs-lookup, ecc-fastapi-reviewer, ecc-mle-reviewer
+second-order orphans commands: 4 -> harness-audit, python-review, skill-create, skill-health
+trigger-only: 0 -> 
+weak-only skills (no strong evidence): context-budget, vite-patterns
+weak-only agents (no strong evidence): none

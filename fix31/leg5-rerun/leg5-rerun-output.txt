@@ -1,0 +1,44 @@
+STATIC-OK  counts:agents -- map=45 tree=45
+STATIC-OK  counts:commands -- map=55 tree=55
+STATIC-OK  counts:hooks -- map=15 tree=15
+STATIC-OK  counts:rules -- map=48 tree=48
+STATIC-OK  counts:skills -- map=72 tree=72
+STATIC-OK  counts:triggers -- map=49 tree=49
+STATIC-OK  cmd-review:learn:skill:learned -- non-dispatch mention, verified by reading: placeholder path skills/learned/<name>.md, not a skill dir
+STATIC-OK  cmd-review:react-review:command:/api -- non-dispatch mention, verified by reading: code path, not a command (followed by /)
+STATIC-OK  cmd-review:save-session:command:/api -- non-dispatch mention, verified by reading: code path, not a command (followed by /)
+STATIC-OK  cmd-review:skill-create:command:/skill-creator -- non-dispatch mention, verified by reading: GitHub App slash command (github.com/apps/skill-creator), external service, not a plugin command
+STATIC-OK  cmd:all-resolve -- 55/55 command files resolve every named skill/agent/command
+STATIC-OK  cmd:live-execution -- command files are agent instructions; dispatch resolved statically (55 files clean, 4 reviewed non-dispatch refs, 0 broken — see cmd:all-resolve) — live execution is OWED to the smoke test
+STATIC-OK  skills:all-load -- 72/72 skills have a non-empty SKILL.md with frontmatter
+STATIC-OK  skills:live-invocation -- skills are invoked by the agent at run time; live invocation of each on-request skill is OWED to the smoke test
+STATIC-OK  skills:map-agrees -- map skills=72 tree skills=72; diff=[]
+EXERCISED  hook:afterFileEdit -- exit=0 stdout=37B json=True stderr=
+EXERCISED  hook:afterMCPExecution -- exit=0 stdout=31B json=True stderr=[ECC] MCP result: unknown/unknown - OK 
+EXERCISED  hook:afterShellExecution -- exit=0 stdout=38B json=True stderr=
+EXERCISED  hook:afterTabFileEdit -- exit=0 stdout=37B json=True stderr=
+EXERCISED  hook:beforeMCPExecution -- exit=0 stdout=31B json=True stderr=[ECC] MCP invocation: unknown/unknown 
+EXERCISED  hook:beforeReadFile -- exit=0 stdout=42B json=True stderr=
+EXERCISED  hook:beforeShellExecution -- exit=0 stdout=38B json=True stderr=
+EXERCISED  hook:beforeSubmitPrompt -- exit=0 stdout=19B json=True stderr=
+EXERCISED  hook:beforeTabFileRead -- exit=0 stdout=42B json=True stderr=
+EXERCISED  hook:preCompact -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:sessionEnd -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:sessionStart -- exit=0 stdout=7603B json=True stderr=[cursor-session-env] Set ECC_AGENT_DATA_HOME=/home/hatch/workspace/hackathon-plugin/fix31/leg5-rerun/fake-home/.cursor/e
+EXERCISED  hook:stop -- exit=0 stdout=31B json=True stderr=
+EXERCISED  hook:subagentStart -- exit=0 stdout=31B json=True stderr=[ECC] Agent spawned: unknown 
+EXERCISED  hook:subagentStop -- exit=0 stdout=31B json=True stderr=[ECC] Agent completed: unknown 
+EXERCISED  hook:ck-wire -- session-start output carries the ck (Context Keeper) brief via hooks/session-start.js -> skills/ck/hooks/session-start.mjs
+STATIC-OK  wire:prp-commit -- prp-commit Phase 3 + orchestrate step 6 name the git-workflow skill and the ecc-commit-reviewer agent (conventional-commit-review was cut in fix #27, re-pointed to git-workflow); both resolve; live commit drafting is OWED
+STATIC-OK  wire:ecc-recipes -- ecc-recipes CUT in fix #27; REROUTE_F27 lookup in orchestrate :136 (read commands/ directly); the single remaining ecc-recipes mention is the prose-history REROUTE note; live lookup OWED
+DORMANT    wire:epic-dormant-in-use -- epic-* + prune commands were DROPPED in fix #27 §1(b) — no epic commands exist in the tree, so no dormant-in-use set remains; the REROUTE_F27 note still names them as multi-week machinery a hackathon build must not dispatch (prose-history, Audit #76 B3); not executed here by decision
+EXERCISED  wire:test-coverage -- /test-coverage Steps 1-2 run on the scratch pytest project: coverage 68.2%; files below 80% listed in the exercise log
+DORMANT    uncalled:count -- uncalled=17 (skills 2, agents 9, commands 6, rules 0, hooks 0, triggers 0); regenerated map expects 17 (fix #28: vite-patterns newly uncalled, 16 -> 17; rules 48 in the regenerated map)
+DORMANT    uncalled:zero-invokers -- every uncalled element has zero invokers in the map
+DORMANT    second-order:count -- second-order orphans=7 (skills 0, agents 3, commands 4); regenerated map expects 7 (fix #27 cut removed 6 vs #41's 13)
+DORMANT    second-order:invokers-uncalled -- orphan invokers are uncalled elements or reference files
+STATIC-OK  triggers:count -- skill-triggers@1.json holds 49 keys (regenerated map expects 49; fix #27 §1(b) pruned 15 keys, 64 -> 49)
+STATIC-OK  triggers:entry-point -- no live Cursor entry point for the trigger consumer (parent decision item, unchanged) — live firing OWED, never claimed
+
+LEG 5 summary: {'STATIC-OK': 19, 'EXERCISED': 17, 'DORMANT': 5}
+BROKEN: 0

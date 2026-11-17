@@ -219,7 +219,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
 # only the opus bracket pin was removed; cursor-grok-4.6-high-fast remains
 # the fast-worker pin.
-for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder; do
+for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder getlayers gsap react-bits hairline-create hairline-adopt; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
 done
 # orchestrate: skill (SKILL.md + references) to skills/, agents to agents/,
@@ -24131,6 +24131,19 @@ python3 "$PLUGIN_ROOT/fix29/fix29.py" "$PLUGIN_DIR"
 # census/post-assertion errors (set -euo pipefail stops the build);
 # the run log lands in fix30/fix30-patch-log.md.
 python3 "$PLUGIN_ROOT/fix30/fix30.py" "$PLUGIN_DIR"
+
+# --- fix #31: design libraries (GetLayers, GSAP, React Bits, Hairline) ---
+# fix31/fix31.py asserts the staged weave landed (5 new skills, DESIGNPKG-AUTO
+# byte-identical + naming all five, palette-first paragraph, inventory §12),
+# asserts the fix30 pin census still holds, runs the license checks (no
+# vendored GetLayers content, no embedded React Bits source, no vendored GSAP
+# source, no frozen GetLayers counts), then rewrites the README count lines
+# 67 -> 72 + the fix #31 provenance note and sets trigger coverage.skills
+# to 72. The skills themselves are staged (new-skills/) and flow through
+# the STEP 2 loop. Runs after fix30, before STEP 5. Exits non-zero on
+# census/license/post-assertion errors (set -euo pipefail stops the build);
+# the run log lands in fix31/fix31-patch-log.md.
+python3 "$PLUGIN_ROOT/fix31/fix31.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

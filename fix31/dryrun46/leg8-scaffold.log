@@ -1,0 +1,17 @@
+npm warn exec The following package was not found and will be installed: create-vite@9.3.4
+
+> hackathon-ecc@1.0.0 npx
+> cva leg8-tidylog --template react-ts
+
+
+create-vite v9.3.4
+
+│
+◇  Scaffolding project in /home/hatch/workspace/hackathon-plugin/fix31/dryrun46/leg8-tidylog...
+│
+└  Done. Now run:
+
+  cd leg8-tidylog
+  npm install
+  npm run dev
+

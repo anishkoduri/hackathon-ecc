@@ -11,6 +11,8 @@ metadata:
 
 A multi-agent harness that separates **generation** from **evaluation**, creating an adversarial feedback loop that drives quality far beyond what a single agent can achieve.
 
+**Factory routing (fix #29, GLOBAL-ROUTING_F29):** the generator/evaluator loop runs as factory drones — the orchestrator dispatches each generator and evaluator pass as a single-task drone from its queue, with a director brief (DIRECTOR-BRIEF_F29): the exact goal, the files in scope and explicitly out of scope, constraints, acceptance criteria, verification steps, and what to return — an incomplete brief means the drone does not start. Generator and evaluator briefs follow the seven-field contract in `skills/orchestrate/references/dispatch-prompt.md`. A drone that hits a decision its brief leaves unspecified stops and returns the question to the orchestrator instead of guessing (NO-GUESSING_F29). The evaluator pass is an input to verification, not the verify step itself: after each evaluator pass the orchestrator checks the generator's output against the brief's acceptance criteria (not just the rubric score — a rubric pass at or above 7.0 with a failed acceptance criterion is a fail), re-checks the evaluator's pass/fail call against the same criteria, and checks the planner's spec against the brief before the first generator pass; failed output goes back with a correction brief naming the failed criterion (VERIFY-MERGE_F29). Fan-out is bounded by efficiency, N>3 justified in one line, drones carrying minimal context (COST-AWARE_F29); in Cursor, slots refill per wave, not per completion — the factory lights up fully on the later port, not in Cursor (GLOBAL-ROUTING_F29). The orchestrator answers every prompt; drones never answer the user or decide scope (ORCHESTRATOR-ONLY_F29).
+
 ## Core Insight
 
 > When asked to evaluate their own work, agents are pathological optimists — they praise mediocre output and talk themselves out of legitimate issues. But engineering a **separate evaluator** to be ruthlessly strict is far more tractable than teaching a generator to self-critique.
@@ -63,6 +65,8 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
               │   5-15 iterations      │
               └────────────────────────┘
 ```
+
+**Orchestrator check (fix #29, VERIFY-MERGE_F29):** the orchestrator sits outside the loop — after each evaluator pass it checks the generator's output against the brief's acceptance criteria and re-checks the evaluator's pass/fail call (a rubric pass at or above 7.0 with a failed acceptance criterion is a fail); failed output goes back with a correction brief naming the failed criterion. The planner's spec is checked against the brief before the first generator pass. The loop's CHECK SCORE step (`commands/gan-build.md` Phase 2) runs only after the orchestrator check passes.
 
 ## The Three Agents
 
@@ -148,6 +152,7 @@ The default four criteria, each scored 1-10:
 - **Weighted score** = sum of (criterion_score * weight)
 - **Pass threshold** = 7.0 (configurable)
 - **Max iterations** = 15 (configurable, typically 5-15 sufficient)
+- **Orchestrator check** — after each evaluator pass the orchestrator checks the generator's output against the brief's acceptance criteria (a rubric pass at or above 7.0 with a failed acceptance criterion is a fail) and re-checks the evaluator's pass/fail call; failed output goes back with a correction brief naming the failed criterion; a correction re-dispatch consumes one iteration within max iterations; the planner's spec is checked against the brief before the first generator pass
 
 ## Usage
 

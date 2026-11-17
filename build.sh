@@ -24107,6 +24107,19 @@ python3 "$PLUGIN_ROOT/fix27/fix27.py" "$PLUGIN_DIR"
 # log lands in fix28/fix28-patch-log.md.
 python3 "$PLUGIN_ROOT/fix28/fix28.py" "$PLUGIN_DIR"
 
+# --- fix #29: adaptable orchestration (forced orchestrator, factory dispatch,
+# director-grade briefs) ---
+# fix29/fix29.py patches the built tree in place, same pattern as
+# fix28/fix28.py: routing paragraphs in the 7 ECC-origin dispatching skills
+# (orch-pipeline, orch-build-mvp, orch-add-feature, orch-change-feature,
+# orch-fix-defect, orch-refine-code, gan-style-harness) + the NO-GUESSING
+# carve-out on orch-pipeline's Belief-in-the-brief. The GLOBAL-ROUTING block
+# (orchestrate + hackathon-mode) and the feature-expansion Phase 4 paragraph
+# are staged sources edited directly. No model pins change (fix #30). Runs
+# after fix28, before STEP 5. Exits non-zero on anchor errors (set -euo
+# pipefail stops the build); the run log lands in fix29/fix29-patch-log.md.
+python3 "$PLUGIN_ROOT/fix29/fix29.py" "$PLUGIN_DIR"
+
 # STEP 5 — Counts
 # ============================================================================
 echo "skills: $(ls "$PLUGIN_DIR/skills" | wc -l)"

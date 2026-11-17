@@ -10,6 +10,8 @@ metadata:
 Actor · action · target: **orch · fix · defect**. Thin wrapper over the shared
 engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
+**Factory routing (fix #29, GLOBAL-ROUTING_F29):** this operation runs through the shared `orch-pipeline` engine, which dispatches all implementation work through the factory — see `orch-pipeline` for the routing (task queue, single-task drones, director briefs, no-guessing, verify-and-merge, cost-aware fan-out). Fan-out is bounded by efficiency: N>3 justified in one line; drones carry minimal context. The orchestrator answers every prompt; drones never answer the user or decide scope (ORCHESTRATOR-ONLY_F29).
+
 ## When to Use
 
 - Something is **broken**: wrong output, an error, a crash, a regression.

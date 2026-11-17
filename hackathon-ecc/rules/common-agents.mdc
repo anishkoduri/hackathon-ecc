@@ -22,6 +22,8 @@ Located in the plugin's `agents/` directory (installed as Cursor agents):
 ## Immediate Agent Usage
 
 No user prompt needed — subject to the orchestrate skill's routing rule, which governs this list too:
+
+Implementation-agent dispatch follows the factory routing in orchestrate's GLOBAL-ROUTING block (fix #29, GLOBAL-ROUTING_F29): every implementation dispatch carries a director brief, no-guessing applies, and the orchestrator verifies the output against the brief's acceptance criteria before use. Fan-out is bounded by efficiency: N>3 justified in one line; drones carry minimal context.
 1. Complex feature requests — Use **architect** agent (`agents/ecc-architect.md`), but only when the work spans several pieces at once or the user asks to delegate; otherwise do the work directly in the main context
 2. Code just written/modified - Use **code-reviewer** agent (`agents/ecc-code-reviewer.md`)
 3. Bug fix or new feature - Use **tdd-guide** agent (`agents/ecc-tdd-guide.md`)

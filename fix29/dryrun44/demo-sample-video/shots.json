@@ -1,0 +1,333 @@
+{
+  "app": {
+    "bg": "#f6f1e7",
+    "height": 1080,
+    "loadingSelectors": [
+      "[aria-busy=\"true\"]",
+      "[role=\"progressbar\"]",
+      ".animate-spin",
+      ".animate-pulse"
+    ],
+    "url": "http://localhost:5180",
+    "width": 1920
+  },
+  "bang": {
+    "cameraMoves": [
+      {
+        "beat": "planweek",
+        "move": "push-through from pantry list into the planned week"
+      },
+      {
+        "beat": "cost",
+        "move": "glide to the $0 figure, settle"
+      }
+    ],
+    "kineticType": [
+      {
+        "beat": "hook",
+        "effect": "Split-text reveal",
+        "params": "words stagger 40ms, 24px rise, 200ms, ease-out"
+      },
+      {
+        "beat": "edge",
+        "effect": "Word slam on the beat",
+        "params": "scale 1.15 -> 1.0, 120ms, ease-out, then hold still"
+      },
+      {
+        "beat": "close",
+        "effect": "Letter stagger",
+        "params": "30ms stagger, 12px rise, close sentence only"
+      }
+    ],
+    "openerConcept": "5 \u2014 Journey inside the UI (camera travels through the app's own interface)",
+    "openerThemeReason": "the wow IS the pantry turning into a week, so the opener travels inside the app rather than staging a logo",
+    "styleDirection": "Editorial light",
+    "styleThemeReason": "the app is a warm cream/green editorial page; editorial light is the dealt theme's own look, not a borrowed template"
+  },
+  "brand": "Pantry Pal",
+  "cards": {
+    "arch": {
+      "nodes": [
+        {
+          "kind": "in",
+          "label": "Your pantry",
+          "note": "what you already have"
+        },
+        {
+          "kind": "code",
+          "label": "Week planner",
+          "note": "six dinners from six items",
+          "stack": "static HTML \u2014 no runtime code"
+        },
+        {
+          "kind": "out",
+          "label": "Your week",
+          "note": "planned, no extra shopping"
+        }
+      ],
+      "title": "How it works"
+    },
+    "close": {
+      "credits": []
+    },
+    "hook": {
+      "accent": "#e07b39"
+    }
+  },
+  "cuts": [
+    {
+      "name": "Shopping-list export",
+      "reason": "would push the video past the 2:10 cap; shown in the live demo instead"
+    }
+  ],
+  "features": [
+    {
+      "beat": "pantry",
+      "name": "Pantry inventory list"
+    },
+    {
+      "beat": "planweek",
+      "name": "Plan a week from the pantry"
+    },
+    {
+      "beat": "curry",
+      "name": "Monday chicken curry detail"
+    },
+    {
+      "beat": "cost",
+      "name": "Zero extra shopping ($0)"
+    },
+    {
+      "beat": "onepot",
+      "name": "One-pot week"
+    },
+    {
+      "beat": "remix",
+      "name": "Leftover remix"
+    }
+  ],
+  "gapMs": 240,
+  "music": {
+    "credit": "Track title \u2014 Artist",
+    "fadeIn": 2.0,
+    "gain": {
+      "close": 0.3,
+      "open": 0.34,
+      "under": 0.14
+    },
+    "start": 0,
+    "url": "https://www.youtube.com/watch?v=..."
+  },
+  "shots": [
+    {
+      "id": "problem",
+      "kind": "card",
+      "say": "Every Sunday, Maya opens her pantry and sees dinner nowhere. Six ingredients. No plan. Another takeaway."
+    },
+    {
+      "do": [
+        {
+          "goto": "/"
+        },
+        {
+          "wait": 500
+        },
+        {
+          "hover": "button:has-text(\"Plan my week\")"
+        },
+        {
+          "click": "button:has-text(\"Plan my week\")"
+        },
+        {
+          "waitFor": "text=Your week, planned"
+        },
+        {
+          "cut": true
+        }
+      ],
+      "id": "wow",
+      "kind": "app",
+      "say": "Pantry Pal looks at the same six ingredients and sees the whole week. Watch what one click does."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=Zero extra shopping",
+            "pad": 300,
+            "max": 1.7,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "edge",
+      "kind": "app",
+      "say": "Recipe apps hand you a shopping list. Pantry Pal never does. Nothing to buy is the whole point."
+    },
+    {
+      "do": [
+        {
+          "goto": "/"
+        },
+        {
+          "wait": 500
+        },
+        {
+          "cut": true
+        },
+        {
+          "focus": {
+            "sel": "text=Your pantry",
+            "pad": 300,
+            "max": 1.5,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "pantry",
+      "kind": "app",
+      "say": "It starts with what is actually there. Chicken, rice, chickpeas, tomatoes, onions, one jar of garam masala."
+    },
+    {
+      "do": [
+        {
+          "click": "button:has-text(\"Plan my week\")"
+        },
+        {
+          "waitFor": "text=Your week, planned"
+        },
+        {
+          "cut": true
+        }
+      ],
+      "id": "planweek",
+      "kind": "app",
+      "say": "One click. Six dinners, planned from what she already owns. Monday curry, Tuesday chickpea rice, Wednesday's remix."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=Monday",
+            "pad": 300,
+            "max": 1.6,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "curry",
+      "kind": "app",
+      "say": "Monday is chicken curry. Twenty-five minutes, one pan, the tomatoes and onions she already had."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=6 dinners",
+            "pad": 300,
+            "max": 1.7,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "cost",
+      "kind": "app",
+      "say": "The number that matters: six dinners, zero dollars extra. The pantry paid for the week already."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=One pot to wash",
+            "pad": 300,
+            "max": 1.6,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "onepot",
+      "kind": "app",
+      "say": "And one pot to wash. Every dinner cooks in the same pan, so the week ends cleaner than it started."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=Leftover remix",
+            "pad": 300,
+            "max": 1.6,
+            "ms": 900
+          }
+        }
+      ],
+      "id": "remix",
+      "kind": "app",
+      "say": "Wednesday is the remix. Yesterday's rice meets today's curry, and leftovers stop being a chore."
+    },
+    {
+      "do": [
+        {
+          "focus": {
+            "sel": "text=Chickpea rice",
+            "pad": 300,
+            "max": 1.6,
+            "ms": 900
+          }
+        },
+        {
+          "focus": null
+        }
+      ],
+      "id": "plan2",
+      "kind": "app",
+      "say": "Tuesday's chickpea rice takes twenty minutes. The week never asks for more time than a weeknight has."
+    },
+    {
+      "id": "arch",
+      "kind": "card",
+      "say": "No model calls. No backend. The whole app is static pages served locally \u2014 the plan is the product."
+    },
+    {
+      "id": "close",
+      "kind": "card",
+      "say": "Six dinners. Zero extra shopping. One pot to wash."
+    }
+  ],
+  "tagline": "Six dinners. Zero extra shopping. One pot to wash.",
+  "textSwaps": [],
+  "theme": {
+    "colors": {
+      "accent": "#e07b39",
+      "accent2": "#2e5d3a",
+      "accent3": "#7a9b6d",
+      "bg": "#f6f1e7",
+      "bgDeep": "#efe7d3",
+      "captionBg": "rgba(36,29,18,0.78)",
+      "captionText": "#ffffff",
+      "card": "#ffffff",
+      "line": "#d8cdb4",
+      "lineStrong": "#b3a586",
+      "text": "#241d12",
+      "textMuted": "#8a7d63",
+      "textSoft": "#3d3222"
+    },
+    "fonts": {
+      "mono": "ui-monospace",
+      "sans": "system-ui",
+      "serif": "Georgia"
+    },
+    "source": "sample-app/index.html + plan.html inline tokens (dry-run #37 fixture app: cream #f6f1e7, green #2e5d3a, orange accent #e07b39)",
+    "vignette": 0
+  },
+  "tts": {
+    "fallback": {
+      "rate": 178,
+      "voice": "Samantha"
+    },
+    "model": "eleven_multilingual_v2",
+    "piperModel": "en_US-lessac-medium",
+    "provider": "elevenlabs",
+    "speed": 1.0,
+    "voice": "21m00Tcm4TlvDq8ikWAM"
+  }
+}

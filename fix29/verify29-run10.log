@@ -1,0 +1,302 @@
+PASS counts 67 skills / 45 agents / 48 rules / 55 commands
+PASS skills dir set is exactly the 67 KEPT skills
+PASS agents dir set is exactly the 45 KEPT agents
+PASS commands dir set is exactly the 55 KEPT commands
+PASS rules dir set is exactly the 48 KEPT rules
+PASS all 75 CUT rule files are ABSENT
+PASS all 100 CUT skill dirs are ABSENT
+PASS growth-log is KEPT (not in the CUT list, dir present)
+PASS all 27 removed agents are ABSENT
+PASS all 32 dropped commands are ABSENT
+PASS trigger file parses as JSON and contains zero entries pointing at CUT skills
+PASS trigger keys: 64 -> 49 after the prune
+PASS trigger coverage: skills 67, withTriggers 49
+PASS README count line shows 67 skills, 45 agents, 48 rules, 55 commands (46 rules as-shipped)
+PASS README comparison lines show the new counts (67 / 45 / 55)
+PASS README stock-ECC line untouched (144 skills, 69 agents is stock, not ours)
+PASS zero '166 skills' / '72 agents' / '87 commands' / '66 skills' / '60 commands' / '123 rules' / '121 rules as-shipped' remain in the built tree
+PASS all 20 _F27 anchor tokens exist in the built tree
+PASS fix27-written token CHECKSRC_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token AUDITGUIDE_F27 is in skills/hackathon-pitch/SKILL.md
+PASS fix27-written token NOCOAUTHOR_F27 is in rules/common-git-workflow.mdc
+PASS fix27-written token CAPTURE1_F27 is in skills/browser-qa/SKILL.md
+PASS fix27-written token TESTNOTBQA_F27 is in skills/verification-before-completion/SKILL.md
+PASS fix27-written token DEFER3_F27 is in rules/hackathon-mode.mdc
+PASS fix27-written token REROUTE_F27 is in skills/feature-expansion/SKILL.md
+PASS fix27-written token TESTPASS_F27 is in skills/orchestrate/SKILL.md
+PASS fix27-written token MOTIONSITES_F27 is in skills/motionsites-web-builder/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in skills/design-taste-frontend/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in skills/orchestrate/SKILL.md
+PASS palette-first token PALETTE-FIRST_F27 is in rules/hackathon-mode.mdc
+PASS usage-cut tokens W2/W3/W4_F27 are in skills/orchestrate/SKILL.md
+PASS fix28 note tokens CUTRULES/MANIFEST28/DEADSCRIPTS/README48_F28 are in README.md
+PASS fix28-written token EVALSESS_F28 is in scripts/hooks/evaluate-session.js
+PASS all 7 _F29 anchor tokens exist in the built tree
+PASS GLOBAL-ROUTING block appears exactly once in orchestrate and once in hackathon-mode
+PASS GLOBAL-ROUTING block is byte-identical in orchestrate + hackathon-mode
+PASS GLOBAL-ROUTING block carries token ORCHESTRATOR-ONLY_F29
+PASS GLOBAL-ROUTING block carries token FACTORY-DISPATCH_F29
+PASS GLOBAL-ROUTING block carries token DIRECTOR-BRIEF_F29
+PASS GLOBAL-ROUTING block carries token NO-GUESSING_F29
+PASS GLOBAL-ROUTING block carries token VERIFY-MERGE_F29
+PASS GLOBAL-ROUTING block carries token GLOBAL-ROUTING_F29
+PASS GLOBAL-ROUTING block carries token COST-AWARE_F29
+PASS GLOBAL-ROUTING block names the director-brief field list (naming check only — the real completeness check is 7d)
+PASS GLOBAL-ROUTING block carries the partitioning rule (file/module boundary, no shared files)
+PASS GLOBAL-ROUTING block carries the N>3 justification + minimal context (COST-AWARE)
+PASS GLOBAL-ROUTING block carries the orchestrator-only line
+PASS GLOBAL-ROUTING block carries the harness-gate sentence
+PASS in-scope skill orchestrate carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-pipeline carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-build-mvp carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-add-feature carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-change-feature carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-fix-defect carries GLOBAL-ROUTING_F29
+PASS in-scope skill orch-refine-code carries GLOBAL-ROUTING_F29
+PASS in-scope skill feature-expansion carries GLOBAL-ROUTING_F29
+PASS in-scope skill gan-style-harness carries GLOBAL-ROUTING_F29
+PASS in-scope skill design-taste-frontend carries GLOBAL-ROUTING_F29
+PASS hackathon-mode.mdc carries GLOBAL-ROUTING_F29
+PASS NO-GUESSING carve-out present in orch-pipeline (Belief-in-the-brief bounded)
+PASS NO-GUESSING carve-out present in feature-expansion (brief item 6 bounded)
+PASS NO-GUESSING carve-out present in orch-build-mvp step 4 (third Belief copy bounded, audit #80-A2/B4)
+PASS NO-GUESSING carve-out present in dispatch-prompt.md Belief line (audit #80-A2/B1)
+PASS NO-GUESSING bound present in dispatch-prompt.md fast-worker preamble
+PASS 'pick the reasonable option' occurs exactly 5x in the whole built tree (all bounded)
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orch-pipeline/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orch-pipeline/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/feature-expansion/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/feature-expansion/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orch-build-mvp/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orch-build-mvp/SKILL.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orchestrate/references/dispatch-prompt.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orchestrate/references/dispatch-prompt.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orchestrate/references/dispatch-prompt.md
+PASS NO-GUESSING carve-out follows the Belief sentence in skills/orchestrate/references/dispatch-prompt.md
+PASS tie-breaker present in skills/orch-pipeline/SKILL.md (audit #80-B15)
+PASS tie-breaker present in skills/feature-expansion/SKILL.md (audit #80-B15)
+PASS tie-breaker present in skills/orch-build-mvp/SKILL.md (audit #80-B15)
+PASS tie-breaker present in dispatch-prompt.md Belief line
+PASS tie-breaker present in dispatch-prompt.md fast-worker preamble (short form)
+PASS merge-order bridge present in orchestrate step 4 (partitioning-failure-only)
+PASS merge-order bridge present in feature-expansion Collect (collision procedure)
+PASS merge-order bridge present in orch-build-mvp step 5 Reconcile
+PASS correction brief constructed in feature-expansion fix loop
+PASS correction brief constructed in orch-pipeline Phase 5 Review fix loop
+PASS correction brief constructed in orchestrate escalation ladder (audit #81-B3)
+PASS harness-gate clause on slot refill in orch-pipeline factory paragraph
+PASS harness-gate clause on slot refill in feature-expansion factory paragraph
+PASS harness-gate clause on slot refill in gan-style-harness factory paragraph
+PASS harness-gate clause on slot refill in redesign factory paragraph
+PASS harness-gate clause on slot refill in orchestrate step 4
+PASS design-taste-frontend redesign.md carries the factory routing paragraph
+PASS design-taste-frontend redesign.md locks shared stylesheet/tokens single-writer
+PASS design-taste-frontend redesign.md lists shared files out of scope in every page brief (audit #81-A2)
+PASS design-taste-frontend redesign.md carries the factory queue sentence (audit #81-A3)
+PASS design-taste-frontend SKILL.md:455 points at the redesign flow factory routing
+PASS orchestrate step-4 factory bridge present (waves are factory-queue slots)
+PASS contract core carries field Goal:
+PASS contract core carries field Inputs:
+PASS contract core carries field Constraints:
+PASS contract core carries field Interface:
+PASS contract core carries field Acceptance check:
+PASS contract core carries field Verification steps:
+PASS contract core carries field Return format:
+PASS contract core Constraints names files explicitly out of scope
+PASS contract core forbids dropping a DIRECTOR-BRIEF field
+PASS dispatch-prompt.md skeleton names all seven DIRECTOR-BRIEF fields (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Goal: (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Inputs: (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Constraints: (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Acceptance check: (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Verification steps: (audit #84-B1)
+PASS dispatch-prompt.md recon template carries files out of scope (audit #84-B1)
+PASS dispatch-prompt.md recon template carries Return format: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Goal: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Inputs: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Constraints: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Acceptance check: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Verification steps: (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries files out of scope (audit #84-B1)
+PASS dispatch-prompt.md mechanical template carries Return format: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Goal: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Inputs: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Constraints: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Acceptance check: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Verification steps: (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries files out of scope (audit #84-B1)
+PASS dispatch-prompt.md reasoning template carries Return format: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Goal: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Inputs: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Constraints: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Acceptance check: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Verification steps: (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries files out of scope (audit #84-B1)
+PASS dispatch-prompt.md blind-reviewer template carries Return format: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Goal: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Inputs: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Constraints: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Acceptance check: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Verification steps: (audit #84-B1)
+PASS dispatch-prompt.md worked example carries files out of scope (audit #84-B1)
+PASS dispatch-prompt.md worked example carries Return format: (audit #84-B1)
+PASS dispatch-prompt.md has no 'delete fields that are genuinely N/A'
+PASS dispatch-prompt.md has no 'six fields'
+PASS dispatch-prompt.md has no 'instead of NEEDS_CONTEXT' (first-build carve-out reconciled)
+PASS dispatch-prompt.md first-build carve-out routes the question to the orchestrator
+PASS 'state the assumption you made and proceed' occurs 0x in the built tree (audit #81-B1)
+PASS 'state the assumption' occurs only in the known bounded sites (audit #81-B8(ii))
+PASS agents/deep-reasoner.md carries the NO-GUESSING bound + tie-breaker (audit #81-B1)
+PASS first-build carve-out scope sentence at all four drone-side sites (audit #81-B4)
+PASS first-build carve-out reconciles who states the assumption (audit #81-B4)
+PASS tie-breaker present in dispatch-prompt.md first-build carve-out (audit #81-B5)
+PASS second-pass template returns NEEDS_CONTEXT on an unspecified decision (audit #81-A5)
+PASS feature-expansion format item 1 states where the feature fits and why (audit #84-B1)
+PASS feature-expansion format item 2 names files explicitly OUT of scope
+PASS feature-expansion format item 3 names Constraints (audit #84-B1)
+PASS feature-expansion format splits acceptance criteria (4a) from verification steps (4b)
+PASS feature-expansion format item 9 states the return format
+PASS orch-pipeline briefs follow the seven-field contract (by reference)
+PASS gan-style-harness briefs follow the seven-field contract (by reference)
+PASS _F29 lines identical staged-vs-built for skills/orchestrate/SKILL.md
+PASS _F29 lines identical staged-vs-built for skills/orchestrate/references/dispatch-prompt.md
+PASS _F29 lines identical staged-vs-built for agents/deep-reasoner.md
+PASS _F29 lines identical staged-vs-built for skills/feature-expansion/SKILL.md
+PASS _F29 lines identical staged-vs-built for skills/design-taste-frontend/SKILL.md
+PASS _F29 lines identical staged-vs-built for skills/design-taste-frontend/references/hallmark/references/redesign.md
+PASS _F29 lines identical staged-vs-built for rules/hackathon-mode.mdc
+PASS banned terms 0 in built tree except the motionsites fetch URLs + license title (skills/agents/commands/rules/hooks/README)
+PASS bare grok-4.6-high-fast count is 0 in the built tree
+PASS Grok pins present: grok-4.7-high and cursor-grok-4.6-high-fast occur
+   grok-4.7-high x49, cursor-grok-4.6-high-fast x70
+PASS no deepseek-/qwen- model slugs in the built tree (fix #30 has not landed)
+PASS DeepSeek/Qwen names occur only in the GLOBAL-ROUTING block (orchestrate + hackathon-mode) (audit #84-B2)
+PASS delivery-gate :97 reword present x1, old agent-self-evaluation pointer gone
+PASS browser-qa single-capture rule present x1 (CAPTURE1_F27)
+PASS verification-before-completion UI-verified row present x1 (TESTNOTBQA_F27)
+PASS hackathon-pitch CHECK-THE-SOURCE + AUDIT-AS-GUIDE present x1 each
+PASS common-git-workflow no-Co-authored-by rule present x1 (NOCOAUTHOR_F27)
+PASS orchestrate commit-draft re-route to git-workflow present x1, old skill gone
+PASS security-review end-of-project security-scan dispatch removed
+PASS deferred lists shrunk to the three kept checks (DEFER3_F27)
+PASS B1 orch-add-feature: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-build-mvp: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-change-feature: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-fix-defect: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 orch-refine-code: legacy drift handled inside the design package (REROUTE_F27)
+PASS B1 ui-ux-pro-max: legacy drift handled inside the design package (REROUTE_F27)
+PASS B2 orch-build-mvp: bound (2) relaxed + new-theme clause deleted + inversion sentence (THEME-START_F27)
+PASS B2 ui-ux-pro-max: bound (2) relaxed + new-theme clause deleted + inversion sentence (THEME-START_F27)
+PASS B5 prp-commit: commit draft re-routed to git-workflow
+PASS B6 skill-create: --instincts flag, Instincts step, Step 4, Related Commands gone; description re-routed (B15)
+PASS B6/B15 skill-health: /evolve re-routed to /learn; description re-routed
+PASS B6 ecc-guide: /project-init pointer removed
+PASS B6 epic-sync: /projects compatibility alias removed
+PASS B7 commands/ecc-guide.md: no /security-scan pointer remains
+PASS B7 commands/fastapi-review.md: no /security-scan pointer remains
+PASS B7 commands/harness-audit.md: no /security-scan pointer remains
+PASS B7 rules/react-native-security.mdc: no /security-scan pointer remains
+PASS B7 harness-audit.js: security-scan-command check re-pointed at security-review (id kept)
+PASS B7 harness-audit.js: memory-learning-skill check re-pointed at growth-log (id kept)
+PASS M-new-4 pi-core.json: skills.include has no CUT skills, commands.include has no dropped commands
+PASS B8 council: end-of-project verification re-routed to verification-loop / production-audit
+PASS B9 integration: skill-scout / mcp-server-patterns dispatches re-routed (REROUTE_F27)
+PASS B10 ai-feature-spec: non-AI features re-routed to hackathon-scope
+PASS B11 ecc-agent-evaluator: self-contained, no agent-self-evaluation references
+PASS B12 mobile-ship: screens/features belong to react-native-patterns alone
+PASS B13 systematic-debugging: agent-introspection-debugging reference removed
+PASS M3 trigger notes: deferred list is the three kept checks (DEFER3_F27)
+PASS M4 delivery-gate: agent-self-evaluation 'shipped' claims removed, evaluator pointed at
+PASS M5 README: marketplace list, codebase-memory line, deferred set updated
+PASS M6 contract-first: ai-regression-testing pointers removed
+PASS M6 ecc-database-reviewer: database-migrations pointer removed
+PASS M6 tdd-workflow / postgres-patterns / react-native-patterns pointers removed
+PASS M6 react-patterns: accessibility / angular-developer links removed
+PASS M6 typescript-patterns: nestjs / prisma pointers removed
+PASS M6 strategic-compact: continuous-learning re-pointed at /learn
+PASS M6 resolve-ecc-root.js: sentinel moved to orchestrate
+PASS F1 sessions.md: cost-tracker clause dropped, monitoring clause present x1
+PASS F2 evaluate-session.js: new header + EVALSESS default-config comment present, config load + orphan logs gone
+PASS react-patterns.mdc:194 re-pointed at frontend-a11y (REACTA11Y_F28), old accessibility link gone
+PASS F4 README: MCP-servers line drops codebase-memory, fix28 note present x1
+PASS install-modules.json: 14 modules / 84 paths, skill-unified-memory + business-content gone
+PASS install-modules.json: workflow-quality dependencies emptied to [] (key must stay: the installer iterates it unconditionally)
+PASS install-modules.json: hackathon description no longer lists brainstorming
+PASS install-modules.json: all 84 module paths exist on disk (no silent-skip dangles)
+PASS install-components.json: 55 components, skill:unified-memory + capability:content gone
+PASS install-components.json: every component module id exists in install-modules.json
+PASS install-profiles.json: profiles is a name-keyed dict; research 7 / full 14 modules
+PASS install-profiles.json: business-content gone from research; skill-unified-memory + business-content gone from full
+PASS install-profiles.json: research description reworded (no content-oriented publishing)
+PASS install-profiles.json: every profile module id exists in install-modules.json
+PASS all 135 dead scripts are ABSENT
+PASS deliberately kept orchestration files present (OWED-28-1, ORCHKEEP_F28)
+PASS deliberately kept validate-skills.js present (documented CI tool)
+PASS hooks.json still registers 15 hook events; adapter.js present
+PASS mcp.json: codebase-memory-mcp gone; chrome-devtools + playwright remain
+   profile core OK (7 modules selected)
+   profile developer OK (11 modules selected)
+   profile full OK (14 modules selected)
+   profile minimal OK (6 modules selected)
+   profile opencode OK (4 modules selected)
+   profile research OK (8 modules selected)
+   profile security OK (8 modules selected)
+   components OK (13 modules selected)
+PASS resolveInstallPlan succeeds for all 7 profiles + the full 55-component set
+PASS call map regenerated for fix #28: Rules (48), counts table 48, zero '123'
+PASS call-map sidecar exists with counts 67/45/48/55/15/49 and 0 uncalled rules
+PASS 77-A1 DARTSEC port: manifest globs + Native Manifests section + network bullets present (DARTSEC_F28)
+PASS 77-B1: no run-with-flags.js caller comment remains in live hook files
+PASS 77-B2: capsule-envelope schema no longer names the cut envelope.js as enforcing
+PASS 77-B3: dead path/readFile imports gone, header + log prefix retitled
+PASS orch-pipeline factory paragraph present x1 (GLOBAL-ROUTING_F29)
+PASS orch-pipeline NO-GUESSING carve-out present x1
+PASS orch-pipeline briefs follow the seven-field contract (audit #80-B6)
+PASS orch-pipeline Review correction-brief sentence present x1 (audit #80-B8)
+PASS orch-build-mvp factory pointer present in full x1 (GLOBAL-ROUTING_F29)
+PASS orch-add-feature factory pointer present in full x1 (GLOBAL-ROUTING_F29)
+PASS orch-change-feature factory pointer present in full x1 (GLOBAL-ROUTING_F29)
+PASS orch-fix-defect factory pointer present in full x1 (GLOBAL-ROUTING_F29)
+PASS orch-refine-code factory pointer present in full x1 (GLOBAL-ROUTING_F29)
+PASS gan-style-harness factory paragraph present x1 (GLOBAL-ROUTING_F29)
+PASS gan-style-harness evaluator is an input to verification, not the verify step (audit #80-B2)
+PASS gan-style-harness old evaluator-is-verify substitution is gone
+PASS gan-style-harness orchestrator re-checks the evaluator pass/fail call
+PASS gan-style-harness orchestrator checks the planner spec before the first generator pass
+PASS gan-style-harness rubric pass with failed acceptance criterion is a fail
+PASS gan-style-harness briefs follow the seven-field contract (audit #80-B6)
+PASS gan-style-harness loop wiring carries the orchestrator-check note (audit #81-B2)
+PASS gan-style-harness Scoring carries the orchestrator-check bullet (audit #81-B2)
+PASS feature-expansion Phase 4 factory paragraph present x1 (GLOBAL-ROUTING_F29)
+PASS feature-expansion NO-GUESSING carve-out present x1
+PASS orch-build-mvp NO-GUESSING carve-out present x1 (third Belief copy)
+PASS orch-build-mvp merge-order bridge present x1
+PASS orch-refine-code step-2 refactor-cleaner sweep is a factory drone (audit #80-A4)
+PASS orch-refine-code pointer qualified with the step-2 exception (audit #81-A4)
+PASS commands/orch-refine-code.md step-3 refactor-cleaner sweep is a factory drone
+PASS commands/orch-refine-code.md mirror qualified with the step-3 exception (audit #81-A4)
+PASS common-agents.mdc carries the factory routing line (audit #80-A5)
+PASS common-agents.mdc factory line states the COST-AWARE rules (audit #81-A6)
+PASS commands/gan-build.md carries the factory routing pointer (audit #80-A6)
+PASS commands/gan-build.md pointer states the COST-AWARE rules (audit #81-A6)
+PASS commands/gan-build.md generator block names files out of scope
+PASS commands/gan-build.md Phase 2 has the ORCHESTRATOR-CHECK step (audit #81-B2)
+PASS commands/gan-build.md Phase 1 has the planner-spec check (audit #81-B2)
+PASS commands/gan-build.md CHECK SCORE runs only after the orchestrator check (audit #81-B2)
+PASS ORCHESTRATOR-CHECK sits between EVALUATE and CHECK SCORE (audit #82-B2)
+PASS commands/gan-build.md generator block carries Verification steps (audit #82-B1)
+PASS commands/gan-build.md generator block carries Return format (audit #82-B1)
+PASS commands/gan-design.md step-0 carries the inline design-lead pin (audit #83-A1)
+PASS commands/gan-design.md carries the factory routing pointer (audit #84-A1)
+PASS commands/gan-design.md carries a _F29 token (audit #84-A1)
+PASS agents/ecc-gan-planner.md fallback returns the missing direction to the orchestrator (audit #83-A2)
+PASS agents/ecc-gan-planner.md no longer instructs the planner to invoke the design-lead (audit #83-A2)
+PASS fix28/fix28-patch-log.md exists with 0 errors, 75 rules and 135 scripts accounted for
+PASS patch-log _F28 tokens present (REACTA11Y, NDMISFIRE, ORCHKEEP)
+PASS fix29/fix29-patch-log.md exists with 0 errors and the census line (all 10 in-scope skills)
+   CUT-name sweep: 0 un-allow-listed, 47 allow-listed, 288 generic bare-word noise lines
+PASS CUT-name sweep: zero live dispatches to CUT skills/agents/commands (check-12 allow-list only)
+   check-12b: 0 imperative dispatch(es) hiding in allow-listed lines
+PASS check 12b: no imperative dispatch to a CUT skill/agent/command hides in an allow-listed line
+
+289/289 checks pass

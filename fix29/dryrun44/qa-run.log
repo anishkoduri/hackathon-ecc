@@ -1,0 +1,47 @@
+rendering 12 stills…
+
+2 contact sheet(s):
+  /home/hatch/workspace/hackathon-plugin/fix29/dryrun44/demo-sample-video/out/qa/sheet_01.png
+  /home/hatch/workspace/hackathon-plugin/fix29/dryrun44/demo-sample-video/out/qa/sheet_02.png
+
+--- fix #18 QA (read these before the sheets) ---
+Total runtime (measured narration + gaps + lead/tail): 84.1s — hard rule under 2:10 (130s), absolute ceiling 2:30 (150s).
+
+Coverage table (feature → beat):
+  Pantry inventory list → pantry — filmed
+  Plan a week from the pantry → planweek — filmed
+  Monday chicken curry detail → curry — filmed
+  Zero extra shopping ($0) → cost — filmed
+  One-pot week → onepot — filmed
+  Leftover remix → remix — filmed
+  Cuts (recorded, with reasons):
+  Shopping-list export — would push the video past the 2:10 cap; shown in the live demo instead
+
+Theme: pulled from the app tokens — source recorded: sample-app/index.html + plan.html inline tokens (dry-run #37 fixture app: cream #f6f1e7, green #2e5d3a, orange accent #e07b39)
+Vignette: theme.vignette = 0
+
+Per-beat A/V table — complete this while reading the sheets (claim → stills support it?):
+  problem [card] "Every Sunday, Maya opens her pantry and sees dinner nowhere. Six ingre" — supports it: ___
+  wow [app] "Pantry Pal looks at the same six ingredients and sees the whole week. " — supports it: ___
+  edge [app] "Recipe apps hand you a shopping list. Pantry Pal never does. Nothing t" — supports it: ___
+  pantry [app] "It starts with what is actually there. Chicken, rice, chickpeas, tomat" — supports it: ___
+  planweek [app] "One click. Six dinners, planned from what she already owns. Monday cur" — supports it: ___
+  curry [app] "Monday is chicken curry. Twenty-five minutes, one pan, the tomatoes an" — supports it: ___
+  cost [app] "The number that matters: six dinners, zero dollars extra. The pantry p" — supports it: ___
+  onepot [app] "And one pot to wash. Every dinner cooks in the same pan, so the week e" — supports it: ___
+  remix [app] "Wednesday is the remix. Yesterday's rice meets today's curry, and left" — supports it: ___
+  plan2 [app] "Tuesday's chickpea rice takes twenty minutes. The week never asks for " — supports it: ___
+  arch [card] "No model calls. No backend. The whole app is static pages served local" — supports it: ___
+  close [card] "Six dinners. Zero extra shopping. One pot to wash." — supports it: ___
+  Record the completed table in the video project (qa notes). A "no" is BLOCKING: re-film or rewrite the line; the video does not ship with an unmatched claim.
+
+No BLOCKING findings from the automated checks.
+
+Read the sheets as images. Check, in order:
+  1. capture/marks.json -> warnings is empty, and capture/failures/ is empty
+  2. every shot is on the page you think it is
+  3. no spinners, skeletons or empty states
+  4. every claim in the narration matches what is on screen
+  5. captions legible, small text legible or zoomed
+  6. gorgeousness: cards read as the app's own palette/fonts (not the seed); footage shows the app's best-looking states, never an empty state; vignette matches the app
+  7. mix: listen to a 10-second sample from the middle of the video and confirm the narration is intelligible over the bed

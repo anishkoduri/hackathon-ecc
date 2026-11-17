@@ -6,6 +6,8 @@ description: Fix React build failures (Vite, webpack, Next.js, CRA, Parcel, esbu
 
 This command invokes the **react-build-resolver** agent to incrementally fix React build errors with minimal changes.
 
+**Factory routing (fix #29, GLOBAL-ROUTING_F29):** the react-build-resolver runs as a single-task factory drone with a director brief (goal, files in/out of scope, constraints, acceptance criteria, verification steps, what to return), no-guessing, and orchestrator verification against the brief's acceptance criteria (the re-run build is evidence, not the verdict). Fan-out is bounded by efficiency: N>3 justified in one line; drones carry minimal context.
+
 ## What This Command Does
 
 1. **Detect Build System**: Identify Vite, webpack, Next.js, CRA, Parcel, esbuild, or Bun
@@ -13,6 +15,7 @@ This command invokes the **react-build-resolver** agent to incrementally fix Rea
 3. **Parse Errors**: Group by layer (TypeScript / bundler config / runtime / hydration)
 4. **Fix Incrementally**: One error at a time, re-running build after each change
 5. **Report Summary**: Show what was fixed and what remains
+6. **Orchestrator Verify**: After the resolver reports, the commanding agent verifies the resolver's output against the brief's acceptance criteria — the build is green AND the changes are minimal in scope AND no suppression (`// @ts-ignore`, disabled type-checking) lacks an explanation. A green build with a failed acceptance criterion is a fail. On a failed criterion, re-dispatch the resolver with a correction brief naming the failed acceptance criterion and the required correction, distinct from the original brief (at most two correction re-dispatches; past that, report the remaining issue as blocked with evidence).
 
 ## When to Use
 

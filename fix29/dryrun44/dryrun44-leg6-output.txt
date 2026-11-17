@@ -1,0 +1,78 @@
+PASS 6a-partition-disjoint -- write sets pairwise disjoint across all 6 tasks; shared=[]
+     T1 write=['src/planner/week.ts'] read=['src/planner/types.ts']
+     T2 write=['src/pantry/inventory.ts'] read=['src/planner/types.ts']
+     T3 write=['src/ui/WeekView.tsx'] read=['gan-harness/spec.md']
+     T4 write=['src/planner/remix.ts'] read=['src/planner/types.ts']
+     T5 write=['src/planner/cost.ts'] read=['src/planner/types.ts']
+     T6 write=['src/ui/PlanPage.tsx'] read=['docs/design-tokens.md']
+PASS 6a-shared-read-only -- shared files (['docs/design-tokens.md', 'gan-harness/spec.md', 'src/planner/types.ts', 'src/ui/tokens.css']) appear only as reads / out-of-scope, never in two write sets
+PASS 6a-partition-rule-live -- GLOBAL-ROUTING golden block states the partition-by-boundary rule
+PASS 6a-redesign-single-writer -- redesign.md:68 lists shared stylesheet/tokens out of scope in every page brief (single-writer rule)
+PASS 6b-contract-seven-fields -- dispatch-prompt.md:15 names all seven DIRECTOR-BRIEF fields
+PASS 6b-interface-four-templates -- Interface: present in exactly 4 sections (recon/mechanical/reasoning/worked example), found 4
+     brief T1: all 7 fields
+     brief T2: all 7 fields
+     brief T3: all 7 fields
+     brief T4: all 7 fields
+     brief T5: all 7 fields
+     brief T6: all 7 fields
+PASS 6b-briefs-seven-fields -- all 6 dispatched briefs carry all 7 DIRECTOR-BRIEF fields (goal, files in/out, constraints, acceptance, verification, return)
+PASS 6b-out-of-scope-named -- every brief names files explicitly out of scope (incl. shared tokens.css)
+PASS 6b-incomplete-brief-no-start -- GLOBAL-ROUTING block: incomplete brief = drone does not start
+PASS 6c-deep-reasoner-bound -- deep-reasoner.md:17: 'return NEEDS_CONTEXT naming exactly what is missing — do not guess'
+PASS 6c-five-belief-copies-carved -- carve-out sentence occurs 7x tree-wide: the 5 Belief copies (dispatch-prompt:34 + :94 preamble, orch-build-mvp:70, orch-pipeline:72, feature-expansion:151) + 2 bounded quotations (dispatch-prompt:149 reasoning template, deep-reasoner:17)
+PASS 6c-tie-breaker -- tie-breaker present: 'When in doubt ... return the question — a returned question is never a stall.'
+PASS 6c-unspecified-returns-question -- T5 brief leaves 'cost display format (currency symbol / decimals)' unspecified -> drone returns NEEDS_CONTEXT (does not guess a format)
+PASS 6c-question-goes-to-orchestrator -- GLOBAL-ROUTING: drone 'stops and returns the question to the orchestrator instead of guessing'
+PASS 6c-first-build-carveout-reconciled -- dispatch-prompt.md first-build carve-out (5 sites): NEEDS_CONTEXT goes to the orchestrator, which resolves it by stated assumption (never asks the user mid-build)
+     SITE orch-pipeline:74 (Phase 5 Review fix loop)
+          failing input: T1 output returns 5 dinners, failing 'planWeek() returns 6 dinners'
+          routing text names failed criterion + correction brief: True
+     SITE feature-expansion:158 (fix loop)
+          failing input: T4 remix() returns no Wednesday dinner, failing its acceptance criterion
+          routing text names failed criterion + correction brief: True
+     SITE orchestrate:252 (escalation ladder)
+          failing input: fast-worker misses the acceptance check twice on the same task
+          routing text names failed criterion + correction brief: True
+     SITE gan-build:30 (planner-spec check 3a)
+          failing input: planner spec lacks per-feature acceptance criteria
+          routing text names failed criterion + correction brief: True
+     SITE gan-build:63 (ORCHESTRATOR-CHECK)
+          failing input: T3 rubric 7.4 pass BUT WeekView lacks the 25-minute label — failed acceptance criterion
+          routing text names failed criterion + correction brief: True
+     SITE react-build:18 (step 6 Orchestrator Verify)
+          failing input: resolver reports green build but with an unexplained // @ts-ignore
+          routing text names failed criterion + correction brief: True
+     SITE astra-review:35 (second blind pass)
+          failing input: second blind pass finds a failed acceptance criterion in the fix
+          routing text names failed criterion + correction brief: True
+     SITE redesign.md:68 (page-drone verify)
+          failing input: T6 page output fails 'matches recorded direction tokens'
+          routing text names failed criterion + correction brief: True
+PASS 6d-eight-sites-name-criterion -- all 8 correction-brief construction sites name the failed acceptance criterion in the correction brief
+PASS 6d-gan-order -- gan-build.md wiring order: EVALUATE < ORCHESTRATOR-CHECK < CHECK SCORE (verify step gates the score)
+PASS 6d-rubric-pass-is-not-pass -- gan-build ORCHESTRATOR-CHECK: rubric pass + failed criterion = fail -> generator re-dispatched
+PASS 6d-two-redispatch-cap -- correction re-dispatch capped at two rounds at >=4 of the 8 sites (FE:158, gan:30/:63, react-build:18, astra-review:35)
+PASS 6d-unverified-never-presented -- GLOBAL-ROUTING: unverified drone output is never presented as the orchestrator's own
+     designed-factory trace (per-completion refill):
+       dispatch T1 into free slot (slots=['T1'] waiting=['T2', 'T3', 'T4', 'T5', 'T6'])
+       dispatch T2 into free slot (slots=['T1', 'T2'] waiting=['T3', 'T4', 'T5', 'T6'])
+       dispatch T3 into free slot (slots=['T1', 'T2', 'T3'] waiting=['T4', 'T5', 'T6'])
+       dispatch T4 into free slot (slots=['T1', 'T2', 'T3', 'T4'] waiting=['T5', 'T6'])
+       retire T1 on completion -> slot frees
+       dispatch T5 into free slot (slots=['T2', 'T3', 'T4', 'T5'] waiting=['T6'])
+       retire T2 on completion -> slot frees
+       dispatch T6 into free slot (slots=['T3', 'T4', 'T5', 'T6'] waiting=[])
+       retire T3 on completion -> slot frees
+       retire T4 on completion -> slot frees
+       retire T5 on completion -> slot frees
+       retire T6 on completion -> slot frees
+PASS 6e-designed-refill -- designed factory drains all 6 jobs with per-completion refill (retire order ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'])
+PASS 6e-cursor-waves -- in Cursor the same queue runs as waves: wave 1 T1-T4, wave 2 T5-T6 (no mid-wave refill)
+PASS 6e-harness-gate-five-paragraphs -- harness-gate clause ('in Cursor, slots refill per wave, not per completion') in 5/5 factory paragraphs
+PASS 6e-owed-29-2-honest -- OWED-29-2 recorded in the routing text itself: live factory lights up on the later port, not in Cursor
+PASS 6f-n-greater-3-justified-one-line -- N=6 justified in one line: 'Six disjoint file partitions (week.ts, inventory.ts, WeekView.tsx, remix.ts, cost.ts, PlanPage.tsx) justify N=6.'
+PASS 6f-minimal-context -- each brief carries only its partition's files (minimal context, no whole-tree dump)
+PASS 6f-cost-aware-live -- GLOBAL-ROUTING COST-AWARE_F29: 'the orchestrator justifies N>3 in one line'
+
+LEG 6 summary: 27 passed, 0 failed

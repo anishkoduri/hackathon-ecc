@@ -24120,6 +24120,18 @@ python3 "$PLUGIN_ROOT/fix28/fix28.py" "$PLUGIN_DIR"
 # pipefail stops the build); the run log lands in fix29/fix29-patch-log.md.
 python3 "$PLUGIN_ROOT/fix29/fix29.py" "$PLUGIN_DIR"
 
+# --- fix #30: orchestrator pin grok-4.7-high -> grok-4.7-extra-high ---
+# fix30/fix30.py renames the pin in the built tree in place (49 ID +
+# 22 prose occurrences, exact census — fails loudly on drift) and
+# asserts the fast-worker pin unchanged (70) and the GLOBAL-ROUTING
+# block untouched. Build-time only, by design: staged sources and
+# build.sh inline keep grok-4.7-high because fix16/24/29 anchor on it
+# (fix #16 precedent: the Claude -> Grok pin change was itself done at
+# build time). Runs after fix29, before STEP 5. Exits non-zero on
+# census/post-assertion errors (set -euo pipefail stops the build);
+# the run log lands in fix30/fix30-patch-log.md.
+python3 "$PLUGIN_ROOT/fix30/fix30.py" "$PLUGIN_DIR"
+
 # STEP 5 — Counts
 # ============================================================================
 echo "skills: $(ls "$PLUGIN_DIR/skills" | wc -l)"

@@ -21,7 +21,7 @@ Write down the scope: which files and hunks are in scope, which are out of scope
 
 ## Step 2: Blind review (deep-reasoner)
 
-Dispatch a blind review to the deep-reasoner as a **fresh subagent on Grok 4.7 High (`grok-4.7-high`)**, with no context from this conversation except the scope and the diff. The reviewer must not know who wrote the code or what the intended fix was beyond the claim:
+Dispatch a blind review to the deep-reasoner as a **fresh subagent on Grok 4.7 Extra High (`grok-4.7-extra-high`)**, with no context from this conversation except the scope and the diff. The reviewer must not know who wrote the code or what the intended fix was beyond the claim:
 
 - "Review this diff blind. For each finding: severity (blocker / major / minor), the exact file:line, what is wrong, and the concrete fix. Do not praise what works; list only findings. If a line is fine, say nothing about it."
 
@@ -29,7 +29,7 @@ The reviewer returns findings only — no code changes.
 
 ## Step 3: Fix cycle
 
-- Fixes go to **fast-worker** (`cursor-grok-4.6-high-fast`) for mechanical fixes, or back to **deep-reasoner** (`grok-4.7-high`) for architectural ones.
+- Fixes go to **fast-worker** (`cursor-grok-4.6-high-fast`) for mechanical fixes, or back to **deep-reasoner** (`grok-4.7-extra-high`) for architectural ones.
 
 **Factory routing (fix #29, GLOBAL-ROUTING_F29):** the fast-worker/deep-reasoner fix runs as a single-task factory drone with a director brief (goal, files in/out of scope, constraints, acceptance criteria, verification steps, what to return), no-guessing, and orchestrator verification against the brief's acceptance criteria (the second blind pass is the verification — a zero-blocker verdict with a failed acceptance criterion is a fail). Fan-out is bounded by efficiency: N>3 justified in one line; drones carry minimal context.
 - After fixes, run a **second blind deep-reasoner pass** over the fixed diff to re-verify against the fix brief's acceptance criteria (the second-pass pattern replaces any second-model peer review; a zero-blocker verdict with a failed acceptance criterion is a fail). On a failed criterion, re-dispatch the fixer with a correction brief naming the failed acceptance criterion and the required correction, distinct from the original brief (at most two correction re-dispatches; past that, report the remaining issue as blocked with evidence).
@@ -38,7 +38,7 @@ The reviewer returns findings only — no code changes.
 ## Verdict
 
 ```
-Model: grok-4.7-high
+Model: grok-4.7-extra-high
 Fixer: [fast-worker | deep-reasoner]
 Scope: <files/hunks reviewed>
 Blockers: <count>

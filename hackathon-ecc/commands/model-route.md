@@ -13,8 +13,8 @@ Recommend the best model tier for the current task by complexity and budget.
 ## Routing Heuristic
 
 - `cursor-grok-4.6-high-fast`: deterministic, low-risk mechanical changes
-- `grok-4.7-high`: default for implementation and refactors
-- `grok-4.7-high`: architecture, deep review, ambiguous requirements
+- `grok-4.7-extra-high`: default for implementation and refactors
+- `grok-4.7-extra-high`: architecture, deep review, ambiguous requirements
 
 ## Required Output
 

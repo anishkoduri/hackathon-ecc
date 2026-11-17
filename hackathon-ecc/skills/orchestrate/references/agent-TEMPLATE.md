@@ -1,7 +1,7 @@
 ---
 name: CHANGE-ME
 description: CHANGE-ME — triggering conditions only. Start with the role in one clause, then "Use for/when …" with concrete task types. Never summarize the role's workflow here.
-model: CHANGE-ME (REQUIRED — pin exactly one Grok model ID (e.g. cursor-grok-4.6-high-fast, grok-4.7-high); an unpinned role makes spend unpredictable and is not admitted to the roster)
+model: CHANGE-ME (REQUIRED — pin exactly one Grok model ID (e.g. cursor-grok-4.6-high-fast, grok-4.7-extra-high); an unpinned role makes spend unpredictable and is not admitted to the roster)
 readonly: OPTIONAL — set to true for read-only roles; delete this line otherwise
 ---
 

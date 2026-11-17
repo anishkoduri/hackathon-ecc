@@ -1,0 +1,16 @@
+wow @ 0.0s
+  ! skipped wow.click
+edge @ 15.3s
+pantry @ 22.8s
+planweek @ 31.6s
+  ! skipped planweek.click
+curry @ 40.6s
+cost @ 46.9s
+onepot @ 53.6s
+remix @ 61.9s
+plan2 @ 68.2s
+
+take: 75.4s, 8 camera moves
+warnings:
+  wow.click: Error: page.evaluate: Execution context was destroyed, most likely because of a navigation
+  planweek.click: Error: page.evaluate: Execution context was destroyed, most likely because of a navigation

@@ -1,0 +1,71 @@
+remotion render [<entry-point|serve-url>] [<composition-id>] [<output-location>]
+Render video, audio or an image sequence.
+
+Options:
+  --props <value>                               Input Props
+  --height <value>                              Override Height
+  --width <value>                               Override Width
+  --fps <value>                                 Override FPS
+  --duration <value>                            Override Duration
+  --concurrency <value>                         Concurrency
+  --pixel-format <value>                        Pixel format
+  --image-format <value>                        Video Image Format
+  --image-sequence-pattern <value>              Image Sequence Pattern
+  --config <value>                              Config file
+  --env-file <value>                            Env File
+  --jpeg-quality <value>                        JPEG Quality
+  --output <path>                               Set the output path instead of using a positional argument.
+  --overwrite                                   Overwrite output
+  --sequence                                    Image Sequence
+  --codec <value>                               Codec
+  --audio-codec <value>                         Audio Codec
+  --audio-bitrate <value>                       Audio Bitrate
+  --video-bitrate <value>                       Video Bitrate
+  --buffer-size <value>                         FFmpeg -bufsize flag
+  --max-rate <value>                            FFmpeg -maxrate flag
+  --prores-profile <value>                      ProRes profile
+  --x264-preset <value>                         x264 Preset
+  --gop <value>                                 GOP size
+  --crf <value>                                 CRF
+  --browser-executable <value>                  Browser executable
+  --chrome-mode <value>                         Chrome Mode
+  --scale <value>                               Scale
+  --frames <value>                              Frame Range
+  --every-nth-frame <value>                     Every nth frame
+  --muted                                       Muted
+  --enforce-audio-track                         Enforce Audio Track
+  --disallow-parallel-encoding                  Disallow parallel encoding
+  --number-of-gif-loops <value>                 Number of GIF loops
+  --color-space <value>                         Color space
+  --hardware-acceleration <value>               Hardware Acceleration
+  --bundle-cache                                Webpack Bundle Caching
+  --log <value>                                 Log Level
+  --port <value>                                Port
+  --public-dir <value>                          Public Directory
+  --public-path <value>                         Public Path
+  --audio-latency-hint <value>                  Audio Latency Hint
+  --timeout <value>                             delayRender() timeout
+  --ignore-certificate-errors                   Ignore certificate errors
+  --disable-web-security                        Disable web security
+  --disable-headless                            Disable Headless Mode
+  --dark-mode                                   Dark Mode
+  --gl <value>                                  OpenGL renderer
+  --user-agent <value>                          User agent
+  --media-cache-size-in-bytes <value>           @remotion/media cache size
+  --offthreadvideo-cache-size-in-bytes <value>  OffthreadVideo cache size
+  --offthreadvideo-video-threads <value>        OffthreadVideo threads
+  --enable-multiprocess-on-linux                Enable Multiprocess on Linux
+  --repro                                       Create reproduction
+  --binaries-directory <value>                  Binaries Directory
+  --rspack                                      Rspack
+  --disable-ask-ai                              Disable or Enable the Ask AI option
+  --disable-keyboard-shortcuts                  Disable or Enable keyboard shortcuts
+  --quiet, -q                                   Reduce console output.
+  --public-license-key <value>                  Public License Key
+  --sample-rate <value>                         Sample Rate
+  --for-seamless-aac-concatenation              For seamless AAC concatenation
+  --separate-audio-to <value>                   Separate audio to
+  --metadata <value>                            Metadata
+  --help                                        Show this help.
+
+Full documentation: https://www.remotion.dev/docs/cli/render

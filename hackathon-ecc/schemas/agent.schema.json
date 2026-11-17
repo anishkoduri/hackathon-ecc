@@ -33,7 +33,7 @@
     "model": {
       "type": "string",
       "description": "Source model tier, when present. Grok model slugs only in v1.",
-      "enum": ["cursor-grok-4.6-high-fast", "grok-4.7-high"]
+      "enum": ["cursor-grok-4.6-high-fast", "grok-4.7-extra-high"]
     },
     "tools": {
       "type": "array",

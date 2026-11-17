@@ -1,0 +1,4 @@
+{"width":1440,"time":{"top":53,"h":22,"centerY":64},"icons":{"top":58,"h":12,"centerY":64},"bar":{"top":37,"h":44,"centerY":59},"centerDelta":0}
+{"width":900,"time":{"top":45,"h":22,"centerY":56},"icons":{"top":50,"h":12,"centerY":56},"bar":{"top":29,"h":44,"centerY":51},"centerDelta":0}
+{"width":390,"time":{"top":16,"h":22,"centerY":27},"icons":{"top":21,"h":12,"centerY":27},"bar":{"top":0,"h":44,"centerY":22},"centerDelta":0}
+STATUS-CENTER PROBE DONE

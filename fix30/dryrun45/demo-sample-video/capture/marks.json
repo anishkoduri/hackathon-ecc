@@ -1,0 +1,127 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "marks": [
+    {
+      "id": "wow",
+      "t": 7737
+    },
+    {
+      "id": "edge",
+      "t": 15264
+    },
+    {
+      "id": "pantry",
+      "t": 24443
+    },
+    {
+      "id": "planweek",
+      "t": 33429
+    },
+    {
+      "id": "curry",
+      "t": 40551
+    },
+    {
+      "id": "cost",
+      "t": 46873
+    },
+    {
+      "id": "onepot",
+      "t": 53594
+    },
+    {
+      "id": "remix",
+      "t": 61915
+    },
+    {
+      "id": "plan2",
+      "t": 68239
+    },
+    {
+      "id": "__end",
+      "t": 75364
+    }
+  ],
+  "cams": [
+    {
+      "t": 15373,
+      "x": 40,
+      "y": 96,
+      "w": 1840,
+      "h": 30,
+      "pad": 300,
+      "max": 1.7,
+      "ms": 900
+    },
+    {
+      "t": 24629,
+      "x": 40,
+      "y": 209.234375,
+      "w": 1840,
+      "h": 38,
+      "pad": 300,
+      "max": 1.5,
+      "ms": 900
+    },
+    {
+      "t": 40653,
+      "x": 64,
+      "y": 295,
+      "w": 1792,
+      "h": 36,
+      "pad": 300,
+      "max": 1.6,
+      "ms": 900
+    },
+    {
+      "t": 46918,
+      "x": 40,
+      "y": 190,
+      "w": 1840,
+      "h": 71,
+      "pad": 300,
+      "max": 1.7,
+      "ms": 900
+    },
+    {
+      "t": 53671,
+      "x": 40,
+      "y": 96,
+      "w": 1840,
+      "h": 30,
+      "pad": 300,
+      "max": 1.6,
+      "ms": 900
+    },
+    {
+      "t": 61971,
+      "x": 64,
+      "y": 549,
+      "w": 1792,
+      "h": 36,
+      "pad": 300,
+      "max": 1.6,
+      "ms": 900
+    },
+    {
+      "t": 68303,
+      "x": 64,
+      "y": 422,
+      "w": 1792,
+      "h": 36,
+      "pad": 300,
+      "max": 1.6,
+      "ms": 900
+    },
+    {
+      "t": 68303,
+      "reset": true,
+      "ms": 900
+    }
+  ],
+  "warnings": [
+    "wow.click: Error: page.evaluate: Execution context was destroyed, most likely because of a navigation",
+    "planweek.click: Error: page.evaluate: Execution context was destroyed, most likely because of a navigation"
+  ]
+}

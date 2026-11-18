@@ -16,9 +16,9 @@ every chat in that project uses it.
   plugin asks one question at a time until every decision is recorded, and
   that decision record steers scoping, expansion, and orchestration. Say
   "skip the grilling" or "just build it" to skip it.
-- **UI skills, used together** — `ui-ux-pro-max` (design direction) +
+- **UI skills, used together** — `design-taste-frontend` (design lead for every surface, with `ui-ux-pro-max` lookups) +
   `less-flat-ui` (texture layer) on non-landing UI work (dense dashboards, forms, and tables stay flat). Exception: `less-flat-ui`'s texture layer also applies inside a `design-taste-frontend` landing-page build, on surfaces where the Taste page system leaves a surface unstyled (never over its hero, dealt moments, or shader scenes — see `rules/hackathon-mode.mdc` §5). Taste
-  (`design-taste-frontend`) leads full company/landing-page builds.
+  (`design-taste-frontend`) leads every surface — full company/landing-page builds, dashboards, apps, and components.
   `polish-pass` fixes existing UI without restyling. Hallmark's 50-theme catalog supplies the theme vocabulary Taste deals from, and its gate checker (`sloplint`) + fresh-context reviewer run at Verify; Impeccable's 62-rule detector + craft floor are wired into `polish-pass` (its direction lenses were left out on purpose — polish never restyles).
 - **Hackathon workflow** — `hackathon-scope` (MVP scoping), `feature-expansion`
   (brainstorm, plan, and implement the next features), `integration` (wire a chosen API/SDK), `track-picker`, `mobile-ship`, `deploy-fast`, `app-scaffold`,
@@ -27,6 +27,7 @@ every chat in that project uses it.
   verification-before-completion).
 - **Codebase memory** — `codebase-memory` was cut in fix #27 and is not shipped. Explore unfamiliar code with grep-and-read and the `ecc-code-explorer` agent instead: find where a feature lives, trace callers/callees, hunt dead code, and run impact analysis before a change.
 - **Fix #31 design libraries (Nov 17, 2026)** — GetLayers (free set only), GSAP, React Bits, and Hairline illustrations added to the palette-first inventory. Skills are now 72. (`GETLAYERS_F31` `GSAP_F31` `REACTBITS_F31` `HAIRLINE_F31`)
+- **Fix #32 ui-ux-pro-max demotion (Nov 17, 2026)** — ui-ux-pro-max is now lookup-only: design-taste-frontend leads every surface (landing, dashboard/app, component) with ui-ux-pro-max as its lookup inventory. Trigger keys 49 -> 48 (the dashboard phrases moved to design-taste-frontend; the skill:ui-ux-pro-max key is deleted). Skills stay 72. (`UIPROLOOKUP_F32`)
 - **Fix #28 bloat cut (Nov 16, 2026)** — 75 cut-language rules, the stale install-manifest paths, and 135 dead scripts removed. Rules are now 48. (`CUTRULES_F28` `MANIFEST28_F28` `DEADSCRIPTS_F28` `README48_F28`)
 - **Orchestration** — `/orchestrate` runs a tiered scout / fast-worker /
   deep-reasoner team; on high-stakes work (high blast radius and hard to verify) two independent deep-reasoner passes verify in parallel, and a disagreement stops the run.

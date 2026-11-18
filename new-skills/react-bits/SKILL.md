@@ -67,5 +67,5 @@ Every installed component keeps its reduced-motion behaviour: under `prefers-red
 - The live catalog: `https://reactbits.dev/` (Text Animations, Animations, Components, Backgrounds, Micro Interactions)
 - Installation guide: `https://reactbits.dev/get-started/installation`
 - Source repo: `https://github.com/DavidHDev/react-bits`
-- The fix #22 pin and stack scope: `skills/ui-ux-pro-max/SKILL.md` (§11, REACTBITS_F22)
+- The fix #22 pin and stack scope: owned by this skill (commit `9d9c687…`); the upstream vendored record stays in `skills/ui-ux-pro-max/SKILL.md` (§11, REACTBITS_F22)
 - Motion examples in this plugin: `skills/motion-patterns/SKILL.md` (Code Examples)

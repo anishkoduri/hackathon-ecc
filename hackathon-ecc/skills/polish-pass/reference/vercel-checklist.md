@@ -89,7 +89,7 @@ the top of this file.
 - **Visuals:** the visual test is whether the built UI follows the interface
   rules (labels, focus, contrast steps, safe areas) that make it usable, not
   whether it looks a certain way.
-- **Techniques:** the deliberate path for each flagged item runs through the
+- **Techniques:** the deliberate path for each flagged item goes through the
   named skill (frontend-a11y, motion-*, `ui-ux-pro-max`, the dealt theme) —
   never a fresh default invented in this pass.
 - **Colors:** color rules are judged against the dealt palette; the contrast

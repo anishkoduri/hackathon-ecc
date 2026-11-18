@@ -34,7 +34,7 @@ Each Lens has a playbook in `reference/lenses/`. Read a Lens's file before apply
 
 **Ask before proceeding only if** the plan would: change brand identity or the overall visual direction (that's a redesign; out of scope for this skill — report it instead), change factual copy or claims, add a dependency (font, library), or remove a feature. Otherwise proceed without asking; state the plan in one or two lines — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where you proceed without waiting and record it as blocked in the final report if you cannot resolve it; never stop for a human decision mid-build. A plan item that would need asking is resolved by the safe option instead — leave copy, claims, and brand identity unchanged, add no dependency, remove nothing — or recorded as blocked.
 
-If the baseline sits below Level 6 (template) on [scoring.md](scoring.md), polish can't reach 10/10 on its own: it keeps the look, and a surface moves past 6 only through a product idea or a new direction that polish isn't allowed to invent. Still apply the Lenses, but append the generic-template observation to `.hallmark/candidate-evidence.md` as candidate evidence for `browser-qa` — a FINDING exists only on `browser-qa`'s visual-loop verdict, and only then is it routed to the design skill (`ui-ux-pro-max`, or `design-taste-frontend` on a landing page) for a redesign within the existing caps — the orchestrator routes it; it also stays listed under "Still short of 10/10", naming the artifact or idea each weak section is missing, until that redesign lands and is re-verified by `browser-qa` before deploy.
+If the baseline sits below Level 6 (template) on [scoring.md](scoring.md), polish can't reach 10/10 on its own: it keeps the look, and a surface moves past 6 only through a product idea or a new direction that polish isn't allowed to invent. Still apply the Lenses, but append the generic-template observation to `.hallmark/candidate-evidence.md` as candidate evidence for `browser-qa` — a FINDING exists only on `browser-qa`'s visual-loop verdict, and only then is it routed to the design skill (`design-taste-frontend`, the design lead for every surface) for a redesign within the existing caps — the orchestrator routes it; it also stays listed under "Still short of 10/10", naming the artifact or idea each weak section is missing, until that redesign lands and is re-verified by `browser-qa` before deploy.
 
 ## Step 4: Apply
 
@@ -83,7 +83,7 @@ One row per meaningful change, grouped by Lens. Use the real old and new values,
 Direction-application is `browser-qa`'s verdict, cited not judged: record it here only if `browser-qa` has already rendered it on the screen, with the verdict cited; otherwise leave it out.
 
 ### Generic-template findings (only on `browser-qa`'s visual-loop verdict)
-- <screen>: <`browser-qa`'s verdict + evidence> — routed to <`ui-ux-pro-max` | `design-taste-frontend`> for redesign (omit if no `browser-qa` verdict; candidate evidence alone is recorded under Harmony check / "Still short of 10/10", not here)
+- <screen>: <`browser-qa`'s verdict + evidence> — routed to <`design-taste-frontend`> for redesign (omit if no `browser-qa` verdict; candidate evidence alone is recorded under Harmony check / "Still short of 10/10", not here)
 
 ### Accepted detector findings
 - <rule> at <file:line>: <why it's safe, and how you verified it> (omit if none)
@@ -103,4 +103,4 @@ Ranked by impact/effort/risk; this is the list orchestrate's final report consum
 - <remaining gaps, with what it would take: content, assets, or decisions only the user can make>
 ```
 
-Keep it tight. If the look itself needs a new direction, end with: "The remaining gaps need a redesign (new direction), which is out of scope for a polish pass — run `ui-ux-pro-max` for that."
+Keep it tight. If the look itself needs a new direction, end with: "The remaining gaps need a redesign (new direction), which is out of scope for a polish pass — run `design-taste-frontend` for that."

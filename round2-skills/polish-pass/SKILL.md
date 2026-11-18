@@ -1,6 +1,6 @@
 ---
 name: polish-pass
-description: "Final polish pass for a web UI that already has its look: diagnose the target, then fix only the states, responsive issues, and consistency drift that raise its score — loading/empty/error states, mobile breakage, contrast, focus rings, alignment drift, unclear copy, and sloppy details — while keeping the current look exactly. Use when the UI exists and the user wants it better, fixed, or finished ('improve', 'clean up', 'fix mobile'). Never use it to restyle or redesign: a new look belongs to ui-ux-pro-max and less-flat-ui, not this skill. Verifies with before/after screenshots across light/dark × desktop/mobile. Not for native iOS/Android or backend-only work."
+description: "Final polish pass for a web UI that already has its look: diagnose the target, then fix only the states, responsive issues, and consistency drift that raise its score — loading/empty/error states, mobile breakage, contrast, focus rings, alignment drift, unclear copy, and sloppy details — while keeping the current look exactly. Use when the UI exists and the user wants it better, fixed, or finished ('improve', 'clean up', 'fix mobile'). Never use it to restyle or redesign: a new look belongs to design-taste-frontend (design lead for every surface, with ui-ux-pro-max lookups) and less-flat-ui, not this skill. Verifies with before/after screenshots across light/dark × desktop/mobile. Not for native iOS/Android or backend-only work."
 license: Apache-2.0
 ---
 
@@ -12,7 +12,7 @@ All paths below are relative to the directory containing this `SKILL.md` (the **
 
 ## The harmony rule — read this first
 
-**This skill never redesigns or restyles anything.** The plugin already has `ui-ux-pro-max` and `less-flat-ui` for design direction and surface treatments. Those skills own the look. This skill is a final pass that FIXES what is broken, missing, or drifting while KEEPING the current look:
+**This skill never redesigns or restyles anything.** The plugin already has `design-taste-frontend` for design direction on every surface (with `ui-ux-pro-max` as its lookup inventory) and `less-flat-ui` for surface treatments. Those skills own the look. This skill is a final pass that FIXES what is broken, missing, or drifting while KEEPING the current look:
 
 - **Fix:** loading/empty/error states, overflow and worst-case data, mobile breakage, contrast failures, missing focus rings, misaligned details, inconsistent tokens, unclear labels and error copy, slow or janky feedback motion. A control that does nothing when clicked is functional, not cosmetic: diagnose it with `click-path-audit` (see [reference/polish.md](reference/polish.md) Step 2), then fix the states and feedback around it here.
 - **Never:** change the color palette, typefaces, visual style, layout structure, or brand identity; invent a new direction; add decorative motion, new effects, or a "bolder" look.
@@ -24,14 +24,14 @@ Count convention (fix #24 F-06): wherever a frozen rule text says 'six dimension
 
 **Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 
-If the evidence suggests the look itself is the problem — the UI looks like a generic template, the palette needs re-picking, the structure needs rethinking — do not restyle it here. Apply the polish fixes that fit, then append the per-screen evidence to `.hallmark/candidate-evidence.md` as candidate evidence for `browser-qa` (which screens, what suggests the direction is not applied) — a generic-template FINDING exists only on `browser-qa`'s visual-loop verdict, and only then does the orchestrator route it back to the design skill (`ui-ux-pro-max`, or `design-taste-frontend` on a landing page) for a redesign within the existing caps; it stays listed under "Still short of 10/10" until that redesign lands and is re-verified by `browser-qa` before deploy. If the user asks for a new look outright, that is not this skill: say so and point them at `ui-ux-pro-max`.
+If the evidence suggests the look itself is the problem — the UI looks like a generic template, the palette needs re-picking, the structure needs rethinking — do not restyle it here. Apply the polish fixes that fit, then append the per-screen evidence to `.hallmark/candidate-evidence.md` as candidate evidence for `browser-qa` (which screens, what suggests the direction is not applied) — a generic-template FINDING exists only on `browser-qa`'s visual-loop verdict, and only then does the orchestrator route it back to the design skill (`design-taste-frontend`, the design lead for every surface) for a redesign within the existing caps; it stays listed under "Still short of 10/10" until that redesign lands and is re-verified by `browser-qa` before deploy. If the user asks for a new look outright, that is not this skill: say so and point them at `design-taste-frontend`.
 
 ## When to use
 
 | The user wants… | Use |
 |---|---|
 | An existing UI better, fixed, or finished ("improve", "clean up", "fix mobile", "make it feel done") | **This skill** |
-| A new look, direction, or visual style ("redesign", "revamp", "make it look different") | `ui-ux-pro-max` / `less-flat-ui` — not this skill |
+| A new look, direction, or visual style ("redesign", "revamp", "make it look different") | `design-taste-frontend` / `less-flat-ui` (with `ui-ux-pro-max` lookups) — not this skill |
 | A new page, component, or flow that doesn't exist yet | The build skills — not this skill |
 | Only an opinion or a rating, no edits | Score it with [reference/scoring.md](reference/scoring.md) and report; do not edit — but still run the harmony check and both detector reads (non-negotiables 4–5) when source is available, and record it when no source is available |
 

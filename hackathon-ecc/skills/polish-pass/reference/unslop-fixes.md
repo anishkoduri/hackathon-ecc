@@ -107,9 +107,10 @@ craft-floor ban (monospace as a technical costume) — do not restate it.
 ### D5 — Use a design system
 
 **Already covered by architecture — no new rule.** The plugin IS a design
-system: `ui-ux-pro-max` ("Define the design system before implementing UI")
-records the system in `design-system/<project-slug>/MASTER.md` (or
-`docs/design-tokens.md`), and `polish-pass` fixes against those tokens. This
+system: `design-taste-frontend` step 4a defines the design system before implementing UI
+and records the system in `design-system/<project-slug>/MASTER.md` (or `docs/design-tokens.md`),
+with `ui-ux-pro-max` as the lookup source for the system's palette and type rows, and
+`polish-pass` fixes against those tokens. This
 fix is one line: use the recorded system — extend its tokens instead of
 inventing ad-hoc values (SKILL.md → Design system). If a project has no
 recorded tokens, that is a missing-direction finding routed to the design skill,
@@ -154,7 +155,7 @@ Group related items tight; separate distinct groups by at least 2 spacing steps
 more (craft-floor spacing rules). Spacing — not dividers, not borders — does the
 grouping. Pairs with C6 / C8. Lens: layout. Points at `ui-ux-pro-max`
 (`references/quick-reference.md`: `spacing-scale`, `whitespace-balance`) and the
-craft-floor spacing rules — do not restate them. `ui-ux-pro-max` owns spacing;
+craft-floor spacing rules — do not restate them. Spacing comes from the craft floor (Impeccable/`polish-pass`) and `motion-foundations` tokens, with `ui-ux-pro-max` guidelines as a lookup only;
 this fix applies it.
 - **D19 —** Motion: none — static fix, no motion; Theme: spacing comes from the
   theme's own scale; Texture: none — no texture in this fix; Visuals: spacing

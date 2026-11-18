@@ -588,7 +588,7 @@ replace_desc_line("systematic-debugging",
   "description: Use when a bug's root cause is unknown and no more specific debugging skill applies — after ruling out an agent failure (agent-introspection-debugging), broken-button state bugs (click-path-audit), and deployed-UI failures (browser-qa). Requires finding root cause before attempting any fixes.")
 replace_desc_line("ui-ux-pro-max",
   'description: "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing, building, reviewing, or fixing interfaces, including pages, components, design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Searchable local data: 80 searchable styles (51 active), 192 product palettes and reasoning profiles, 74 font pairings, 120 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."',
-  'description: "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing or building interfaces for dashboards, apps, and components, including design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Do NOT use for a full company or landing-page build (use design-taste-frontend for that), and do NOT use for fixes to existing UI (use polish-pass for that). Searchable local data: 80 searchable styles (51 active), 192 product palettes and reasoning profiles, 74 font pairings, 120 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."')
+  'description: "UI/UX design intelligence for web, mobile, and desktop — LOOKUP ONLY (fix #32). This skill is the design-data inventory, consulted by the design-lead (design-taste-frontend, which leads every surface) AFTER the direction is set; it is never the design lead. Use when the design-lead needs a lookup: palettes, font pairings, UX guidelines, icons, charts, stacks, styles, or GSAP presets from its searchable local data. Do NOT use to set a design direction, lead a dashboard/app/component build, or for a full company or landing-page build (use design-taste-frontend for that), and do NOT use for fixes to existing UI (use polish-pass for that). Searchable local data: 80 searchable styles (51 active), 192 product palettes and reasoning profiles, 74 font pairings, 120 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."')
 replace_desc_line("integration",
   'description: Wire a named API, tool, SDK, or hackathon sponsor track into the project. Use when the user says "integrate X", names an API, SDK, tool, or sponsor in the idea or requirements, or asks how to qualify for a sponsor track. Covers finding the docs, checking for an existing skill, wiring auth and client, env vars, verifying with a live call, and putting the integration in the demo path.',
   'description: Wire a named API, tool, or SDK into the project. Use ONLY once a sponsor/API choice is already made — when the user says "integrate X" or names an API, SDK, or tool to wire in. Do NOT use to choose which sponsor or track to pursue (track-picker owns that), and do NOT use for generic REST-client mechanics on an unnamed API (api-integration owns that). Covers finding the docs, checking for an existing skill, wiring auth and client, env vars, verifying with a live call, and putting the integration in the demo path.')
@@ -619,7 +619,7 @@ replace_text("mobile-ship",
   '  Review anti-rejection tactics, and the simulator gotcha. Use ONLY for shipping/packaging a testable build: "ship a test build", "get it on TestFlight",\n  "closed testing", "submit to the App Store / Play Store", "why was my app rejected", store\n  rejections (2.1, 2.3, 4.3), "production .ipa won\'t run on the Simulator", or a mobile app that\n  needs a testable build for demo day. Never for writing screens or features — building/editing code\n  belongs to react-native-patterns / dart-flutter-patterns. Also covers Flutter/xcodebuild archive, export and upload (including expired Xcode')
 replace_text("design-taste-frontend",
   '  micro-interactions, and a checker and finish gate that enforce it in a real browser. Use this\n  whenever you build, design, redesign, restyle, polish or review a landing page, company,\n  product, shop, cafe, hotel, studio, SaaS, AI, developer-tool or game site, as static HTML/CSS or\n  inside an existing React, Next.js, Vue, Svelte, Astro or Tailwind project, or when the user says\n  a page looks generic, templated or "AI-made".',
-  '  micro-interactions, and a checker and finish gate that enforce it in a real browser. Use ONLY for a full company or landing-page build from scratch, or a full-page redesign where\n  this skill leads the page system — a landing page, company, product, shop, cafe, hotel, studio,\n  SaaS, AI, developer-tool or game site, as static HTML/CSS or inside an existing React, Next.js,\n  Vue, Svelte, Astro or Tailwind project, or when the user says a page looks generic, templated or\n  "AI-made". Do NOT use for dashboards, apps, components, or fixes to existing UI — those belong to\n  ui-ux-pro-max (dashboards/apps/components) and polish-pass (fixes to existing UI).')
+  '  micro-interactions, and a checker and finish gate that enforce it in a real browser. Use for EVERY surface — a full company or landing-page build from scratch, a full-page redesign where\n  this skill leads the page system, and dashboards, apps, and components, where this skill is the design lead with ui-ux-pro-max as its lookup inventory — a landing page, company, product, shop, cafe, hotel, studio,\n  SaaS, AI, developer-tool or game site, as static HTML/CSS or inside an existing React, Next.js,\n  Vue, Svelte, Astro or Tailwind project, or when the user says a page looks generic, templated or\n  "AI-made". Do NOT use for fixes to existing UI — those belong to polish-pass.')
 print("multi-line description replacements applied (2)")
 
 # --- small content fixes ---
@@ -757,28 +757,31 @@ open(p, "w", encoding="utf-8").write(text)
 print("feature-expansion patched to ECC process")
 PYEOF
 
-# --- (f) polish-pass: the new-look rule also names Taste ---
-# (harmony audit renamed the display name to design-taste-frontend)
+# --- (f) polish-pass: the new-look rule names Taste as the lead (fix #32) ---
+# (harmony audit renamed the display name to design-taste-frontend; fix #32
+# demotes ui-ux-pro-max to lookup-only, so the staged copy now carries the
+# demoted wording and this patch only appends the description motion
+# sentence; subs 2-4 are identity guards keeping staged == built.)
 python3 - "$PLUGIN_DIR/skills/polish-pass/SKILL.md" <<'PYEOF'
 import sys
 p = sys.argv[1]
 text = open(p, encoding="utf-8").read()
 subs = [
   (
-    "a new look belongs to ui-ux-pro-max and less-flat-ui, not this skill.",
-    "a new look belongs to ui-ux-pro-max, less-flat-ui, and design-taste-frontend, not this skill. New motion/interaction-feel design belongs to make-interfaces-feel-better; fixing broken feedback motion is in scope here.",
+    "a new look belongs to design-taste-frontend (design lead for every surface, with ui-ux-pro-max lookups) and less-flat-ui, not this skill.",
+    "a new look belongs to design-taste-frontend (design lead for every surface, with ui-ux-pro-max lookups) and less-flat-ui, not this skill. New motion/interaction-feel design belongs to make-interfaces-feel-better; fixing broken feedback motion is in scope here.",
   ),
   (
-    "The plugin already has `ui-ux-pro-max` and `less-flat-ui` for design direction and surface treatments. Those skills own the look.",
-    "The plugin already has `ui-ux-pro-max`, `less-flat-ui`, and `design-taste-frontend` for design direction, surface treatments, and full-page builds. Those skills own the look.",
+    "The plugin already has `design-taste-frontend` for design direction on every surface (with `ui-ux-pro-max` as its lookup inventory) and `less-flat-ui` for surface treatments. Those skills own the look.",
+    "The plugin already has `design-taste-frontend` for design direction on every surface (with `ui-ux-pro-max` as its lookup inventory) and `less-flat-ui` for surface treatments. Those skills own the look.",
   ),
   (
-    "If the user asks for a new look outright, that is not this skill: say so and point them at `ui-ux-pro-max`.",
-    "If the user asks for a new look outright, that is not this skill: say so and point them at `ui-ux-pro-max`, `less-flat-ui`, or `design-taste-frontend`.",
+    "If the user asks for a new look outright, that is not this skill: say so and point them at `design-taste-frontend`.",
+    "If the user asks for a new look outright, that is not this skill: say so and point them at `design-taste-frontend`.",
   ),
   (
-    "| A new look, direction, or visual style (\"redesign\", \"revamp\", \"make it look different\") | `ui-ux-pro-max` / `less-flat-ui` — not this skill |",
-    "| A new look, direction, or visual style (\"redesign\", \"revamp\", \"make it look different\") | `ui-ux-pro-max` / `less-flat-ui` / `design-taste-frontend` — not this skill |",
+    "| A new look, direction, or visual style (\"redesign\", \"revamp\", \"make it look different\") | `design-taste-frontend` / `less-flat-ui` (with `ui-ux-pro-max` lookups) — not this skill |",
+    "| A new look, direction, or visual style (\"redesign\", \"revamp\", \"make it look different\") | `design-taste-frontend` / `less-flat-ui` (with `ui-ux-pro-max` lookups) — not this skill |",
   ),
 ]
 for old, new in subs:
@@ -795,7 +798,7 @@ python3 - "$PLUGIN_DIR" <<'PYEOF'
 import sys
 base = sys.argv[1]
 NOTES = {
-  "frontend-design-direction": " In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads full landing-page builds, ui-ux-pro-max leads dashboards/apps/components, and polish-pass fixes existing UI.",
+  "frontend-design-direction": " In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads every surface (landing pages, dashboards, apps, components), with ui-ux-pro-max as its lookup inventory, and polish-pass fixes existing UI.",
   "intent-driven-development": " Do NOT use on the first hackathon project prompt — grill-me owns that — and do NOT use for hackathon MVP scoping — hackathon-scope owns that.",
   "investor-materials": " Hackathon pitch decks are built by frontend-slides (with the narrative from hackathon-pitch); investor-materials is for fundraising, not hackathon judging.",
   "product-lens": " For hackathon MVP scoping use hackathon-scope instead.",
@@ -5615,7 +5618,7 @@ pass review N consecutive times (add a max-iteration backstop to bound burn)."""
 audit_patch(f"{base}/skills/frontend-design-direction/SKILL.md", [
   ("""---
 name: frontend-design-direction
-description: Set an ECC-specific frontend design direction for production UI work. Use when building or improving websites, dashboards, applications, components, landing pages, visual tools, or any web UI that needs stronger product-specific design judgment. In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads full landing-page builds, ui-ux-pro-max leads dashboards/apps/components, and polish-pass fixes existing UI.
+description: Set an ECC-specific frontend design direction for production UI work. Use when building or improving websites, dashboards, applications, components, landing pages, visual tools, or any web UI that needs stronger product-specific design judgment. In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads every surface (landing pages, dashboards, apps, components), with ui-ux-pro-max as its lookup inventory, and polish-pass fixes existing UI.
 metadata:
   origin: community
 ---
@@ -5624,7 +5627,7 @@ metadata:
 """,
    """---
 name: frontend-design-direction
-description: Set an ECC-specific frontend design direction for production UI work OUTSIDE hackathon projects. Use when building or improving websites, dashboards, applications, components, landing pages, visual tools, or any web UI that needs stronger product-specific design judgment. In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads full landing-page builds, ui-ux-pro-max leads dashboards/apps/components, and polish-pass fixes existing UI.
+description: Set an ECC-specific frontend design direction for production UI work OUTSIDE hackathon projects. Use when building or improving websites, dashboards, applications, components, landing pages, visual tools, or any web UI that needs stronger product-specific design judgment. In a hackathon project, do NOT use this skill for UI work — design-taste-frontend leads every surface (landing pages, dashboards, apps, components), with ui-ux-pro-max as its lookup inventory, and polish-pass fixes existing UI.
 metadata:
   origin: community
 ---
@@ -18350,9 +18353,9 @@ every chat in that project uses it.
   plugin asks one question at a time until every decision is recorded, and
   that decision record steers scoping, expansion, and orchestration. Say
   "skip the grilling" or "just build it" to skip it.
-- **UI skills, used together** — `ui-ux-pro-max` (design direction) +
+- **UI skills, used together** — `design-taste-frontend` (design lead for every surface, with `ui-ux-pro-max` lookups) +
   `less-flat-ui` (texture layer) on non-landing UI work (dense dashboards, forms, and tables stay flat). Exception: `less-flat-ui`'s texture layer also applies inside a `design-taste-frontend` landing-page build, on surfaces where the Taste page system leaves a surface unstyled (never over its hero, dealt moments, or shader scenes — see `rules/hackathon-mode.mdc` §5). Taste
-  (`design-taste-frontend`) leads full company/landing-page builds.
+  (`design-taste-frontend`) leads every surface — full company/landing-page builds, dashboards, apps, and components.
   `polish-pass` fixes existing UI without restyling. Hallmark's 50-theme catalog supplies the theme vocabulary Taste deals from, and its gate checker (`sloplint`) + fresh-context reviewer run at Verify; Impeccable's 62-rule detector + craft floor are wired into `polish-pass` (its direction lenses were left out on purpose — polish never restyles).
 - **Hackathon workflow** — `hackathon-scope` (MVP scoping), `feature-expansion`
   (brainstorm, plan, and implement the next features), `integration` (wire a chosen API/SDK), `track-picker`, `mobile-ship`, `deploy-fast`, `app-scaffold`,
@@ -24144,6 +24147,96 @@ python3 "$PLUGIN_ROOT/fix30/fix30.py" "$PLUGIN_DIR"
 # census/license/post-assertion errors (set -euo pipefail stops the build);
 # the run log lands in fix31/fix31-patch-log.md.
 python3 "$PLUGIN_ROOT/fix31/fix31.py" "$PLUGIN_DIR"
+
+# --- fix #32: demote ui-ux-pro-max to lookup-only ---
+# fix32/fix32.py asserts the staged weave landed (row 10 routes every
+# surface to design-taste-frontend, inventory §1 heading is lookup-only,
+# hackathon-mode §2/§5 name Taste as lead for app surfaces), asserts the
+# data census (styles 89/51, palettes 192, fonts 74, guidelines 120,
+# icons 105, charts 25, stacks 22, app-interface 32, landing 34,
+# products 192, GSAP presets 17) and the 11 pins present in their owner
+# homes, then moves the 4 dashboard trigger phrases from
+# skill:ui-ux-pro-max to skill:design-taste-frontend, deletes the
+# skill:ui-ux-pro-max key (trigger keys 49 -> 48), and adds the fix #32
+# README provenance note. The upstream-derived restatements below are
+# patched here (fix #27 pattern): the orch-* UI-rule component lists,
+# the orch-change-feature redesign routing, the gan-build/gan-design
+# step-0 dispatch, design-system L27, and the less-flat-ui record-the-
+# treatments line (its global source is read-only and untouched; only
+# the built copy is patched). The README heredoc above carries the same
+# demotion in its UI-skills bullet. The restatement block below runs
+# FIRST, then fix32.py (so its census + post-assertions cover the
+# restatements too). Both run after fix31, before STEP 5. Exits non-zero
+# on census/post-assertion errors (set -euo pipefail stops the build);
+# the run log lands in fix32/fix32-patch-log.md.
+
+# --- fix #32 (continued): upstream-derived lead-language restatements ---
+# Anchors are the CURRENT built text (post fix27/fix29/fix30); each must
+# occur exactly once in its file. Taste leads every surface; ui-ux-pro-max
+# is the lookup inventory only.
+python3 - "$PLUGIN_DIR" <<'PYEOF'
+import sys
+base = sys.argv[1]
+
+def patch(path, subs):
+    text = open(path, encoding="utf-8").read()
+    for old, new in subs:
+        assert text.count(old) == 1, f"{path}: pattern not found exactly once: {old[:70]}"
+        text = text.replace(old, new)
+    open(path, "w", encoding="utf-8").write(text)
+
+_ORCH_UI = (
+    "app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion:",
+    "app/dashboard/components: `design-taste-frontend` (design lead for every surface) + `ui-ux-pro-max` lookups + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion:",
+)
+for _skill in ("orch-add-feature", "orch-change-feature",
+               "orch-fix-defect", "orch-refine-code"):
+    patch(f"{base}/skills/{_skill}/SKILL.md", [_ORCH_UI])
+patch(f"{base}/skills/orch-build-mvp/SKILL.md", [(
+    "landing: `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion:",
+    "landing: `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` (lookup) + Impeccable via `polish-pass` + Harmony; app/dashboard/components: `design-taste-frontend` (design lead for every surface) + `ui-ux-pro-max` lookups + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion:",
+)])
+patch(f"{base}/skills/orch-change-feature/SKILL.md", [(
+    "A dashboard/app-surface change is not a landing redesign — route that to `ui-ux-pro-max` instead.",
+    "A dashboard/app-surface change is not a landing redesign — route that to `design-taste-frontend` (design lead for every surface, with `ui-ux-pro-max` lookups) instead.",
+)])
+for _cmd in ("gan-build", "gan-design"):
+    patch(f"{base}/commands/{_cmd}.md", [(
+        "dispatch to the design skill for that surface — `design-taste-frontend` for a landing page, `ui-ux-pro-max` for a dashboard/app surface —",
+        "dispatch to the design skill for that surface — `design-taste-frontend` (design lead for every surface, with `ui-ux-pro-max` lookups) —",
+    )])
+patch(f"{base}/skills/design-system/SKILL.md", [(
+    "3. Generate the direction through the design package skills (`ui-ux-pro-max` direction / `design-taste-frontend` / dealt Hallmark theme) and record it in `design-tokens.md`",
+    "3. Generate the direction through the design package skills (`design-taste-frontend` direction for every surface, with `ui-ux-pro-max` lookups / dealt Hallmark theme) and record it in `design-tokens.md`",
+)])
+# less-flat-ui is copied from the global skill (read-only source — never
+# edited there); the built copy is patched here like the other upstream
+# skills. Its record-the-treatments line names ui-ux-pro-max as the
+# direction source; Taste is the direction source now. Its Tailwind-notes
+# pairing line (L579) names ui-ux-pro-max as the owner of layout, type, and
+# components; Taste owns those now (audit #100 B2) — ui-ux-pro-max is the
+# lookup inventory (palettes, type scale, guidelines) consulted after the
+# design lead sets the direction. Its Depth/texture paragraph (:568) says
+# the z-axis "is owned by the depth rules (`ui-ux-pro-max` depth rules)";
+# D32-3 keeps DEPTH_F22 as the referenced rules the design-lead (Taste)
+# cites as lookup, so "owned by the depth rules" contradicts the framing
+# (audit #104-B O1, DECISION-32-20) — reworded to lookup language here.
+patch(f"{base}/skills/less-flat-ui/SKILL.md", [(
+    "(the named direction from `ui-ux-pro-max`, or the dealt Hallmark theme from `design-taste-frontend`)",
+    "(the named direction from `design-taste-frontend` — the Taste direction with `ui-ux-pro-max` lookups, or the dealt Hallmark theme on a landing page)",
+), (
+    "- Pair with the ui-ux-pro-max skill: that skill owns layout, type, and components; this skill owns the texture and depth layer (backgrounds, cards, buttons, dividers). If the two disagree on mood, the texture yields to the design system.",
+    "- Pair with the ui-ux-pro-max skill: that skill is the lookup inventory (palettes, type scale, guidelines) consulted after the design lead sets the direction; `design-taste-frontend` (Taste) is the design lead that owns layout, type, and components; this skill owns the texture and depth layer (backgrounds, cards, buttons, dividers). If the two disagree on mood, the texture yields to the design system.",
+), (
+    "The z-axis is owned by the depth rules (`ui-ux-pro-max` depth rules, DEPTH_F22)",
+    "The z-axis follows the depth rules (DEPTH_F22, `ui-ux-pro-max` depth rules as lookup)",
+)])
+print("fix #32 upstream restatements applied (orch-* x5, gan x2, design-system x1, less-flat-ui x1)")
+PYEOF
+
+# fix32/fix32.py runs AFTER the restatement block above, so its census +
+# post-assertions cover the restatements too (see the fix #32 header).
+python3 "$PLUGIN_ROOT/fix32/fix32.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

@@ -104,7 +104,7 @@ Present the table sorted by score, then recommend exactly 1-2 targets and name t
 
 ## UI rule
 
-Any UI the integration touches goes through the plugin's UI skills: use `ui-ux-pro-max` and `less-flat-ui` together for it — except on a full landing/company page, where `design-taste-frontend` leads per hackathon-mode §5. That includes auth screens, connected-account states, loading and error states for the integration, and any surface that shows the integration's data. Do not hand-roll UI for an integration without them.
+Any UI the integration touches goes through the plugin's UI skills: use `design-taste-frontend` (design lead for every surface) with `ui-ux-pro-max` lookups and `less-flat-ui` together for it, per hackathon-mode §5. That includes auth screens, connected-account states, loading and error states for the integration, and any surface that shows the integration's data. Do not hand-roll UI for an integration without them.
 
 ## Anti-patterns
 

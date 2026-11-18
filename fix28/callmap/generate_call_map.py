@@ -16,7 +16,7 @@ Outputs:
 
 Exit code: 0 only if the counts agree with the tree
 (72 skills / 45 agents / 48 rules / 55 commands / 15 hooks /
-49 trigger keys). Any mismatch fails loudly.
+48 trigger keys). Any mismatch fails loudly.
 
 Evidence tiers (per element, per invoker file):
   STRONG - backticked `name`, `skill:name`, path `skills/<name>/` or
@@ -98,7 +98,7 @@ BUILT = os.path.join(PLUGIN_ROOT, "hackathon-ecc")
 STAGED_DIRS = ["new-skills", "round2-skills", "rewritten-skills", "new-rules"]
 
 EXPECTED = {"skills": 72, "agents": 45, "rules": 48,
-            "commands": 55, "hooks": 15, "triggers": 49}
+            "commands": 55, "hooks": 15, "triggers": 48}
 
 # Skills whose dispatch is deferred to end-of-project (orchestrate
 # SKILL.md + skill-triggers@1.json notes). Their flow path is
@@ -852,9 +852,9 @@ def render_map(inv, ev, data):
              "Cursor hooks.")
     L.append("")
 
-    L.append("## Trigger keys (49)")
+    L.append("## Trigger keys (48)")
     L.append("")
-    L.append("Each key routes user phrasing to its target skill. All 49 keys "
+    L.append("Each key routes user phrasing to its target skill. All 48 keys "
              "resolve to a real skill dir. Liveness caveat: see blind spot B6 — "
              "the router chain has no live Cursor entry point, so these are "
              "defined routes, not live ones.")

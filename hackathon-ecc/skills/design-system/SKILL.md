@@ -24,7 +24,7 @@ Analyzes your codebase and generates a cohesive design system:
 ```
 1. Scan CSS/Tailwind/styled-components for existing patterns
 2. Extract: colors, typography, spacing, border-radius, shadows, breakpoints
-3. Generate the direction through the design package skills (`ui-ux-pro-max` direction / `design-taste-frontend` / dealt Hallmark theme) and record it in `design-tokens.md` — never competitor sites and never a searched external reference (orchestrate row-10 anti-derivative rule)
+3. Generate the direction through the design package skills (`design-taste-frontend` direction for every surface, with `ui-ux-pro-max` lookups / dealt Hallmark theme) and record it in `design-tokens.md` — never competitor sites and never a searched external reference (orchestrate row-10 anti-derivative rule)
 **Design-decision pointer:** F2/F3/F4/F5/F6/D19/B1/X1 as relevant — design-package rule — Taste step 4a / orchestrate.
 4. Propose a design token set (JSON + CSS custom properties)
 5. Generate DESIGN.md with rationale for each decision

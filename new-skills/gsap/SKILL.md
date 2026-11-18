@@ -113,5 +113,5 @@ The official skills are MIT-licensed reference, fetched at use time from the rep
 - GSAP docs: `https://gsap.com/docs/v3/`
 - Licence: `https://gsap.com/standard-license`
 - Official agent skills: `https://github.com/greensock/gsap-skills` (`skills/llms.txt` is the skill index)
-- The design package's GSAP presets (17 ready snippets): `skills/ui-ux-pro-max/data/motion.csv` (rows 1–17) + `--domain gsap`
+- The design package's GSAP presets (17 ready snippets), owned by this skill: `skills/ui-ux-pro-max/data/motion.csv` (rows 1–17) stays the lookup source + `--domain gsap`
 - Motion tokens and rules: `skills/motion-foundations/SKILL.md`, `skills/motion-patterns/SKILL.md`

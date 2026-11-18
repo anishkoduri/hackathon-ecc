@@ -1,7 +1,7 @@
 {
  "coverage": {
   "skills": 72,
-  "withTriggers": 49
+  "withTriggers": 48
  },
  "generatedAt": "2026-10-30T00:01:34.569Z",
  "notes": "END-ONLY deferred skills \u2014 their trigger phrases below are end-of-project-only, so only an end-of-project request routes to them. SchemaVersion 1 has no per-key deferral flag and the router matches on trigger text only, so this note documents the deferral; it does not enforce it. Deferred: verification-loop, production-audit, delivery-gate. (DEFER3_F27)",
@@ -94,7 +94,11 @@
    "design a landing page",
    "redesign the landing page",
    "landing page design",
-   "company page design"
+   "company page design",
+   "design the dashboard",
+   "redesign the app ui",
+   "dashboard design",
+   "app interface design"
   ],
   "skill:devpost-autofiller": [
    "devpost submission",
@@ -347,12 +351,6 @@
    "validate config with type guards",
    "bounded concurrency mapper",
    "module boundary exports"
-  ],
-  "skill:ui-ux-pro-max": [
-   "design the dashboard",
-   "redesign the app ui",
-   "dashboard design",
-   "app interface design"
   ],
   "skill:verification-before-completion": [
    "check my work before i finish",

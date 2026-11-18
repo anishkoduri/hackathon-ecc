@@ -5,7 +5,7 @@
   "hooks": 15,
   "rules": 48,
   "skills": 72,
-  "triggers": 49
+  "triggers": 48
  },
  "elements": {
   "agents": {
@@ -6980,8 +6980,8 @@
    "error-handling": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build"
+     "build",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10063,8 +10063,7 @@
      "build",
      "design package",
      "build (expansion)",
-     "build (orchestrated dispatch)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
+     "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10079,10 +10078,6 @@
      ],
      "hackathon-ecc/commands/gan-design.md": [
       "strong"
-     ],
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong",
-      "trigger"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
@@ -10150,9 +10145,6 @@
      "hackathon-ecc/skills/polish-pass/reference/impeccable-PROVENANCE.md": [
       "weak"
      ],
-     "hackathon-ecc/skills/polish-pass/reference/polish.md": [
-      "strong"
-     ],
      "hackathon-ecc/skills/polish-pass/reference/slop-checklist.md": [
       "strong"
      ],
@@ -10203,9 +10195,6 @@
      ],
      "round2-skills/polish-pass/reference/impeccable-PROVENANCE.md": [
       "weak"
-     ],
-     "round2-skills/polish-pass/reference/polish.md": [
-      "strong"
      ],
      "round2-skills/polish-pass/reference/slop-checklist.md": [
       "strong"
@@ -10614,7 +10603,11 @@
      "design a landing page",
      "redesign the landing page",
      "landing page design",
-     "company page design"
+     "company page design",
+     "design the dashboard",
+     "redesign the app ui",
+     "dashboard design",
+     "app interface design"
     ],
     "target_exists": true
    },
@@ -11309,25 +11302,6 @@
      "validate config with type guards",
      "bounded concurrency mapper",
      "module boundary exports"
-    ],
-    "target_exists": true
-   },
-   "ui-ux-pro-max": {
-    "called": true,
-    "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
-    ],
-    "invokers": {
-     "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
-      "strong"
-     ]
-    },
-    "key": "skill:ui-ux-pro-max",
-    "phrases": [
-     "design the dashboard",
-     "redesign the app ui",
-     "dashboard design",
-     "app interface design"
     ],
     "target_exists": true
    },

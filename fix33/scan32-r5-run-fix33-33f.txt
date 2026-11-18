@@ -1,0 +1,127 @@
+(a) audit #102-B M1-M7 hypotheticals (all must flag)
+  PASS M1a flagged: got=True want=True
+  PASS M1b flagged: got=True want=True
+  PASS M2a flagged: got=True want=True
+  PASS M2b flagged: got=True want=True
+  PASS M3runs flagged: got=True want=True
+  PASS M3decides flagged: got=True want=True
+  PASS M3controls flagged: got=True want=True
+  PASS M3authors flagged: got=True want=True
+  PASS M3drives flagged: got=True want=True
+  PASS M4 flagged: got=True want=True
+  PASS M5 flagged: got=True want=True
+  PASS M6 flagged: got=True want=True
+  PASS M7a flagged: got=True want=True
+  PASS M7b flagged: got=True want=True
+(a2) extra authority synonyms (all must flag)
+  PASS S1-governs flagged: got=True want=True
+  PASS S2-dictates flagged: got=True want=True
+  PASS S3-determines flagged: got=True want=True
+  PASS S4-directs flagged: got=True want=True
+  PASS S5-prescribes flagged: got=True want=True
+(b) C1-C7 (all must flag)
+  PASS C1 flagged: got=True want=True
+  PASS C2 flagged: got=True want=True
+  PASS C3 flagged: got=True want=True
+  PASS C4 flagged: got=True want=True
+  PASS C5 flagged: got=True want=True
+  PASS C6 flagged: got=True want=True
+  PASS C7 flagged: got=True want=True
+(b2) extra gaming variants (all must flag)
+  PASS G1 flagged: got=True want=True
+  PASS G2 flagged: got=True want=True
+  PASS G3 flagged: got=True want=True
+  PASS G4 flagged: got=True want=True
+(c) pre-fix strings as bare lines (all must flag, except R1a by design)
+  PASS B2 flagged: got=True want=True
+  PASS B3a flagged: got=True want=True
+  PASS B3b flagged: got=True want=True
+  PASS B4 flagged: got=True want=True
+  PASS R1a in OLD_LEAD (substring denylist, not scan): got=True want=True
+  PASS R1a not a scan hit (by design): got=False want=False
+  PASS R1b flagged: got=True want=True
+(c2) realistic regression: 5 pre-fix sites re-inserted (exactly 5 hits)
+  site skills/less-flat-ui/SKILL.md:579: hits at site=1 total-in-file=1
+  site skills/polish-pass/reference/unslop-fixes.md:110: hits at site=1 total-in-file=1
+  site skills/polish-pass/reference/unslop-fixes.md:158: hits at site=1 total-in-file=2
+  site skills/orchestrate/SKILL.md:173: hits at site=1 total-in-file=1
+  site skills/design-taste-frontend/SKILL.md:446: hits at site=1 total-in-file=1
+  PASS c2 total site hits: got=5 want=5
+(d) fixed tree (0 hits)
+  fixed-tree hits: 0
+(e) must-NOT-flag controls
+  PASS E1-Taste-:110 not flagged: got=False want=False
+  PASS E2-lookup-adjacent not flagged: got=False want=False
+  PASS E3-lookup-rows not flagged: got=False want=False
+  PASS E4-as-lookup not flagged: got=False want=False
+  PASS E5-denial not flagged: got=False want=False
+  PASS E6-paren-lookup not flagged: got=False want=False
+  PASS E7-define-with-Taste not flagged: got=False want=False
+  PASS E8-less-flat-ui:579 not flagged: got=False want=False
+  PASS E9-DESIGNPKG-AUTO not flagged: got=False want=False
+  PASS E10-:158 not flagged: got=False want=False
+  PASS E11-glossary-G9 not flagged: got=False want=False
+  PASS E12-orch85-reworded not flagged: got=False want=False
+  PASS E13-Taste-reworded not flagged: got=False want=False
+  PASS E14-vercel-reworded not flagged: got=False want=False
+  PASS E15-orch135 not flagged: got=False want=False
+(f) lookup marker never excuses a verb (round-4 removal)
+  PASS M1a still flags despite the marker: got=True want=True
+  PASS pure lookup line not flagged: got=False want=False
+(g) audit #103-B M1 attribution evasions (all must flag)
+  PASS B-M1a flagged: got=True want=True
+  PASS B-M1b flagged: got=True want=True
+  PASS B-M1c flagged: got=True want=True
+  PASS B-M1d flagged: got=True want=True
+(g2) B-M1 legitimate case (must NOT flag)
+  PASS B-M1-legit Taste owns layout not flagged: got=False want=False
+(h) audit #103-B M2 denylist gaps (all must flag)
+  PASS B-M2a flagged: got=True want=True
+  PASS B-M2b flagged: got=True want=True
+  PASS B-M2c flagged: got=True want=True
+  PASS B-M2d flagged: got=True want=True
+  PASS B-M2e flagged: got=True want=True
+  PASS B-M2f flagged: got=True want=True
+  PASS B-M2g flagged: got=True want=True
+  PASS B-M2h flagged: got=True want=True
+(i) audit #103-B M3 clause/window splits (all must flag)
+  PASS B-M3a flagged: got=True want=True
+  PASS B-M3b flagged: got=True want=True
+  PASS B-M3c flagged: got=True want=True
+  PASS B-M3d flagged: got=True want=True
+(j) audit #103-B M4 mis-aimed denial (must flag / must not flag)
+  PASS B-M4a not-Taste leads flagged: got=True want=True
+  PASS B-M4b never-leads not flagged: got=False want=False
+(k) audit #103-B M5 design-lead false positives (must NOT flag)
+  PASS B-M5a Taste is design lead not flagged: got=False want=False
+  PASS B-M5b design lead consults not flagged: got=False want=False
+(l) fix32.py's OWN _lead_scan slicing (audit #104-A B1)
+  PASS l1 _lead_scan slices ±3: got=True want=True
+  PASS l2 _lead_scan has no ±2 slice: got=False want=False
+  PASS l3 import guard: BASE '' after junk-argv import: got= want=
+  PASS l4 import guard: ROOT '' after junk-argv import: got= want=
+  PASS l5 import guard: no patch log written under temp dir: got=True want=True
+  PASS l6 import guard: real patch log md5/mtime unchanged: got=True want=True
+  PASS l7 B-M3b flags through _lead_scan (verb 3 lines above the mention): got=True want=True
+  PASS l8 verb-2-lines-above flags through _lead_scan (regression): got=True want=True
+  PASS l9 clean lookup-only file does not flag through _lead_scan: got=[] want=[]
+  PASS l10 _lead_scan total hits on probe tree: got=2 want=2
+(m) bare 'owned' DROPPED (audit #104-B O1/O6, DECISION-32-20)
+  PASS m1 O6a passive owned-by-uipro does NOT flag (owned dropped): got=False want=False
+  PASS m2 O6b passive owned-by-uipro does NOT flag (owned dropped): got=False want=False
+  PASS m3 old :568 line does NOT flag (owned dropped): got=False want=False
+  PASS m4 reworded :568 line does NOT flag: got=False want=False
+  PASS m5 real built :568 line carries the reworded wording: got=True want=True
+  PASS m6 real built :568 line has no 'owned by the depth rules': got=False want=False
+  PASS m7 inventory :39 pins-row 'owned by their per-skill homes' does NOT flag (drop reason): got=False want=False
+  PASS m8 inventory :146 §9-row 'Owned by their per-skill homes' does NOT flag (drop reason): got=False want=False
+(n) audit #104-B O7 additions (DECISION-32-20)
+  PASS n1 oversees flags: got=True want=True
+  PASS n2 is-responsible-for flags: got=True want=True
+  PASS n3 'layer responsible for' (no 'is') does NOT flag: got=False want=False
+  PASS n4 'remains responsible for' (no 'is') does NOT flag: got=False want=False
+(o) audit #103-B M5 design-lead controls re-run (must NOT flag)
+  PASS o1 B-M5a Taste is design lead not flagged: got=False want=False
+  PASS o2 B-M5b design lead consults not flagged: got=False want=False
+
+RESULT: ALL PASS

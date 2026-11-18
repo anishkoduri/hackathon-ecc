@@ -157,14 +157,16 @@ done
 # dropped eval-harness skill, and nothing else references the agent.
 # Drop it so it does not dangle.
 rm -f "$PLUGIN_DIR/agents/ecc-harness-optimizer.md"
-# Pin ECC agent models to Grok IDs (fix #16). The install ships bare Claude aliases
+# Map ECC agent models (fix #16; fix #33: the opus tier inherits the chat
+# model instead of pinning a Grok ID). The install ships bare Claude aliases
 # (sonnet/opus/haiku), which are not Cursor model IDs. Map: sonnet ->
-# cursor-grok-4.6-high-fast, opus -> grok-4.7-high, haiku ->
+# cursor-grok-4.6-high-fast, opus -> inherit (the model selected in this
+# chat — the orchestrator is unpinned, fix #33), haiku ->
 # cursor-grok-4.6-high-fast.
 python3 - "$PLUGIN_DIR/agents" <<'PYEOF'
 import sys, os, re
 d = sys.argv[1]
-mapping = {"sonnet": "cursor-grok-4.6-high-fast", "opus": "grok-4.7-high", "haiku": "cursor-grok-4.6-high-fast"}
+mapping = {"sonnet": "cursor-grok-4.6-high-fast", "opus": "inherit", "haiku": "cursor-grok-4.6-high-fast"}
 n = 0
 for fn in os.listdir(d):
     if not fn.endswith(".md"):
@@ -176,7 +178,7 @@ for fn in os.listdir(d):
         txt = txt[:m.start()] + f"model: {mapping[m.group(1)]}" + txt[m.end():]
         open(p, "w", encoding="utf-8").write(txt)
         n += 1
-print(f"agent models pinned to Grok IDs: {n}")
+print(f"agent models mapped (opus -> inherit, sonnet/haiku -> fast): {n}")
 PYEOF
 cp -r "$ECC_SRC/rules/." "$PLUGIN_DIR/rules/"
 cp -r "$ECC_SRC/commands/." "$PLUGIN_DIR/commands/"
@@ -10159,7 +10161,7 @@ audit2_patch(f"{base}/agents/ecc-architect.md", [
 name: architect
 description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
 tools: Read, Grep, Glob
-model: grok-4.7-high
+model: inherit
 ---
 
 ## Prompt Defense Baseline
@@ -10169,7 +10171,7 @@ model: grok-4.7-high
    """---
 name: architect
 description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
-model: grok-4.7-high
+model: inherit
 ---
 
 ## Prompt Defense Baseline
@@ -10801,7 +10803,7 @@ audit2_patch(f"{base}/agents/ecc-healthcare-reviewer.md", [
 name: healthcare-reviewer
 description: Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.
 tools: Read, Grep, Glob
-model: grok-4.7-high
+model: inherit
 ---
 
 ## Prompt Defense Baseline
@@ -10811,7 +10813,7 @@ model: grok-4.7-high
    """---
 name: healthcare-reviewer
 description: Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.
-model: grok-4.7-high
+model: inherit
 ---
 
 ## Prompt Defense Baseline
@@ -11436,7 +11438,7 @@ audit2_patch(f"{base}/agents/ecc-spec-miner.md", [
   ("""---
 name: spec-miner
 description: Extracts behavioral specs from existing codebases for OpenSpec. Produces flat Requirement and Invariant blocks with structured metadata (entities, enforced, id, test anchors). Outputs openspec/specs/<capability>/spec.md. Fully self-bootstrapping — no dependency on codebase-onboarding. Use when onboarding a brownfield project to spec-driven development.
-model: grok-4.7-high
+model: inherit
 tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -11447,7 +11449,7 @@ tools: Read, Grep, Glob, Bash, Write
    """---
 name: spec-miner
 description: Extracts behavioral specs from existing codebases for OpenSpec. Produces flat Requirement and Invariant blocks with structured metadata (entities, enforced, id, test anchors). Outputs openspec/specs/<capability>/spec.md. Fully self-bootstrapping — no dependency on codebase-onboarding. Use when onboarding a brownfield project to spec-driven development.
-model: grok-4.7-high
+model: inherit
 ---
 
 ## Tool guardrails
@@ -22192,7 +22194,7 @@ for rel, old, new in subs:
     open(p, "w", encoding="utf-8").write(text.replace(old, new))
 print("weave2: upstream patches applied")
 PYEOF
-# --- fix13-A: design package + Grok pin for the orch-* pipelines ---
+# --- fix13-A: design package for the orch-* pipelines (fix #33 round 33d, B-M2: the Grok pin is gone — the design role runs on the model selected in this chat) ---
 # (orch-build-mvp / orch-change-feature / orch-pipeline have no staged sources;
 #  they are upstream ECC patched here). Placement: before STEP 5.
 python3 - "$PLUGIN_DIR" <<'PYEOF'
@@ -22203,7 +22205,7 @@ subs = [
   ("skills/orch-build-mvp/SKILL.md",
    r'''Have the first UI slice in the GAN loop write `docs/design-tokens.md` from its design system (per orchestrate's no-landing fallback) so later slices brief from real tokens.''',
    r'''Have the first UI slice in the GAN loop write `docs/design-tokens.md` from its design system (per orchestrate's no-landing fallback) so later slices brief from real tokens.
-   - **Design package on every UI slice (relevance by surface type, never by size).** Every slice that touches a UI surface names its design components in its brief and records its direction in `docs/design-tokens.md` before building UI (landing: `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy drift: + `inherit-legacy-style`). The design role runs on model `grok-4.7-high` (slug form only — never bracket syntax; select Grok 4.7 High in Cursor's model picker before the first build, or the pin may silently fall back — file-level pin only, the live smoke test decides). Small changes, one-prompt changes, redesigns, and UI fixes are UI slices under this rule. The direction is generated through the package skills, never based on a searched external reference (orchestrate row-10 rule): if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the built app's primary screens against the distinctiveness bar — a named direction recorded AND visibly applied (tokens, type, colour, spacing trace to it); a finding, minor at least, when screens carry no named direction, no applied theme/tokens, read as a default template, or are derivative (the design is based on a searched external reference) — within the existing fix caps.'''),
+   - **Design package on every UI slice (relevance by surface type, never by size).** Every slice that touches a UI surface names its design components in its brief and records its direction in `docs/design-tokens.md` before building UI (landing: `design-taste-frontend` + dealt Hallmark theme + `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony; app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy drift: + `inherit-legacy-style`). The design role runs on the model selected in this chat (the design-lead tier inherits the chat model — see the picker note in orchestrate SKILL.md step 4). Small changes, one-prompt changes, redesigns, and UI fixes are UI slices under this rule. The direction is generated through the package skills, never based on a searched external reference (orchestrate row-10 rule): if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the built app's primary screens against the distinctiveness bar — a named direction recorded AND visibly applied (tokens, type, colour, spacing trace to it); a finding, minor at least, when screens carry no named direction, no applied theme/tokens, read as a default template, or are derivative (the design is based on a searched external reference) — within the existing fix caps.'''),
   # orch-change-feature: UI change / rebuild-a-surface rule (step 5).
   ("skills/orch-change-feature/SKILL.md",
    r'''1. Run the `orch-pipeline` engine with the settings above.
@@ -22214,7 +22216,7 @@ subs = [
 2. Keep the plan light — only `standard`+ size warrants the full planning pass.
 3. Stop at **Gate 1** (plan / changed-test approval) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
 4. Add `security-reviewer` if the change touches a security trigger.
-5. **UI change / rebuild-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a removal that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on model `grok-4.7-high` (slug form only). The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar (named direction recorded AND visibly applied; a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative — the design is based on a searched external reference) within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
+5. **UI change / rebuild-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a removal that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on the model selected in this chat. The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar (named direction recorded AND visibly applied; a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative — the design is based on a searched external reference) within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
   # orch-pipeline step 5 Review: distinctiveness scope on UI diffs.
   ("skills/orch-pipeline/SKILL.md",
    r'''- **5. Review** — `code-reviewer` agent / `/code-review`. Add `security-reviewer`
@@ -22691,18 +22693,18 @@ claude -p --model sonnet "You are a Generator. Read spec.md and feedback-001.md.
   ("skills/orch-add-feature/SKILL.md",
    r'''4. Add `security-reviewer` if the feature touches a security trigger.''',
    r'''4. Add `security-reviewer` if the feature touches a security trigger.
-5. **UI change / build-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a new feature that builds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on model `grok-4.7-high` (slug form only). The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
+5. **UI change / build-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a new feature that builds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on the model selected in this chat. The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
   # 7b orch-fix-defect skill: design-package rule (mirror orch-change-feature :36).
   ("skills/orch-fix-defect/SKILL.md",
    r'''4. Add `security-reviewer` if the defect sits in a security-sensitive path.''',
    r'''4. Add `security-reviewer` if the defect sits in a security-sensitive path.
-5. **UI change / rebuild-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a fix that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on model `grok-4.7-high` (slug form only). The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
+5. **UI change / rebuild-a-surface rule.** If the change touches UI — including a one-prompt change, a redesign, or a fix that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on the model selected in this chat. The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.'''),
   # 7c orch-refine-code skill: design-package rule as step 4 (commit renumbers to 5).
   ("skills/orch-refine-code/SKILL.md",
    r'''3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
 4. Commit as `refactor:` — the diff must be behavior-neutral.''',
    r'''3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit) — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where both gates auto-approve and the run proceeds without waiting (see hackathon-mode §7).
-4. **UI change / rebuild-a-surface rule.** If the change touches UI — including a restructure that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on model `grok-4.7-high` (slug form only). The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.
+4. **UI change / rebuild-a-surface rule.** If the change touches UI — including a restructure that rebuilds a surface — it is a UI slice under the design-package rule (orchestrate SKILL.md row 10): name the applicable design components in the brief (app/dashboard/components: `ui-ux-pro-max` + Impeccable via `polish-pass` + Harmony + `less-flat-ui` where dull/flat; landing: `design-taste-frontend` + dealt Hallmark theme; motion: + `make-interfaces-feel-better`; new design-system work: + `design-system`; legacy style drift: + `inherit-legacy-style`), record the direction in the decision record / run ledger (the lightest-weight record that exists for this flow — one line, a stated default from the brief's mood/domain if silent, marked assumed) and in `docs/design-tokens.md` where the flow keeps one, and run the applicable package components before the change lands. The design role runs on the model selected in this chat. The direction is generated through the package skills, never based on a searched external reference: if the design search returns only a marketing page, that is not a direction — the skills generate it instead. Posture is more, not bolder: more design decisions made deliberately through the skills, more craft. Verify the rebuilt surface against the distinctiveness bar through `browser-qa`'s visual loop on the rebuilt surface (the single executor of the bar — see orch-pipeline Review; the reviewer checks only the recorded direction): a finding, minor at least, when it carries no named direction, no applied theme/tokens, reads as a default template, or is derivative (the design is based on a searched external reference) — within the existing fix caps. Pure backend/logic changes with no visual surface are exempt.
 5. Commit as `refactor:` — the diff must be behavior-neutral.'''),
 ]
 for rel, old, new in subs:
@@ -24123,17 +24125,31 @@ python3 "$PLUGIN_ROOT/fix28/fix28.py" "$PLUGIN_DIR"
 # pipefail stops the build); the run log lands in fix29/fix29-patch-log.md.
 python3 "$PLUGIN_ROOT/fix29/fix29.py" "$PLUGIN_DIR"
 
-# --- fix #30: orchestrator pin grok-4.7-high -> grok-4.7-extra-high ---
-# fix30/fix30.py renames the pin in the built tree in place (49 ID +
-# 22 prose occurrences, exact census — fails loudly on drift) and
-# asserts the fast-worker pin unchanged (70) and the GLOBAL-ROUTING
-# block untouched. Build-time only, by design: staged sources and
-# build.sh inline keep grok-4.7-high because fix16/24/29 anchor on it
-# (fix #16 precedent: the Claude -> Grok pin change was itself done at
-# build time). Runs after fix29, before STEP 5. Exits non-zero on
-# census/post-assertion errors (set -euo pipefail stops the build);
-# the run log lands in fix30/fix30-patch-log.md.
-python3 "$PLUGIN_ROOT/fix30/fix30.py" "$PLUGIN_DIR"
+# --- fix #30: RETIRED by fix #33 (orchestrator unpinned) ---
+# fix30/fix30.py renamed the orchestrator pin grok-4.7-high ->
+# grok-4.7-extra-high in the built tree (49 ID + 22 prose, exact census).
+# It no longer runs: the orchestrator is unpinned (Anish, Nov 17, 2026)
+# and runs on the model selected in the chat, so there is no pin to rename
+# to. fix30/fix30.py stays in the repo as history; its patch log is a
+# historical record, not a build output. The slot below now runs fix33.py,
+# which replaces the remaining old-pin text in the built tree with
+# model-agnostic wording (exact census, fails loudly on drift).
+#
+# --- fix #33: unpin the orchestrator (model selected in this chat) ---
+# fix33/fix33.py replaces the remaining grok-4.7-high / "Grok 4.7 High"
+# text in the built tree in place (25 ID + 5 prose occurrences, exact
+# census — the staged copies were already unpinned in the staged sources
+# and the opus mapping now yields `inherit`) with model-agnostic wording
+# ("the model selected in this chat" / `model: inherit`), keeps the two
+# strategic-compact prose mentions (factual model examples, not
+# orchestrator identity), and asserts the fast-worker pin unchanged (71
+# pre-state, 72 post-state — +1 in the agent.schema.json description,
+# D33-17), the GLOBAL-ROUTING + DESIGNPKG-AUTO blocks untouched, and
+# MODELSEL_F33 present. Runs after fix29, before fix31 (so the fix31/fix32 pin censuses
+# assert the post-unpin state). Exits non-zero on census/post-assertion
+# errors (set -euo pipefail stops the build); the run log lands in
+# fix33/fix33-patch-log.md.
+python3 "$PLUGIN_ROOT/fix33/fix33.py" "$PLUGIN_DIR"
 
 # --- fix #31: design libraries (GetLayers, GSAP, React Bits, Hairline) ---
 # fix31/fix31.py asserts the staged weave landed (5 new skills, DESIGNPKG-AUTO

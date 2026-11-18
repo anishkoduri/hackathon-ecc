@@ -330,7 +330,7 @@
       "skill-health.md": "ECC skill analytics dashboard",
       "vue-review.md": "invokes ECC agent roster (vue-reviewer)",
       "token-card.md": "Requires the tokenchit CLI and provider session logs via the token-card skill.",
-      "astra-review.md": "deep review via the deep-reasoner agent (Grok 4.7 Extra High)",
+      "astra-review.md": "deep review via the deep-reasoner agent (model selected in this chat)",
       "issue-review.md": "Compatibility shim for the authenticated issue-review workflow; outside the offline core profile."
     }
   },

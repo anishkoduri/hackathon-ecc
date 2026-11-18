@@ -31,7 +31,7 @@ Implementation-agent dispatch follows the factory routing in orchestrate's GLOBA
 
 ## If a named agent does not resolve (fix #24)
 
-Cursor may resolve agents by frontmatter `name:` or by filename — the plugin cites both forms at every invocation (`` `X` agent (`agents/ecc-X.md`) ``) so either resolution works. If a named agent still cannot be resolved (Cursor reports it cannot find `X`), spawn a general subagent on `cursor-grok-4.6-high-fast` (or `grok-4.7-extra-high` for the 4.7-pinned agents: `architect`, `healthcare-reviewer`, `spec-miner`, `deep-reasoner`) with the agent file's instructions inlined, and record the miss in the run ledger.
+Cursor may resolve agents by frontmatter `name:` or by filename — the plugin cites both forms at every invocation (`` `X` agent (`agents/ecc-X.md`) ``) so either resolution works. If a named agent still cannot be resolved (Cursor reports it cannot find `X`), spawn a general subagent on `cursor-grok-4.6-high-fast` (or `inherit` — the model selected in this chat — for the chat-model agents: `architect`, `healthcare-reviewer`, `spec-miner`, `deep-reasoner`) with the agent file's instructions inlined, and record the miss in the run ledger.
 
 ## Parallel Task Execution
 

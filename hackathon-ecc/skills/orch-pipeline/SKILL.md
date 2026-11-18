@@ -40,6 +40,8 @@ each phase to an existing ECC agent or command. This file is that pipeline.
 
 ## Step 0 — Classify size (right-sizing)
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else, state the model the orchestrator is running on and record it in the run ledger (`MODEL: <name>` — the actual selected model). If the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 Ceremony scales to blast radius. Score the request on three signals, take the
 **highest** tier any signal reaches, and state the result in one line so the user
 can override — except during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature, where no user is present and the classifier result stands:

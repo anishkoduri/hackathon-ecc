@@ -80,7 +80,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Is deliberately **ambitious** — conservative planning leads to underwhelming results
 - Produces evaluation criteria that the Evaluator will use later
 
-**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_PLANNER_MODEL=grok-4.7-extra-high` for deeper spec expansion
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_PLANNER_MODEL` (set it to the model selected in this chat) for deeper spec expansion
 
 ### 2. Generator Agent
 
@@ -93,7 +93,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Manages git for version control between iterations
 - Reads Evaluator feedback and incorporates it in next iteration
 
-**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_GENERATOR_MODEL=grok-4.7-extra-high` for maximum coding capability
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_GENERATOR_MODEL` (set it to the model selected in this chat) for maximum coding capability
 
 ### 3. Evaluator Agent
 
@@ -110,7 +110,7 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
 - Returns structured feedback with scores and specific issues
 - Is engineered to be **ruthlessly strict** — never praises mediocre work
 
-**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_EVALUATOR_MODEL=grok-4.7-extra-high` for stronger judgment + tool use
+**Model:** Grok 4.6 High Fast (`cursor-grok-4.6-high-fast`) by default; raise via `GAN_EVALUATOR_MODEL` (set it to the model selected in this chat) for stronger judgment + tool use
 
 ## Evaluation Criteria
 

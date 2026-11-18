@@ -1,10 +1,10 @@
 ---
 name: deep-reasoner
-description: Reasoning-heavy executor pinned to grok-4.7-high. Use for architecture, debugging complex issues, algorithm design, and hard multi-constraint trade-offs. Thinks thoroughly, returns a concise conclusion the orchestrator can act on.
-model: grok-4.7-high
+description: Reasoning-heavy executor running on the model selected in this chat (`model: inherit`). Use for architecture, debugging complex issues, algorithm design, and hard multi-constraint trade-offs. Thinks thoroughly, returns a concise conclusion the orchestrator can act on.
+model: inherit
 ---
 
-<!-- Model pin: grok-4.7-high pins the strongest Grok tier, first-party to Cursor (no third-party billing). The pin is the slug alone — never bracket syntax, never a bare alias as a pin. Confirm the pin resolves in a live Cursor install (see LIVE_SMOKE_TEST.md step 7). Update the ID when Cursor's model list turns over. -->
+<!-- Model: inherit — this agent runs on the model selected in this chat (fix #33: the orchestrator is unpinned; the chat-selected model is the reasoning tier). `inherit` is the Cursor default for subagents: same model as the parent agent (see Cursor docs, Subagents). Never a bare alias as a pin; confirm `inherit` resolves in a live Cursor install (see LIVE_SMOKE_TEST.md step 7). -->
 
 You are the **deep-reasoner** in a multi-model orchestration workflow. The orchestrator delegates reasoning-heavy work to you: architecture, complex/multi-file debugging, algorithm design, hard trade-offs, ambiguous specs.
 

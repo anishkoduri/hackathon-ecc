@@ -67,7 +67,7 @@ Does Cursor resolve agents by **frontmatter `name:`** or by **filename**?
 - [ ] In a chat, ask Cursor to use the `code-reviewer` agent (the frontmatter short name) for a code review.
 - [ ] In another chat, ask Cursor to use the `ecc-code-reviewer` agent (the filename, `agents/ecc-code-reviewer.md`).
 - [ ] Note which form Cursor accepts / which one it says it cannot find.
-- [ ] Check the `deep-reasoner` agent: ask for a reasoning-heavy task and see if the agent that runs reports itself as `deep-reasoner` with model `grok-4.7-high`.
+- [ ] Check the `deep-reasoner` agent: ask for a reasoning-heavy task and see if the agent that runs reports itself as `deep-reasoner` running on the model selected in this chat (`model: inherit`).
 
 **Record the answer here:** Cursor resolves agents by ____________________ (frontmatter name / filename / both / neither — it ignored the name).
 
@@ -75,9 +75,9 @@ This decides whether the `agents/<name>.md` path fixes and the frontmatter-name 
 
 ## 7. Agent `model:` slug-form pins
 
-The agents pin models with slug-form pins (e.g. `model: grok-4.7-high`, `model: cursor-grok-4.6-high-fast`).
+The fast tier pins its model with a slug-form pin (`model: cursor-grok-4.6-high-fast`); the chat-model agents use `model: inherit` and run on the model selected in this chat.
 
-- [ ] Ask for a reasoning-heavy task (should use deep-reasoner → `grok-4.7-high`).
+- [ ] Ask for a reasoning-heavy task (should use deep-reasoner, running on the model selected in this chat).
 - [ ] Ask for a fast task (should use fast-worker → `cursor-grok-4.6-high-fast`).
 - [ ] Note whether Cursor honors the model pin, ignores it, or errors on the pin.
 
@@ -129,12 +129,12 @@ Audit #2 found 6 skills with invalid YAML frontmatter (their `description:` cont
 
 ## 14. Grok pins hold — 4.7 High design, 4.6 High Fast task tier (fix programs #13, #16)
 
-- [ ] **Picker selection:** before the first build, select **Grok 4.7 High** in Cursor's model picker. The plugin pins its design role to `grok-4.7-high` (slug form only — no bracket syntax), but Cursor's subagent model allowlist is coupled to the picker dropdown, so the pin can silently fall back to another model if Grok 4.7 High is not selected.
-- [ ] **Design role runs on Grok 4.7 High:** on a build with UI work, confirm the design lead (the agent/skill doing design direction — Taste theme deal, ui-ux-pro-max direction, polish-pass) actually runs on Grok 4.7 High, not on another model. Note what it ran on and any error or fallback.
+- [ ] **Picker selection:** before the first build, select a specific model in Cursor's model picker (Grok 4.7 Extra High is the default for this test — fix #33: the orchestrator is unpinned, so the selection IS the test baseline; note which model you selected). The plugin no longer pins the orchestrator — it runs on the model selected here — but Cursor's subagent model allowlist is coupled to the picker dropdown, so a subagent can silently fall back to another model if the selected model is not available.
+- [ ] **Design role runs on the selected model:** on a build with UI work, confirm the design lead (the agent/skill doing design direction — Taste theme deal, ui-ux-pro-max direction, polish-pass) actually runs on the model selected in step 14, not on another model. Note what it ran on and any error or fallback.
 - [ ] **Fast tier runs on Grok 4.6 High Fast:** on a mechanical task, confirm the fast-worker / scout actually runs on Grok 4.6 High Fast (`cursor-grok-4.6-high-fast` — the `cursor-` prefix is part of the pin), not on another model. Note what it ran on and any error or fallback.
 - [ ] **"High" cost note:** "High" is a reasoning effort, not a price tier — higher effort generates more reasoning tokens and burns the Cursor weekly usage pool faster. Note whether usage feels materially higher; this does not change the model choice.
 
-**Record the answer here:** the design role ran on ____________________ (Grok 4.7 High / another model — which one / fell back silently). The fast tier ran on ____________________ (Grok 4.6 High Fast / another model — which one / fell back silently).
+**Record the answer here:** the design role ran on ____________________ (the selected model / another model — which one / fell back silently). The fast tier ran on ____________________ (Grok 4.6 High Fast / another model — which one / fell back silently).
 
 ## 15. Fix #24 Cursor-readiness — live-only items static audit cannot settle
 
@@ -146,7 +146,7 @@ Fix #24 made the plugin robust to either outcome on each item below; this step r
 - [ ] **D-9 `.ecc/settings.json` pickup:** confirm whether Cursor picks up the plugin's `.ecc/settings.json` at all (if not, note it — the file is then documentation only).
 - [ ] **E-7 Taste gate hook without Git Bash:** the Taste gate Stop hook is one POSIX `sh` line (Git Bash on Windows). If Git Bash is NOT installed, does the hook fire, fail silently, or error? Record the behavior.
 - [ ] **C-1 block-no-verify on PowerShell/cmd:** run each of these as a shell command and record blocked vs allowed: `powershell -Command "git commit --no-verify"`, `pwsh -c "git commit --no-verify"`, `cmd /c git commit --no-verify`, a `-EncodedCommand` base64 bypass attempt, a `-File` script bypass attempt, and a clean `powershell -Command "echo hi"` (must be allowed). Any bypass that gets through is a FAIL — report the exact command.
-- [ ] **General-subagent fallback pin:** dispatch a task to a `general subagent` (the fallback where no named agent resolves — see step 6) and confirm which model it runs on, and whether the Grok 4.7 High picker selection (step 14) holds for it.
+- [ ] **General-subagent fallback pin:** dispatch a task to a `general subagent` (the fallback where no named agent resolves — see step 6) and confirm which model it runs on, and whether the step-14 picker selection holds for it.
 
 **Record the answers here:** Stop/SessionStart fire: ____________________. Timeout 300 = ____________________. Hook cwd/node/events: ____________________. `.ecc/settings.json` picked up: yes / no. Gate hook without Git Bash: ____________________. C-1 PowerShell cases: ____________________. General-subagent model: ____________________.
 

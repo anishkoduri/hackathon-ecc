@@ -5,6 +5,8 @@ description: Interview the user about a hackathon project idea, one question at 
 
 # Grill Me
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else, state the model the orchestrator is running on and record it in the run ledger (`MODEL: <name>` — the actual selected model). If the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 Before anything is scoped, built, or expanded, make sure the idea is actually decided. This skill asks the user one question at a time about their hackathon project until every material branch has an explicit recorded decision. The decision record it produces is what the rest of the plugin works from — scope, build, and expansion all follow it, so the product ends up going the direction the user wants instead of the direction the agent guessed.
 
 ## When to Use

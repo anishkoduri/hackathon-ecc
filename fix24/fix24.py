@@ -266,9 +266,14 @@ if exists(f):
     sub(f,
         "If the user asked for one, film the LOCAL app from the project dir after deploy (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it; the video file is `<app-name>-video/out/demo.mp4`.",
         "If the user asked for one, film the LOCAL app from the project dir after deploy (`APP_DIR` to the app dir) — `/demo` never films the deployed URL, so do NOT set `shots.json` `app.url` to it; the video file is `<app-name>-video/out/demo.mp4`. The `/demo` dispatch carries the Environment field naming `ELEVENLABS_API_KEY` when a key was received mid-run (see the Key handoff in the narration-key prompt above); otherwise it carries no key and `/demo` falls back to music-only/silent.")
-    sub(f,
-        "(slug form only — never bracket syntax; select Grok 4.7 High in Cursor's model picker before the first build, or the pin may silently fall back — file-level pin only, the live smoke test decides)",
-        "(slug form only — never bracket syntax; see the picker note in orchestrate SKILL.md step 4)")
+    # (fix #33 round 33d, B-M2: the third sub below was REMOVED, not reworded.
+    # It rewrote the fix13-A parenthetical (the slug-form note naming the old
+    # Grok pin and the picker fallback) to the picker-note pointer — but
+    # fix13-A now writes the pointer form directly ("The design role runs on
+    # the model selected in this chat (the design-lead tier inherits the chat
+    # model — see the picker note ...)"), so the old anchor text no longer
+    # exists in the built tree and sub() would record an anchor error.
+    # The other two G-4 subs are untouched.)
 
 # ---------------------------------------------------------------- §2(a) agent references
 # House form: `X` agent (`agents/ecc-X.md`) — short name first (frontmatter

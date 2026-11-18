@@ -2,6 +2,8 @@
 description: Guided feature development with codebase understanding and architecture focus
 ---
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else, state the model the orchestrator is running on and record it in the run ledger (`MODEL: <name>` — the actual selected model). If the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 A structured feature-development workflow that emphasizes understanding existing code before writing new code.
 
 ## Phases

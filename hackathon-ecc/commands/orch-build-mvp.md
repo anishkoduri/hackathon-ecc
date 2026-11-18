@@ -4,6 +4,8 @@ description: Orchestrate bootstrapping a working MVP from a design/spec doc — 
 
 # /orch-build-mvp
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else — the `orch-pipeline` engine runs its MODEL check first (Step 0, before classifying): if the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 Manually launch the **orch-build-mvp** orchestrator (standalone only — user-invoked): turn the record/scope (or an SDD/PRD/system-design document as the standalone fallback) into a running vertical slice.
 
 ## Usage
@@ -24,7 +26,7 @@ Examples:
 Invoke the `orch-build-mvp` skill — standalone only; orchestrate never invokes it in the same run. Input is the record/scope by default (`docs/decision-record.md` + `docs/scope.md`); a doc path in `$ARGUMENTS` is only the standalone fallback when neither record file exists. The skill (via the shared `orch-pipeline` engine — its numbered steps ARE orch-pipeline Phases 0–6, each once; orch-build-mvp step 1 runs Phases 0–2 only, never the full engine) will:
 
 1. Read `docs/decision-record.md` + `docs/scope.md` by default (the spec doc in `$ARGUMENTS` only as the standalone fallback when neither record file exists); extract scope, locked decisions, and a feature list ordered as
-**thin vertical slices** (one end-to-end path first). This is orch-build-mvp step 1 = orch-pipeline Phases 0–2 only — it never runs the full engine. → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
+**thin vertical slices** (one end-to-end path first). This is orch-build-mvp step 1 = orch-pipeline Step 0 (MODEL check + Classify) first, then Phases 0–2 only — it never runs the full engine. → **GATE 1** (approve slice plan; auto-approves during a hackathon first build after grill-me, or a one-prompt removal of a first-build feature — proceed without waiting).
 2. Expansion Phases 0–3 (ground, brainstorm, consolidate, planner pass) produce the planner-approved list — no user approval gate. Expansion Phases 0–3 run ONCE per run, here in a standalone run; expansion Phases 4–6 run inside the build below, never whole here.
 3. Scaffold the first end-to-end slice (orch-pipeline Phase 3).
 4. Reuse the GAN harness (orch-pipeline Phase 4): translate the record/scope (or the fallback spec doc) into `gan-harness/spec.md` +

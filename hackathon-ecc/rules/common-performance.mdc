@@ -10,7 +10,7 @@ alwaysApply: true
 
 **cursor-grok-4.6-high-fast** (standard agentic work; fast-worker)
 
-**grok-4.7-extra-high** (deepest reasoning; deep-reasoner)
+**the model selected in this chat** (deepest reasoning; deep-reasoner)
 
 ## Context Window Management
 
@@ -27,7 +27,7 @@ Lower context sensitivity tasks:
 
 ## Extended Thinking
 
-Reasoning depth is controlled by the agent model pins in agents/ (notably grok-4.7-extra-high for deep-reasoner). Do not use effort controls — Grok takes per-vendor `reasoning_effort`, which Cursor does not expose in a pin.
+Reasoning depth is controlled by the agent model inheritance in agents/ (notably `inherit` for deep-reasoner — it runs on the model selected in this chat). Do not use effort controls — Grok takes per-vendor `reasoning_effort`, which Cursor does not expose in a pin.
 
 ## Build Troubleshooting
 

@@ -1,9 +1,12 @@
-# Fix #30 live-test prompt — Grok 4.7 Extra High orchestrator
+# Fix #33 live-test prompt — selected-model orchestrator (Grok 4.7 Extra High selected for the test)
 
-Run this in Cursor after fix #30 lands (plugin installed from the fix #30
+Run this in Cursor after fix #33 lands (plugin installed from the fix #33
 bundle). Paste the whole prompt into a fresh Cursor chat in a **scratch
 project** (not a real repo — the coding task writes files). Before starting,
-select **Grok 4.7 Extra High** in the model picker.
+select **Grok 4.7 Extra High** in the model picker — this is Anish's
+default, and the test's baseline: since fix #33 the orchestrator runs on
+whatever model is selected, so the test verifies the SELECTED model runs
+the parent.
 
 ## The prompt (paste into Cursor)
 
@@ -39,12 +42,13 @@ select **Grok 4.7 Extra High** in the model picker.
 
 ## Pass / fail
 
-- **PASS:** the parent agent ran **Grok 4.7 Extra High** on both Task A
+- **PASS:** the parent agent ran the model selected in the picker
+  (**Grok 4.7 Extra High** for this test) on both Task A
   and Task B (the model indicator says so). Report the subagent models
   for information — subagent routing is a known Cursor limitation
   (per-subagent model selection is unreliable), so a subagent on another
   model does not fail this test; only the parent matters.
-- **FAIL:** the parent ran anything other than Grok 4.7 Extra High on
+- **FAIL:** the parent ran anything other than the selected model on
   either task (e.g. it fell back to Grok 4.7 High, or to Auto). If it
   fails, note exactly what ran instead and what the picker showed before
   you started — that is the bug to report back.
@@ -55,7 +59,8 @@ select **Grok 4.7 Extra High** in the model picker.
   runs, not to burn pool tokens on a big build.
 - Task A is the reasoning check (a decision doc with failure modes and
   verification steps, not code). Task B is the repo-scale check (four
-  files + tests, run end to end). If Extra High runs the parent on both,
-  the fix #30 pin change is doing its job.
+  files + tests, run end to end). If the selected model runs the parent
+  on both, the fix #33 unpin is doing its job — the orchestrator follows
+  the picker.
 - The live smoke test for real project behavior is still skipped since
   Nov 15 — this prompt checks the pin, not the full plugin.

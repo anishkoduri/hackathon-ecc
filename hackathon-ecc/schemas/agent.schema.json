@@ -32,8 +32,8 @@
     },
     "model": {
       "type": "string",
-      "description": "Source model tier, when present. Grok model slugs only in v1.",
-      "enum": ["cursor-grok-4.6-high-fast", "grok-4.7-extra-high"]
+      "description": "Source model tier, when present. `inherit` runs on the model selected in the chat; the fast tier pins `cursor-grok-4.6-high-fast`.",
+      "enum": ["cursor-grok-4.6-high-fast", "inherit"]
     },
     "tools": {
       "type": "array",

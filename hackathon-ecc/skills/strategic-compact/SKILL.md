@@ -65,7 +65,7 @@ Environment variables:
 - `COMPACT_CONTEXT_THRESHOLD` — Context tokens before the context-size suggestion (default: 160000 on a 200k window, 250000 on a 1M window, capped at 80% of a valid native compaction budget when earlier). An explicit positive threshold overrides that default cap; `0` disables the context signal.
 - `COMPACT_CONTEXT_INTERVAL` — Additional context tokens before the suggestion repeats (default: 60000)
 - `COMPACT_STATE_TTL_DAYS` — Days before stale per-session state files in the temp dir are swept (default: 14)
-- `ECC_CONTEXT_WINDOW_TOKENS` — Explicit context-window size, in tokens, overriding auto-detection. Set this for large-window models whose reported id lacks a `[1m]` marker (e.g. 500k Grok 4.7 Extra High, or a new 1M-window model family) so the threshold scales to the real window instead of defaulting to 200k and overstating context usage.
+- `ECC_CONTEXT_WINDOW_TOKENS` — Explicit context-window size, in tokens, overriding auto-detection. Set this for large-window models whose reported id lacks a `[1m]` marker (e.g. 500k Grok 4.7 High, or a new 1M-window model family) so the threshold scales to the real window instead of defaulting to 200k and overstating context usage.
 - `ECC_CONTEXT_WINDOW_TOKENS` — an explicit override for the context window, used when the host's native auto-compact trigger does not match the model's capacity. For context-window resolution, ECC consults it first, then a `[1m]` model marker, then inference from observed tokens above 200k. The transcript-context model-family table was removed in fix #16 — no model name is consulted.
 
 > Window precedence is: `ECC_CONTEXT_WINDOW_TOKENS`, then the `[1m]` marker, a known large-window model family, observed tokens above 200k, the native auto-compact fallback, and finally the inferred 200k default. Set `ECC_CONTEXT_WINDOW_TOKENS` when you know the actual window and automatic detection lacks that information; do not treat the native compact trigger as proof of model capacity.
@@ -99,7 +99,7 @@ Understanding what persists helps you compact with confidence:
 
 > ### Don't rely on the task list surviving — it may not exist
 >
-> Cursor **2.1.233 removed the todo/task tools by default** on Grok 4.7 Extra High, Grok 4.6 High Fast,
+> Cursor **2.1.233 removed the todo/task tools by default** on Grok 4.7 High, Grok 4.6 High Fast,
 > current models and newer (`TodoWrite`, `TaskCreate/Get/Update/List`).
 > The tools cannot be re-enabled from this skill — **they do not travel with it**, so you cannot assume the reader has them.
 >

@@ -3,6 +3,8 @@ name: feature-expansion
 description: Elevate a product beyond its original brief — automatically during the first build, on demand after that. Runs right after hackathon-scope sets the MVP scope — subagents brainstorm new features and tools that elevate the product in line with docs/decision-record.md, the planner approves/tweaks/rejects them, then the approved ones are built as part of the first build, verified as they land. Feature brainstorming here is autonomous subagent ideation + implementation; do not invoke the brainstorming skill (collaborative user questioning) inside this flow. No user approval gate — the user removes anything unwanted with one prompt through orch-change-feature. After the first build, runs only when the user explicitly asks to flesh out, expand, or "make it much better" than the original idea. Do NOT use to add a single named feature the user already specified — orch-add-feature owns that.
 ---
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else, state the model the orchestrator is running on and record it in the run ledger (`MODEL: <name>` — the actual selected model). If the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 Before proposing anything, read `docs/decision-record.md` for this project. If it does not exist, fall back to the raw user prompt plus `docs/scope.md`. Every proposed feature must follow a recorded decision; if a proposal contradicts a recorded decision, the recorded decision wins — note the conflict instead of overriding it.
 
 # Feature Expansion

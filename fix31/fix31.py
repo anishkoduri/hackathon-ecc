@@ -80,15 +80,22 @@ F31_TOKENS = ("GETLAYERS_F31", "GSAP_F31", "REACTBITS_F31", "HAIRLINE_F31")
 # must not carry them (counts drift weekly; read llms.txt live).
 FROZEN_GETLAYERS = ("50 templates", "114 WebGL", "114 3D",
                     "276 backgrounds", "10 animated sections")
-# Pin census from fix30 (must still hold exactly — the weave adds no pin text).
+# Pin census from fix33 (must still hold exactly — the weave adds no pin text).
+# fix #30 retired: the orchestrator is unpinned (fix #33), so the built tree
+# carries no orchestrator pin at all — old pin 0, new pin 0. The 2 OLD_PROSE
+# are the strategic-compact keeps (factual model examples in "Grok 4.7 High"
+# form — fix30's rename no longer runs, so they are never rewritten to Extra
+# High; fix33/SPEC.md §1(b)). FAST is 72: 71 pre-existing (70 + 1 from the fix33 staged weave's
+# orchestrate L93 picker note, D33-16) + 1 in the agent.schema.json description
+# added by fix33.py (D33-17).
 OLD_ID = "grok-4.7-high"
 NEW_ID = "grok-4.7-extra-high"
 OLD_PROSE = "Grok 4.7 High"
 NEW_PROSE = "Grok 4.7 Extra High"
 FAST_ID = "cursor-grok-4.6-high-fast"
 FAST_BARE = "grok-4.6-high-fast"
-EXPECT_PIN = {OLD_ID: 0, OLD_PROSE: 0, FAST_ID: 70,
-              NEW_ID: 49, NEW_PROSE: 22}
+EXPECT_PIN = {OLD_ID: 0, OLD_PROSE: 2, FAST_ID: 72,
+              NEW_ID: 0, NEW_PROSE: 0}
 
 SKIP_DIRS = {"node_modules", ".git"}
 

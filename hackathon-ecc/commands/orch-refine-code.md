@@ -4,6 +4,8 @@ description: Orchestrate a behavior-preserving refactor — confirm tests green,
 
 # /orch-refine-code
 
+**MODEL check (fix #33, MODELSEL_F33):** before anything else — the `orch-pipeline` engine runs its MODEL check first (Step 0, before classifying): if the selected model is Auto, or the model cannot be determined to be a specific model, tell the user to pick a specific model before proceeding; do not silently orchestrate on an unknown fallback.
+
 Manually launch the **orch-refine-code** orchestrator: improve structure while
 behavior stays identical, with the existing test suite as the safety net.
 

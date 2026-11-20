@@ -52,7 +52,7 @@ WRITE the scoping output to `docs/scope.md` in the project before handing off. I
 
 If the decision record has no hours-left number, do not block and do not leave the number blank to proceed: use the recorded assumption — the remaining time until the demo deadline if known, else 8 hours — write it into `docs/scope.md` marked as an assumption, and proceed.
 
-Then NAME the next step in the file and in your reply: `feature-expansion` runs next (automatically, during the first build, right after this scoping step), and after expansion the build runs via `orchestrate` (the first-build engine — one engine per run; `orch-build-mvp` is standalone-only and never runs in a first build orchestrate is driving). Do not end scoping without the file written and the next step named.
+Then NAME the next step in the file and in your reply: `prebuild-research` runs next (the pre-build research step, orchestrate step 1.5), then `feature-expansion` (automatically, during the first build), and after expansion the build runs via `orchestrate` (the first-build engine — one engine per run; `orch-build-mvp` is standalone-only and never runs in a first build orchestrate is driving). Do not end scoping without the file written and the next step named.
 
 ## Technical substance — hard ideas get hard builds (fix #25 §4(e), TECHDEPTH_F25)
 

@@ -184,6 +184,50 @@ them heavily as its foundation (see the skill).
 | React Bits — animated React components (REACTBITS_F31) | Animated React components (text effects, backgrounds, interactive UI, ready-made blocks) that install as source you own, copy-and-own like shadcn/ui. Four variants per component: JS-CSS, JS-TW, TS-CSS, TS-TW. MIT + Commons Clause (may NOT sell, sublicense, or redistribute the components). This skill is a catalog + install guide — NO component source is embedded anywhere in the plugin | `skills/react-bits/SKILL.md`; live catalog `https://reactbits.dev/`; install guide `https://reactbits.dev/get-started/installation`; reviewed baseline commit `9d9c687…` (fix #22 §11) | An animated component on a React/Next.js build, installed fresh per project via `npx shadcn@latest add @react-bits/<Component>-<JS\|TS>-<CSS\|TW>`. Never on a non-React build; never with stock defaults on a themed build |
 | Hairline illustrations — interactive isometric SVG line figures (HAIRLINE_F31) | 33 interactive isometric SVG line figures that answer the pointer (Terrain, Turntable, Keyboard, Terminal, Branches, Vault, Router, Loupe, Sieve, and more). Zero runtime dependencies, ESM-only; React 18+ an optional peer. MIT (Lucas Marques). Install per project: `npm i @lucasmarkes/hairline@0.5.1` or `npx shadcn@latest add https://hairline.lucasmarkes.com/r/hairline.json`. Two skills: `hairline-create` draws a new figure from an idea; `hairline-adopt` rebuilds an existing SVG as a figure. NOT Hairline UI (hairlineui.com) — a different product, not in scope | `skills/hairline-create/SKILL.md` + `skills/hairline-adopt/SKILL.md` (vendored MIT copies); live figures `https://hairline.lucasmarkes.com` | Hero art, section illustration, or a thoughtfully designed empty state on dev-tool sites, technical docs, landing pages, portfolios. Best at 160–240px for empty states; figures fill the parent's width at a 5:4 aspect ratio |
 
+## 13. Fix #34 additions — Motion Principles, ThreeUI
+
+Home: `skills/motion-principles/SKILL.md`, `skills/threeui/SKILL.md`.
+Staged home: `new-skills/` (same names). Fix #34 (ported from the
+factory variant's round 10). The motion-principles skill is authored
+natively from textbook public knowledge — no vendored source; the
+originating reel's own skill file is not used. ThreeUI is a catalog +
+install guide for the free Community edition only; Pro/Beta
+components are paid and out (free-set rule). Neither skill carries
+trigger keys — design skills route through this inventory and the
+palette-first citation, the standing precedent (same as MotionSites,
+GSAP, React Bits).
+
+| Entry | What it is | Where it lives | Reach for it when |
+|---|---|---|---|
+| Motion Principles — the why of UI motion (MOTIONPRINCIPLES_F34) | **Layer role: motion principles** — the why layer of the one design system: 19 principles (Disney's twelve adapted to UI + the HCI laws), each with its UI meaning, when to apply it, when to restrain it, and its numeric guardrail where one exists (Doherty: feedback within 400ms; timing: UI animation under 300ms; origin awareness; interruptible motion; frequency-of-use restraint), plus the immersion direction (depth and spatial continuity, full-viewport moments, scroll-driven progression, with binding restraint guardrails). Taste consults it whenever motion is decided and names the principle(s) in the D19 record; `gsap` implements against it; `browser-qa` renders the motion verdict from its checkable subset (MOTION-QA_F34) | `skills/motion-principles/SKILL.md` | Any motion decision — an entrance, a transition, a gesture, a scroll sequence, the dealt moment's movement — and any immersive surface. A motion with no named principle is not shipped; a principle claimed but not visible in the result is a finding |
+| ThreeUI — ready-made 3D components (THREEUI_F34) | **Layer role: 3D components** — the immersion toolkit of the one design system: ready-made Three.js components (3D hero sections, shader scenes, icons, motion components) for React builds, by MengTo / DesignCode. MIT (verified Nov 19, 2026 from the repo, commit `68802d54`). FREE COMMUNITY EDITION ONLY — 50 parent components, 111 routes, 141 free variants + 23 singletons (164 browse results) at the reviewed baseline; Pro/Beta are paid and out. This skill is a catalog + install guide — NO component source is embedded anywhere in the plugin; components install per project from the npm package `@designcodeio/threeui`, with the runtime-asset copy step for full-document components | `skills/threeui/SKILL.md`; live catalog `https://threeui.com/`; source repo `https://github.com/MengTo/threeui` | A ready-made 3D hero, shader scene, or 3D accent on a React build — the immersion direction's fastest honest implementation. Never Pro/Beta; never on a non-React build; never without its static/2D fallback and reduced-motion still |
+
+## 14. Fix #34 additions — Pre-build Research, the Design Contract
+
+Home: `skills/prebuild-research/SKILL.md`. Staged home: `new-skills/` (same name). Fix #34 (ported from the factory variant's round 11). The research skill runs before the design package exists — it is the pipeline's pre-design step, not a design layer: it feeds feature expansion and the direction with researched fuel, under hard caps, and carries no trigger key (the orchestrate flow invokes it by name — the fix #31 design-skill precedent).
+
+| Entry | What it is | Where it lives | Reach for it when |
+|---|---|---|---|
+| Pre-build research (RESEARCHBRIEF_F34) | **Pipeline role: research** — a bounded web sweep (≤4 searches + ≤4 fetches, primary sources only) run after scoping and before expansion + design, producing ONE compact brief (`docs/research-brief.md`, ≤ ~600 tokens): feature ideas for the expansion step + framework/architecture patterns for the project type, every source logged. Expansion records which ideas it took and which it dropped, each with a reason. Fuel, never authority — the decision record outranks the brief, and the anti-derivative rule stands | `skills/prebuild-research/SKILL.md` | Every first build, at orchestrate step 1.5; any later run that re-opens scope. Never mid-build (a mid-build question is a brief gap, not a research phase); never blocked on — an unreachable source set records the gap and the build proceeds |
+| The design contract (DESIGNCONTRACT_F34) | **Design-package artifact** — Taste step 4a's frozen system issued as a binding contract in `docs/design-contract.md`: hosting line (HOSTING_F34), palette tokens, type scale, spacing scale, motion specs (principles + guardrails cited), named components with inventory citations, states, and a Deviations field. Implementers implement it literally; the pre-build restatement gate checks the implementer's read-back against it before the build; `browser-qa` verifies the built screens against it (CONTRACT-QA_F34) | `docs/design-contract.md` (per project, written by the design-lead); the form lives in `skills/design-taste-frontend/SKILL.md` step 4a | Every build with a UI surface — the contract is what implementers build from and what QA verifies against; a design decision not in the contract is not yet a build input |
+
+## 15. code-mode — the execution discipline (fix #34, CODEMODE_F34)
+
+**Layer role: none — this is an execution entry, not a design element.** It
+is catalogued here for the same reason §14 catalogues the pipeline steps:
+the inventory is the one place a reader can find every named capability the
+plugin carries.
+
+- **code-mode** (`skills/code-mode/SKILL.md`, + the helper library in
+  `skills/code-mode/scripts/`) — the script-first discipline for the
+  orchestrator's data-heavy mechanical work: ONE gated program, a distilled
+  digest of at most 500 E3 back, raw output in files (SCRIPT-FIRST_F34,
+  SCRIPT-GATE_F34). Reach for it when a step's work is scanning, filtering,
+  counting, or transforming across many files — never for a design decision,
+  a verdict, or a subagent's work (subagents do not run these scripts). It
+  carries no trigger key by design: `orchestrate` and `browser-qa` invoke
+  it by name (the routing decision is recorded in fix34/SPEC.md).
+
 ## How the record uses this file (the ambition bar, AMBITION_F23)
 
 1. At the design-package step, the orchestrator and the design-lead read this

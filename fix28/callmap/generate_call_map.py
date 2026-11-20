@@ -15,7 +15,7 @@ Outputs:
     full per-element evidence, for verify25 and later workers)
 
 Exit code: 0 only if the counts agree with the tree
-(72 skills / 45 agents / 48 rules / 55 commands / 15 hooks /
+(76 skills / 45 agents / 48 rules / 55 commands / 15 hooks /
 48 trigger keys). Any mismatch fails loudly.
 
 Evidence tiers (per element, per invoker file):
@@ -97,7 +97,7 @@ PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 BUILT = os.path.join(PLUGIN_ROOT, "hackathon-ecc")
 STAGED_DIRS = ["new-skills", "round2-skills", "rewritten-skills", "new-rules"]
 
-EXPECTED = {"skills": 72, "agents": 45, "rules": 48,
+EXPECTED = {"skills": 76, "agents": 45, "rules": 48,
             "commands": 55, "hooks": 15, "triggers": 48}
 
 # Skills whose dispatch is deferred to end-of-project (orchestrate
@@ -830,12 +830,12 @@ def render_map(inv, ev, data):
             L.append(f"| `{keyfn(key, e)}`{mark} | {inv_txt} | {flow_txt} |")
         L.append("")
 
-    section("Skills (72)", "skills", lambda k, e: k)
-    section("Agents (45)", "agents", lambda k, e: k)
-    section("Rules (48)", "rules", lambda k, e: k)
-    section("Commands (55)", "commands", lambda k, e: "/" + k)
+    section(f"Skills ({EXPECTED['skills']})", "skills", lambda k, e: k)
+    section(f"Agents ({EXPECTED['agents']})", "agents", lambda k, e: k)
+    section(f"Rules ({EXPECTED['rules']})", "rules", lambda k, e: k)
+    section(f"Commands ({EXPECTED['commands']})", "commands", lambda k, e: "/" + k)
 
-    L.append("## Hooks (15)")
+    L.append(f"## Hooks ({EXPECTED['hooks']})")
     L.append("")
     L.append("| Event | Script | Adapter | Downstream (scripts/hooks/) | Flow path |")
     L.append("|---|---|---|---|---|")
@@ -852,7 +852,7 @@ def render_map(inv, ev, data):
              "Cursor hooks.")
     L.append("")
 
-    L.append("## Trigger keys (48)")
+    L.append(f"## Trigger keys ({EXPECTED['triggers']})")
     L.append("")
     L.append("Each key routes user phrasing to its target skill. All 48 keys "
              "resolve to a real skill dir. Liveness caveat: see blind spot B6 — "

@@ -43,6 +43,12 @@ Something else                    → whatever the sponsor provides or the team 
 
 **One repo, one deployment** where possible. A split frontend/backend deploy means CORS, two sets of env vars and two things that can break.
 
+**Contract first:** where the build has a design contract, its hosting line (next section) decides the host — this tree is the fallback for builds without one.
+
+## The contract's hosting line (fix #34, HOSTING_F34)
+
+The design contract (`docs/design-contract.md`) names the build's hosting target — Vercel or Netlify, static-friendly by default — and this runbook executes that line. Static discipline on either host: the build ships a static output (or the framework's static export); asset paths stay consistent (root-relative on a root deploy, relative where a subpath deploy is possible); client-side routes survive a hard refresh — the SPA fallback ships with the build (Netlify: `public/_redirects` carrying `/* /index.html 200`; Vercel: a `rewrites` entry in `vercel.json` sending unmatched paths to `/index.html`; real files are served before the fallback on both hosts, so assets are never swallowed by it); and no server-only feature (a Node-only API route, a server action, a proxy/edge dependency) is introduced unless the contract's hosting line explicitly flags it. **Design wins ties (binding):** where a hosting constraint conflicts with a designed element — a WebGL scene, a server-rendered moment, a payload the static budget cannot carry — the element ships AS DESIGNED, the conflict + its reason are recorded in the contract's Deviations field, and the deploy path adapts (a server deploy, a split deploy) with the path actually used recorded in the ledger. deploy-fast never asks the design to tone down for hosting, and never silently drops an element to make a static deploy fit.
+
 ## Split-backend redeploy (Vercel frontend + Railway backend)
 
 A push to `main` redeploys **only** the git-linked Vercel frontend — the Railway API/backend does **not** redeploy from that push. After any change that touches the backend (including a feature removal that drops API routes or database objects), redeploy **both** sides:

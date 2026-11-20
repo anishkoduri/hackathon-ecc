@@ -221,7 +221,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
 # only the opus bracket pin was removed; cursor-grok-4.6-high-fast remains
 # the fast-worker pin.
-for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder getlayers gsap react-bits hairline-create hairline-adopt; do
+for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder getlayers gsap react-bits hairline-create hairline-adopt motion-principles threeui prebuild-research code-mode; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
 done
 # orchestrate: skill (SKILL.md + references) to skills/, agents to agents/,
@@ -24253,6 +24253,23 @@ PYEOF
 # fix32/fix32.py runs AFTER the restatement block above, so its census +
 # post-assertions cover the restatements too (see the fix #32 header).
 python3 "$PLUGIN_ROOT/fix32/fix32.py" "$PLUGIN_DIR"
+
+# --- fix #34: factory port (rounds 10-13 content, minus drone machinery) ---
+# fix34/fix34.py asserts the staged weave landed (orchestrate step 1.5 +
+# contract gate + step-5a checks + cost-policy bullet, Taste motion rule +
+# design contract, inventory §13/§14/§15, deploy-fast hosting section,
+# feature-expansion Phase 0, grill-me handoff, gsap why-pointer,
+# hackathon-mode sequence), asserts the fix #33 pin census still holds,
+# patches browser-qa at build time with the MOTION-QA + CONTRACT-QA
+# verdicts, rewrites the README count lines 72 -> 76 + the fix #34
+# provenance note, sets trigger coverage.skills to 76, and post-asserts
+# the exclusions (no orchestrator-briefing / openrouter-drones / drone
+# agents / cm_dispatch / factory-numbered rule IDs; deploy-fast Netlify
+# pricing row byte-untouched). The 4 new skills are staged (new-skills/)
+# and flow through the STEP 2 loop above. Runs after fix32, before
+# STEP 5. Exits non-zero on census/post-assertion errors (set -euo
+# pipefail stops the build); the run log lands in fix34/fix34-patch-log.md.
+python3 "$PLUGIN_ROOT/fix34/fix34.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

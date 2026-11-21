@@ -1,6 +1,6 @@
 # fix34 patch log
 
-- census: counts skills 76 (72 + 4 new), agents 45, rules 48, commands 55
+- census: counts skills 77 (72 + 4 new + kitchen staged by fix #35), agents 45, rules 48, commands 55
 - census: MODELSEL pin census holds at the fix #33 post-state
 - census: README at 72 in all 4 count lines; trigger coverage 72/48
 - census: staged weave landed (16 needles across 9 built files)

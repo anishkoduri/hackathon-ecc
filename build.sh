@@ -221,7 +221,7 @@ cp "$ECC_SRC/mcp.json" "$PLUGIN_DIR/mcp.json"
 # matching its description. deep-reasoner (orchestrate/agents): :7 now says
 # only the opus bracket pin was removed; cursor-grok-4.6-high-fast remains
 # the fast-worker pin.
-for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder getlayers gsap react-bits hairline-create hairline-adopt motion-principles threeui prebuild-research code-mode; do
+for s in grill-me feature-expansion integration design-taste-frontend codebase-memory motionsites-web-builder getlayers gsap react-bits hairline-create hairline-adopt kitchen motion-principles threeui prebuild-research code-mode; do
   cp -r "$PLUGIN_ROOT/new-skills/$s" "$PLUGIN_DIR/skills/$s"
 done
 # orchestrate: skill (SKILL.md + references) to skills/, agents to agents/,
@@ -24270,6 +24270,23 @@ python3 "$PLUGIN_ROOT/fix32/fix32.py" "$PLUGIN_DIR"
 # STEP 5. Exits non-zero on census/post-assertion errors (set -euo
 # pipefail stops the build); the run log lands in fix34/fix34-patch-log.md.
 python3 "$PLUGIN_ROOT/fix34/fix34.py" "$PLUGIN_DIR"
+# --- fix #35: design-layer parity with the factory variant ----------------
+# fix35/fix35.py asserts the staged weave landed (kitchen staged via the
+# STEP 2 loop above; canonical DESIGNPKG-AUTO parenthetical (decision B,
+# D35-6) + kitchen gloss + palette lists byte-identical in orchestrate +
+# hackathon-mode; Taste palette / Fraunces / contract-move edits; the
+# getlayers layer role; the inventory-citation renumber in
+# motion-principles / threeui / prebuild-research), then performs the
+# build-time half (D35-5): the inventory parity rewrite (§0 layer map,
+# §12 layer roles + Kitchen row, §13 MotionSites, §14-§16 renumbered to
+# the factory's section numbers), browser-qa factory verdict wording +
+# scripted evidence collection, README 76 -> 77 + the fix #35 provenance
+# note, trigger coverage.skills 77, and manifests/design-parity.json
+# generation with hash assertions against the factory's published parity
+# values. Runs after fix34, before STEP 5. Exits non-zero on any error
+# (set -euo pipefail stops the build); the run log lands in
+# fix35/fix35-patch-log.md.
+python3 "$PLUGIN_ROOT/fix35/fix35.py" "$PLUGIN_DIR"
 
 # STEP 5 — Counts
 # ============================================================================

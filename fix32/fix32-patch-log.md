@@ -9,7 +9,7 @@
 - census: fix #32 restatement block landed (orch-* x5, gan x2, design-system, README, less-flat-ui)
 - census: data exact (styles 89/51, palettes 192, fonts 74, guidelines 120, icons 105, charts 25, stacks 22, app-interface 32, landing 34, products 192, GSAP presets 17)
 - census: all 11 pins present in their owner homes (GSAP in gsap, React Bits in react-bits, Lenis/R3F/Casberry in motion-foundations, React Bits/R3F/OriginKit/Casberry in motion-patterns, daisyUI in design-system, Vanta/liquid-glass/ShaderGradient/liquid-logo in design-taste-frontend)
-- census: pin census holds (grok-4.7-extra-high x49, 'Grok 4.7 Extra High' x22, cursor-grok-4.6-high-fast x70, grok-4.7-high x0, 'Grok 4.7 High' x0)
+- census: pin census holds (grok-4.7-extra-high x0, 'Grok 4.7 Extra High' x0, cursor-grok-4.6-high-fast x72, grok-4.7-high x0, 'Grok 4.7 High' x0)
 - census: trigger pre-state 49 keys; skill:ui-ux-pro-max holds exactly the 4 dashboard phrases
 - census: DESIGNPKG-AUTO + GLOBAL-ROUTING blocks byte-identical in orchestrate + hackathon-mode
 - census: design-glossary G1-G20 citations intact (ui-ux-pro-max 17x)

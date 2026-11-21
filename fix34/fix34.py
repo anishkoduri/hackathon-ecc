@@ -94,8 +94,12 @@ rules = [f for f in os.listdir(p("rules")) if f.endswith(".mdc")]
 commands = [f for f in os.listdir(p("commands")) if f.endswith(".md")]
 hooks = read(p("hooks", "hooks.json")) if os.path.exists(p("hooks", "hooks.json")) else ""
 NEW_SKILLS = ["motion-principles", "threeui", "prebuild-research", "code-mode"]
-if len(skills) != 76:
-    ERRORS.append(f"census: built skills = {len(skills)} (expected 76)")
+# fix #35 (D35-9): kitchen is staged by fix #35 and flows through the
+# STEP 2 loop before this script runs, so the built tree already
+# carries 77 skills at this census; fix #34's own delta (72 -> 76)
+# is unchanged.
+if len(skills) != 77:
+    ERRORS.append(f"census: built skills = {len(skills)} (expected 77)")
 for s in NEW_SKILLS:
     if s not in skills:
         ERRORS.append(f"census: new skill missing from built tree: {s}")
@@ -105,7 +109,7 @@ if len(rules) != 48:
     ERRORS.append(f"census: built rules = {len(rules)} (expected 48)")
 if len(commands) != 55:
     ERRORS.append(f"census: built commands = {len(commands)} (expected 55)")
-CHANGES.append(f"census: counts skills 76 (72 + 4 new), agents {len(agents)}, rules {len(rules)}, commands {len(commands)}")
+CHANGES.append(f"census: counts skills 77 (72 + 4 new + kitchen staged by fix #35), agents {len(agents)}, rules {len(rules)}, commands {len(commands)}")
 
 PIN_CENSUS = {"grok-4.7-high": 0, "Grok 4.7 High": 2, "grok-4.7-extra-high": 0,
               "Grok 4.7 Extra High": 0, "cursor-grok-4.6-high-fast": 72}

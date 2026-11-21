@@ -4,7 +4,7 @@
   "commands": 55,
   "hooks": 15,
   "rules": 48,
-  "skills": 76,
+  "skills": 77,
   "triggers": 48
  },
  "elements": {
@@ -116,8 +116,8 @@
     "called": true,
     "flow": [
      "build",
-     "design package",
-     "build (expansion)"
+     "build (expansion)",
+     "design package"
     ],
     "invokers": {
      "hackathon-ecc/agents/ecc-a11y-architect.md": [
@@ -400,8 +400,8 @@
    "ecc-commit-reviewer": {
     "called": true,
     "flow": [
-     "build",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "build"
     ],
     "invokers": {
      "hackathon-ecc/commands/prp-commit.md": [
@@ -1701,6 +1701,9 @@
      "hackathon-ecc/skills/integration/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/kitchen/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/mobile-ship/SKILL.md": [
       "strong"
      ],
@@ -1961,6 +1964,9 @@
      ],
      "new-skills/integration/SKILL.md": [
       "strong"
+     ],
+     "new-skills/kitchen/SKILL.md": [
+      "weak"
      ],
      "new-skills/orchestrate/SKILL.md": [
       "strong"
@@ -2569,8 +2575,8 @@
     "called": true,
     "flow": [
      "build",
-     "build (expansion)",
      "grill",
+     "build (expansion)",
      "build (orchestrated dispatch)",
      "design package",
      "on-request (/<name>)"
@@ -2811,8 +2817,8 @@
     "called": true,
     "flow": [
      "build",
-     "build (expansion)",
      "grill",
+     "build (expansion)",
      "build (orchestrated dispatch)",
      "design package"
     ],
@@ -2865,6 +2871,9 @@
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong"
      ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
+     ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
      ],
@@ -2913,6 +2922,9 @@
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
       "weak"
      ],
+     "hackathon-ecc/skills/getlayers/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "strong"
      ],
@@ -2921,6 +2933,9 @@
      ],
      "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
       "strong"
+     ],
+     "hackathon-ecc/skills/kitchen/SKILL.md": [
+      "weak"
      ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
       "weak"
@@ -3015,10 +3030,16 @@
      "new-skills/feature-expansion/SKILL.md": [
       "strong"
      ],
+     "new-skills/getlayers/SKILL.md": [
+      "weak"
+     ],
      "new-skills/grill-me/SKILL.md": [
       "strong"
      ],
      "new-skills/gsap/SKILL.md": [
+      "weak"
+     ],
+     "new-skills/kitchen/SKILL.md": [
       "weak"
      ],
      "new-skills/motion-principles/SKILL.md": [
@@ -3075,8 +3096,8 @@
     "called": true,
     "flow": [
      "build",
-     "design package",
      "grill",
+     "design package",
      "on-request /demo",
      "on-request (/<name>)"
     ],
@@ -3375,6 +3396,9 @@
      "hackathon-ecc/skills/integration/SKILL.md": [
       "weak"
      ],
+     "hackathon-ecc/skills/kitchen/SKILL.md": [
+      "weak"
+     ],
      "hackathon-ecc/skills/mobile-ship/SKILL.md": [
       "weak"
      ],
@@ -3618,6 +3642,9 @@
      "new-skills/integration/SKILL.md": [
       "weak"
      ],
+     "new-skills/kitchen/SKILL.md": [
+      "weak"
+     ],
      "new-skills/motionsites-web-builder/SKILL.md": [
       "weak"
      ],
@@ -3734,8 +3761,8 @@
     "called": true,
     "flow": [
      "build",
-     "verify",
      "design package",
+     "verify",
      "on-request (/<name>)"
     ],
     "invokers": {
@@ -5900,8 +5927,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (expansion)"
+     "build (expansion)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -5927,8 +5954,8 @@
    "api-design": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build"
+     "build",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -5961,9 +5988,9 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6011,10 +6038,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "deploy",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "deploy",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6095,11 +6122,11 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "verify",
      "design package",
+     "verify",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6124,6 +6151,9 @@
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
       "trigger"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
@@ -6424,11 +6454,11 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "verify",
      "build (expansion)",
      "build (orchestrated dispatch)",
-     "design package"
+     "design package",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6491,11 +6521,15 @@
     "called": true,
     "flow": [
      "build",
+     "verify",
      "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
      "hackathon-ecc/README.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/browser-qa/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
@@ -6561,10 +6595,10 @@
    "council": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6603,8 +6637,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "end-of-project only (deferred)"
     ],
     "fm_name_mismatch": false,
@@ -6647,10 +6681,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (expansion)",
      "build (orchestrated dispatch)",
-     "on-request /demo"
+     "on-request /demo",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6718,11 +6752,11 @@
    "design-system": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
-     "design package",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "design package",
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6851,10 +6885,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "design package",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -6870,6 +6904,9 @@
      "hackathon-ecc/manifests/context-packs/skill-triggers@1.json": [
       "strong",
       "trigger"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
@@ -7007,8 +7044,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7115,8 +7152,8 @@
    "error-handling": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build"
+     "build",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7159,9 +7196,9 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "grill",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7224,8 +7261,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "design package"
+     "design package",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7330,8 +7367,8 @@
    "frontend-slides": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build"
+     "build",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7411,6 +7448,9 @@
      "hackathon-ecc/README.md": [
       "weak"
      ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
+     ],
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
      ],
@@ -7453,9 +7493,9 @@
    "git-workflow": {
     "called": true,
     "flow": [
+     "build (orchestrated dispatch)",
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (orchestrated dispatch)"
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7484,10 +7524,10 @@
    "grill-me": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7669,8 +7709,8 @@
    "growth-log": {
     "called": true,
     "flow": [
-     "build",
-     "deploy"
+     "deploy",
+     "build"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7726,6 +7766,9 @@
       "weak"
      ],
      "hackathon-ecc/skills/design-taste-frontend/scripts/shoot.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/kitchen/SKILL.md": [
       "weak"
      ],
      "hackathon-ecc/skills/motion-foundations/SKILL.md": [
@@ -7812,6 +7855,9 @@
      "new-skills/design-taste-frontend/scripts/shoot.mjs": [
       "weak"
      ],
+     "new-skills/kitchen/SKILL.md": [
+      "weak"
+     ],
      "new-skills/motion-principles/SKILL.md": [
       "strong"
      ],
@@ -7858,8 +7904,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (expansion)"
+     "build (expansion)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -7901,10 +7947,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (expansion)",
      "grill",
-     "build (orchestrated dispatch)"
+     "build (expansion)",
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8057,8 +8103,8 @@
     "called": true,
     "flow": [
      "build",
-     "build (expansion)",
      "grill",
+     "build (expansion)",
      "build (orchestrated dispatch)",
      "design package"
     ],
@@ -8298,14 +8344,122 @@
     },
     "weak_only": false
    },
+   "kitchen": {
+    "called": true,
+    "flow": [
+     "build",
+     "design package",
+     "build (orchestrated dispatch)"
+    ],
+    "fm_name_mismatch": false,
+    "invokers": {
+     "hackathon-ecc/README.md": [
+      "strong"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
+     ],
+     "hackathon-ecc/rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/effects/README.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/moments/photo-chapters/moment.js": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/objects/_print-core/index.json": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/objects/print-cup/meta.json": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/assets/photos/photos.json": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/references/hallmark/references/themes/dose.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/references/hallmark/scripts/photos.json": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/references/photos.md": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/scripts/consistency.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/scripts/photos.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/design-taste-frontend/scripts/start.mjs": [
+      "weak"
+     ],
+     "hackathon-ecc/skills/orchestrate/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
+     "hackathon-ecc/skills/ui-ux-pro-max/data/phosphor-icons-upstream.json": [
+      "strong"
+     ],
+     "new-rules/hackathon-mode.mdc": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/assets/effects/README.md": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/assets/moments/photo-chapters/moment.js": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/assets/objects/_print-core/index.json": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/assets/objects/print-cup/meta.json": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/assets/photos/photos.json": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/references/hallmark/references/themes/dose.md": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/references/hallmark/scripts/photos.json": [
+      "strong"
+     ],
+     "new-skills/design-taste-frontend/references/photos.md": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/scripts/consistency.mjs": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/scripts/photos.mjs": [
+      "weak"
+     ],
+     "new-skills/design-taste-frontend/scripts/start.mjs": [
+      "weak"
+     ],
+     "new-skills/orchestrate/SKILL.md": [
+      "strong"
+     ]
+    },
+    "weak_only": false
+   },
    "less-flat-ui": {
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "design package",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8421,11 +8575,11 @@
    "make-interfaces-feel-better": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "design package",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8553,10 +8707,10 @@
    "motion-advanced": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "design package",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8612,10 +8766,10 @@
    "motion-foundations": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "design package",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8716,10 +8870,10 @@
    "motion-patterns": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "design package",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -8825,14 +8979,17 @@
     "flow": [
      "build",
      "verify",
-     "design package",
      "build (expansion)",
+     "design package",
      "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
      "hackathon-ecc/README.md": [
       "strong"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
      ],
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
@@ -8900,6 +9057,9 @@
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/orchestrate/references/design-inventory.md": [
+      "inventory"
+     ],
      "new-rules/hackathon-mode.mdc": [
       "strong"
      ],
@@ -8938,9 +9098,9 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9000,11 +9160,11 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (expansion)",
      "grill",
+     "build (expansion)",
      "build (orchestrated dispatch)",
-     "design package"
+     "design package",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9076,9 +9236,9 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9144,8 +9304,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9254,8 +9414,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9294,12 +9454,12 @@
     "called": true,
     "flow": [
      "build",
-     "build (orchestrated dispatch)",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "verify",
-     "design package",
+     "grill",
      "build (expansion)",
-     "grill"
+     "design package",
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9352,6 +9512,9 @@
       "strong",
       "trigger"
      ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
+     ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
      ],
@@ -9400,6 +9563,9 @@
      "hackathon-ecc/skills/gan-style-harness/SKILL.md": [
       "strong"
      ],
+     "hackathon-ecc/skills/getlayers/SKILL.md": [
+      "strong"
+     ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
       "strong"
      ],
@@ -9407,6 +9573,9 @@
       "strong"
      ],
      "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/kitchen/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/less-flat-ui/SKILL.md": [
@@ -9484,10 +9653,16 @@
      "new-skills/feature-expansion/SKILL.md": [
       "strong"
      ],
+     "new-skills/getlayers/SKILL.md": [
+      "strong"
+     ],
      "new-skills/grill-me/SKILL.md": [
       "strong"
      ],
      "new-skills/gsap/SKILL.md": [
+      "strong"
+     ],
+     "new-skills/kitchen/SKILL.md": [
       "strong"
      ],
      "new-skills/motion-principles/SKILL.md": [
@@ -9523,11 +9698,11 @@
    "pitch-deck-video": {
     "called": true,
     "flow": [
-     "on-request /demo",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
+     "build (orchestrated dispatch)",
      "deploy",
-     "build (orchestrated dispatch)"
+     "on-request /demo",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9593,11 +9768,11 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "verify",
      "design package",
+     "verify",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -9726,8 +9901,8 @@
     "called": true,
     "flow": [
      "build",
-     "build (expansion)",
      "grill",
+     "build (expansion)",
      "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
@@ -9745,6 +9920,9 @@
       "strong"
      ],
      "hackathon-ecc/skills/grill-me/SKILL.md": [
+      "strong"
+     ],
+     "hackathon-ecc/skills/hackathon-scope/SKILL.md": [
       "strong"
      ],
      "hackathon-ecc/skills/orchestrate/SKILL.md": [
@@ -9781,8 +9959,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "end-of-project only (deferred)"
     ],
     "fm_name_mismatch": false,
@@ -10060,8 +10238,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10109,9 +10287,9 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
+     "deploy",
      "build (orchestrated dispatch)",
-     "deploy"
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10182,8 +10360,8 @@
    "strategic-compact": {
     "called": true,
     "flow": [
-     "build",
-     "build (expansion)"
+     "build (expansion)",
+     "build"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10214,12 +10392,12 @@
    "systematic-debugging": {
     "called": true,
     "flow": [
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "build",
      "verify",
-     "deploy",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "deploy",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10279,10 +10457,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
+     "deploy",
      "verify",
      "build (orchestrated dispatch)",
-     "deploy"
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10348,14 +10526,17 @@
     "called": true,
     "flow": [
      "build",
-     "design package",
      "build (expansion)",
+     "design package",
      "build (orchestrated dispatch)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
      "hackathon-ecc/README.md": [
       "strong"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
      ],
      "hackathon-ecc/rules/hackathon-mode.mdc": [
       "strong"
@@ -10400,8 +10581,8 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
-     "grill"
+     "grill",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10487,6 +10668,9 @@
      ],
      "hackathon-ecc/commands/gan-design.md": [
       "strong"
+     ],
+     "hackathon-ecc/manifests/design-parity.json": [
+      "shipped"
      ],
      "hackathon-ecc/manifests/install-modules.json": [
       "shipped"
@@ -10621,10 +10805,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "verify",
      "build (expansion)",
-     "build (orchestrated dispatch)"
+     "build (orchestrated dispatch)",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)"
     ],
     "fm_name_mismatch": false,
     "invokers": {
@@ -10696,10 +10880,10 @@
     "called": true,
     "flow": [
      "build",
-     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "deploy",
      "build (orchestrated dispatch)",
      "verify",
+     "on-request (trigger-routed; no live Cursor entry \u2014 see method note B6)",
      "end-of-project only (deferred)"
     ],
     "fm_name_mismatch": false,

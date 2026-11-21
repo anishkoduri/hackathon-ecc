@@ -97,7 +97,7 @@ PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 BUILT = os.path.join(PLUGIN_ROOT, "hackathon-ecc")
 STAGED_DIRS = ["new-skills", "round2-skills", "rewritten-skills", "new-rules"]
 
-EXPECTED = {"skills": 76, "agents": 45, "rules": 48,
+EXPECTED = {"skills": 77, "agents": 45, "rules": 48,
             "commands": 55, "hooks": 15, "triggers": 48}
 
 # Skills whose dispatch is deferred to end-of-project (orchestrate

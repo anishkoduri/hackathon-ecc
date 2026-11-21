@@ -6,7 +6,7 @@
 ## Changes (11)
 - census: all 5 new skills present with SKILL.md + frontmatter; hairline engine/checks/examples/LICENSE vendored
 - census: DESIGNPKG-AUTO block byte-identical in orchestrate + hackathon-mode
-- census: pin census holds (grok-4.7-extra-high x49, 'Grok 4.7 Extra High' x22, cursor-grok-4.6-high-fast x70, grok-4.7-high x0, 'Grok 4.7 High' x0); zero pin text in the 5 new skills
+- census: pin census holds (grok-4.7-extra-high x0, 'Grok 4.7 Extra High' x0, cursor-grok-4.6-high-fast x72, grok-4.7-high x0, 'Grok 4.7 High' x0); zero pin text in the 5 new skills
 - license: no MCP calls / no frozen GetLayers counts; react-bits + gsap + getlayers skill dirs contain only their SKILL.md (no vendored source)
 - README.md: substituted '67 skills, 45 agents, 48 rules, and 55 commands in' ...
 - README.md: substituted '67 skills widen the routing surface' ...

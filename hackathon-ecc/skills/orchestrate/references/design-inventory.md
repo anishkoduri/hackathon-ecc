@@ -10,14 +10,40 @@ specific (why this element does not serve this build), never a blanket line.
 
 Paths below are built-tree paths (`skills/...` as the plugin ships them).
 Where a skill's staged home differs, the staged home is noted. Counts were
-verified by reading the actual files (Nov 12, 2026); where a skill's own
-header claim and its data file disagree, both numbers are given and the data
-file is the inventory source.
+verified by reading the actual files (Nov 12, 2026); where a skill's header
+claim and its data file disagree, both numbers are given and the data file
+governs.
 
 Currency rule (INVENTORY_F23): this file is kept current — any future fix
 that adds design elements updates it in the same change, with the new
 entries, counts, and paths. A fix that adds an element and does not update
 this file is incomplete.
+
+## 0. One system — the layer map
+
+The sections below are ONE design system, not a menu of alternatives: every
+build reads this file as layers, in consultation order, and the direction
+cites each layer USED or CONSIDERED-AND-REJECTED with a D19 reason (see "How
+the record uses this file" below). No layer replaces another.
+
+| Layer | Role | Source | Inventory |
+|---|---|---|---|
+| Foundation | The cinematic ground the direction leans on — consulted FIRST | GetLayers prompt-first layers (free set only) | §12 |
+| Direction | The dealt theme and the page system that leads the build | Hallmark theme deal (§3); Taste leads full site builds (§2) | §2, §3 |
+| Intelligence | General design intelligence — styles, palettes, pairings, guidelines, icons, charts, stacks | ui-ux-pro-max | §1 |
+| Components | Animated components and cinematic component sources | React Bits (§12); MotionSites (§13); daisyUI (§8, §9); ThreeUI (§14) — ready-made 3D components | §12, §13, §8, §14 |
+| Motion | The motion engine behind the motion system | GSAP (§12) driving the motion tokens and principles (§6); motion-principles (§14) — the why layer the principles are dealt from | §12, §6, §14 |
+| Texture | The not-flat surface treatment | less-flat-ui, all 23 treatments | §5 |
+| Illustrations | Interactive line figures for hero art, sections, empty states | Hairline (§12) | §12 |
+| Tactile | One memorable physical-metaphor interaction per surface, at most | dqnamo's Kitchen (§12) | §12 |
+| Floor | The craft floor, slop checks, and finish reviews that bind every layer | Impeccable (§4); polish-pass (§7); design-system + make-interfaces-feel-better (§8) | §4, §7, §8 |
+
+GetLayers never replaces the dealt theme; GSAP never supplies components;
+React Bits never supplies motion direction; a Kitchen piece never stands in
+for the component system; less-flat-ui never textures a surface the page
+system already styles (Taste texture boundary). A design decision that names
+no layer is a decision with no inventory citation — route it back here or
+record it as a gap.
 
 ## 1. ui-ux-pro-max — lookup-only inventory for dashboards, apps, components (fix #32: no longer the design lead)
 
@@ -51,7 +77,7 @@ Staged home: `new-skills/design-taste-frontend/`.
 | Finish gate (`references/gate.md`) | The finish review: captivating-hero bar, specificity, and the checks a page must pass before it is done | `skills/design-taste-frontend/references/gate.md` | Before any landing page is reported finished |
 | Sections library — 45 recipes | One system, one section per screen: nav, logo-row, quote-stat, bento, split-text, tabs-tour, app-frame, steps, photo-band, timeline-rail, booking-form, and 34 more | `skills/design-taste-frontend/references/sections-library.md` | Section structure; a recipe reused as-is is a catalogue item, not an invention (fails U1) |
 | Palettes — 64 | Palette catalogue (json) | `skills/design-taste-frontend/library/palettes.json` | Landing palette candidates; the dealt theme picks, never a default |
-| Type — 39 pairings | Type catalogue (json), incl. the `fraunces` pairing (display Fraunces, Figtree body) | `skills/design-taste-frontend/library/type.json` | Landing type; the pairing is re-dealt per build |
+| Type — 39 pairings | Type catalogue (json), incl. the `fraunces` pairing (display Fraunces, Figtree body). Fraunces role rule: Fraunces is body-only as the Tiempos stand-in (fix #19 F4, fix #20 scope) — never a display face where it is the body face; the pairing's display-Fraunces use is governed by fix #19 F3 / fix #20 F5 — never both roles on one build | `skills/design-taste-frontend/library/type.json` | Landing type; the pairing is re-dealt per build |
 | Backgrounds / cards / copy / diagrams / effects / icons / layout / photos / scenes / sections / system | Per-kind reference inventories: backgrounds (111 lines), cards, copy moves/registers/tells/voice, diagrams, creative/object/usage effects, icons, layout-v4, photos, scenes, sections, system | `skills/design-taste-frontend/references/` (one file per kind) | The element kind the surface needs; each file is the catalogue for its kind |
 | Motion reference | The page motion system: hero entrance, dealt-moment motion, hover layer, reduced-motion stills | `skills/design-taste-frontend/references/motion.md` | Any motion on a landing page; the Taste scroll ban stands (scrolling moves nothing but the dealt moment) |
 
@@ -149,7 +175,7 @@ Staged home: `round2-skills/polish-pass/`.
 | Thinking Orb states — 9 (ORBS_F22) | `working`, `searching`, `solving`, `listening`, `connecting`, `weaving`, `composing`, `breathing` (idle/waiting — its label reads "Thinking…"), `shaping`; sizes 64 (chat-avatar) and 20 (inline-text); `thinking-orbs@0.3.2`; no "tenth" state, no state named "thinking" | `skills/motion-patterns/SKILL.md` (Thinking Orb) + tokens in `skills/motion-foundations/SKILL.md` | AI/agent waiting states only; state must match the actual activity; menu, not defaults |
 
 ## 10. Skill-bundled reference inventories (catalogs that ship with a skill)
-Cross-note: this section duplicates §1/§2/§3/§4 entries — those sections govern; §10 is a quick index only.
+Cross-note: this section is NOT a second catalog — the one catalog is §§1–9 plus §12–§13, and this section only re-indexes §1/§2/§3/§4 entries for quick lookup; those sections govern, and where this index and a governing section disagree, the governing section wins.
 
 | Entry | What it is | Where it lives | Reach for it when |
 |---|---|---|---|
@@ -169,54 +195,66 @@ Cross-note: this section duplicates §1/§2/§3/§4 entries — those sections g
 
 Home: `skills/getlayers/SKILL.md`, `skills/gsap/SKILL.md`,
 `skills/react-bits/SKILL.md`, `skills/hairline-create/SKILL.md`,
-`skills/hairline-adopt/SKILL.md`. Staged home: `new-skills/` (same names).
-All four resources are free-tier only; no paid plan is purchased for any of
+`skills/hairline-adopt/SKILL.md`, `skills/kitchen/SKILL.md` (fix #35, KITCHEN_F35). Staged home: `new-skills/` (same names).
+All five resources are free-tier only; no paid plan is purchased for any of
 them. Counts for GetLayers and React Bits drift weekly — this file freezes
-no count for either; read the live library when you need the current numbers.
-GetLayers prompts carry the most weight in the palette-first flow — they are
-consulted FIRST, before the other palette sources, and the direction leans on
-them heavily as its foundation (see the skill).
+no count for either; read the live library for current numbers.
+GetLayers prompts carry the most weight in the palette-first flow — consulted
+FIRST, before the other palette sources; the direction leans on them heavily
+as its foundation (see the skill).
 
 | Entry | What it is | Where it lives | Reach for it when |
 |---|---|---|---|
-| GetLayers — prompt-first cinematic layers (GETLAYERS_F31) | A curated library of visual layers for cinematic marketing sites: page templates, real-time 3D WebGL scenes, animated sections, animated/static backgrounds, pointer-reactive gradients. Every layer copies as one self-contained prompt an agent rebuilds in the stack. FREE SET ONLY; the MCP requires the Full Stack Lifetime plan and is NOT wired; the plugin vendors NO GetLayers content (reference only); a layer is a foundation, never shipped unchanged | `skills/getlayers/SKILL.md`; live library `https://getlayers.ai/`; live index `https://getlayers.ai/llms.txt` (current counts + category links) | Consulted FIRST in the palette inventory — the first-class foundation the direction leans on. A cinematic hero, animated ground, real-time 3D scene, or gradient ground on a marketing surface; a section whose motion is already designed. Never app UI; never a mismatched layer forced onto a surface. The direction cites the layers USED or CONSIDERED-AND-REJECTED, each with a D19 reason |
-| GSAP — timeline / scroll / canvas animation (GSAP_F31) | Framework-agnostic JavaScript animation engine: tweens, timelines, ScrollTrigger, MotionPath, MorphSVG, DrawSVG, and every former Club plugin, 100% free for commercial use from the public npm package. NOT OSI open source (Webflow "Standard no charge" licence; bans competing no-code animation builders). Pin `gsap@3.15.1`; install from npm at build time, never vendor source. Official MIT agent skills (`github.com/greensock/gsap-skills`, 8 skills) are the deep API reference | `skills/gsap/SKILL.md`; presets (lookup source) in `skills/ui-ux-pro-max/data/motion.csv` (rows 1–17); pin + stack scope in `skills/ui-ux-pro-max/SKILL.md` (§11, GSAP_F22) | Hero entrance choreography, scroll-linked sections, staggered reveals, canvas/SVG animation. Owned by `skills/gsap/SKILL.md` (fix #32, D32-5). Not a component library; not smooth scrolling alone (Lenis); not a CSS-only micro-interaction |
-| React Bits — animated React components (REACTBITS_F31) | Animated React components (text effects, backgrounds, interactive UI, ready-made blocks) that install as source you own, copy-and-own like shadcn/ui. Four variants per component: JS-CSS, JS-TW, TS-CSS, TS-TW. MIT + Commons Clause (may NOT sell, sublicense, or redistribute the components). This skill is a catalog + install guide — NO component source is embedded anywhere in the plugin | `skills/react-bits/SKILL.md`; live catalog `https://reactbits.dev/`; install guide `https://reactbits.dev/get-started/installation`; reviewed baseline commit `9d9c687…` (fix #22 §11) | An animated component on a React/Next.js build, installed fresh per project via `npx shadcn@latest add @react-bits/<Component>-<JS\|TS>-<CSS\|TW>`. Never on a non-React build; never with stock defaults on a themed build |
-| Hairline illustrations — interactive isometric SVG line figures (HAIRLINE_F31) | 33 interactive isometric SVG line figures that answer the pointer (Terrain, Turntable, Keyboard, Terminal, Branches, Vault, Router, Loupe, Sieve, and more). Zero runtime dependencies, ESM-only; React 18+ an optional peer. MIT (Lucas Marques). Install per project: `npm i @lucasmarkes/hairline@0.5.1` or `npx shadcn@latest add https://hairline.lucasmarkes.com/r/hairline.json`. Two skills: `hairline-create` draws a new figure from an idea; `hairline-adopt` rebuilds an existing SVG as a figure. NOT Hairline UI (hairlineui.com) — a different product, not in scope | `skills/hairline-create/SKILL.md` + `skills/hairline-adopt/SKILL.md` (vendored MIT copies); live figures `https://hairline.lucasmarkes.com` | Hero art, section illustration, or a thoughtfully designed empty state on dev-tool sites, technical docs, landing pages, portfolios. Best at 160–240px for empty states; figures fill the parent's width at a 5:4 aspect ratio |
+| GetLayers — prompt-first cinematic layers (GETLAYERS_F31) | **Layer role: foundation** — the first layer of the one design system, consulted FIRST. Curated visual layers for cinematic marketing sites: page templates, real-time 3D WebGL scenes, animated sections, animated/static backgrounds, pointer-reactive gradients. Every layer copies as one self-contained prompt an agent rebuilds in the stack. FREE SET ONLY; the MCP requires the Full Stack Lifetime plan and is NOT wired; the plugin vendors NO GetLayers content (reference only); a layer is a foundation, never shipped unchanged | `skills/getlayers/SKILL.md`; live library `https://getlayers.ai/`; live index `https://getlayers.ai/llms.txt` (current counts + category links) | Consulted FIRST in the palette inventory — the first-class foundation the direction leans on. A cinematic hero, animated ground, real-time 3D scene, or gradient ground on a marketing surface; a section whose motion is already designed. Never app UI; never a mismatched layer forced onto a surface. The direction cites the layers USED or CONSIDERED-AND-REJECTED, each with a D19 reason |
+| GSAP — timeline / scroll / canvas animation (GSAP_F31) | **Layer role: motion** — the motion engine of the one design system. Framework-agnostic JavaScript animation engine: tweens, timelines, ScrollTrigger, MotionPath, MorphSVG, DrawSVG, and every former Club plugin, 100% free for commercial use from the public npm package. NOT OSI open source (Webflow "Standard no charge" licence; bans competing no-code animation builders). Pin `gsap@3.15.1`; install from npm at build time, never vendor source. Official MIT agent skills (`github.com/greensock/gsap-skills`, 8 skills) are the deep API reference | `skills/gsap/SKILL.md`; presets (lookup source) in `skills/ui-ux-pro-max/data/motion.csv` (rows 1–17); pin + stack scope in `skills/ui-ux-pro-max/SKILL.md` (§11, GSAP_F22) | Hero entrance choreography, scroll-linked sections, staggered reveals, canvas/SVG animation. Owned by `skills/gsap/SKILL.md` (fix #32, D32-5). Not a component library; not smooth scrolling alone (Lenis); not a CSS-only micro-interaction |
+| React Bits — animated React components (REACTBITS_F31) | **Layer role: animated components** — the component layer of the one design system. Animated React components (text effects, backgrounds, interactive UI, ready-made blocks) that install as source you own, copy-and-own like shadcn/ui. Four variants per component: JS-CSS, JS-TW, TS-CSS, TS-TW. MIT + Commons Clause (may NOT sell, sublicense, or redistribute the components). This skill is a catalog + install guide — NO component source is embedded anywhere in the plugin | `skills/react-bits/SKILL.md`; live catalog `https://reactbits.dev/`; install guide `https://reactbits.dev/get-started/installation`; reviewed baseline commit `9d9c687…` (fix #22 §11) | An animated component on a React/Next.js build, installed fresh per project via `npx shadcn@latest add @react-bits/<Component>-<JS\|TS>-<CSS\|TW>`. Never on a non-React build; never with stock defaults on a themed build |
+| Hairline illustrations — interactive isometric SVG line figures (HAIRLINE_F31) | **Layer role: illustrations** — the illustration layer of the one design system. 33 interactive isometric SVG line figures that answer the pointer (Terrain, Turntable, Keyboard, Terminal, Branches, Vault, Router, Loupe, Sieve, and more). Zero runtime dependencies, ESM-only; React 18+ an optional peer. MIT (Lucas Marques). Install per project: `npm i @lucasmarkes/hairline@0.5.1` or `npx shadcn@latest add https://hairline.lucasmarkes.com/r/hairline.json`. Two skills: `hairline-create` draws a new figure from an idea; `hairline-adopt` rebuilds an existing SVG as a figure. NOT Hairline UI (hairlineui.com) — a different product, not in scope | `skills/hairline-create/SKILL.md` + `skills/hairline-adopt/SKILL.md` (vendored MIT copies); live figures `https://hairline.lucasmarkes.com` | Hero art, section illustration, or a thoughtfully designed empty state on dev-tool sites, technical docs, landing pages, portfolios. Best at 160–240px for empty states; figures fill the parent's width at a 5:4 aspect ratio. Never a photorealistic or filled illustration; never a traced copy of a source SVG — adopt rebuilds the object as solids |
+| dqnamo's Kitchen — tactile copy-paste components (KITCHEN_F35, fix #35) | **Layer role: tactile** — the tactile layer of the one design system: one memorable physical-metaphor interaction per surface, at most. 15 free component experiments by dqnamo (London design engineer): Tactile Button, Scramble Text, Receipt Printer, Cassette Audio Player, Hold to Confirm, Magnetic Drop Zone, Dynamic Button, Playing Cards, Ticket, Stamp, Scroll Fade List, Advanced Model Selector, Animated Signature, Logo Trace Loader, Iridescent Foil. Each ships with its own code on its page — copy and paste directly into the project. ISC (verified Nov 17, 2026 from the repo's `package.json`, commit `0a517fea`; no LICENSE file, no copyright line published; `"private": true` — copy-paste, not an npm package). This skill is a catalog + copy guide — NO component source is embedded anywhere in the plugin; every copy keeps the dqnamo attribution + ISC notice | `skills/kitchen/SKILL.md`; live Kitchen `https://www.dqnamo.com/kitchen`; source repo `https://github.com/dqnamo/website` (`components/`, catalog `components/experiment-catalog.ts`); second channel 21st.dev (sparklines, logo-trace loaders, scramble text; shadcn install) | One memorable tactile interaction per surface — the checkout that prints a receipt, the delete that must not fire by accident, the loader that draws itself, the button that feels physical. Never a general component library (no forms, layout, or data display); never more than one Kitchen piece per surface; never on a non-React build except as a re-implemented pattern |
 
-## 13. Fix #34 additions — Motion Principles, ThreeUI
+## 13. MotionSites — cinematic component source (fix #27, MOTIONSITES_F27)
+
+Home: `skills/motionsites-web-builder/SKILL.md` + `skills/motionsites-web-builder/references/` (techniques, spec template, craft, assets, builders, review). Staged home: `new-skills/motionsites-web-builder/`. MIT (skill, references, scripts); the upstream `examples/` and `media/` folders are © MotionSites and are NOT shipped — fetched at use time, free sample only.
+
+| Entry | What it is | Where it lives | Reach for it when |
+|---|---|---|---|
+| MotionSites — cinematic components, motion patterns, hero treatments, media (MOTIONSITES_F27) | **Layer role: component source** — the cinematic components, motion patterns, hero treatments, and media the direction draws on, consulted, never a template. The 40 most-liked free MotionSites prompts (examples) + the media shelf (cinematic videos, transparent cut-outs) + the techniques index (signature effects with working code) + the spec template and review rubric. Taste still leads; browser-qa still owns every pass/fail screen verdict. FREE SAMPLE ONLY — never the paid MotionSites Unlimited library, never a paid service; the upstream sponsor/upsell block is stripped and never appended to a delivery | `skills/motionsites-web-builder/SKILL.md`; examples index + media shelf fetched at use time from upstream (raw GitHub URLs in the skill's steps 2–3); techniques in `skills/motionsites-web-builder/references/techniques/` | A cinematic component, motion pattern, hero treatment, or piece of media the build needs and no inventoried skill supplies — cited in the direction as USED or CONSIDERED-AND-REJECTED with a D19 reason, like every inventory entry. Never a template to copy wholesale (never its brand names, copy, or exact layouts); never premium/paid content; never the design source — the direction is generated through the package, MotionSites informs it |
+
+## 14. Factory round 10 additions — Motion Principles, ThreeUI
 
 Home: `skills/motion-principles/SKILL.md`, `skills/threeui/SKILL.md`.
-Staged home: `new-skills/` (same names). Fix #34 (ported from the
-factory variant's round 10). The motion-principles skill is authored
+Staged home: `new-skills/` (same names). Factory round 10
+(DECISION-F-35/F-35). The motion-principles skill is authored
 natively from textbook public knowledge — no vendored source; the
 originating reel's own skill file is not used. ThreeUI is a catalog +
 install guide for the free Community edition only; Pro/Beta
 components are paid and out (free-set rule). Neither skill carries
 trigger keys — design skills route through this inventory and the
 palette-first citation, the standing precedent (same as MotionSites,
-GSAP, React Bits).
+GSAP, React Bits, Kitchen).
 
 | Entry | What it is | Where it lives | Reach for it when |
 |---|---|---|---|
 | Motion Principles — the why of UI motion (MOTIONPRINCIPLES_F34) | **Layer role: motion principles** — the why layer of the one design system: 19 principles (Disney's twelve adapted to UI + the HCI laws), each with its UI meaning, when to apply it, when to restrain it, and its numeric guardrail where one exists (Doherty: feedback within 400ms; timing: UI animation under 300ms; origin awareness; interruptible motion; frequency-of-use restraint), plus the immersion direction (depth and spatial continuity, full-viewport moments, scroll-driven progression, with binding restraint guardrails). Taste consults it whenever motion is decided and names the principle(s) in the D19 record; `gsap` implements against it; `browser-qa` renders the motion verdict from its checkable subset (MOTION-QA_F34) | `skills/motion-principles/SKILL.md` | Any motion decision — an entrance, a transition, a gesture, a scroll sequence, the dealt moment's movement — and any immersive surface. A motion with no named principle is not shipped; a principle claimed but not visible in the result is a finding |
 | ThreeUI — ready-made 3D components (THREEUI_F34) | **Layer role: 3D components** — the immersion toolkit of the one design system: ready-made Three.js components (3D hero sections, shader scenes, icons, motion components) for React builds, by MengTo / DesignCode. MIT (verified Nov 19, 2026 from the repo, commit `68802d54`). FREE COMMUNITY EDITION ONLY — 50 parent components, 111 routes, 141 free variants + 23 singletons (164 browse results) at the reviewed baseline; Pro/Beta are paid and out. This skill is a catalog + install guide — NO component source is embedded anywhere in the plugin; components install per project from the npm package `@designcodeio/threeui`, with the runtime-asset copy step for full-document components | `skills/threeui/SKILL.md`; live catalog `https://threeui.com/`; source repo `https://github.com/MengTo/threeui` | A ready-made 3D hero, shader scene, or 3D accent on a React build — the immersion direction's fastest honest implementation. Never Pro/Beta; never on a non-React build; never without its static/2D fallback and reduced-motion still |
 
-## 14. Fix #34 additions — Pre-build Research, the Design Contract
+## 15. Factory round 11 additions — Pre-build Research, the Design Contract
 
-Home: `skills/prebuild-research/SKILL.md`. Staged home: `new-skills/` (same name). Fix #34 (ported from the factory variant's round 11). The research skill runs before the design package exists — it is the pipeline's pre-design step, not a design layer: it feeds feature expansion and the direction with researched fuel, under hard caps, and carries no trigger key (the orchestrate flow invokes it by name — the fix #31 design-skill precedent).
+Home: `skills/prebuild-research/SKILL.md`. Staged home: `new-skills/` (same name). Fix #34 (ported from the factory variant's round 11). The research skill runs before the design package exists — it is the pipeline's pre-design step, not a design layer: it feeds feature expansion and the direction with researched fuel, under hard caps, and carries no trigger key (the orchestrate flow invokes it by name — the fix #31 design-skill precedent). The factory variant routes the same invocation through `orchestrator-briefing` (not ported; fix #34).
 
 | Entry | What it is | Where it lives | Reach for it when |
 |---|---|---|---|
 | Pre-build research (RESEARCHBRIEF_F34) | **Pipeline role: research** — a bounded web sweep (≤4 searches + ≤4 fetches, primary sources only) run after scoping and before expansion + design, producing ONE compact brief (`docs/research-brief.md`, ≤ ~600 tokens): feature ideas for the expansion step + framework/architecture patterns for the project type, every source logged. Expansion records which ideas it took and which it dropped, each with a reason. Fuel, never authority — the decision record outranks the brief, and the anti-derivative rule stands | `skills/prebuild-research/SKILL.md` | Every first build, at orchestrate step 1.5; any later run that re-opens scope. Never mid-build (a mid-build question is a brief gap, not a research phase); never blocked on — an unreachable source set records the gap and the build proceeds |
-| The design contract (DESIGNCONTRACT_F34) | **Design-package artifact** — Taste step 4a's frozen system issued as a binding contract in `docs/design-contract.md`: hosting line (HOSTING_F34), palette tokens, type scale, spacing scale, motion specs (principles + guardrails cited), named components with inventory citations, states, and a Deviations field. Implementers implement it literally; the pre-build restatement gate checks the implementer's read-back against it before the build; `browser-qa` verifies the built screens against it (CONTRACT-QA_F34) | `docs/design-contract.md` (per project, written by the design-lead); the form lives in `skills/design-taste-frontend/SKILL.md` step 4a | Every build with a UI surface — the contract is what implementers build from and what QA verifies against; a design decision not in the contract is not yet a build input |
+| The design contract (DESIGNCONTRACT_F34) | **Design-package artifact** — Taste step 4a's frozen system issued as a binding contract in `docs/design-contract.md`: hosting line (HOSTING_F34), palette tokens, type scale, spacing scale, motion specs (principles + guardrails cited), named components with inventory citations, states, and a Deviations field. Implementers implement it literally; the pre-build restatement gate checks the implementer's read-back against it before dispatch; `browser-qa` verifies the built screens against it (CONTRACT-QA_F34) | `docs/design-contract.md` (per project, written by the design-lead); the form lives in `skills/design-taste-frontend/SKILL.md` step 4a | Every build with a UI surface — the contract is what implementers build from and what QA verifies against; a design decision not in the contract is not yet a build input |
 
-## 15. code-mode — the execution discipline (fix #34, CODEMODE_F34)
+## 16. code-mode — the execution discipline (fix #34, CODEMODE_F34; inventory entry added fix #35, DECISION-F-35)
 
 **Layer role: none — this is an execution entry, not a design element.** It
-is catalogued here for the same reason §14 catalogues the pipeline steps:
+is catalogued here for the same reason §15 catalogues the pipeline steps:
 the inventory is the one place a reader can find every named capability the
-plugin carries.
+factory carries, and leaving the round-12 discipline out made its absence
+read as an oversight (round 12 recorded it as deliberately not adopted,
+DECISION-F-35; round 13 reverses that call — the inclusion logic of §15
+already covers non-design pipeline artifacts).
 
 - **code-mode** (`skills/code-mode/SKILL.md`, + the helper library in
   `skills/code-mode/scripts/`) — the script-first discipline for the
@@ -224,9 +262,10 @@ plugin carries.
   digest of at most 500 E3 back, raw output in files (SCRIPT-FIRST_F34,
   SCRIPT-GATE_F34). Reach for it when a step's work is scanning, filtering,
   counting, or transforming across many files — never for a design decision,
-  a verdict, or a subagent's work (subagents do not run these scripts). It
-  carries no trigger key by design: `orchestrate` and `browser-qa` invoke
-  it by name (the routing decision is recorded in fix34/SPEC.md).
+  a verdict, or a subagent's work (subagents do not run these scripts; the factory's drone exclusion is this clause's origin). It carries no
+  trigger key by design: `orchestrate`, and — in the factory variant — `orchestrator-briefing` §6, and
+  `browser-qa` invoke it by name (the routing decision is recorded in SPEC
+  DECISION-F-35).
 
 ## How the record uses this file (the ambition bar, AMBITION_F23)
 
